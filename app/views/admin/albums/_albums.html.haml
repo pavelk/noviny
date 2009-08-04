@@ -1,0 +1,14 @@
+%table
+  %tr
+    %th.l1{ :width => '30%' }= link_to 'name', '#'
+    %th{ :width => '10%'    }= link_to 'subfolders', '#'
+    %th{ :width => '10%'    }= link_to 'files', '#'
+    %th{ :width => '5%'     }= link_to 'total size', '#'           
+    %th{ :width => '10%'    }= link_to 'create date', '#'
+    %th{ :width => '10%'    }= link_to 'modify date', '#'
+    %th{ :width => '10%'    }= link_to 'author', '#'
+    %th{ :width => '15%'    }= link_to 'desc', '#'
+    %th{ :width => '10%'    }
+  = render(:partial => 'leafs', :object => albums)
+    
+  

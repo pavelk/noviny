@@ -1,0 +1,12 @@
+%form
+  %fieldset
+    %strong filtr:
+    %input{ :type => 'text', :name => 'groupSearch', :id => 'groupSearch' }
+    %input{ :type => 'submit', :value => 'Hledej' }
+.navigation
+  %ul
+    %li= link_to 'nová větev', "#", :class => 'newLeaf'
+    %li= link_to 'nový obrázek', "#", :class => 'newAtt'
+    -#%li= link_to 'nová větev', new_admin_album_path, :class => 'newLeaf'
+    -#%li= link_to 'nový obrázek', new_admin_picture_path
+.clearer

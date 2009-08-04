@@ -1,0 +1,28 @@
+<% if @level == 'null' %>//level je parent_id z params
+  
+$(".listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#group1 .listContent").append("<%= escape_javascript(render(:partial => 'albums', :object => @albums)) %>").hide().slideDown(1000, 'easeOutQuad');
+
+//map forms
+$("li a.newLeaf").bind("click", function() { return newLeaf( ) });
+$("li a.newAtt").bind("click", function() { return newAtt( ) });  
+
+<% else %>
+
+<% if @albums.size > 0 %>//obsahuje podvetve a mozna obrazky
+  
+$("#group1 .<%= @level %>").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
+//files ze stromu o level vys
+$("tr[class='jQpictures<%= @albums.first.parent.id if @albums.first.child? %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
+
+//$("tr[id^=editPict]").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
+
+<% elsif @album.pictures.size > 0 %>//neobsahuje podvetve, pouze obrazky 
+  
+$("tr[class='<%= @album.id %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @album)) %>");
+
+<% end %>
+
+$("td.listItem a").unbind();
+
+<% end %>

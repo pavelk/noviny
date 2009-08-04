@@ -1,0 +1,7 @@
+.photo
+  = f.label :name, 'Popisek:'
+  = f.text_field :name, :class => 'inp'
+  %br
+  -#= f.file_field :photo, :index => nil, :class => 'inp'
+  = f.file_field :data, :class => 'inp'
+  -#= link_to_function "odstranit", "remove_field($(this), ('.photo'))"

@@ -1,0 +1,18 @@
+- if(picture.pictures.size > 0)
+  %tr
+    %td.listItem{:class => "l#{picture.level + 1}", :colspan => '9'}
+      - picture.pictures.each do |picture|
+        .listImageBox
+          = link_to image_tag(picture.data.url(:small)), ''
+          %br
+          = picture.name
+          %br
+          = number_to_human_size(picture.data_file_size)
+          ,
+          = picture.data_content_type
+          %br
+          = link_to 'editovat', '#', {:id => 'editPict', :class => "#{picture.id}"}
+          |
+          -#= link_to 'smazat', object_url(picture), :confirm => 'Jste si jistí?', :method => :delete
+          = link_to 'smazat', {:controller => 'pictures', :action => 'destroy', :id => picture}, :confirm => 'Jste si jistí?', :method => :delete    
+      .clearer &nbsp;

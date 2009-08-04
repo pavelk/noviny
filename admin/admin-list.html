@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+<head>
+	<title>administrace</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="all,index,follow" /> 
+	<meta name="author" content="sortof" />
+	<meta name="language" content="cs" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" href="css/screen.css" media="screen" />
+</head>	
+<body>
+	<!-- HLAVICKA, OBSAHUJE HLAVNI POLOZKY NAVIGACE, HLAVNI FILTER A UZIVATELSKY PROFIL -->
+	<div class="header">
+		<!-- LOGO ADMINU -->
+		<h1 class="logo">Logo</h1>
+		
+		<!-- UZIVATELSKE INFO -->
+		<div class="user">
+			<strong>Pavel Krusek</strong><br />
+			<em>user group (editor)</em><br /><br />
+			<a href="#">my profile</a><br />
+			<a href="#">my articles</a><br />
+			<a href="#">logout</a><br />			
+		</div>
+		
+		<!-- HLAVNI NAVIGACE -->
+		<div class="navigation">
+			<ul>
+				<li><a href="#">Menu Item 1</a></li>
+				<li><a href="#">Menu Item 2</a></li>
+				<li><a href="#">Menu Item 3</a></li>
+				<li><a href="#">Menu Item 4</a></li>
+				<li><a href="#">Menu Item 5</a></li>
+			</ul>
+		</div>
+		
+		<div class="clearer">&nbsp;</div>
+		
+		<!-- HLAVNI FILTER -->
+		<div class="mainFilter">
+			<form action="#">
+				<fieldset>
+					<div class="mainSearchFilter">
+						<select name="mainCategories">
+							<option>vyhledat v ...</option>
+							<option>-- Vse --</option>
+							<option>-- Obrazky --</option>
+							<option>-- Video --</option>
+							<option>-- Audio --</option>
+							<option>-- Soubory --</option>
+							<option>-- Clanky --</option>
+							<option>-- Diskuze --</option>
+						</select>					
+						<label for="mainSearch">Vyhledat:</label>
+						<input type="text" name="mainSearch" id="mainSearch" />
+						<input type="submit" value="Hledej" />
+					</div>					
+					<div class="mainViewFilter">
+						<span class="bold">Zobrazit:</span>
+						<input type="checkbox" id="show_images" name="viewFilter" value="images" />
+						<label for="show_images">Obrázky</label>
+						<input type="checkbox" id="show_files" name="viewFilter" value="files" />
+						<label for="show_files">Soubory</label>
+						<input type="checkbox" id="show_video" name="viewFilter" value="video" />
+						<label for="show_video">Video</label>
+						<input type="checkbox" id="show_audio" name="viewFilter" value="audio" />
+						<label for="show_audio">Audio</label>
+						<input type="checkbox" id="show_article" name="viewFilter" value="article" />
+						<label for="show_article">Články</label>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	
+	<!-- PLOCHA PRO VYPIS DAT, EDITACI ZAZNAMU ATD ... -->
+	<div id="container">
+		<div id="listView">
+			<div class="listGroup" id="group1">
+				<div class="listHeader">
+					<h2><a href="#">Obrazky (1758)</a></h2>
+					<span>Volitelny popis sekce</span>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
+			<div class="listGroup" id="group2">
+				<div class="listHeader">
+					<h2><a href="#">Soubory (758)</a></h2>
+					<span>Volitelny popis sekce</span>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
+			<div class="listGroup" id="group3">
+				<div class="listHeader">
+					<h2><a href="#">Video (509)</a></h2>
+					<span>Volitelny popis sekce</span>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
+			<div class="listGroup" id="group3">
+				<div class="listHeader">
+					<h2><a href="#">Audio (213)</a></h2>
+					<span>Volitelny popis sekce</span>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
+			<div class="listGroup" id="group3">
+				<div class="listHeader">
+					<h2><a href="#">Članky (2850)</a></h2>
+					<span>Volitelny popis sekce</span>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</body>	
+</html>

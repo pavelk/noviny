@@ -1,0 +1,11 @@
+.DS_Store
+doc/**/*
+doc/*.rtf
+log/*.log
+log/*.pid
+tmp/**/*
+admin/**/*
+config/database.yml
+config/deploy.rb
+public/assets
+noviny.tmproj

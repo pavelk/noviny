@@ -1,0 +1,13 @@
+$(".recordHeader").remove();
+$(".recordPath").remove();
+$(".recordEdit").remove();
+$("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit', :object => @album)) %>");
+$("#viewRecord").show();
+$("td a.editLeaf").unbind();
+
+$("form[id^='edit_album']").ajaxForm(
+  {
+    dataType: 'script',
+    resetForm: true
+  }
+);

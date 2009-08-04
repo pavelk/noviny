@@ -1,0 +1,19 @@
+!!! Strict
+%html{ html_attrs('cs') }
+  %head
+    %meta{ 'http-equiv' => 'content-type', :content => 'text/html', :charset => 'utf-8' }
+    %meta{ 'http-equiv' => 'content-language', :content => 'cs' }
+    %meta{ :name => 'author', :content => '' }
+    %meta{ :name => 'copyright', :content => '' }
+    %meta{ :name => 'description', :content => '' }
+    %meta{ :name => 'keywords', :content => '' } 
+    %title Noviny
+    = stylesheet_link_tag 'application'
+    -#= stylesheet_link_tag 'application', 'addition', 'jquery.cluetip.css'
+    -#= stylesheet_link_tag 'print', :media => 'print'
+    /[if IE 6]
+      = stylesheet_link_tag 'msie'
+    -#= javascript_include_tag :defaults, 'jquery.cluetip.js','jquery.wait.js','init.js'
+  %body
+    -#= yield
+    = find_and_preserve(yield)

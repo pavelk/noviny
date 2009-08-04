@@ -1,0 +1,60 @@
+#listView
+  -#generovat jako partial
+  .listGroup#idgroup1
+    .listHeader
+      %h2.active= link_to "Obrázky (#{Picture.all.length})", '#'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+      %form
+        %fieldset
+          %strong filtr:
+          %input{ :type => 'text', :name => 'groupSearch', :id => 'groupSearch' }
+          %input{ :type => 'submit', :value => 'Hledej' }
+      .navigation
+        %ul
+          %li= link_to 'nová větev', new_admin_album_path
+          %li= link_to 'nový obrázek', new_admin_picture_path
+      .clearer  
+    .listContent
+      %table
+        %tr
+          %th.l1{ :width => '40%' }= link_to 'name', '#'
+          %th{ :width => '5%'     }= link_to 'size', '#'           
+          %th{ :width => '10%'    }= link_to 'create date', '#'
+          %th{ :width => '10%'    }= link_to 'modify date', '#'
+          %th{ :width => '10%'    }= link_to 'author', '#'
+          %th{ :width => '15%'    }= link_to 'desc', '#'
+          %th{ :width => '10%'    }
+        - @albums.each do |album|  
+          %tr
+            %td.listItem{ :class => "l1" }= link_to album.name, '#', :class => 'folder'
+            %td
+            %td= album.created_at
+            %td= album.updated_at
+            %td= album.user.user_name
+            %td= album.description
+            %td.center
+              = album.leaf?
+              = album.level
+              = link_to 'editovat', edit_object_url(album)
+              |
+              = link_to 'smazat', object_url(album), :confirm => 'Jste si jistí?', :method => :delete
+          %tr
+            %td.listItem.l4{ :colspan => '7'}
+              - album.pictures.each do |picture|
+                .listImageBox
+                  = link_to image_tag(picture.data.url(:small)), ''
+                  %br
+                  = picture.name
+                  %br
+                  = number_to_human_size(picture.data_file_size)
+                  ,
+                  = picture.data_content_type
+                  %br
+                  = link_to 'editovat', ''
+                  |
+                  -#= link_to 'smazat', object_url(picture), :confirm => 'Jste si jistí?', :method => :delete
+                  = link_to 'smazat', {:controller => 'pictures', :action => 'destroy', :id => picture}, :confirm => 'Jste si jistí?', :method => :delete    
+              .clearer &nbsp;    
+      =link_to 'Nové album', new_object_url

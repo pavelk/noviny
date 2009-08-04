@@ -1,0 +1,14 @@
+#listView
+  .listGroup#idgroup1
+    .listHeader
+      %h2= link_to "Uživatelé (#{@users.length})", root_url
+      %span Volitelny popis sekce
+      .clearer
+    .listContent  
+      %table
+        - @users.each do |user|
+          %tr
+            %td= link_to user.user_name, object_url(user)
+            %td= link_to 'editovat', edit_object_url(user)
+            %td= link_to 'odstranit', object_url(user), :confirm => 'Jste si jistí?', :method => :delete
+-#=link_to 'New user', new_object_url

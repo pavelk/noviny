@@ -1,0 +1,7 @@
+.photo
+  - fields_for "album[picture_attributes][]", picture do |p|
+    = p.label :name, 'Popisek:'
+    = p.text_field :name, :class => 'inp'
+    %br
+    = p.file_field :data, :index => nil, :class => 'inp'
+    = link_to_function "odstranit", "remove_field($(this), ('.photo'))"

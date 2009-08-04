@@ -1,0 +1,18 @@
+= f.label :name, 'Název:'
+= f.text_field :name, :class => 'inp'
+%br
+%br
+= f.label :description, 'Popis:'
+= f.text_area :description
+%br
+%br
+= f.label :parent_id, 'Zařaďte adresář do struktury:'
+= f.select(:parent_id, nested_set_options(Album, @album) {|i| "#{'-' * i.level} #{i.name}" }, { :include_blank => true } )
+%hr
+%br
+%br
+#photos
+  -#= render :partial => 'picture', :collection => @album.pictures
+
+-#= link_to_function "Přidat obrázek" do |page|
+  -#- page.insert_html :bottom, :photos, :partial => 'picture', :object => Picture.new

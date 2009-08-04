@@ -1,0 +1,23 @@
+- leafs.each_with_index do |album, index|
+  %tr{ :id => "level_#{index + 1}#{@tree}" }
+    %td.listItem{ :class => "l#{album.level}", :id => "#{album.id}" }
+      - if (album.children.size > 0 || album.pictures.size > 0)
+        = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0 )
+      - else
+        %span{ :class => 'active'  }= album.name
+      -#= @tree
+      -#= album.level + 1
+      -#= index + 1  
+    %td= album.descendants.count
+    %td= album.pictures_count
+    %td= number_to_human_size(album.pictures.sum(:data_file_size))
+    %td= album.created_at.to_s(:short)
+    %td= album.updated_at.to_s(:short)
+    %td= album.user.user_name
+    %td= album.description
+    %td.center
+      = link_to 'editovat', '#', :class => 'editLeaf', :eid => "#{album.id}"
+      |
+      = link_to 'smazat', object_url(album), :confirm => 'Jste si jistí?', :method => :delete
+  %tr{ :class => "#{album.id}" }
+%tr{ :class => "jQpictures#{leafs.first.parent.id if leafs.first.child? rescue nil }" }

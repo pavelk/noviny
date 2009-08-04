@@ -1,0 +1,12 @@
+.user
+  %strong Pavel Krusek 
+  %br
+  %em user group (editor)
+  %br>
+  %br
+  %a{ :href => '#' } my profile
+  %br
+  %a{ :href => '#' } my articles
+  %br
+  = link_to "logout", user_session_path, :method => :delete, :confirm => 'Opravdu se chcete odhlásit?'
+  %br

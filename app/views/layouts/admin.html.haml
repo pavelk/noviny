@@ -1,0 +1,22 @@
+!!! Strict
+%html{ html_attrs('cs') }
+  %head
+    %meta{ 'http-equiv' => 'content-type', :content => 'text/html', :charset => 'utf-8' }
+    %meta{ 'http-equiv' => 'content-language', :content => 'cs' }
+    %meta{ :name => 'author', :content => '' }
+    %meta{ :name => 'copyright', :content => '' }
+    %meta{ :name => 'description', :content => '' }
+    %meta{ :name => 'keywords', :content => '' } 
+    %title Administrace
+    = stylesheet_link_tag 'admin', 'pavel'
+    = javascript_include_tag ['jquery-1.3.2', 'jquery.livequery.js', 'application', 'jquery.easing.1.3.js', 'jquery.form.js']
+  %body
+    .header
+      %h1.logo Logo
+      = render :partial => 'shared/admin/user_info'
+      = render :partial => 'shared/admin/main_navigation'
+      .clearer
+      -#- flash.each do |key, msg|
+        -#%div{ :class => "msg #{key}" }= msg
+    #container
+      = find_and_preserve yield
