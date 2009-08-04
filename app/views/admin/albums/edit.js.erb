@@ -8,6 +8,7 @@ $("td a.editLeaf").unbind();
 $("form[id^='edit_album']").ajaxForm(
   {
     dataType: 'script',
+    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
     resetForm: true
   }
 );

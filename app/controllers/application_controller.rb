@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   filter_parameter_logging :password, :password_confirmation
 
-  before_filter :check_authentication
+  #before_filter :check_authentication
   
   private
     

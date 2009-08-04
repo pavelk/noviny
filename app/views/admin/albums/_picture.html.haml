@@ -1,5 +1,5 @@
 - if(picture.pictures.size > 0)
-  %tr
+  %tr{ :id => @str + "_pict"}
     %td.listItem{:class => "l#{picture.level + 1}", :colspan => '9'}
       - picture.pictures.each do |picture|
         .listImageBox

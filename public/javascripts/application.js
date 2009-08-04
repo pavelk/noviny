@@ -49,6 +49,8 @@ function navigationClick( obj, id )
   {
     obj.removeClass('active');
     obj.addClass('folder');
+    //var del = 
+    //alert
     //alert("a ."+id);
     //$("tbody[id=del_"+id+"]").hide();
    // alert($("tbody[id=del_"+id+"]").children());
@@ -59,9 +61,8 @@ function navigationClick( obj, id )
     obj.addClass('active');
     if( id != null )
     {
-      var tree = adjustLevel(obj.parent().parent().attr("id"));
-      //alert(obj.parent().parent().attr("id"));
-      //$("li a.newLeaf").bind("click", function() { return newLeaf( ) });      
+      var ar = $(obj).parent().parent().attr("id").split("-");
+      var tree = ar.slice(2,ar.length).join("-");
     }else{
       //zbavit se group1
       var tree = "";
@@ -82,11 +83,6 @@ function navigationClick( obj, id )
     });
     return false;
   }    
-}
-
-function adjustLevel( str )
-{
-  return( str.substr(str.length - 1) );
 }
 
 function editImage( id )

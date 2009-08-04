@@ -11,11 +11,13 @@ $("li a.newAtt").bind("click", function() { return newAtt( ) });
 
 <% if @albums.size > 0 %>//obsahuje podvetve a mozna obrazky
   
-$("#group1 .<%= @level %>").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
+$("tr[id^='level-<%= @level %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
 //files ze stromu o level vys
 $("tr[class='jQpictures<%= @albums.first.parent.id if @albums.first.child? %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
-
-//$("tr[id^=editPict]").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
+<%# if @albums.first.child? %>
+//$("tr[id^='level-<%= @albums.first.parent.id %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
+<%# end %>
+//$("tr[id^=editPict] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
 
 <% elsif @album.pictures.size > 0 %>//neobsahuje podvetve, pouze obrazky 
   

@@ -7,6 +7,7 @@ $("#viewRecord").show();
 $("form[id^='new_album']").ajaxForm(
   {
     dataType: 'script',
+    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
     resetForm: true,
     complete: function(XMLHttpRequest, textStatus) {
        
