@@ -1,6 +1,6 @@
 #viewRecord
 #listView
-  .listGroup#group1
+  .listGroup#group-album
     .listHeader
       %h2.folder= link_to "Obrázky (#{Picture.all.length})", '#'
       %span Volitelny popis sekce
@@ -8,4 +8,28 @@
     .listFilter
     .listContent   
     .clearer
-.clearer    
+  -#.listGroup#group-video
+    -#.listHeader
+      -#%h2.folder= link_to "Videa (#{Picture.all.length})", '#'
+      -#%span Volitelny popis sekce
+      -#.clearer
+    -#.listFilter
+    -#.listContent   
+    -#.clearer    
+  .listGroup#articles
+    .listHeader
+      %h2.folder= link_to "Články (#{Article.all.length})", '#'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer
+  .listGroup#authors
+    .listHeader
+      %h2.folder= link_to "Autoři (#{Author.all.length})", '#'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer        
+.clearer 

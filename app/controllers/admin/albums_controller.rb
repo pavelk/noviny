@@ -4,6 +4,8 @@ class Admin::AlbumsController < Admin::AdminController
   create.after  :set_parent
   update.after  :set_parent
   
+  #before_filter :check_class
+  
 
   #new_action.before do
     #1.times { object.pictures.build }
@@ -14,11 +16,11 @@ class Admin::AlbumsController < Admin::AdminController
   
   def get_level
     case params[:id]
-      when 'null': @albums = Album.all(:conditions => 'parent_id is NULL', :order => 'name ASC') 
+      when 'null': @albums = params[:type].camelize.constantize.all(:conditions => 'parent_id is NULL', :order => 'name ASC') 
       #when 'null': @albums = Album.roots
       else 
-        @albums = Album.find(params[:id]).children
-        @album = Album.find(params[:id])
+        @albums = params[:type].camelize.constantize.find(params[:id]).children
+        @album = params[:type].camelize.constantize.find(params[:id])
     end
     
     @level = params[:id]
@@ -50,6 +52,11 @@ class Admin::AlbumsController < Admin::AdminController
      
   private
   
+    def check_class
+      params[:type] = 'album' if params[:type].blank?
+      @album = params[:type].camelize.constantize
+    end  
+    
     def set_user
       @album.user_id = current_user.id
     end

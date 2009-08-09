@@ -1,0 +1,8 @@
+.recordHeader
+  %h2= link_to 'Nová větev', '#'
+.recordPath
+.recordEdit
+  = show
+  - show.pictures.each do |picture|
+    = image_tag(picture.data.url(:small))
+

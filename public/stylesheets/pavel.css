@@ -1,4 +1,11 @@
+/* na vetve bez potomku neni mozne klikat */
 span { color: grey;  }
 .listContent table .listItem span.active { padding-left: 30px; display: block; line-height: 18px; height: 18px; background: url('../images/minus-small.gif') top left no-repeat;  }
 
+/* ajax loader style */
 .loading  { background: url('../images/ajax_load.gif') 50% 50% no-repeat !important; height: 100px; }
+
+/* drag'n'drop elements */
+.dnd { width: 90%; min-height: 18em; padding: 1%; background:gray;border: 1px solid black;}
+/*.addedFile{ float: left;  }*/
+

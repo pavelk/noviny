@@ -72,7 +72,8 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 
 .recordEdit { border: 1px solid #ebebeb; margin: 10px 0px; padding: 10px 33px; }
 
-.recordEdit .inp, .recordEdit select { width: 250px; }
+.recordEdit .inp { width: 250px; }
+/*.recordEdit select { width: 250px; }*/
 .recordEdit label { padding-right: 10px; }
 .recordEdit textarea { width: 350px; height: 200px; }
 .recordEdit .smallText { height: 60px; }

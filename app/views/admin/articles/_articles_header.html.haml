@@ -1,0 +1,10 @@
+%table
+  %tr
+    %th{ :width => '40%', :class => 'l1' }= link_to 'name', '#'
+    %th{ :width => '5%'    }= link_to 'type', '#'
+    %th{ :width => '10%'    }= link_to 'publish date', '#'
+    %th{ :width => '10%'     }= link_to 'modify date', '#'           
+    %th{ :width => '10%'    }= link_to 'author', '#'
+    %th{ :width => '15%'    } perex
+    %th{ :width => '10%'    } &nbsp;
+  = render(:partial => 'article', :collection => @articles)

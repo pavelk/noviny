@@ -1,8 +1,8 @@
-%h1 Editing picture
+%h1 Editing content_type
 
-= error_messages_for :picture
+= error_messages_for :content_type
 
-- form_for(:picture, :url => object_url, :html => { :method => :put }) do |f|
+- form_for(:content_type, :url => object_url, :html => { :method => :put }) do |f|
   = render :partial => "form", :locals => { :f => f }
   %p= submit_tag "Update"
   

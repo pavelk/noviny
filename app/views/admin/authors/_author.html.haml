@@ -1,0 +1,8 @@
+%tr{ :id => "author_#{author.id}" }
+  %td{ :class => 'listItem l1'}= link_to author.full_name, '#', :class => "edit_author"
+  %td= author.email
+  %td= author.nickname 
+  %td{ :class => 'center' }
+    -#= link_to 'editovat', '#', :id => "editarticle_#{article.id}"
+    = link_to 'editovat', '#', :class => "edit_author"
+    = link_to 'smazat', '#'

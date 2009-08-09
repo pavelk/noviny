@@ -1,7 +1,7 @@
 <% if @level == 'null' %>//level je parent_id z params
   
-$(".listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
-$("#group1 .listContent").append("<%= escape_javascript(render(:partial => 'albums', :object => @albums)) %>").hide().slideDown(1000, 'easeOutQuad');
+$("div[id^='group-<%= params[:type] %>'] .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("div[id^='group-<%= params[:type] %>'] .listContent").append("<%= escape_javascript(render(:partial => 'albums', :object => @albums)) %>");
 
 //map forms
 $("li a.newLeaf").bind("click", function() { return newLeaf( ) });
@@ -11,17 +11,17 @@ $("li a.newAtt").bind("click", function() { return newAtt( ) });
 
 <% if @albums.size > 0 %>//obsahuje podvetve a mozna obrazky
   
-$("tr[id^='level-<%= @level %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
+$("div[id^='group-<%= params[:type] %>'] tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
 //files ze stromu o level vys
-$("tr[class='jQpictures<%= @albums.first.parent.id if @albums.first.child? %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
-<%# if @albums.first.child? %>
-//$("tr[id^='level-<%= @albums.first.parent.id %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
-<%# end %>
-//$("tr[id^=editPict] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
+<% if @albums.first.child? %>
 
+$("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
+
+<% end %>
+//$("tr[id^=editPictxxx] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
 <% elsif @album.pictures.size > 0 %>//neobsahuje podvetve, pouze obrazky 
-  
-$("tr[class='<%= @album.id %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @album)) %>");
+
+$("tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @album)) %>");  
 
 <% end %>
 

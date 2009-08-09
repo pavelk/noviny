@@ -2,6 +2,9 @@ class Picture < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :album, :counter_cache => true
+  
+  has_many :article_pictures
+  has_many :articles, :through => :article_pictures
     
   #validates_presence_of :name
   #validates_uniqueness_of :name

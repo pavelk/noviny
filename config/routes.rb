@@ -1,4 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :content_types
+
+  map.resources :authors
+
+  map.resources :subsections
+
+  map.resources :sections
+
+  map.resources :articles
+
   map.resources :albums
 
   
@@ -13,13 +23,15 @@ ActionController::Routing::Routes.draw do |map|
                     :as => 'uzivatele', 
                     :path_names => { :new => 'novy-uzivatel', :edit => 'editace' }
     admin.resources :pictures
-                    #:as => 'pictures',
-                    #:path_names => { :new => 'novy-obrazek' }
     admin.resources :albums,
-                    #:as => 'obrazky',
-                    #:path_names => { :new => 'novealbum', :edit => 'editace' },
-                    :collection => { :get_level => :get }                    
+                    :collection => { :get_level => :get }
+    admin.resources :articles
+    admin.resources :authors               
   end
+  
+  map.add_file 'admin/articles/add_file/:art/:pic', :controller => 'admin/articles', :action => 'add_file'
+  map.remove_file 'admin/articles/remove_file/:art/:pic', :controller => 'admin/articles', :action => 'remove_file'
+  map.get_content_type 'admin/articles/get_content_type/:content_type/:content_value/:id', :controller => 'admin/articles', :action => 'get_content_type'
   
   map.resource  :user_session,
                 :as => 'prihlaseni',

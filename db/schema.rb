@@ -9,25 +9,70 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090803145502) do
+ActiveRecord::Schema.define(:version => 20090809113726) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
     t.integer  "parent_id"
     t.integer  "lft"
     t.integer  "rgt"
-    t.integer  "depth"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "description"
     t.integer  "pictures_count", :default => 0
+    t.string   "type"
   end
 
-  add_index "albums", ["depth"], :name => "albums_depth_index"
   add_index "albums", ["lft", "rgt"], :name => "albums_lft_rgt_index"
   add_index "albums", ["parent_id"], :name => "albums_parent_id_index"
   add_index "albums", ["user_id"], :name => "albums_user_id_index"
+
+  create_table "article_pictures", :force => true do |t|
+    t.integer "picture_id"
+    t.integer "article_id"
+  end
+
+  add_index "article_pictures", ["article_id"], :name => "article_pictures_article_id_index"
+  add_index "article_pictures", ["picture_id"], :name => "article_pictures_picture_id_index"
+
+  create_table "articles", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "publish_date"
+    t.text     "perex"
+    t.text     "text"
+    t.text     "poznamka"
+    t.boolean  "hp"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "section_id"
+    t.integer  "subsection_id"
+    t.integer  "content_type_id"
+  end
+
+  add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"
+  add_index "articles", ["section_id"], :name => "articles_section_id_index"
+  add_index "articles", ["subsection_id"], :name => "articles_subsection_id_index"
+  add_index "articles", ["user_id"], :name => "articles_user_id_index"
+
+  create_table "authors", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "firstname",  :default => "", :null => false
+    t.string   "surname",    :default => "", :null => false
+    t.string   "email"
+    t.string   "nickname"
+    t.text     "cv"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authors", ["user_id"], :name => "authors_user_id_index"
+
+  create_table "content_types", :force => true do |t|
+    t.string "name"
+  end
 
   create_table "pictures", :force => true do |t|
     t.integer  "album_id"
@@ -45,6 +90,12 @@ ActiveRecord::Schema.define(:version => 20090803145502) do
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
+  create_table "sections", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
     t.text     "data"
@@ -54,6 +105,12 @@ ActiveRecord::Schema.define(:version => 20090803145502) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "subsections", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "user_name",           :default => "", :null => false

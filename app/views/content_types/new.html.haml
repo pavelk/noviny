@@ -1,0 +1,9 @@
+%h1 New content_type
+
+= error_messages_for :content_type
+
+- form_for(:content_type, :url => collection_url) do |f|
+  = render :partial => "form", :locals => { :f => f }
+  %p= submit_tag "Create"
+
+= link_to 'Back', collection_url

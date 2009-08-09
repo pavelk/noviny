@@ -13,8 +13,16 @@
 %br
 
 = f.label :data, 'Obrázek:'
-= f.file_field :data, :class => 'inp'
+= f.file_field :data, :index => nil, :class => 'inp'
+%br
+%br
+= f.label :name, 'Popisek:'
+= f.text_field :name, :class => 'inp'
+%br
+%br
 
+= f.label :data, 'Obrázek:'
+= f.file_field :data, , :index => nil, :class => 'inp'
 
 -#= render :partial => 'photo', :locals => { :f => f }
 -##photos

@@ -1,0 +1,17 @@
+.recordHeader
+  %h2= link_to 'Editovat autora', '#'
+.recordPath
+.recordEdit
+  - form_for @author, :url => object_url, :html => { :method => :put } do |f|
+    %fieldset
+      = f.label :user_id, 'Pro uživatele:'
+      = f.select(:user_id, User.all.collect {|u| [ u.user_name, u.id ] })
+      %hr
+      = render :partial => "form", :locals => { :f => f }
+      %p= submit_tag "Upravit"
+  -#.listFiles{ :id => "filesList_#{@author.id}" }
+    -#- @author.pictures.each do |picture|
+      -#.addedFile
+        -#= image_tag(picture.data.url(:small))
+        -#= link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
+  -#.dnd{ :id => "drop_#{@article.id}" }

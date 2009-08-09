@@ -1,0 +1,14 @@
+%h1 Listing content_components
+
+%table
+  %tr
+  - @content_components.each do |content_component|
+    %tr
+        
+      %td= link_to 'Show', object_url(content_component)
+      %td= link_to 'Edit', edit_object_url(content_component)
+      %td= link_to 'Destroy', object_url(content_component), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New content_component', new_object_url

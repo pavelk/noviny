@@ -1,0 +1,7 @@
+%table
+  %tr
+    %th{ :width => '40%', :class => 'l1' }= link_to 'name', '#'
+    %th{ :width => '5%'    }= link_to 'email', '#'
+    %th{ :width => '10%'    }= link_to 'zkratka', '#'
+    %th{ :width => '10%'    } &nbsp;
+  = render(:partial => 'author', :collection => @authors)

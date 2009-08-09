@@ -1,0 +1,14 @@
+%h1 Listing subsections
+
+%table
+  %tr
+  - @subsections.each do |subsection|
+    %tr
+        
+      %td= link_to 'Show', object_url(subsection)
+      %td= link_to 'Edit', edit_object_url(subsection)
+      %td= link_to 'Destroy', object_url(subsection), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New subsection', new_object_url

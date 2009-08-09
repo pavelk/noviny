@@ -1,0 +1,11 @@
+%tr{ :id => "article_#{article.id}" }
+  %td{ :class => 'listItem l1'}= link_to article.name, '#', :class => 'file'
+  %td= article.name
+  %td= article.created_at.to_s(:short)
+  %td= article.updated_at.to_s(:short) 
+  %td= article.user.user_name
+  %td= article.perex  
+  %td{ :class => 'center' }
+    -#= link_to 'editovat', '#', :id => "editarticle_#{article.id}"
+    = link_to 'editovat', '#', :class => "edit_article"
+    = link_to 'smazat', '#'

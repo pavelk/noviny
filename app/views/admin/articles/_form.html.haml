@@ -1,0 +1,38 @@
+- if @content_type[0] != 0
+  = f.label :name, 'Nadpis:'
+  = f.text_field :name, :class => 'inp', :min => @content_type[0].split('/')[0], :max => @content_type[0].split('/')[1]
+  %br
+  %br
+
+= f.label :publish_date, 'Datum publikace:'
+= f.datetime_select(:publish_date)
+%br
+%br
+
+- if @content_type[1] != 0
+  = f.label :perex, 'Perex:'
+  = f.text_area :perex, :class => 'smallText', :min => @content_type[1].split('/')[0], :max => @content_type[1].split('/')[1]
+%br
+%br
+
+- if @content_type[2] != 0
+  = f.label :text, 'Text:'
+  = f.text_area :text, :min => @content_type[2].split('/')[0], :max => @content_type[2].split('/')[1]
+%br
+%br
+
+- if @content_type[3] != 0
+  = f.label :poznamka, 'Poznamka:'
+  = f.text_area :poznamka, :class => 'smallText', :min => @content_type[3].split('/')[0], :max => @content_type[3].split('/')[1]
+%br
+%br
+
+
+= f.label :section, 'Rubrika:'
+= f.select(:section_id, Section.all.collect {|s| [ s.name, s.id ] })
+%br
+%br
+= f.label :section, 'Podrubrika:'
+= f.select(:subsection_id, Subsection.all.collect {|s| [ s.name, s.id ] })
+%hr
+%br
