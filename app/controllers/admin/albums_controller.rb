@@ -49,6 +49,23 @@ class Admin::AlbumsController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
+=begin  
+  new_action.before do
+    @album = params[:type].camelize.constantize.new
+  end
+  
+  create.before do
+    @album = params[:type].camelize.constantize.new(params[:album])
+  end
+  
+  edit.before do    
+    @album = params[:type].camelize.constantize.find(parems[:id])
+  end
+  
+  update.before do
+    @album = params[:type].camelize.constantize.find(parems[:id])
+  end
+=end  
      
   private
   

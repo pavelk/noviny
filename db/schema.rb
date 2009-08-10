@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090809113726) do
+ActiveRecord::Schema.define(:version => 20090809210858) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -43,16 +43,20 @@ ActiveRecord::Schema.define(:version => 20090809113726) do
     t.text     "perex"
     t.text     "text"
     t.text     "poznamka"
-    t.boolean  "hp"
     t.boolean  "approved"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "section_id"
     t.integer  "subsection_id"
     t.integer  "content_type_id"
+    t.integer  "priority_home",    :default => 9999,  :null => false
+    t.integer  "priority_section", :default => 9999,  :null => false
+    t.boolean  "visibility",       :default => false, :null => false
   end
 
   add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"
+  add_index "articles", ["priority_home"], :name => "articles_priority_home_index"
+  add_index "articles", ["priority_section"], :name => "articles_priority_section_index"
   add_index "articles", ["section_id"], :name => "articles_section_id_index"
   add_index "articles", ["subsection_id"], :name => "articles_subsection_id_index"
   add_index "articles", ["user_id"], :name => "articles_user_id_index"

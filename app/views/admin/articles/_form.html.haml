@@ -34,5 +34,19 @@
 %br
 = f.label :section, 'Podrubrika:'
 = f.select(:subsection_id, Subsection.all.collect {|s| [ s.name, s.id ] })
+%br
+%br
+= f.label :priority_home, 'Priorita pro homepage:'
+= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 }, :selected => 2 )
+%br
+%br
+= f.label :approved, 'Schváleno:'
+= f.check_box :approved
+%br
+%br
+= f.label :visibility, 'Skrýt článek:'
+= f.check_box :visibility
+
+
 %hr
 %br
