@@ -3,6 +3,10 @@ $(".recordPath").remove();
 $(".recordEdit").remove();
 $("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit')) %>");
 $("#viewRecord").show();
+$("class^='count'").each(function() {
+ $(this).charCounter();
+	});
+
 
 $("form[id^='edit_article']").ajaxForm(
   {

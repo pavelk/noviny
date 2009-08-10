@@ -14,6 +14,29 @@ var mimeifyUrl = function(url){
 	}
 }
 
+
+jQuery.fn.charCounter = function() {
+    //alert($(this).attr('maxlength'));
+  alert($(this).attr('class'));
+  //return false;
+};
+
+/*
+$(".countchars").each(function(){
+	var length = $(this).val().length;
+			$(this).parent().find('#charlength').html('<b>'+length+'</b>');
+			$(this).keyup(function(){ 
+				var new_length = $(this).val().length;
+				$(this).parent().find('#charlength').html('<b>'+new_length+'</b>');
+				if (new_length == "140") {
+					$('#charlength').css('background', 'red');
+					$('#charlength').css('color', '#000000');
+				}
+			});
+		});
+*/
+
+
 //onload
 $(function()
 {

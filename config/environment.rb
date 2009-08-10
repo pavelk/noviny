@@ -10,7 +10,9 @@ Rails::Initializer.run do |config|
   config.gem 'authlogic',
              :version => '~> 2.1.0'
   config.gem 'haml',
-             :version => '~> 2.0.9'           
+             :version => '~> 2.0.9' 
+  #config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+                       
   
   #config.action_controller.use_accept_header = true
   

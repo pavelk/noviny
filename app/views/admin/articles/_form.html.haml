@@ -1,6 +1,6 @@
 - if @content_type[0] != 0
   = f.label :name, 'Nadpis:'
-  = f.text_field :name, :class => 'inp', :min => @content_type[0].split('/')[0], :max => @content_type[0].split('/')[1]
+  = f.text_field :name, :class => 'inp', :class => "count[#{@content_type[0].split('/')[0]},#{@content_type[0].split('/')[1]}]"
   %br
   %br
 
@@ -11,7 +11,7 @@
 
 - if @content_type[1] != 0
   = f.label :perex, 'Perex:'
-  = f.text_area :perex, :class => 'smallText', :min => @content_type[1].split('/')[0], :max => @content_type[1].split('/')[1]
+  = f.text_area :perex, :class => 'smallText', :class => "count[#{@content_type[1].split('/')[0]},#{@content_type[1].split('/')[1]}]"
 %br
 %br
 
@@ -36,8 +36,27 @@
 = f.select(:subsection_id, Subsection.all.collect {|s| [ s.name, s.id ] })
 %br
 %br
+
+= f.label :tag_list, 'Témata'
+= f.text_area :tag_list, :class => 'inp'
+%br
+%br
+%select{ :multiple => 'true', :size => '10', :name => 'tagList', :id => 'tag_list'}
+  - Tag.all.each do |t|
+    %option{ :value => "#{t.id}" }
+      = t.name
+%br
+%br Priorita pro homepage:
+= @article.priority_home
+%br
 = f.label :priority_home, 'Priorita pro homepage:'
-= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 }, :selected => 2 )
+= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 } )
+%br
+%br Priorita pro sekci:
+= @article.priority_section
+%br
+= f.label :priority_section, 'Priorita pro sekci:'
+= f.select(:priority_home, %w{ 9999 1 2 3 4 5 6 7 8 9 } )
 %br
 %br
 = f.label :approved, 'Schváleno:'

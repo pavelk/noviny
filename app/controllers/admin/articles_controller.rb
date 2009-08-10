@@ -1,6 +1,8 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
+  #create.after :adjust_home_priority
+  #update.after :adjust_home_priority
   
   index.response do |wants|
     wants.js
@@ -41,7 +43,12 @@ class Admin::ArticlesController < Admin::AdminController
     @article = Article.find(params[:id])
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
     @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    #adjust_home_priority(params[:id][:priority_home], params[:id][:id])
   end
+  
+  edit.after do
+    #adjust_home_priority(params[:id][:priority_home], params[:id][:id])
+  end  
   
   def get_content_type
     if(params[:id].size > 0)
@@ -83,6 +90,10 @@ class Admin::ArticlesController < Admin::AdminController
   end   
 
 private
+
+  def adjust_home_priority( p, id )
+    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{p} && priority_home <= 9"
+  end  
 
   def load_config(type)
     
