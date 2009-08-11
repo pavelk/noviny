@@ -1,0 +1,14 @@
+%h1 Listing insets
+
+%table
+  %tr
+  - @insets.each do |inset|
+    %tr
+        
+      %td= link_to 'Show', object_url(inset)
+      %td= link_to 'Edit', edit_object_url(inset)
+      %td= link_to 'Destroy', object_url(inset), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New inset', new_object_url

@@ -3,7 +3,6 @@
 .recordPath
 .recordEdit  
   - form_for @album, :url => collection_url, :html => { :multipart => true } do |f|
-    = params[:type]
     = f.error_messages
     %fieldset
       = hidden_field_tag :type, 'image'

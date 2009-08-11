@@ -1,6 +1,6 @@
-ENV['RAILS_ENV'] ||= 'development'
+#ENV['RAILS_ENV'] ||= 'development'
 
-#RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -11,9 +11,9 @@ Rails::Initializer.run do |config|
              :version => '~> 2.1.0'
   config.gem 'haml',
              :version => '~> 2.0.9' 
-  #config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
-                       
-  
+  config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
+
+   
   #config.action_controller.use_accept_header = true
   
   config.time_zone = 'UTC'

@@ -1,71 +1,81 @@
 - if @content_type[0] != 0
   = f.label :name, 'Nadpis:'
-  = f.text_field :name, :class => 'inp', :class => "count[#{@content_type[0].split('/')[0]},#{@content_type[0].split('/')[1]}]"
+  = f.text_field :name, :class => "inp countable count[#{@content_type[0].split('/')[0]},#{@content_type[0].split('/')[1]}]"
   %br
   %br
 
 = f.label :publish_date, 'Datum publikace:'
-= f.datetime_select(:publish_date)
+-#= f.datetime_select(:publish_date)
+= f.unobtrusive_datetime_picker :publish_date
 %br
 %br
 
 - if @content_type[1] != 0
   = f.label :perex, 'Perex:'
-  = f.text_area :perex, :class => 'smallText', :class => "count[#{@content_type[1].split('/')[0]},#{@content_type[1].split('/')[1]}]"
+  %br
+  = f.text_area :perex, :class => "smallText countable count[#{@content_type[1].split('/')[0]},#{@content_type[1].split('/')[1]}]"
 %br
 %br
 
 - if @content_type[2] != 0
   = f.label :text, 'Text:'
-  = f.text_area :text, :min => @content_type[2].split('/')[0], :max => @content_type[2].split('/')[1]
+  %br
+  = f.text_area :text, :class => 'countable', :min => @content_type[2].split('/')[0], :max => @content_type[2].split('/')[1]
 %br
 %br
 
 - if @content_type[3] != 0
   = f.label :poznamka, 'Poznamka:'
-  = f.text_area :poznamka, :class => 'smallText', :min => @content_type[3].split('/')[0], :max => @content_type[3].split('/')[1]
+  %br
+  = f.text_area :poznamka, :class => 'countable smallText', :min => @content_type[3].split('/')[0], :max => @content_type[3].split('/')[1]
 %br
 %br
 
 
-= f.label :section, 'Rubrika:'
-= f.select(:section_id, Section.all.collect {|s| [ s.name, s.id ] })
+= f.label :section_id, 'Rubrika:'
+= f.select(:section_id, Section.roots.collect {|s| [ s.name, s.id ] })
 %br
 %br
-= f.label :section, 'Podrubrika:'
-= f.select(:subsection_id, Subsection.all.collect {|s| [ s.name, s.id ] })
-%br
-%br
+-##subsection
+  -#= f.label :subsection_id, 'Podrubrika:'
+  -#= f.select(:subsection_id, Section.all.collect {|s| [ s.name, s.id ] }, {  :include_blank => true, :disabled => true })
+  -#%br
+  -#%br
 
 = f.label :tag_list, 'Témata'
-= f.text_area :tag_list, :class => 'inp'
+= f.text_field :tag_list, :class => 'inp'
 %br
 %br
-%select{ :multiple => 'true', :size => '10', :name => 'tagList', :id => 'tag_list'}
+%select{ :multiple => 'true', :size => '10', :name => 'tagList', :id => 'tag_list', :class => 'multipleSelect'}
   - Tag.all.each do |t|
     %option{ :value => "#{t.id}" }
       = t.name
 %br
-%br Priorita pro homepage:
-= @article.priority_home
 %br
 = f.label :priority_home, 'Priorita pro homepage:'
-= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 } )
+-#= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 } )
+%select{ :id => 'article_priority_home', :name => 'article[priority_home]' }
+  - %w{ 0 1 2 3 4 5 6 7 8 9 }.each do |i|
+    %option{ :value => "#{i}" }= i
+
+
 %br
-%br Priorita pro sekci:
-= @article.priority_section
 %br
 = f.label :priority_section, 'Priorita pro sekci:'
-= f.select(:priority_home, %w{ 9999 1 2 3 4 5 6 7 8 9 } )
+-#= f.select(:priority_home, %w{ 9999 1 2 3 4 5 6 7 8 9 } )
+%select{ :id => 'article_priority_section', :name => 'article[priority_section]' }
+  - %w{ 9999 1 2 3 4 5 6 7 8 9 }.each do |i|
+    - if( i.to_s == '9999' )
+      %option{ :value => "#{i}" }= '-----'
+    - else
+      %option{ :value => "#{i}" }= i
 %br
 %br
 = f.label :approved, 'Schváleno:'
 = f.check_box :approved
 %br
-%br
 = f.label :visibility, 'Skrýt článek:'
 = f.check_box :visibility
-
 
 %hr
 %br

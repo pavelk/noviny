@@ -15,26 +15,21 @@ var mimeifyUrl = function(url){
 }
 
 
-jQuery.fn.charCounter = function() {
-    //alert($(this).attr('maxlength'));
-  alert($(this).attr('class'));
-  //return false;
-};
+function getCounter(formObj){
+       var pos = formObj.position();
+       $("#counter").css("top",pos.top);
+       $("#counter").css("left",pos.left+formObj.width()+20);
+       $("#counter").html("Pocet znaku:"+formObj.val().length);
+       $("#counter").removeClass("hidden");
+       $("#counter").addClass("visible");
+}
 
-/*
-$(".countchars").each(function(){
-	var length = $(this).val().length;
-			$(this).parent().find('#charlength').html('<b>'+length+'</b>');
-			$(this).keyup(function(){ 
-				var new_length = $(this).val().length;
-				$(this).parent().find('#charlength').html('<b>'+new_length+'</b>');
-				if (new_length == "140") {
-					$('#charlength').css('background', 'red');
-					$('#charlength').css('color', '#000000');
-				}
-			});
-		});
-*/
+
+function hideCounter(){
+       $("#counter").removeClass("visible");
+       $("#counter").addClass("hidden");
+}
+
 
 
 //onload
@@ -45,10 +40,14 @@ $(function()
   };
   $("form").ajaxForm(options);
   
-  $("div[id^='group-'] h2").click(function() { navigationClick( $(this), null, $(this).parent().parent() ) });
-  $("#articles h2").click(function() { getArticles( $(this) ) });
-  $("#authors h2").click(function() { getAuthors( $(this) ) });
+  //$("div[id^='group-'] h2").click(function() { navigationClick( $(this), null, $(this).parent().parent() ) });
+  //$("#articles h2").click(function() { getArticles( $(this) ) });
+  //$("#authors h2").click(function() { getAuthors( $(this) ) });
   $("#viewRecord").hide();
+  
+  //counter
+
+  
 });
 
 
@@ -68,10 +67,8 @@ function getAuthors( obj )
     type: 'GET',
     url: '/admin/authors',
     dataType: 'script',
-    beforeSend: function() { $("#authors h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#authors h2").removeClass("loading");
       $("tr[id^='author_'] a.edit_author").bind("click", function() { return editAuthor( $(this))} );
       $("a[id^='authors_new']").bind("click", function() { return newAuthor()} );
     }
@@ -89,10 +86,8 @@ function newAuthor()
     type: 'GET',
     dataType: 'script',
     url: '/admin/authors/new',
-    beforeSend: function() { $("#authors h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#authors h2").removeClass("loading");
       $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
     }
   });
@@ -108,10 +103,8 @@ function editAuthor( obj )
     type: 'GET',
     dataType: 'script',
     url: '/admin/authors/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
-    beforeSend: function() { $("#authors h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#authors h2").removeClass("loading");
       $(".recordHeader a").bind("click", function() { return cancelArticle() });
       //$("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1] ) });      
     }
@@ -136,16 +129,33 @@ function getArticles( obj )
     type: 'GET',
     url: '/admin/articles',
     dataType: 'script',
-    beforeSend: function() { $("#articles h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#articles h2").removeClass("loading");
       //$("tr[id^='article_'] a.file").bind("click", function() { return showArticle( $(this))} );
       $("tr[id^='article_'] a.file").bind("click", function() { return editArticle( $(this))} );
       $("tr[id^='article_'] a.edit_article").bind("click", function() { return editArticle( $(this))} );
       $("a[id^='articles_new']").bind("click", function() { return newArticle()} );
+      $(".pagination a").bind("click", function() {
+        $(".pagination").html("");
+        $("#articles tr").remove();
+        //$.get(this.href, null, null, "script");
+       // var params = $(this.href);
+        //alert($(this.href.params[0]));
+        $.ajax({
+          type: 'GET',
+          url: '/admin/articles',
+          data: 'page=2',
+          dataType: 'script',
+          error: function(msg) { alert("Chyba v přenosu dat."); },
+          success: function(data, status) {
+
+          }
+        });
+        return false;
+      });    
     }
   });
+  
   return false;
   }  
 }
@@ -157,11 +167,15 @@ function newArticle()
     type: 'GET',
     dataType: 'script',
     url: '/admin/articles/new',
-    beforeSend: function() { $("#articles h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#articles h2").removeClass("loading");
-      $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
+      setCounterEvents();
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });
+      $("#article_section_id").change(function()
+      {
+
+
+      });      
     }
   });
   return false;
@@ -176,16 +190,33 @@ function editArticle( obj )
     type: 'GET',
     dataType: 'script',
     url: '/admin/articles/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
-    beforeSend: function() { $("#articles h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#articles h2").removeClass("loading");
+      setCounterEvents();
+      $("#article_section_id").change(function()
+      {
+
+      });
       $(".recordHeader a").bind("click", function() { return cancelArticle() });
       $("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1] ) });      
     }
   });
   return false;
 
+}
+
+
+function setCounterEvents()
+{
+  $(".countable").focus(function() { getCounter( $(this) ) });
+  $(".countable").keydown(function() { getCounter( $(this) )});
+  $(".countable").blur(function() {hideCounter()});
+  $("#viewRecord").scroll(function() {hideCounter()});
+}
+
+function loadSubsections( id )
+{
+  
 }
 
 function dragAndDrop()
@@ -216,10 +247,8 @@ function addFileToArticle( article, file )
      type: 'POST',
      url: '/admin/articles/add_file/'+ article +'/'+file,
      dataType: 'script',
-     beforeSend: function() { $("#dnd").addClass("loading"); },
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {
-       $("#dnd").removeClass("loading");
        //alert(data.picture.data_file_name);from json      
      }
    });
@@ -232,10 +261,8 @@ function removeFileFromArticle( article, file )
      type: 'POST',
      url: '/admin/articles/remove_file/'+ article +'/'+file,
      dataType: 'script',
-     beforeSend: function() { $("#dnd").addClass("loading"); },
      error: function(msg) { alert("Chyba v přenosu dat."); },
-     success: function(data, status) {
-       $("#dnd").removeClass("loading");       
+     success: function(data, status) {      
      }
    });
    return false;
@@ -280,12 +307,12 @@ function navigationClick( obj, id, type )
       url: '/admin/albums/get_level',
       data: 'id='+id+'&tree='+tree+'&type='+type.attr("id").split("-")[1],
       dataType: 'script',
-      beforeSend: function() { $("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").addClass("loading"); },
+      //beforeSend: function() { $("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").addClass("loading"); },
       error: function(msg) { alert("Chyba v přenosu dat."); },
       success: function(data, status) {
-        $("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").removeClass("loading");
+        //$("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").removeClass("loading");
         $("td.listItem a").bind("click", function() { return navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ) });
-        $("td a.editLeaf").bind("click", function() { return editLeaf( $(this).attr("eid") ) });
+        $("td a[class^='editLeaf-']").bind("click", function() { return editLeaf( $(this).attr("eid"), $(this).attr("class").split("-")[1]  ) });
         $("div[id^='picture_']").css("cursor: move;");
         $("div[id^='picture_']").draggable({
         	revert: 'invalid',
@@ -304,51 +331,52 @@ function editImage( id )
   
 }
 
-function newLeaf()
+function newLeaf( type )
 {
   $("#listView").addClass("listSmall");
   $.ajax({
     type: 'GET',
     dataType: 'script',
+    data: 'type='+type,
     url: '/admin/albums/new',
-    beforeSend: function() { $("#group1 h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#group1 h2").removeClass("loading");
       $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
     }
   });
   return false;
 }
 
-function newAtt()
+function newAtt( type )
 {
+  var lnk = type;
+  if (lnk == 'image') lnk = 'picture';
   $("#listView").addClass("listSmall");
   $.ajax({
     type: 'GET',
     dataType: 'script',
-    url: '/admin/pictures/new',
-    beforeSend: function() { $("#group1 h2").addClass("loading"); },
+    url: '/admin/'+ lnk +'s/new', 
+    data: 'type=' + type,
+    //beforeSend: function() { $("#group1 h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#group1 h2").removeClass("loading");
+      //$("#group1 h2").removeClass("loading");
       $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
     }
   });
   return false;
 }
 
-function editLeaf( id )
+function editLeaf( id, type )
 {
   $("#listView").addClass("listSmall");
   $.ajax({
     type: 'GET',
     url: '/admin/albums/'+id+'/edit',
+    data: 'type='+type,
     dataType: 'script',
-    beforeSend: function() { $("#group1 h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $("#group1 h2").removeClass("loading");
       $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
     }
   });

@@ -4,8 +4,8 @@ $("div[id^='group-<%= params[:type] %>'] .listFilter").append("<%= escape_javasc
 $("div[id^='group-<%= params[:type] %>'] .listContent").append("<%= escape_javascript(render(:partial => 'albums', :object => @albums)) %>");
 
 //map forms
-$("li a.newLeaf").bind("click", function() { return newLeaf( ) });
-$("li a.newAtt").bind("click", function() { return newAtt( ) });  
+$("li a[class^='newLeaf-']").bind("click", function() { return newLeaf( $(this).attr("class").split("-")[1] ) });
+$("li a.newAtt").bind("click", function() { return newAtt( '<%= params[:type] %>' ) });  
 
 <% else %>
 
@@ -15,13 +15,13 @@ $("div[id^='group-<%= params[:type] %>'] tr[id='level-<%= @tree %>']").after("<%
 //files ze stromu o level vys
 <% if @albums.first.child? %>
 
-$("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @albums.first.parent)) %>");
+$("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @albums.first.parent)) %>");
 
 <% end %>
 //$("tr[id^=editPictxxx] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
-<% elsif @album.pictures.size > 0 %>//neobsahuje podvetve, pouze obrazky 
+<% elsif @album.insets.size > 0 %>//neobsahuje podvetve, pouze obrazky 
 
-$("tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'picture', :object => @album)) %>");  
+$("tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @album)) %>");  
 
 <% end %>
 

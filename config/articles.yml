@@ -1,191 +1,161 @@
 Zpráva:
-  nadpis: 0/30
-  perex: 0/150
-  text: 100/3000
-  poznamka: 0/nan
+  nadpis: 0/80
+  perex: 80/480
+  text: 0/6500
+  poznamka: 0/480
   
 Sloupek:
-  nadpis: 20/50
-  perex: 10/20
-  text: 0/nan
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 3500/6500
+    poznamka: 0/480
   
 Komentář:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 3500/6500
+    poznamka: 0/480
   
 Glosa:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 0/3500
+    poznamka: 0/480
   
 Analýza:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
+    nadpis: 0/80
+    perex: 80/480
+    text: 6500/0
+    poznamka: 0/480
+    
 Esej:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0        
+    nadpis: 0/80
+    perex: 80/480
+    text: 6500/0
+    poznamka: 0/480
   
 Recenze:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 0/6500
+    poznamka: 0/480
 
 Kritika:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0  
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Reportáž:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Dokument:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
+    
 Rozhovor:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
+    
 Fejeton:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
+    nadpis: 0/80
+    perex: 80/480
+    text: 1500/6500
+    poznamka: 0/480
+    
 Živě:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Tip:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 500/1500
+    poznamka: 0/480
 
 Vzpomínka:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Vyprávění:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Polemika:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Fotogalerie:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 0
+    poznamka: 0
 
 Video:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Štěstí z šesti:
-  nadpis: 0
-  perex: 100000/2000000
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 0
+    poznamka: 0
 
 MP3:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 0
+    poznamka: 0
+
+Štěstí z šesti:
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Portrét:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Báseň:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Povídka:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Komix:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
+  nadpis: 0/80
+  perex: 80/480
+  text: 0
   poznamka: 0
 
 Žebříček:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
 
 Volný text:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Titulek:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Perex:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Popisek:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Poznámka:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
-
-Diskusní vstup pod článkem:
-  nadpis: 0
-  perex: 10/20
-  text: 100/300
-  poznamka: 0
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480

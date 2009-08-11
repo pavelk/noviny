@@ -1,24 +1,32 @@
 #viewRecord
 #listView
-  .listGroup#group-album
+  .listGroup#group-image
     .listHeader
-      %h2.folder= link_to "Obrázky (#{Picture.all.length})", '#'
+      %h2.folder= link_to "Obrázky (#{Picture.all.length})", '#', :onclick => 'navigationClick($("#group-image h2"), null, $(".listGroup#group-image")); return false'
       %span Volitelny popis sekce
       .clearer
     .listFilter
     .listContent   
     .clearer
-  -#.listGroup#group-video
-    -#.listHeader
-      -#%h2.folder= link_to "Videa (#{Picture.all.length})", '#'
-      -#%span Volitelny popis sekce
-      -#.clearer
-    -#.listFilter
-    -#.listContent   
-    -#.clearer    
+  .listGroup#group-inset
+    .listHeader
+      %h2.folder= link_to "Soubory (#{Inset.all.length})", '#', :onclick => 'navigationClick($("#group-inset h2"), null, $(".listGroup#group-inset")); return false'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer
+  .listGroup#group-audio
+    .listHeader
+      %h2.folder= link_to "Audio (#{Audio.all.length})", '#', :onclick => 'navigationClick($("#group-audio h2"), null, $(".listGroup#group-audio")); return false'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer        
   .listGroup#articles
     .listHeader
-      %h2.folder= link_to "Články (#{Article.all.length})", '#'
+      %h2.folder= link_to "Články (#{Article.all.length})", '#', :onclick => 'getArticles($("#articles h2")); return false'
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -26,10 +34,10 @@
     .clearer
   .listGroup#authors
     .listHeader
-      %h2.folder= link_to "Autoři (#{Author.all.length})", '#'
+      %h2.folder= link_to "Autoři (#{Author.all.length})", '#', :onclick => 'getAuthors($("#authors h2")); return false'
       %span Volitelny popis sekce
       .clearer
     .listFilter
     .listContent   
     .clearer        
-.clearer 
+.clearer

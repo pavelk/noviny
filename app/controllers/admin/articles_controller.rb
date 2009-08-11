@@ -1,12 +1,18 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
-  #create.after :adjust_home_priority
-  #update.after :adjust_home_priority
   
-  index.response do |wants|
-    wants.js
-  end
+  def index
+    #@articles = Article.all.paginate( :per_page => 2, :page => params[:page] )
+    @articles = Article.all
+    respond_to do |format|
+      format.js
+    end
+  end  
+  
+  #index.response do |wants|
+  #  wants.js
+  #end
   
   show.response do |wants|
     wants.js
@@ -51,7 +57,7 @@ class Admin::ArticlesController < Admin::AdminController
   end  
   
   def get_content_type
-    if(params[:id].size > 0)
+    if(params[:id])
     @article = Article.find(params[:id])
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]  
     else  
@@ -87,12 +93,21 @@ class Admin::ArticlesController < Admin::AdminController
     respond_to do |format|  
       format.js
     end 
-  end   
+  end
+  
+  def get_subsection
+    @section = Section.find(params[:section])
+    @subsection = @section.children
+    
+    respond_to do |format|  
+      format.js
+    end
+  end     
 
 private
 
   def adjust_home_priority( p, id )
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{p} && priority_home <= 9"
+    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{p} && priority_home <= 9"
   end  
 
   def load_config(type)

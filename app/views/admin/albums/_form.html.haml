@@ -3,14 +3,16 @@
 %br
 %br
 = f.label :description, 'Popis:'
-= f.text_area :description
+%br
+= f.text_area :description, :class => 'smallText'
 %br
 %br
 = f.label :parent_id, 'Zařaďte adresář do struktury:'
-= f.select(:parent_id, nested_set_options(Image, @album) {|i| "#{'-' * i.level} #{i.name}" }, { :include_blank => true } )
+= f.select(:parent_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'"), @album) {|i| "#{'-' * i.level} #{i.name}" }, { :prompt => "------------" } )
+%br
 %hr
 %br
-%br
+= f.hidden_field(:album_type, :value => params[:type]) 
 #photos
   -#= render :partial => 'picture', :collection => @album.pictures
 

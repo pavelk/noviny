@@ -1,0 +1,24 @@
+-#= f.label :name, 'Popisek:'
+-#= f.text_field :name, :class => 'inp'
+-#= render :partial => 'photo', :locals => { :f => f }
+%br
+= f.label :parent_id, 'Zařaďte soubory do struktury:'
+= f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'"), @inset.album) {|i| "#{'-' * i.level} #{i.name}" } )
+%br
+%br
+%br
+= f.label :name, 'Popisek:'
+= f.text_field :name, :class => 'inp'
+%br
+%br
+
+= f.label :data, 'Soubor:'
+= f.file_field :data, :class => 'inp'
+%br
+%br
+
+-#= render :partial => 'photo', :locals => { :f => f }
+-##photos
+
+-#= link_to_function "Přidat obrázek" do |page|
+  -#- page.insert_html :bottom, :photos, :partial => 'photo', :locals => { :f => f }

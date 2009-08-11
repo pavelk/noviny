@@ -16,11 +16,11 @@ class Admin::AlbumsController < Admin::AdminController
   
   def get_level
     case params[:id]
-      when 'null': @albums = params[:type].camelize.constantize.all(:conditions => 'parent_id is NULL', :order => 'name ASC') 
+      when 'null': @albums = Album.all(:conditions => "parent_id is NULL AND album_type='#{params[:type]}'", :order => 'name ASC') 
       #when 'null': @albums = Album.roots
       else 
-        @albums = params[:type].camelize.constantize.find(params[:id]).children
-        @album = params[:type].camelize.constantize.find(params[:id])
+        @albums = Album.find(params[:id]).children
+        @album = Album.find(params[:id])
     end
     
     @level = params[:id]
@@ -47,6 +47,15 @@ class Admin::AlbumsController < Admin::AdminController
   create.response do |wants|
     #wants.js { render :layout => false }
     wants.js { render :layout => false }
+  end
+  
+  
+  edit.before do    
+    #@album = params[:type].camelize.constantize.find(params[:id])
+  end
+  
+  update.before do
+    #@album = params[:type].camelize.constantize.find(params[:id])
   end
   
 =begin  

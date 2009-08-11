@@ -1,0 +1,14 @@
+%h1 Listing audios
+
+%table
+  %tr
+  - @audios.each do |audio|
+    %tr
+        
+      %td= link_to 'Show', object_url(audio)
+      %td= link_to 'Edit', edit_object_url(audio)
+      %td= link_to 'Destroy', object_url(audio), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New audio', new_object_url

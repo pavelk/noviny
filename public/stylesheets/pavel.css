@@ -6,6 +6,8 @@ span { color: grey;  }
 .loading  { background: url('../images/ajax_load.gif') 50% 50% no-repeat !important; height: 100px; }
 
 /* drag'n'drop elements */
-.dnd { width: 90%; min-height: 18em; padding: 1%; background:gray;border: 1px solid black;}
+.dndContent { width: 70%; margin-right: 10px; float: left; }
+.dndContainer { width: 25%; float: left; }
+.dnd { width: 90%; height: 100px; padding: 5px; color:#bbb; background:#fff; border: 1px dashed #bbb;}
 /*.addedFile{ float: left;  }*/
 

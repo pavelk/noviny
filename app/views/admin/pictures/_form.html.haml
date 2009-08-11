@@ -1,9 +1,10 @@
 -#= f.label :name, 'Popisek:'
 -#= f.text_field :name, :class => 'inp'
 -#= render :partial => 'photo', :locals => { :f => f }
+-#= params[:type]
 %br
 = f.label :parent_id, 'Zařaďte obrázky do struktury:'
-= f.select(:album_id, nested_set_options(Album) {|i| "#{'-' * i.level} #{i.name}" } )
+= f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'")) {|i| "#{'-' * i.level} #{i.name}" } )
 %br
 %br
 %br

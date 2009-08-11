@@ -1,6 +1,6 @@
 class Admin::AuthorsController < Admin::AdminController
   
-  #create.before :set_user
+  create.before :set_user
 
   index.response do |wants|
     wants.js

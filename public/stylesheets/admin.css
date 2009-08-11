@@ -60,9 +60,9 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 .l6 { padding-left: 215px; }
 
 /* RECORD EDIT */
-.listSmall { width: 44%; float: left; }
+.listSmall { width: 44%; float: left; height: 450px; overflow: auto; }
 
-#viewRecord { width: 55%; float: left; margin-right: 2px; }
+#viewRecord { width: 55%; float: left; margin-right: 2px; height: 450px; overflow: auto; }
 
 .recordHeader { background-color: #ebebeb; padding: 5px 20px;  }
 .recordHeader h2 { font-size: 34px; line-height: 44px; font-weight: normal; }
@@ -80,4 +80,9 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 
 .recordEdit hr { border: none; color: #ffffff; background-color: #ffffff; height: 1px; border-bottom: 1px dotted #ebebeb; }
 
+.addedFile { float:left; display: inline; margin-right: 5px; width:136px;  }
+.multipleSelect { width: 350px; height: 100px; }
 
+.hidden { display: none}
+.visible { display: block; }
+#counter { position: absolute;  }

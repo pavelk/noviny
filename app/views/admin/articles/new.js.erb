@@ -22,10 +22,8 @@ $("#article_content_type_id").change(function()
     type: 'GET',
     dataType: 'script',
     url: '/admin/articles/get_content_type/' + $("#article_content_type_id :selected").text() + '/'+ $(this).val(),
-    beforeSend: function() { $("#articles h2").addClass("loading"); },
     error: function(msg) { alert("Chyba v přenosu dat."); },
-    success: function(data, status) {
-      $("#articles h2").removeClass("loading");          
+    success: function(data, status) {          
     }
   });
  

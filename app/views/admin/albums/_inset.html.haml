@@ -1,0 +1,15 @@
+- if(inset.insets.size > 0)
+  - if(@str == nil)
+    - @pref = "level-#{@tree}-1"
+  - else
+    - @pref = @str
+  - inset.insets.each do |ins|  
+    %tr{ :id => "#{@pref}_pict"}
+      %td.listItem{:class => "l#{inset.level + 1}" }
+        %div{ :id => "picture_#{ins.id}"}= link_to ins.name, ins.data.url, :class => 'file'    
+      %td= ins.updated_at.strftime('%d/%m/%y') 
+      %td= ins.user.user_name
+      %td= ins.name
+      %td{ :class => 'center' }
+        = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', {:title => 'Editovat', :id => 'editPict', :class => "#{ins.id}"}
+        = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), {:controller => 'insets', :action => 'destroy', :id => ins}, :title => 'Smazat', :confirm => 'Jste si jistí?', :method => :delete  

@@ -1,11 +1,11 @@
-- if(picture.pictures.size > 0)
+- if(image.pictures.size > 0)
   - if(@str == nil)
     - @pref = "level-#{@tree}-1"
   - else
     - @pref = @str
   %tr{ :id => "#{@pref}_pict"}
-    %td.listItem{:class => "l#{picture.level + 1}", :colspan => '9'}
-      - picture.pictures.each do |picture|
+    %td.listItem{:class => "l#{image.level + 1}", :colspan => '5'}
+      - image.pictures.each do |picture|
         .listImageBox
           -#= link_to image_tag(picture.data.url(:small), :id => "picture_#{picture.id}"), ''
           %div{ :id => "picture_#{picture.id}"}= image_tag(picture.data.url(:small))

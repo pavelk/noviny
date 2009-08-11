@@ -1,0 +1,15 @@
+- if(audio.audios.size > 0)
+  - if(@str == nil)
+    - @pref = "level-#{@tree}-1"
+  - else
+    - @pref = @str
+  - audio.audios.each do |aud|  
+    %tr{ :id => "#{@pref}_pict"}
+      %td.listItem{:class => "l#{audio.level + 1}" }
+        %div{ :id => "picture_#{aud.id}"}= link_to aud.name, aud.data.url, :class => 'file'    
+      %td= aud.updated_at.strftime('%d/%m/%y') 
+      %td= aud.user.user_name
+      %td= aud.name
+      %td{ :class => 'center' }
+        = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', {:title => 'Editovat',:id => 'editPict', :class => "#{aud.id}"}
+        = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), {:controller => 'insets', :action => 'destroy', :id => aud}, :title => 'Smazat', :confirm => 'Jste si jistí?', :method => :delete

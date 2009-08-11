@@ -4,18 +4,25 @@
 .recordEdit
   - form_for @article, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
-      -#= label(:article, :content_type_id, "Typ článku:", :class => "bold")
-      -#= collection_select(:article, :content_type_id, ContentType.all, :id, :name )
-      %strong Typ článku:
-      = @article.content_type.name
+      = label(:article, :content_type_id, "Typ článku:", :class => "bold")
+      = collection_select(:article, :content_type_id, ContentType.all, :id, :name )
+      -#%strong Typ článku:
+      -#= @article.content_type.name
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
       %p= submit_tag "Upravit"
-  .listFiles{ :id => "filesList_#{@article.id}" }
-    - @article.pictures.each do |picture|
-      -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-      .addedFile
-        = image_tag(picture.data.url(:small))
-        = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
-  .dnd{ :id => "drop_#{@article.id}" }    
+  -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
+  %strong Obrazky
+  .dndContent
+    %div{ :class => "listFiles", :id => "filesList_#{@article.id}" }
+      - @article.pictures.each do |picture|
+        -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+        .addedFile
+          = image_tag(picture.data.url(:small))
+          %br
+          = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
+  -#.clearer &nbsp;
+  .dndContainer
+    .dnd{ :id => "drop_#{@article.id}" } Zde pretahnete obrazek    
+  .clearer &nbsp;

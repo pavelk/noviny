@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090810110234) do
+ActiveRecord::Schema.define(:version => 20090811125749) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(:version => 20090810110234) do
     t.string   "description"
     t.integer  "pictures_count", :default => 0
     t.string   "type"
+    t.string   "album_type"
+    t.integer  "insets_count",   :default => 0
+    t.integer  "audios_count",   :default => 0
   end
 
   add_index "albums", ["lft", "rgt"], :name => "albums_lft_rgt_index"
@@ -61,6 +64,28 @@ ActiveRecord::Schema.define(:version => 20090810110234) do
   add_index "articles", ["subsection_id"], :name => "articles_subsection_id_index"
   add_index "articles", ["user_id"], :name => "articles_user_id_index"
 
+  create_table "audios", :force => true do |t|
+    t.integer  "album_id"
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+  end
+
+  add_index "audios", ["album_id"], :name => "audios_album_id_index"
+  add_index "audios", ["user_id"], :name => "audios_user_id_index"
+
+  create_table "author_pictures", :force => true do |t|
+    t.integer "picture_id"
+    t.integer "author_id"
+  end
+
+  add_index "author_pictures", ["author_id"], :name => "author_pictures_author_id_index"
+  add_index "author_pictures", ["picture_id"], :name => "author_pictures_picture_id_index"
+
   create_table "authors", :force => true do |t|
     t.integer  "user_id"
     t.string   "firstname",  :default => "", :null => false
@@ -77,6 +102,20 @@ ActiveRecord::Schema.define(:version => 20090810110234) do
   create_table "content_types", :force => true do |t|
     t.string "name"
   end
+
+  create_table "insets", :force => true do |t|
+    t.integer  "album_id"
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+  end
+
+  add_index "insets", ["album_id"], :name => "insets_album_id_index"
+  add_index "insets", ["user_id"], :name => "insets_user_id_index"
 
   create_table "pictures", :force => true do |t|
     t.integer  "album_id"
@@ -98,7 +137,13 @@ ActiveRecord::Schema.define(:version => 20090810110234) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
   end
+
+  add_index "sections", ["lft", "rgt"], :name => "sections_lft_rgt_index"
+  add_index "sections", ["parent_id"], :name => "sections_parent_id_index"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
@@ -147,10 +192,12 @@ ActiveRecord::Schema.define(:version => 20090810110234) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "login"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
+  add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 

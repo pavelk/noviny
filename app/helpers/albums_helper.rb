@@ -5,6 +5,8 @@ module AlbumsHelper
       when true : "active" 
       when false: "folder" 
     end 
-  end  
+  end
+  
+  #def date_priority()  
   
 end
