@@ -9,6 +9,16 @@ $("li a.newAtt").bind("click", function() { return newAtt( '<%= params[:type] %>
 
 <% else %>
 
+
+<% if params[:type] == 'image' %>
+  <% prom = @album.pictures.size  %>
+<% elsif params[:type] == 'inset'  %>
+  <% prom = @album.insets.size %>
+<% elsif params[:type] == 'audio'  %>
+  <% prom = @album.audios.size %>
+<% end  %>
+
+
 <% if @albums.size > 0 %>//obsahuje podvetve a mozna obrazky
   
 $("div[id^='group-<%= params[:type] %>'] tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
@@ -19,7 +29,12 @@ $("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascrip
 
 <% end %>
 //$("tr[id^=editPictxxx] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
-<% elsif @album.insets.size > 0 %>//neobsahuje podvetve, pouze obrazky 
+
+
+
+  
+<% elsif prom > 0 %>//neobsahuje podvetve, pouze obrazky 
+
 
 $("tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @album)) %>");  
 

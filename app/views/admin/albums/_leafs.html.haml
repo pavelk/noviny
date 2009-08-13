@@ -5,10 +5,27 @@
     - @str = "level-#{@tree}-#{index + 1}"
   %tr{ :id => @str }
     %td.listItem{ :class => "l#{album.level}", :id => "#{album.id}" }
-      - if (album.children.size > 0 || album.pictures.size > 0)
-        = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0)
-      - else
-        %span{ :class => 'active'  }= album.name
+      - if (params[:type] == 'image')
+      
+        - if (album.children.size > 0 || album.pictures.size > 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0)
+        - else
+          %span{ :class => 'active'  }= album.name
+      
+      - if (params[:type] == 'inset')
+      
+        - if (album.children.size > 0 || album.insets.size > 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.insets_count == 0)
+        - else
+          %span{ :class => 'active'  }= album.name
+        
+      - if (params[:type] == 'audio')  
+        
+        - if (album.children.size > 0 || album.audios.size > 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.audios_count == 0)
+        - else
+          %span{ :class => 'active'  }= album.name 
+        
       -#= @str 
     -#%td= album.descendants.count
     -#%td= album.pictures_count

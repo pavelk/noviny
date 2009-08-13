@@ -44,11 +44,11 @@
 = f.select(:section_id, Section.roots.collect {|s| [ s.name, s.id ] })
 %br
 %br
--##subsection
-  -#= f.label :subsection_id, 'Podrubrika:'
-  -#= f.select(:subsection_id, Section.all.collect {|s| [ s.name, s.id ] }, {  :include_blank => true, :disabled => true })
-  -#%br
-  -#%br
+#subsection
+= f.label :subsection_id, 'Podrubrika:'
+= f.select(:subsection_id, Section.all(:conditions => 'parent_id is not null').collect {|s| [ s.name, s.id ] }, {  :include_blank => true })
+%br
+%br
 
 = f.label :tag_list, 'Témata'
 = f.text_field :tag_list, :class => 'inp'
