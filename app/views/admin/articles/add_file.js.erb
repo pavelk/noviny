@@ -1,2 +1,2 @@
-$(".listFiles").append("<%= escape_javascript(render(:partial => 'file', :object => @picture)) %>");
-$("a[id^='file_<%= @picture.id %>']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1] ) });
+$(".listFiles.listFilr").append("<%= escape_javascript(render(:partial => 'file', :object => @file)) %>");
+$("a[id^='file_<%= @file.id %>']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_file' ) });

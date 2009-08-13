@@ -11,18 +11,44 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
+      -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles listImgr", :id => "filesLista_#{@article.id}" }
+          - @article.pictures.each do |picture|
+            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+            %div{ :class => 'addedFile forImgr' }
+              = image_tag(picture.data.url(:small))
+              %br
+              = link_to 'Odstranit', '#', :id => "img_#{picture.id}"    
+      .dndContainer
+        %div{ :class => 'dnd imgr', :id => "dropi_#{@article.id}" } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
+      %strong Soubory
+      .dndContent
+        %div{ :class => "listFiles listFilr", :id => "filesListb_#{@article.id}" }
+          - @article.insets.each do |picture|
+            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+            %div{ :class => 'addedFile forFilr' }
+              = link_to picture.name, picture.data.url, :class => 'file'
+              %br
+              = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
+      .dndContainer
+        %div{ :class => 'dnd filr', :id => "dropf_#{@article.id}" } Zde pretahnete soubor    
+      .clearer &nbsp;
+      %br
+      %strong Audio
+      .dndContent
+        %div{ :class => "listFiles listAudr", :id => "filesListc_#{@article.id}" }
+          - @article.audios.each do |picture|
+            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+            %div{ :class => 'addedFile forAudr' }
+              = link_to picture.name, picture.data.url, :class => 'file'
+              %br
+              = link_to 'Odstranit', '#', :id => "audio_#{picture.id}"    
+      .dndContainer
+        %div{ :class => 'dnd audr', :id => "dropa_#{@article.id}" } Zde pretahnete audio    
+      .clearer &nbsp;            
+      
       %p= submit_tag "Upravit"
-  -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
-  %strong Obrazky
-  .dndContent
-    %div{ :class => "listFiles", :id => "filesList_#{@article.id}" }
-      - @article.pictures.each do |picture|
-        -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-        .addedFile
-          = image_tag(picture.data.url(:small))
-          %br
-          = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
-  -#.clearer &nbsp;
-  .dndContainer
-    .dnd{ :id => "drop_#{@article.id}" } Zde pretahnete obrazek    
-  .clearer &nbsp;

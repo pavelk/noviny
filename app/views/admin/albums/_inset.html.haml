@@ -6,7 +6,7 @@
   - inset.insets.each do |ins|  
     %tr{ :id => "#{@pref}_pict"}
       %td.listItem{:class => "l#{inset.level + 1}" }
-        %div{ :id => "picture_#{ins.id}"}= link_to ins.name, ins.data.url, :class => 'file'    
+        %div{ :id => "inset_#{ins.id}"}= link_to ins.name, ins.data.url, :class => 'file'    
       %td= ins.updated_at.strftime('%d/%m/%y') 
       %td= ins.user.user_name
       %td= ins.name

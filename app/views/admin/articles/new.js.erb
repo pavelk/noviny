@@ -4,6 +4,26 @@ $(".recordEdit").remove();
 $("#viewRecord").append("<%= escape_javascript(render(:partial => 'new')) %>");
 $("#viewRecord").show();
 
+$("class^='count'").each(function() {
+ $(this).charCounter();
+});
+
+$('#publish_date').each(function() {
+ $(this).datepick({onSelect: pickedDate});
+});
+
+$('#publish_time').each(function() {
+ $(this).timeEntry({spinnerImage: '../images/spinnerDefault.png', show24Hours: true }).change(function() { 
+      if( $("#article_publish_date").val().length == 0 )
+      {
+        $("#article_publish_date").val('0000-00-00 ' + $('#publish_time').val() + ':00');
+      }else{
+        $("#article_publish_date").val($("#article_publish_date").val().substring(0,10) + ' ' + $('#publish_time').val() + ':00');
+      }
+  });
+});
+
+
 $("form[id^='new_article']").ajaxForm(
   {
     dataType: 'script',

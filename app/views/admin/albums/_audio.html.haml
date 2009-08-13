@@ -6,7 +6,7 @@
   - audio.audios.each do |aud|  
     %tr{ :id => "#{@pref}_pict"}
       %td.listItem{:class => "l#{audio.level + 1}" }
-        %div{ :id => "picture_#{aud.id}"}= link_to aud.name, aud.data.url, :class => 'file'    
+        %div{ :id => "audio_#{aud.id}"}= link_to aud.name, aud.data.url, :class => 'file'    
       %td= aud.updated_at.strftime('%d/%m/%y') 
       %td= aud.user.user_name
       %td= aud.name

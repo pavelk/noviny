@@ -4,11 +4,19 @@
   %br
   %br
 
-= f.label :publish_date, 'Datum publikace:'
+-#= f.label :publish_date, 'Datum publikace:'
 -#= f.datetime_select(:publish_date)
-= f.unobtrusive_datetime_picker :publish_date
+-#= f.unobtrusive_datetime_picker :publish_date
+-#= f.text_field :publish_date
+%label{ :for => "publish_date" } Datum publikace:
+%input{ :id => "publish_date", :name => "publish_date", :size => "30", :type => "text", :value => www_date(@article.publish_date)}
 %br
 %br
+%label{ :for => "publish_time" } Cas publikace:
+%input{ :id => "publish_time", :name => "publish_time", :size => "10", :type => "text", :value => www_time(@article.publish_date)}
+%br
+%br
+= f.hidden_field(:publish_date)
 
 - if @content_type[1] != 0
   = f.label :perex, 'Perex:'
@@ -46,10 +54,10 @@
 = f.text_field :tag_list, :class => 'inp'
 %br
 %br
-%select{ :multiple => 'true', :size => '10', :name => 'tagList', :id => 'tag_list', :class => 'multipleSelect'}
-  - Tag.all.each do |t|
-    %option{ :value => "#{t.id}" }
-      = t.name
+-#%select{ :multiple => 'true', :size => '10', :name => 'tagList', :id => 'tag_list', :class => 'multipleSelect'}
+  -#- Tag.all.each do |t|
+    -#%option{ :value => "#{t.id}" }
+      -#= t.name
 %br
 %br
 = f.label :priority_home, 'Priorita pro homepage:'

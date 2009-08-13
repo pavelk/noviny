@@ -1,6 +1,7 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
+  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios 
   
   def index
     #@articles = Article.all.paginate( :per_page => 2, :page => params[:page] )
@@ -73,8 +74,18 @@ class Admin::ArticlesController < Admin::AdminController
   
   def add_file
     @article = Article.find(params[:art])
-    @picture = Picture.find(params[:pic])
-    @article.pictures << @picture
+    @file = Inset.find(params[:pic])
+    @article.insets << @file
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_file
+    @article = Article.find(params[:art])
+    @file = Inset.find(params[:pic])
+    @article.insets.delete(@file)
 
     #render :nothing => true
     #render :json => @picture
@@ -83,7 +94,18 @@ class Admin::ArticlesController < Admin::AdminController
     end 
   end
   
-  def remove_file
+  
+  def add_img
+    @article = Article.find(params[:art])
+    @picture = Picture.find(params[:pic])
+    @article.pictures << @picture
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_img
     @article = Article.find(params[:art])
     @picture = Picture.find(params[:pic])
     @article.pictures.delete(@picture)
@@ -95,6 +117,31 @@ class Admin::ArticlesController < Admin::AdminController
     end 
   end
   
+  
+  def add_audio
+    @article = Article.find(params[:art])
+    @audio = Audio.find(params[:pic])
+    @article.audios << @audio
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_audio
+    @article = Article.find(params[:art])
+    @audio = Audio.find(params[:pic])
+    @article.audios.delete(@audio)
+
+    #render :nothing => true
+    #render :json => @picture
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  
+  
   def get_subsection
     @section = Section.find(params[:section])
     @subsection = @section.children
@@ -105,6 +152,33 @@ class Admin::ArticlesController < Admin::AdminController
   end     
 
 private
+
+  def process_adding_pictures
+    if(params[:pictures])
+      params[:pictures].each_value do |p|
+        pict = Picture.find(p)
+        @article.pictures << pict
+      end
+    end      
+  end
+  
+  def process_adding_files
+    if(params[:files])
+      params[:files].each_value do |f|
+        fil = Inset.find(f)
+        @article.insets << fil
+      end
+    end      
+  end
+  
+  def process_adding_audios
+    if(params[:audios])
+      params[:audios].each_value do |a|
+        aud = Audio.find(a)
+        @article.audios << aud
+      end
+    end      
+  end  
 
   def adjust_home_priority( p, id )
     #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{p} && priority_home <= 9"

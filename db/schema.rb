@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090811125749) do
+ActiveRecord::Schema.define(:version => 20090812173440) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -31,6 +31,22 @@ ActiveRecord::Schema.define(:version => 20090811125749) do
   add_index "albums", ["parent_id"], :name => "albums_parent_id_index"
   add_index "albums", ["user_id"], :name => "albums_user_id_index"
 
+  create_table "article_audios", :force => true do |t|
+    t.integer "audio_id"
+    t.integer "article_id"
+  end
+
+  add_index "article_audios", ["article_id"], :name => "article_audios_article_id_index"
+  add_index "article_audios", ["audio_id"], :name => "article_audios_audio_id_index"
+
+  create_table "article_insets", :force => true do |t|
+    t.integer "inset_id"
+    t.integer "article_id"
+  end
+
+  add_index "article_insets", ["article_id"], :name => "article_insets_article_id_index"
+  add_index "article_insets", ["inset_id"], :name => "article_insets_inset_id_index"
+
   create_table "article_pictures", :force => true do |t|
     t.integer "picture_id"
     t.integer "article_id"
@@ -42,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20090811125749) do
   create_table "articles", :force => true do |t|
     t.integer  "user_id"
     t.string   "name"
-    t.datetime "publish_date"
+    t.datetime "publish_date",     :default => '2009-08-12 19:38:17', :null => false
     t.text     "perex"
     t.text     "text"
     t.text     "poznamka"
@@ -52,9 +68,9 @@ ActiveRecord::Schema.define(:version => 20090811125749) do
     t.integer  "section_id"
     t.integer  "subsection_id"
     t.integer  "content_type_id"
-    t.integer  "priority_home",    :default => 9999,  :null => false
-    t.integer  "priority_section", :default => 9999,  :null => false
-    t.boolean  "visibility",       :default => false, :null => false
+    t.integer  "priority_home",    :default => 9999,                  :null => false
+    t.integer  "priority_section", :default => 9999,                  :null => false
+    t.boolean  "visibility",       :default => false,                 :null => false
   end
 
   add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"

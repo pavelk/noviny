@@ -14,6 +14,16 @@ var mimeifyUrl = function(url){
 	}
 }
 
+function pickedDate(value, date, inst) 
+{ 
+    if( $("#article_publish_date").val().length == 0 )
+    {
+      $("#article_publish_date").val("20" + value.split("/").reverse().join("-") + ' 00:00:00');
+    }else{
+      $("#article_publish_date").val("20" + value.split("/").reverse().join("-") + $("#article_publish_date").val().substring(10,19));
+    }   
+}
+
 
 function getCounter(formObj){
        var pos = formObj.position();
@@ -195,10 +205,12 @@ function editArticle( obj )
       setCounterEvents();
       $("#article_section_id").change(function()
       {
-
+          //handler pokud se budou menit subsections  
       });
       $(".recordHeader a").bind("click", function() { return cancelArticle() });
-      $("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1] ) });      
+      $("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_file' ) });
+      $("a[id^='img_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_img'  ) });
+      $("a[id^='audio_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_audio'  ) });      
     }
   });
   return false;
@@ -221,31 +233,81 @@ function loadSubsections( id )
 
 function dragAndDrop()
 {  
-  //add file
-  $(".dnd").droppable({
-    accept: "div[id^='picture_']",
-  	//activeClass: 'ui-state-highlight',
-  	drop: function(ev, ui) {
-  	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1] );
-  	  }
-  	});
+  //add picture / edit
+  if($("form").attr("id").split("_")[0] == 'edit')
+  {
+    $(".dnd.imgr").droppable({
+      accept: "div[id^='picture_']",
+    	drop: function(ev, ui) {
+    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
+    	  }
+    });
     
-  //remove file - nepouzivat
-  /*
-  $(".listImageBox").droppable({
-		accept: "div[id^='picture_']",
-		//activeClass: 'custom-state-active',
-		drop: function(ev, ui) {
-		}
-	});
-	*/  
+    $(".dnd.filr").droppable({
+      accept: "div[id^='inset_']",
+    	drop: function(ev, ui) {
+    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_file' );
+    	  }
+    });
+    
+    $(".dnd.audr").droppable({
+      accept: "div[id^='audio_']",
+    	drop: function(ev, ui) {
+    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_audio' );
+    	  }
+    });
+    
+    
+  }
+  
+  //add attachments - new action
+  if($("form").attr("id").split("_")[0] == 'new')
+  {
+    //add picture / new
+    $(".dnd.imgr").droppable({
+      accept: "div[id^='picture_']",
+    	drop: function(ev, ui) {
+    	  var id = ui.draggable.attr("id").split("_")[1];
+    	  $("div[class='addedFile forImgr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
+    	  $("fieldset").append("<input type='hidden' name='pictures[id_"+ id +"]' value='"+ id +"' id='newpict-"+ id +"'>");
+    	}
+    });
+    
+    //add file / new
+    $(".dnd.filr").droppable({
+      accept: "div[id^='inset_']",
+    	drop: function(ev, ui) {
+    	  var id = ui.draggable.attr("id").split("_")[1];
+    	  $("div[class='addedFile forFilr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
+    	  $("fieldset").append("<input type='hidden' name='files[id_"+ id +"]' value='"+ id +"' id='newfils-"+ id +"'>");
+    	}
+    });
+    
+    //add audio / new
+    $(".dnd.audr").droppable({
+      accept: "div[id^='audio_']",
+    	drop: function(ev, ui) {
+    	  var id = ui.draggable.attr("id").split("_")[1];
+    	  $("div[class='addedFile forAudr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
+    	  $("fieldset").append("<input type='hidden' name='audios[id_"+ id +"]' value='"+ id +"' id='newaud-"+ id +"'>");
+    	}
+    });
+  
+  
+  }  
+ 
 }
 
-function addFileToArticle( article, file )
+function removeElement(obj)
+{
+ obj.remove(); 
+}
+
+function addFileToArticle( article, file, action )
 {
   $.ajax({
      type: 'POST',
-     url: '/admin/articles/add_file/'+ article +'/'+file,
+     url: '/admin/articles/'+ action +'/'+ article +'/'+ file,
      dataType: 'script',
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {
@@ -255,11 +317,11 @@ function addFileToArticle( article, file )
    return false; 
 }
 
-function removeFileFromArticle( article, file )
+function removeFileFromArticle( article, file, action )
 {
   $.ajax({
      type: 'POST',
-     url: '/admin/articles/remove_file/'+ article +'/'+file,
+     url: '/admin/articles/'+ action +'/'+ article +'/'+ file,
      dataType: 'script',
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {      
@@ -311,10 +373,22 @@ function navigationClick( obj, id, type )
       error: function(msg) { alert("Chyba v přenosu dat."); },
       success: function(data, status) {
         //$("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").removeClass("loading");
-        $("td.listItem a").bind("click", function() { return navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ) });
+        $("div[id^='group-'] td.listItem a").bind("click", function() { return navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ) });
         $("td a[class^='editLeaf-']").bind("click", function() { return editLeaf( $(this).attr("eid"), $(this).attr("class").split("-")[1]  ) });
         $("div[id^='picture_']").css("cursor: move;");
         $("div[id^='picture_']").draggable({
+        	revert: 'invalid',
+        	helper: 'clone',
+        	cursor: 'move'
+        });
+        $("div[id^='inset_']").css("cursor: move;");
+        $("div[id^='inset_']").draggable({
+        	revert: 'invalid',
+        	helper: 'clone',
+        	cursor: 'move'
+        });
+        $("div[id^='audio_']").css("cursor: move;");
+        $("div[id^='audio_']").draggable({
         	revert: 'invalid',
         	helper: 'clone',
         	cursor: 'move'

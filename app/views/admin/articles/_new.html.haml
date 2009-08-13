@@ -8,8 +8,31 @@
   - form_for @article, :url => collection_url, :html => { :multipart => true } do |f|
     %fieldset
       = label(:article, :content_type_id, "Typ článku:", :class => "bold")
-      = collection_select(:article, :content_type_id, ContentType.all, :id, :name )
+      = collection_select( :article, :content_type_id, ContentType.all, :id, :name )
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
-      %p= submit_tag "Uložit"
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
+      %strong Soubory
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forFilr' }
+      .dndContainer
+        %div{ :class => 'dnd filr' } Zde pretahnete soubor    
+      .clearer &nbsp;
+      %br
+      %strong Audio
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forAudr' }
+      .dndContainer
+        %div{ :class => 'dnd audr' } Zde pretahnete audio    
+      .clearer &nbsp;            
+      %p= submit_tag "Uložit"    

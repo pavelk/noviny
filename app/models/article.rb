@@ -10,6 +10,12 @@ class Article < ActiveRecord::Base
   has_many :article_pictures
   has_many :pictures, :through => :article_pictures
   
+  has_many :article_insets
+  has_many :insets, :through => :article_insets
+  
+  has_many :article_audios
+  has_many :audios, :through => :article_audios
+  
   before_save do |a|
     ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 
     ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{a.priority_home} && priority_home <= 9" 

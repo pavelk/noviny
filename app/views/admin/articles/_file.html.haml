@@ -1,4 +1,4 @@
 .addedFile
-  = image_tag(file.data.url(:small))
+  = link_to file.name, file.data.url, :class => 'file'
   %br
-  = link_to 'smazat', '#', :id => "file_#{file.id}"
+  = link_to 'Odstranit', '#', :id => "file_#{file.id}"

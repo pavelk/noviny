@@ -5,6 +5,9 @@ class Picture < ActiveRecord::Base
   
   has_many :article_pictures
   has_many :articles, :through => :article_pictures
+  
+  has_many :author_pictures
+  has_many :authors, :through => :author_pictures
     
   #validates_presence_of :name
   #validates_uniqueness_of :name
