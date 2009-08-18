@@ -1,12 +1,12 @@
 - if(inset.insets.size > 0)
   - if(@str == nil)
-    - @pref = "level-#{@tree}-1"
+    - @pref = "#{params[:type]}-#{@tree}-1"
   - else
     - @pref = @str
   - inset.insets.each do |ins|  
     %tr{ :id => "#{@pref}_pict"}
       %td.listItem{:class => "l#{inset.level + 1}" }
-        %div{ :id => "inset_#{ins.id}"}= link_to ins.name, ins.data.url, :class => 'file'    
+        %div{ :id => "inset_#{ins.id}"}= link_to ins.name, ins.data.url, :class => add_icon(ins.data_content_type)
       %td= ins.updated_at.strftime('%d/%m/%y') 
       %td= ins.user.user_name
       %td= ins.name

@@ -22,7 +22,7 @@
               %br
               = link_to 'Odstranit', '#', :id => "img_#{picture.id}"    
       .dndContainer
-        %div{ :class => 'dnd imgr', :id => "dropi_#{@article.id}" } Zde pretahnete obrazek    
+        %div{ :class => 'dnd imgr', :id => "dropi_articles_#{@article.id}" } Zde pretahnete obrazek    
       .clearer &nbsp;
       %br
       %strong Soubory
@@ -35,7 +35,7 @@
               %br
               = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
       .dndContainer
-        %div{ :class => 'dnd filr', :id => "dropf_#{@article.id}" } Zde pretahnete soubor    
+        %div{ :class => 'dnd filr', :id => "dropf_articles_#{@article.id}" } Zde pretahnete soubor    
       .clearer &nbsp;
       %br
       %strong Audio
@@ -48,7 +48,7 @@
               %br
               = link_to 'Odstranit', '#', :id => "audio_#{picture.id}"    
       .dndContainer
-        %div{ :class => 'dnd audr', :id => "dropa_#{@article.id}" } Zde pretahnete audio    
+        %div{ :class => 'dnd audr', :id => "dropa_articles_#{@article.id}" } Zde pretahnete audio    
       .clearer &nbsp;            
       
       %p= submit_tag "Upravit"

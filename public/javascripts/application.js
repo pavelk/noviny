@@ -16,7 +16,7 @@ var mimeifyUrl = function(url){
 
 function pickedDate(value, date, inst) 
 { 
-    if( $("#article_publish_date").val().length == 0 )
+    if($("#article_publish_date").val().length == 0 )
     {
       $("#article_publish_date").val("20" + value.split("/").reverse().join("-") + ' 00:00:00');
     }else{
@@ -32,6 +32,9 @@ function getCounter(formObj){
        $("#counter").html("Pocet znaku:"+formObj.val().length);
        $("#counter").removeClass("hidden");
        $("#counter").addClass("visible");
+       var min = formObj.attr('class').split(" ").pop().split("-")[1];
+       var max = formObj.attr('class').split(" ").pop().split("-")[2];
+       controlInput( formObj, min, max );
 }
 
 
@@ -40,6 +43,16 @@ function hideCounter(){
        $("#counter").addClass("hidden");
 }
 
+function controlInput( obj, min, max )
+{
+  if(obj.val().length > max || obj.val().length < min)
+  {
+    obj.addClass('errorForm');
+  }else{
+    obj.removeClass('errorForm'); 
+  }
+  
+}
 
 
 //onload
@@ -116,12 +129,114 @@ function editAuthor( obj )
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
       $(".recordHeader a").bind("click", function() { return cancelArticle() });
+      $("a[id^='file_']").bind("click", function() { return removeFileFromAuthor( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_file' ) });
+      $("a[id^='img_']").bind("click", function() { return removeFileFromAuthor( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_img'  ) });
       //$("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1] ) });      
     }
   });
   return false;
 
 }
+
+function getThemes( obj )
+{
+  if(obj.attr("class") == 'active')
+  {
+    obj.removeClass('active');
+    obj.addClass('folder');
+    $("#themes .listFilter > *").remove();
+    $("#themes .listContent > *").remove();
+  }else{
+    obj.removeClass('folder');
+    obj.addClass('active');
+    
+    $.ajax({
+      type: 'GET',
+      url: '/admin/themes',
+      dataType: 'script',
+      error: function(msg) { alert("Chyba v přenosu dat."); },
+      success: function(data, status) {
+        
+      }
+    });
+    return false;  
+  }
+}
+
+function getSections( obj )
+{
+  if(obj.attr("class") == 'active')
+  {
+    obj.removeClass('active');
+    obj.addClass('folder');
+    $("#sections .listFilter > *").remove();
+    $("#sections .listContent > *").remove();
+  }else{
+    obj.removeClass('folder');
+    obj.addClass('active');
+    
+    $.ajax({
+      type: 'GET',
+      url: '/admin/sections',
+      dataType: 'script',
+      error: function(msg) { alert("Chyba v přenosu dat."); },
+      success: function(data, status) {
+        
+      }
+    });
+    return false;  
+  }
+}
+
+
+function newSection()
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/sections/new',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelArticle() });     
+    }
+  });
+  return false;
+  
+}
+
+function editSection( obj )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/sections/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelArticle() });
+    }
+  });
+  return false; 
+  
+}
+
+function editTheme( obj )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/themes/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });
+    }
+  });
+  return false; 
+  
+}
+
 
 function getArticles( obj )
 {
@@ -239,21 +354,21 @@ function dragAndDrop()
     $(".dnd.imgr").droppable({
       accept: "div[id^='picture_']",
     	drop: function(ev, ui) {
-    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
+    	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
     	  }
     });
     
     $(".dnd.filr").droppable({
       accept: "div[id^='inset_']",
     	drop: function(ev, ui) {
-    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_file' );
+    	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_file' );
     	  }
     });
     
     $(".dnd.audr").droppable({
       accept: "div[id^='audio_']",
     	drop: function(ev, ui) {
-    	  addFileToArticle( $(this).attr("id").split("_")[1] ,ui.draggable.attr("id").split("_")[1], 'add_audio' );
+    	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_audio' );
     	  }
     });
     
@@ -303,11 +418,11 @@ function removeElement(obj)
  obj.remove(); 
 }
 
-function addFileToArticle( article, file, action )
+function addFileToArticle( controller, article, file, action )
 {
   $.ajax({
      type: 'POST',
-     url: '/admin/articles/'+ action +'/'+ article +'/'+ file,
+     url: '/admin/'+ controller  +'/'+ action +'/'+ article +'/'+ file,
      dataType: 'script',
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {
@@ -315,6 +430,19 @@ function addFileToArticle( article, file, action )
      }
    });
    return false; 
+}
+
+function removeFileFromAuthor( article, file, action )
+{
+  $.ajax({
+     type: 'POST',
+     url: '/admin/authors/'+ action +'/'+ article +'/'+ file,
+     dataType: 'script',
+     error: function(msg) { alert("Chyba v přenosu dat."); },
+     success: function(data, status) {      
+     }
+   });
+   return false;
 }
 
 function removeFileFromArticle( article, file, action )
@@ -349,7 +477,7 @@ function navigationClick( obj, id, type )
     if( id != null )
     {
       var del = $(obj).parent().parent().attr("id");
-      $("tr[id!='"+del+"'][id^='"+del+"']").remove();
+      $("tr[id!='"+del+"'][id!='"+del+"_pict'][id^='"+del+"']").remove();
     }else{
       $("div[id^='group-"+type.attr("id").split("-")[1]+"'] .listFilter > *").remove();
       $("div[id^='group-"+type.attr("id").split("-")[1]+"'] .listContent > *").remove();

@@ -1,15 +1,22 @@
 class Tag < ActiveRecord::Base
   has_many :taggings, :dependent => :destroy
+  belongs_to :user
   
   validates_presence_of :name
   validates_uniqueness_of :name
   
   cattr_accessor :destroy_unused
+  cattr_accessor :current_user
+  
   self.destroy_unused = false
   
   # LIKE is used for cross-database case-insensitivity
   def self.find_or_create_with_like_by_name(name)
     find(:first, :conditions => ["name LIKE ?", name]) || create(:name => name)
+  end
+  
+  def before_save
+    self.user_id = current_user.id
   end
   
   def ==(object)

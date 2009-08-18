@@ -1,0 +1,14 @@
+%h1 Listing sections
+
+%table
+  %tr
+  - @sections.each do |section|
+    %tr
+        
+      %td= link_to 'Show', object_url(section)
+      %td= link_to 'Edit', edit_object_url(section)
+      %td= link_to 'Destroy', object_url(section), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New section', new_object_url

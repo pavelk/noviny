@@ -2,8 +2,9 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   
   belongs_to :user
-  belongs_to :section
-  belongs_to :subsection
+  belongs_to :author
+  #belongs_to :section
+  #belongs_to :subsection
   
   belongs_to :content_type
   
@@ -15,6 +16,9 @@ class Article < ActiveRecord::Base
   
   has_many :article_audios
   has_many :audios, :through => :article_audios
+  
+  has_many :article_sections
+  has_many :sections, :through => :article_sections
   
   before_save do |a|
     ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 

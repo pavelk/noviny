@@ -1,12 +1,13 @@
 - leafs.each_with_index do |album, index|
   - if (@tree == "")
-    - @str = "level-#{index + 1}"
+    - @str = "#{params[:type]}-#{index + 1}"
   -else
-    - @str = "level-#{@tree}-#{index + 1}"
-  %tr{ :id => @str }
+    - @str = "#{params[:type]}-#{@tree}-#{index + 1}"
+  %tr{ :id => @str, :class => "ident-#{album.id}" }
     %td.listItem{ :class => "l#{album.level}", :id => "#{album.id}" }
+      -#= album.id
       - if (params[:type] == 'image')
-      
+        
         - if (album.children.size > 0 || album.pictures.size > 0)
           = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0)
         - else

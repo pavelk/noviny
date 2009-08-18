@@ -21,11 +21,11 @@ $("li a.newAtt").bind("click", function() { return newAtt( '<%= params[:type] %>
 
 <% if @albums.size > 0 %>//obsahuje podvetve a mozna obrazky
   
-$("div[id^='group-<%= params[:type] %>'] tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
+$("div[id^='group-<%= params[:type] %>'] tr[id='<%= params[:type] %>-<%= @tree %>']").after("<%= escape_javascript(render(:partial => 'leafs', :object => @albums)) %>");
 //files ze stromu o level vys
 <% if @albums.first.child? %>
 
-$("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @albums.first.parent)) %>");
+$("tr[id='<%= params[:type] %>-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @albums.first.parent)) %>");
 
 <% end %>
 //$("tr[id^=editPictxxx] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
@@ -36,7 +36,7 @@ $("tr[id='level-<%= @tree %>-<%= @albums.size %>']").after("<%= escape_javascrip
 <% elsif prom > 0 %>//neobsahuje podvetve, pouze obrazky 
 
 
-$("tr[id='level-<%= @tree %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @album)) %>");  
+$("tr[id='<%= params[:type] %>-<%= @tree %>']").after("<%= escape_javascript(render(:partial => params[:type], :object => @album)) %>");  
 
 <% end %>
 

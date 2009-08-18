@@ -11,12 +11,13 @@ Rails::Initializer.run do |config|
              :version => '~> 2.1.0'
   config.gem 'haml',
              :version => '~> 2.0.9' 
-  #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
+  config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
 
    
   #config.action_controller.use_accept_header = true
   
-  config.time_zone = 'UTC'
+  #config.time_zone = 'UTC'
+  config.active_record.default_timezone = :utc
   
   #config.i18n.load_path = Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
   #config.i18n.default_locale = :cz

@@ -1,0 +1,12 @@
+.recordHeader
+  %h2= link_to 'Editovat záznam', '#'
+.recordPath
+.recordEdit
+  - form_for @theme, :url => object_url, :html => { :method => :put } do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %p
+        = Article.find_tagged_with(@theme.name).map(&:name).join(", ")
+      %br
+      %br  
+      %p= submit_tag "Upravit"

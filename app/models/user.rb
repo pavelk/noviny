@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   
-  has_one :author
+  has_many :authors
+  has_many :articles
+  has_many :sections
+  has_many :tags
   
   acts_as_authentic do |c|
     c.login_field = 'email'

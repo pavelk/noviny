@@ -1,0 +1,15 @@
+= f.label :parent_id, 'Zařaďte rubriku:'
+= f.select(:parent_id, Section.roots.collect {|s| [ s.name, s.id ] }, { :prompt => "------------" })
+%br
+%br
+= f.label :name, 'Název:'
+= f.text_field :name, :class => 'inp'
+%br
+%br
+= f.label :description, 'Popis:'
+%br
+= f.text_area :description, :class => 'smallText'
+%br
+%br
+= f.label :author_id, 'Vyberte autora clanku:'
+= f.select(:author_id, Author.all.collect {|a| [ a.full_name, a.id ] })

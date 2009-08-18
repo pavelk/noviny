@@ -1,6 +1,6 @@
 - if(image.pictures.size > 0)
   - if(@str == nil)
-    - @pref = "level-#{@tree}-1"
+    - @pref = "#{params[:type]}-#{@tree}-1"
   - else
     - @pref = @str
   %tr{ :id => "#{@pref}_pict"}

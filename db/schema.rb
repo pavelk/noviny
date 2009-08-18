@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090812173440) do
+ActiveRecord::Schema.define(:version => 20090818180758) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -55,10 +55,18 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
   add_index "article_pictures", ["article_id"], :name => "article_pictures_article_id_index"
   add_index "article_pictures", ["picture_id"], :name => "article_pictures_picture_id_index"
 
+  create_table "article_sections", :force => true do |t|
+    t.integer "article_id"
+    t.integer "section_id"
+  end
+
+  add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
+  add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
+
   create_table "articles", :force => true do |t|
     t.integer  "user_id"
     t.string   "name"
-    t.datetime "publish_date",     :default => '2009-08-12 19:38:17', :null => false
+    t.datetime "publish_date"
     t.text     "perex"
     t.text     "text"
     t.text     "poznamka"
@@ -68,11 +76,14 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
     t.integer  "section_id"
     t.integer  "subsection_id"
     t.integer  "content_type_id"
-    t.integer  "priority_home",    :default => 9999,                  :null => false
-    t.integer  "priority_section", :default => 9999,                  :null => false
-    t.boolean  "visibility",       :default => false,                 :null => false
+    t.integer  "priority_home",    :default => 9999,  :null => false
+    t.integer  "priority_section", :default => 9999,  :null => false
+    t.boolean  "visibility",       :default => false, :null => false
+    t.integer  "author_id"
+    t.string   "videodata"
   end
 
+  add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
   add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"
   add_index "articles", ["priority_home"], :name => "articles_priority_home_index"
   add_index "articles", ["priority_section"], :name => "articles_priority_section_index"
@@ -93,6 +104,14 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
 
   add_index "audios", ["album_id"], :name => "audios_album_id_index"
   add_index "audios", ["user_id"], :name => "audios_user_id_index"
+
+  create_table "author_insets", :force => true do |t|
+    t.integer "inset_id"
+    t.integer "author_id"
+  end
+
+  add_index "author_insets", ["author_id"], :name => "author_insets_author_id_index"
+  add_index "author_insets", ["inset_id"], :name => "author_insets_inset_id_index"
 
   create_table "author_pictures", :force => true do |t|
     t.integer "picture_id"
@@ -133,6 +152,17 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
   add_index "insets", ["album_id"], :name => "insets_album_id_index"
   add_index "insets", ["user_id"], :name => "insets_user_id_index"
 
+  create_table "logged_exceptions", :force => true do |t|
+    t.string   "exception_class"
+    t.string   "controller_name"
+    t.string   "action_name"
+    t.text     "message"
+    t.text     "backtrace"
+    t.text     "environment"
+    t.text     "request"
+    t.datetime "created_at"
+  end
+
   create_table "pictures", :force => true do |t|
     t.integer  "album_id"
     t.integer  "user_id"
@@ -156,10 +186,15 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
     t.integer  "parent_id"
     t.integer  "lft"
     t.integer  "rgt"
+    t.integer  "user_id"
+    t.integer  "author_id"
+    t.text     "description"
   end
 
+  add_index "sections", ["author_id"], :name => "sections_author_id_index"
   add_index "sections", ["lft", "rgt"], :name => "sections_lft_rgt_index"
   add_index "sections", ["parent_id"], :name => "sections_parent_id_index"
+  add_index "sections", ["user_id"], :name => "sections_user_id_index"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
@@ -188,8 +223,14 @@ ActiveRecord::Schema.define(:version => 20090812173440) do
   add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string   "name"
+    t.integer  "user_id"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "tags", ["user_id"], :name => "tags_user_id_index"
 
   create_table "users", :force => true do |t|
     t.string   "user_name",           :default => "", :null => false

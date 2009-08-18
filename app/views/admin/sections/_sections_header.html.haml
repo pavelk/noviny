@@ -1,0 +1,15 @@
+%table
+  %tr
+    %th{ :width => '20%', :class => 'l1' }= link_to 'rubrika', '#'
+    %th{ :width => '10%'     }= link_to 'datum', '#'
+    %th{ :width => '15%'    }= link_to 'autor', '#'
+    %th{ :width => '30%'    } popis
+    %th{ :width => '25%'    } &nbsp;    
+    -#= render(:partial => 'section', :collection => @sections)
+    
+    - Section.roots.each do |r|
+      = render(:partial => 'section', :object => r)
+      - if(!r.leaf?) 
+        - r.children.each do |c|
+          = render(:partial => 'section', :object => c)  
+    

@@ -12,7 +12,8 @@
 %br
 %hr
 %br
-= f.hidden_field(:album_type, :value => params[:type]) 
+= f.hidden_field(:album_type, :value => params[:type])
+= hidden_field(:type, params[:type])
 #photos
   -#= render :partial => 'picture', :collection => @album.pictures
 

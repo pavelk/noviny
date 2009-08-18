@@ -1,0 +1,14 @@
+%h1 Listing themes
+
+%table
+  %tr
+  - @themes.each do |theme|
+    %tr
+        
+      %td= link_to 'Show', object_url(theme)
+      %td= link_to 'Edit', edit_object_url(theme)
+      %td= link_to 'Destroy', object_url(theme), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New theme', new_object_url

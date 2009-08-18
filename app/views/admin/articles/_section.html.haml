@@ -1,0 +1,6 @@
+%div{ :id => "subsection-#{@article.id}" }
+  Podrubriky pro tuto rubriku:
+  - section.each do |c|
+    %div.l2
+      = check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
+      = label_tag :section_ids, c.name

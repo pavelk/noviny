@@ -1,7 +1,9 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
-  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios 
+  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_sections, :multi_tag_create 
+  update.after :process_sections
+  update.before :multi_tag 
   
   def index
     #@articles = Article.all.paginate( :per_page => 2, :page => params[:page] )
@@ -143,6 +145,11 @@ class Admin::ArticlesController < Admin::AdminController
   
   
   def get_subsection
+    if(params[:id])
+      @article = Article.find(params[:id])
+    else
+      @article = Article.new 
+    end  
     @section = Section.find(params[:section])
     @subsection = @section.children
     
@@ -152,6 +159,24 @@ class Admin::ArticlesController < Admin::AdminController
   end     
 
 private
+  
+  def multi_tag    
+    if(params[:tag_list_multi])
+      tlm = params[:tag_list_multi].join(", ")
+      params[:article][:tag_list] = params[:article][:tag_list] + ', ' + tlm
+    end  
+  end
+  
+  def multi_tag_create    
+    if(params[:tag_list_multi])
+        @article.tag_list = params[:article][:tag_list] + ', ' + params[:tag_list_multi].join(", ")
+        @article.save
+    end  
+  end
+  
+  def process_sections
+    @article.attributes = {'section_ids' => []}.merge(params[:article] || {})
+  end  
 
   def process_adding_pictures
     if(params[:pictures])

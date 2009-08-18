@@ -6,8 +6,22 @@
   = error_messages_for :author
 
   - form_for @author, :url => collection_url, :html => { :multipart => true } do |f|
-    = f.label :user_id, 'Pro uživatele:'
-    = f.select(:user_id, User.find_by_sql("select * from users LEFT OUTER JOIN authors ON users.id=authors.user_id WHERE authors.user_id IS NULL").collect {|u| [ u.user_name, u.id ] })
-    %hr
-    = render :partial => "form", :locals => { :f => f }
-    %p= submit_tag "Uložit"
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
+      %strong Soubory
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forFilr' }
+      .dndContainer
+        %div{ :class => 'dnd filr' } Zde pretahnete soubor 
+      .clearer &nbsp;
+      %br
+      %p= submit_tag "Uložit"
