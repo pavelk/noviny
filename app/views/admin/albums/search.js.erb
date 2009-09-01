@@ -1,0 +1,15 @@
+$("#group-<%= params[:type] %> .listFilter").empty();
+$("#group-<%= params[:type] %> .listContent").empty();
+$("div[id^='group-<%= params[:type] %>'] .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+<% if (params[:type] == 'image') %>
+$("div[id^='group-<%= params[:type] %>'] .listContent").append
+("<table><tr><td class=\"l0 listItem\"><%= escape_javascript(render(:partial => 'search', :collection => @assets)) %><div class=\"clearer\">&nbsp;</div></td></tr></table>");
+<% else %>
+$("div[id^='group-<%= params[:type] %>'] .listContent").append
+("<table><%= escape_javascript(render(:partial => 'search', :collection => @assets)) %><div class=\"clearer\">&nbsp;</div></table>");
+<% end %>
+
+$("input[id='cancelSearch<%= params[:type] %>']").bind("click", function() {
+  navigationClick(  $("#group-<%=params[:type]%> h2"), null, $(".listGroup#group-<%=params[:type]%>")  );
+  navigationClick(  $("#group-<%=params[:type]%> h2"), null, $(".listGroup#group-<%=params[:type]%>")  );
+});

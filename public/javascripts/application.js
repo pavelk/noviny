@@ -3,18 +3,42 @@ jQuery.ajaxSetup({
   'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
 })
 
-// pridavam .js mime k URL pro korektni rails respond_to response
-var mimeifyUrl = function(url){
-	if (/\.js/.test(url)){
-		return url
-	} else if (/\?/.test(url)) {
-		return url.replace('?', '.js?')
-	} else {
-		return url + '.js'
-	}
-}
+//onload
+$(function()
+{
+  //attachments live draggable actions
+  $("div[id^='picture_'], div[id^='inset_'], div[id^='audio_'],  tr[id^='infobox_']").livequery(function() {
+    $(this).draggable({
+    	revert: 'invalid',
+    	helper: 'clone',
+    	cursor: 'move'
+    });
+  });
+  
+  //droppable actions for all new & edit forms
+  $("form[id^='edit_'], form[id^='new_']").livequery(function() {
+    dragAndDrop();
+  });
+  
+  //ajax form for all forms
+  $("form").livequery(function() {
+    $(this).ajaxForm(
+    {
+    	dataType: 'script',
+    	beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
+    	resetForm: true,
+    	complete: function(XMLHttpRequest, textStatus) { 
+    	}
+    }
+    );
+  });  
+    
+  $("#viewRecord").hide();
+});
 
-function pickedDate(value, date, inst) 
+/** ARTICLES **/
+// date picker
+function pickedDate( value, date, inst ) 
 { 
     if($("#article_publish_date").val().length == 0 )
     {
@@ -24,8 +48,8 @@ function pickedDate(value, date, inst)
     }   
 }
 
-
-function getCounter(formObj){
+// word counter
+function getCounter( formObj ){
        var pos = formObj.position();
        $("#counter").css("top",pos.top);
        $("#counter").css("left",pos.left+formObj.width()+20);
@@ -37,12 +61,12 @@ function getCounter(formObj){
        controlInput( formObj, min, max );
 }
 
-
 function hideCounter(){
        $("#counter").removeClass("visible");
        $("#counter").addClass("hidden");
 }
 
+// check min/max lengt
 function controlInput( obj, min, max )
 {
   if(obj.val().length > max || obj.val().length < min)
@@ -50,28 +74,19 @@ function controlInput( obj, min, max )
     obj.addClass('errorForm');
   }else{
     obj.removeClass('errorForm'); 
-  }
-  
+  }  
+}
+
+function setCounterEvents()
+{
+  $(".countable").focus(function() { getCounter( $(this) ) });
+  $(".countable").keydown(function() { getCounter( $(this) )});
+  $(".countable").blur(function() {hideCounter()});
+  $("#viewRecord").scroll(function() {hideCounter()});
 }
 
 
-//onload
-$(function()
-{
-  var options = { 
-      dataType: "script"
-  };
-  $("form").ajaxForm(options);
-  
-  //$("div[id^='group-'] h2").click(function() { navigationClick( $(this), null, $(this).parent().parent() ) });
-  //$("#articles h2").click(function() { getArticles( $(this) ) });
-  //$("#authors h2").click(function() { getAuthors( $(this) ) });
-  $("#viewRecord").hide();
-  
-  //counter
 
-  
-});
 
 
 function getAuthors( obj )
@@ -94,6 +109,14 @@ function getAuthors( obj )
     success: function(data, status) {
       $("tr[id^='author_'] a.edit_author").bind("click", function() { return editAuthor( $(this))} );
       $("a[id^='authors_new']").bind("click", function() { return newAuthor()} );
+      
+          $(".pagination a").live("click", function() {
+          $("#authors .listFilter > *").remove();
+          $("#authors .listContent > *").remove();
+          $.get(this.href, null, function ( data ){    
+    	  }, "script");
+        return false;
+      });
     }
   });
   return false;
@@ -156,6 +179,17 @@ function getThemes( obj )
       dataType: 'script',
       error: function(msg) { alert("Chyba v přenosu dat."); },
       success: function(data, status) {
+        $("input[id^='cancelSearch']").hide();
+        $(".pagination a").live("click", function() {
+        $("#themes .listFilter > *").remove();
+        $("#themes .listContent > *").remove();
+        $.get(this.href, null, function ( data ){
+            $("input[id^='cancelSearch']").hide();   
+  	  }, "script");
+      return false;
+    });
+        
+        
         
       }
     });
@@ -187,7 +221,6 @@ function getSections( obj )
     return false;  
   }
 }
-
 
 function newSection()
 {
@@ -237,6 +270,60 @@ function editTheme( obj )
   
 }
 
+function getBoxes( obj )
+{
+  if(obj.attr("class") == 'active')
+  {
+    obj.removeClass('active');
+    obj.addClass('folder');
+    $("#infoboxes .listFilter > *").remove();
+    $("#infoboxes .listContent > *").remove();
+  }else{
+    obj.removeClass('folder');
+    obj.addClass('active');
+    
+    $.ajax({
+      type: 'GET',
+      url: '/admin/info_boxes',
+      dataType: 'script',
+      error: function(msg) { alert("Chyba v přenosu dat."); },
+      success: function(data, status) {
+      }
+    });
+    return false;  
+  }
+}
+
+function newBox()
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/info_boxes/new',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelArticle() });     
+    }
+  });
+  return false;
+}
+
+function editBox( obj )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/info_boxes/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });
+    }
+  });
+  return false; 
+}
+
 
 function getArticles( obj )
 {
@@ -256,28 +343,18 @@ function getArticles( obj )
     dataType: 'script',
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      //$("tr[id^='article_'] a.file").bind("click", function() { return showArticle( $(this))} );
-      $("tr[id^='article_'] a.file").bind("click", function() { return editArticle( $(this))} );
-      $("tr[id^='article_'] a.edit_article").bind("click", function() { return editArticle( $(this))} );
-      $("a[id^='articles_new']").bind("click", function() { return newArticle()} );
-      $(".pagination a").bind("click", function() {
-        $(".pagination").html("");
-        $("#articles tr").remove();
-        //$.get(this.href, null, null, "script");
-       // var params = $(this.href);
-        //alert($(this.href.params[0]));
-        $.ajax({
-          type: 'GET',
-          url: '/admin/articles',
-          data: 'page=2',
-          dataType: 'script',
-          error: function(msg) { alert("Chyba v přenosu dat."); },
-          success: function(data, status) {
-
-          }
-        });
-        return false;
-      });    
+      $("input[id^='cancelSearch']").hide();
+      //$("tr[id^='article_'] a.file").live("click", function() { return editArticle( $(this))} );
+      //$("tr[id^='article_'] a.edit_article").live("click", function() { return editArticle( $(this))} );
+      //$("a[id^='articles_new']").live("click", function() { return newArticle()} );
+      $(".pagination a").live("click", function() {
+      $("#articles .listFilter > *").remove();
+      $("#articles .listContent > *").remove();
+      $.get(this.href, null, function ( data ){
+        $("input[id^='cancelSearch']").hide(); 
+	  }, "script");
+    return false;
+  }); 
     }
   });
   
@@ -295,12 +372,7 @@ function newArticle()
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
       setCounterEvents();
-      $(".recordHeader a").bind("click", function() { return cancelLeaf() });
-      $("#article_section_id").change(function()
-      {
-
-
-      });      
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });     
     }
   });
   return false;
@@ -318,10 +390,6 @@ function editArticle( obj )
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
       setCounterEvents();
-      $("#article_section_id").change(function()
-      {
-          //handler pokud se budou menit subsections  
-      });
       $(".recordHeader a").bind("click", function() { return cancelArticle() });
       $("a[id^='file_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_file' ) });
       $("a[id^='img_']").bind("click", function() { return removeFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_img'  ) });
@@ -332,28 +400,59 @@ function editArticle( obj )
 
 }
 
-
-function setCounterEvents()
+function revertVersion( version, article )
 {
-  $(".countable").focus(function() { getCounter( $(this) ) });
-  $(".countable").keydown(function() { getCounter( $(this) )});
-  $(".countable").blur(function() {hideCounter()});
-  $("#viewRecord").scroll(function() {hideCounter()});
+  $.ajax({
+  type: 'POST',
+  dataType: 'script',
+  url: '/admin/articles/revert_version/' + article + "/" + version,
+  error: function(msg) { alert("Chyba v přenosu dat."); },
+  success: function(data, status) {
+  	    
+    }
+  });
+  return false;
 }
 
-function loadSubsections( id )
+function getVersion( version, article )
 {
-  
+  $.ajax({
+  type: 'POST',
+  dataType: 'script',
+  url: '/admin/articles/get_version/' + article + "/" + version,
+  error: function(msg) { alert("Chyba v přenosu dat."); },
+  success: function(data, status) {
+  	    
+    }
+  });
+  return false;
 }
+
+function getVersions( article )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+  type: 'GET',
+  dataType: 'script',
+  url: '/admin/articles/get_versions/' + article,
+  error: function(msg) { alert("Chyba v přenosu dat."); },
+  success: function(data, status) {
+  	 $(".recordHeader a").bind("click", function() { return cancelArticle() });   
+    }
+  });
+  return false;
+}
+
+
 
 function dragAndDrop()
 {  
-  //add picture / edit
+  //add attachments / edit
   if($("form").attr("id").split("_")[0] == 'edit')
   {
     $(".dnd.imgr").droppable({
       accept: "div[id^='picture_']",
-    	drop: function(ev, ui) {
+    	drop: function(ev, ui) {	
     	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
     	  }
     });
@@ -372,6 +471,13 @@ function dragAndDrop()
     	  }
     });
     
+	$(".dnd.boxr").droppable({
+      accept: "tr[id^='infobox_']",
+    	drop: function(ev, ui) {
+    	  alert($(this).attr("id").split("_")[1]);
+    	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_box' );
+    	  }
+    });
     
   }
   
@@ -407,10 +513,17 @@ function dragAndDrop()
     	  $("fieldset").append("<input type='hidden' name='audios[id_"+ id +"]' value='"+ id +"' id='newaud-"+ id +"'>");
     	}
     });
-  
-  
-  }  
- 
+	
+	//add ib
+	$(".dnd.boxr").droppable({
+      accept: "tr[id^='infobox_']",
+    	drop: function(ev, ui) {
+    	  var id = ui.draggable.attr("id").split("_")[1];
+		  $("div[class='addedFile forBoxr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
+    	  $("fieldset").append("<input type='hidden' name='boxes[id_"+ id +"]' value='"+ id +"' id='newbox-"+ id +"'>");
+    	  }
+    });  
+  } 
 }
 
 function removeElement(obj)
@@ -420,6 +533,7 @@ function removeElement(obj)
 
 function addFileToArticle( controller, article, file, action )
 {
+  //alert(controller + ',' + article + ',' + file + ',' + action);
   $.ajax({
      type: 'POST',
      url: '/admin/'+ controller  +'/'+ action +'/'+ article +'/'+ file,
@@ -468,7 +582,6 @@ function cancelArticle()
 
 function navigationClick( obj, id, type ) 
 {
-  //alert(type.attr("id"));
   if(obj.attr("class") == 'active')//mazani subvetvi
   {
     obj.removeClass('active');
@@ -497,31 +610,9 @@ function navigationClick( obj, id, type )
       url: '/admin/albums/get_level',
       data: 'id='+id+'&tree='+tree+'&type='+type.attr("id").split("-")[1],
       dataType: 'script',
-      //beforeSend: function() { $("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").addClass("loading"); },
       error: function(msg) { alert("Chyba v přenosu dat."); },
       success: function(data, status) {
-        //$("div[id^='group-"+type.attr("id").split("-")[1]+"'] h2").removeClass("loading");
-        $("div[id^='group-'] td.listItem a").bind("click", function() { return navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ) });
-        $("td a[class^='editLeaf-']").bind("click", function() { return editLeaf( $(this).attr("eid"), $(this).attr("class").split("-")[1]  ) });
-        $("div[id^='picture_']").css("cursor: move;");
-        $("div[id^='picture_']").draggable({
-        	revert: 'invalid',
-        	helper: 'clone',
-        	cursor: 'move'
-        });
-        $("div[id^='inset_']").css("cursor: move;");
-        $("div[id^='inset_']").draggable({
-        	revert: 'invalid',
-        	helper: 'clone',
-        	cursor: 'move'
-        });
-        $("div[id^='audio_']").css("cursor: move;");
-        $("div[id^='audio_']").draggable({
-        	revert: 'invalid',
-        	helper: 'clone',
-        	cursor: 'move'
-        });
-        dragAndDrop(); 
+        $("input[id^='cancelSearch']").hide();
       }
     });
     return false;
@@ -592,29 +683,3 @@ function cancelLeaf()
   $("td a.editLeaf").bind("click", function() { return editLeaf( $(this).attr("eid") ) });
   $("#listView").removeClass("listSmall");
 }
-
-/* show je shortcut pro edit - nebude vubec
-function showArticle( obj )
-{
-  $("#listView").addClass("listSmall");
-  $.ajax({
-    type: 'GET',
-    dataType: 'script',
-    url: '/admin/articles/' + $(obj).parent().parent().attr("id").split("_")[1],
-    beforeSend: function() { $("#articles h2").addClass("loading"); },
-    error: function(msg) { alert("Chyba v přenosu dat."); },
-    success: function(data, status) {
-      $("#articles h2").removeClass("loading");
-      $(".recordHeader a").bind("click", function() { return cancelArticle() });      
-    }
-  });
-  return false;
-}
-*/
-
-/*
-function remove_field(element, item) 
-{
-  element.up(item).remove();
-}
-*/

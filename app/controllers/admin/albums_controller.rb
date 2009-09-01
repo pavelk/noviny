@@ -16,21 +16,37 @@ class Admin::AlbumsController < Admin::AdminController
   
   def get_level
     case params[:id]
-      when 'null': @albums = Album.all(:conditions => "parent_id is NULL AND album_type='#{params[:type]}'", :order => 'name ASC') 
-      #when 'null': @albums = Album.roots
-      else 
+      when 'null': @albums = Album.all(:conditions => "parent_id is NULL AND album_type='#{params[:type]}'", :order => 'name ASC')
+          #when 'null': @albums = Album.roots
+      else
         @albums = Album.find(params[:id]).children
         @album = Album.find(params[:id])
-    end
-    
+      end
+
     @level = params[:id]
     @tree = params[:tree]
-    
-    respond_to do |format|  
-      #format.html  { render :layout => false }
+
+    respond_to do |format|
+      #format.html { render :layout => false }
       format.js
-    end    
+    end
   end
+  
+  def search
+    #debugger
+    case params[:type]
+      when 'image':
+        @assets = Picture.search params[:search_assets_image]
+      when 'inset':
+        @assets = Inset.search params[:search_assets_inset]
+      when 'audio':
+        @assets = Audio.search params[:search_assets_audio]
+    end        
+
+    respond_to do |format|
+      format.js
+    end
+  end  
   
   new_action.response do |wants|
     wants.js

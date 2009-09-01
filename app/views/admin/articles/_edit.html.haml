@@ -11,6 +11,14 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
+      = link_to "Souvisejici clanky", "#"
+      #related
+      - Article.all.each do |art|
+        -#= art.name
+        -#= link_to "Pridat k souvisejicim", admin_relationships_path(:relarticle_id => art), :method => :post
+        -#= check_box_tag :relarticle_ids, art.id, @article.relarticles.include?(art), :name => 'article[relarticle_ids][]'
+        -#= label_tag :relarticle_ids, art.name
+    %br
       -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
       %strong Obrazky
       .dndContent
@@ -49,6 +57,18 @@
               = link_to 'Odstranit', '#', :id => "audio_#{picture.id}"    
       .dndContainer
         %div{ :class => 'dnd audr', :id => "dropa_articles_#{@article.id}" } Zde pretahnete audio    
-      .clearer &nbsp;            
+      .clearer &nbsp;
+      %br
+      %strong Info boxy
+      .dndContent
+        %div{ :class => "listFiles listBoxr", :id => "filesListd_#{@article.id}" }
+          - @article.info_boxes.each do |picture|
+            %div{ :class => 'addedFile forBoxr' }
+              = link_to picture.name, picture, :class => 'file'
+              %br
+              = link_to 'Odstranit', '#', :id => "box_#{picture.id}"    
+      .dndContainer
+        %div{ :class => 'dnd boxr', :id => "dropb_articles_#{@article.id}" } Zde pretahnete infobox    
+      .clearer &nbsp;                  
       
       %p= submit_tag "Upravit"

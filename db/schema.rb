@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090818180758) do
+ActiveRecord::Schema.define(:version => 20090831163015) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -39,6 +39,24 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
   add_index "article_audios", ["article_id"], :name => "article_audios_article_id_index"
   add_index "article_audios", ["audio_id"], :name => "article_audios_audio_id_index"
 
+  create_table "article_boxes", :force => true do |t|
+    t.integer "article_id"
+    t.integer "info_box_id"
+  end
+
+  add_index "article_boxes", ["article_id"], :name => "article_boxes_article_id_index"
+  add_index "article_boxes", ["info_box_id"], :name => "article_boxes_info_box_id_index"
+
+  create_table "article_comments", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.text     "text"
+  end
+
+  add_index "article_comments", ["article_id"], :name => "article_comments_article_id_index"
+  add_index "article_comments", ["user_id"], :name => "article_comments_user_id_index"
+
   create_table "article_insets", :force => true do |t|
     t.integer "inset_id"
     t.integer "article_id"
@@ -63,6 +81,29 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
   add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
   add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
 
+  create_table "article_versions", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "version"
+    t.integer  "author_id"
+    t.string   "name"
+    t.text     "perex"
+    t.text     "text"
+    t.text     "poznamka"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_versions", ["article_id"], :name => "article_versions_article_id_index"
+  add_index "article_versions", ["author_id"], :name => "article_versions_author_id_index"
+  add_index "article_versions", ["version"], :name => "article_versions_version_index"
+
+  create_table "article_views", :force => true do |t|
+    t.integer  "article_id"
+    t.datetime "shown_date"
+  end
+
+  add_index "article_views", ["article_id"], :name => "article_views_article_id_index"
+
   create_table "articles", :force => true do |t|
     t.integer  "user_id"
     t.string   "name"
@@ -81,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
     t.boolean  "visibility",       :default => false, :null => false
     t.integer  "author_id"
     t.string   "videodata"
+    t.integer  "version",          :default => 1
   end
 
   add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
@@ -138,6 +180,27 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
     t.string "name"
   end
 
+  create_table "info_box_pictures", :force => true do |t|
+    t.integer "picture_id"
+    t.integer "info_box_id"
+  end
+
+  add_index "info_box_pictures", ["info_box_id"], :name => "info_box_id_pictures_info_box_id_id_index"
+  add_index "info_box_pictures", ["picture_id"], :name => "info_box_pictures_picture_id_index"
+
+  create_table "info_boxes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "author_id"
+    t.string   "title"
+    t.string   "name"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "info_boxes", ["user_id"], :name => "info_boxes_author_id_index"
+  add_index "info_boxes", ["user_id"], :name => "info_boxes_user_id_index"
+
   create_table "insets", :force => true do |t|
     t.integer  "album_id"
     t.integer  "user_id"
@@ -179,6 +242,16 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
+  create_table "relationships", :force => true do |t|
+    t.integer  "article_id"
+    t.integer  "relarticle_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["article_id"], :name => ":relationships_article_id_index"
+  add_index "relationships", ["relarticle_id"], :name => ":relationships_relarticle_id_index"
+
   create_table "sections", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -189,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20090818180758) do
     t.integer  "user_id"
     t.integer  "author_id"
     t.text     "description"
+    t.integer  "position"
   end
 
   add_index "sections", ["author_id"], :name => "sections_author_id_index"

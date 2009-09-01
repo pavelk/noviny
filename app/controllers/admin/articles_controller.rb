@@ -1,21 +1,22 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
-  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_sections, :multi_tag_create 
+  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_adding_boxes, :process_sections, :multi_tag_create 
   update.after :process_sections
   update.before :multi_tag 
   
   def index
     #@articles = Article.all.paginate( :per_page => 2, :page => params[:page] )
-    @articles = Article.all
+    if(params[:search])
+      @articles = Article.search params[:search], :page => params[:page], :per_page => 10
+    else
+      @articles = Article.all.paginate( :per_page => 10, :page => params[:page] )
+    end 
     respond_to do |format|
       format.js
     end
   end  
   
-  #index.response do |wants|
-  #  wants.js
-  #end
   
   show.response do |wants|
     wants.js
@@ -84,6 +85,36 @@ class Admin::ArticlesController < Admin::AdminController
     end 
   end
   
+  def get_versions
+    #debugger
+    @article = Article.find(params[:id])
+    @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    respond_to do |format|  
+      format.js
+    end
+  end
+  
+  def get_version
+    #debugger
+    @article = Article.find(params[:id])
+    @version = @article.versions.find(params[:version])
+    #dodelat - verze i pro ruzne typy
+    @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    respond_to do |format|  
+      format.js
+    end
+  end
+  
+  def revert_version
+    #debugger
+    article = Article.find(params[:id])
+    @version = article.versions.find(params[:version])
+    article.revert_to!(@version.version)
+    render :nothing => true
+  end
+  
   def remove_file
     @article = Article.find(params[:art])
     @file = Inset.find(params[:pic])
@@ -142,7 +173,25 @@ class Admin::ArticlesController < Admin::AdminController
     end 
   end
   
+  def add_box
+    @article = Article.find(params[:art])
+    @box = InfoBox.find(params[:pic])
+    @article.info_boxes << @box
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
   
+  def remove_box
+    @article = Article.find(params[:art])
+    @box = InfoBox.find(params[:pic])
+    @article.info_boxes.delete(@box)
+    
+    respond_to do |format|  
+      format.js
+    end 
+  end
   
   def get_subsection
     if(params[:id])
@@ -201,6 +250,15 @@ private
       params[:audios].each_value do |a|
         aud = Audio.find(a)
         @article.audios << aud
+      end
+    end      
+  end
+  
+  def process_adding_boxes
+    if(params[:boxes])
+      params[:boxes].each_value do |b|
+        box = InfoBox.find(b)
+        @article.info_boxes << box
       end
     end      
   end  

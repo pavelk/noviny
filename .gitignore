@@ -1,4 +1,5 @@
 .DS_Store
+db/sphinx
 doc/**/*
 doc/*.rtf
 log/*.log
@@ -7,5 +8,6 @@ tmp/**/*
 admin/**/*
 config/database.yml
 config/deploy.rb
+config/*sphinx*
 public/assets
 noviny.tmproj

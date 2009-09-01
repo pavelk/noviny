@@ -1,5 +1,5 @@
 %tr{ :id => "theme_#{theme.id}" }
-  %td{ :class => 'listItem l1'}= link_to theme.name, '#', :onclick => 'editTheme($(this)); return false'
+  %td{ :class => 'listItem l1'}= link_to "#{theme.name} (#{Article.find_tagged_with(theme.name).size})", '#', :onclick => 'editTheme($(this)); return false'
   %td= theme.updated_at.strftime('%d/%m/%y') 
   %td= theme.user.user_name
   %td= truncate(theme.description, :length => 100, :omission => "&hellip;")

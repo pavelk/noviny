@@ -1,0 +1,19 @@
+.recordHeader
+  %h2= link_to 'Novy infobox', '#'
+.recordPath
+.recordEdit
+
+  = error_messages_for :info_box
+
+  - form_for @info_box, :url => collection_url do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
+      %p= submit_tag "Ulozit"

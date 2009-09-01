@@ -1,0 +1,8 @@
+%tr{ :id => "infobox_#{info_box.id}" }
+  %td{ :class => "listItem l1"}
+    %div= link_to info_box.title, '#', :onclick => 'editBox($(this)); return false'
+  %td= info_box.name
+  %td= info_box.updated_at.strftime('%d/%m/%y')
+  %td{ :class => 'center' }
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => 'editSection($(this)); return false', :title => 'Editovat', :class => "edit_article"
+    = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'

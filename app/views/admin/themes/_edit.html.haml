@@ -5,8 +5,13 @@
   - form_for @theme, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
-      %p
-        = Article.find_tagged_with(@theme.name).map(&:name).join(", ")
+      -#%p
+        -#= Article.find_tagged_with(@theme.name).map(&:name).join(", ")
+      %br
+      %br  
+      %h3 Clanky s tematem:
+      - Article.find_tagged_with(@theme.name).each do |a|
+        %p= link_to a.name, "#", :onclick => "editArticle( '#{a.id}' ); return false"
       %br
       %br  
       %p= submit_tag "Upravit"

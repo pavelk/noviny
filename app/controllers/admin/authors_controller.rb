@@ -3,8 +3,16 @@ class Admin::AuthorsController < Admin::AdminController
   create.before :set_user, :process_adding_pictures, :process_adding_files
   update.before :set_user
 
-  index.response do |wants|
-    wants.js
+  def index
+    #debugger
+    if(params[:search_author])
+      @authors = Author.search params[:search_author], :page => params[:page], :per_page => 15
+    else
+      @authors = Author.all.paginate( :per_page => 15, :page => params[:page] )
+    end 
+    respond_to do |format|
+      format.js
+    end
   end
 
   show.response do |wants|

@@ -1,0 +1,8 @@
+<div class="item itemSmall noImg">
+  <div class="self">
+    <p class="info"><%= readest.section.name %> <%= readest.content_type.name %></p>
+    <h3 class="head">
+    	<%= link_to(readest.name, articles_path(:action=>"detail",:id=>readest.id)) %>
+	</h3>
+  </div> <!-- /.self -->
+</div> <!-- /.item -->

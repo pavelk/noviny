@@ -5,3 +5,4 @@
     %th{ :width => '45%'    }= link_to 'zivotopis', '#'
     %th{ :width => '10%'    } &nbsp;
   = render(:partial => 'author', :collection => @authors)
+  = will_paginate @authors, :previous_label => 'Předchozí', :next_label => 'Další'  

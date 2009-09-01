@@ -1,0 +1,7 @@
+- form_tag admin_info_boxes_path, :method => :get, :id => 'search_boxes' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_boxes, params[:search_boxes]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newBox(); return false', :id => 'boxes_new'
+.clearer

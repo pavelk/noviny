@@ -1,2 +1,8 @@
--#= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new'
+- form_tag admin_themes_path, :method => :get, :id => 'search_themes' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_theme, params[:search_theme]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchThemes', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' }
+= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new'
 .clearer

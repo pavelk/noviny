@@ -1,0 +1,10 @@
+div.cal {width:223px;background-color:#DFF9FF;}
+div.cal td {border:1px solid #777;background-color:#ddd;}
+div.cal thead td,
+div.cal tfoot td	{font-weight:bold;background-color:#bbb;}
+div.cal tbody td	{cursor:pointer;}
+div.cal tbody td i	{display:block;border:1px solid red;}
+div.cal tbody td u	{display:block;background:#888;text-decoration:none;}
+div.cal tbody td:hover	{background:#eee;}
+div.cal .calbord {border:solid blue 1px;text-align:center;}
+div.calendar img {margin-top:2px;position:relative;top:5px;}

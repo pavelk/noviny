@@ -3,10 +3,6 @@
 $("div[id^='group-<%= params[:type] %>'] .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
 $("div[id^='group-<%= params[:type] %>'] .listContent").append("<%= escape_javascript(render(:partial => 'albums', :object => @albums)) %>");
 
-//map forms
-$("li a[class^='newLeaf-']").bind("click", function() { return newLeaf( $(this).attr("class").split("-")[1] ) });
-$("li a.newAtt").bind("click", function() { return newAtt( '<%= params[:type] %>' ) });  
-
 <% else %>
 
 
@@ -29,9 +25,6 @@ $("tr[id='<%= params[:type] %>-<%= @tree %>-<%= @albums.size %>']").after("<%= e
 
 <% end %>
 //$("tr[id^=editPictxxx] a").bind("click", function() { return editImage("tr[id^=editPict"].attr("class") ) });
-
-
-
   
 <% elsif prom > 0 %>//neobsahuje podvetve, pouze obrazky 
 

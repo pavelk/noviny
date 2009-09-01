@@ -1,0 +1,88 @@
+<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", "TODO" %></p>
+<div class="item itemBig">
+  <div class="img">
+    <a href=""><%= image_tag "web/banner-top.jpg",:alt=>"TODO" %></a>
+    <div class="caption">
+      <span>TODO</span>
+    </div> <!-- /.caption -->
+  </div> <!-- /.img -->
+  
+  <div class="self">
+    <h2 class="head">
+    	<a href="">TODO TODO TODO TODO nadpis</a>
+				  </h2>
+    <p class="perex">
+    	TODO TODO TODO perex [...]
+				  </p>
+  </div> <!-- /.self -->
+</div> <!-- /.item -->
+
+<ul class="list item">
+	<% @articles.each do |article| -%>
+		<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
+	<% end -%>
+</ul>
+	        
+<div class="box">
+  <h2 class="h line">Názory</h2>
+  <div class="in">
+  	<%= "No opinions" if @opinions.blank? %> 
+	<%= render :partial=>"web/articles/left_article", :collection=>@opinions,:locals=>{:with_date=>true} %>   
+    
+    <div class="cols cols3 next">
+      <div class="col1">
+        <h4 class="h">Další komentáře</h4>
+        <ul>
+          <li><a href="">TODO</a></li>
+        </ul>
+      </div> <!-- /.col1 -->
+      
+      <div class="col2">
+        <h4 class="h">Další sloupky</h4>
+        <ul>
+          <li><a href="">TODO</a></li>
+        </ul>
+      </div> <!-- /.col2 -->
+      
+      <div class="col3">
+        <h4 class="h">Další glosy</h4>
+        <ul>
+          <li><a href="">TODO</a></li>
+        </ul>
+      </div> <!-- /.col3 -->
+    </div> <!-- /.cols -->            
+  </div> <!-- /.in -->
+</div> <!-- /.box -->
+
+<div class="box">
+  <h2 class="h line">Referendum dne</h2>
+  <div class="in">              
+    <div class="item itemSmallImage">
+      <div class="img">
+        <a href=""><%= image_tag "web/banner-top.jpg",:alt=>"TODO" %></a>
+      </div> <!-- /.self -->
+      
+      <div class="self">
+        <h3 class="head"><a href="">TODO</a></h3>
+        <p class="perex">TODO</p>
+      </div> <!-- /.self -->
+    </div> <!-- /.item -->            
+  </div> <!-- /.in -->
+</div> <!-- /.box -->
+
+<div class="box cols cols3">
+  <div class="col1">
+    <h2 class="h line">Domov</h2>
+				  	<%= render :partial=>"web/articles/section",:collection=>@homes %>
+  </div> <!-- /.col1 -->
+  
+  <div class="col2">
+    <h2 class="h line">Svět</h2>
+    <%= render :partial=>"web/articles/section",:collection=>@worlds %>
+  </div> <!-- /.col2 -->
+  
+  <div class="col3">
+    <h2 class="h line">Umění</h2>
+    <%= render :partial=>"web/articles/section",:collection=>@arts %>
+  </div> <!-- /.col3 -->
+</div> <!-- /.cols -->

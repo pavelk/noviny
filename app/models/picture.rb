@@ -8,11 +8,20 @@ class Picture < ActiveRecord::Base
   
   has_many :author_pictures
   has_many :authors, :through => :author_pictures
+  
+  has_many :info_box_pictures
+  has_many :info_boxes, :through => :info_box_pictures
+  
+  define_index do
+    indexes :name, :sortable => true
+    indexes data_file_name
+  end
+  
+  
     
   #validates_presence_of :name
   #validates_uniqueness_of :name
   #before_save :save_dimensions 
-
   
   has_attached_file :data, :styles => { :small => "x85>" },
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
@@ -25,6 +34,16 @@ class Picture < ActiveRecord::Base
   #                                                    'image/png']
                                                                                                                    
   #default_style => :original
+  
+  #Added by Jan Uhlar
+  #Returns paginated pictures from article given by 'article_id' 
+  def self.paginate_from_article(article_id, page = 1, per_page = 3)
+    paginate(:all,
+         :conditions=>["article_pictures.article_id = ?",article_id],
+         :page=>page,
+         :joins=>[:articles],
+         :per_page=>per_page)
+  end
   
   private
   

@@ -1,0 +1,33 @@
+<div class="box boxDetail">
+   <h2 class="head">Přehled dne</h2>
+   <% form_tag({:action=>"archiv"},:class=>"headForm") do %>
+     <fieldset>
+       <%= calendar({:text_field => "date",
+              :value => @date || "1.10.2008",
+              :update_div => nil,
+              :class_name => "cal"}) -%>
+       <%= submit_tag "Změnit", :class=>"submit" %>
+     </fieldset>
+   <% end %>
+ </div> <!-- /.cols -->
+ 
+ <div class="box cols line">
+   <div class="col1">
+     <div class="box">
+       <ul>
+		<li><a href="">Poslat e-mailem TODO</a></li>
+		<li><a href="">Sdílet TODO</a></li>
+       </ul>
+     </div> <!-- /.box -->
+   </div> <!-- /.col1 -->
+   
+   <div class="col2">
+     <%= render :partial=>"web/articles/left_article",:collection=>@articles,:locals=>{:with_date=>true} %>
+     <div class="paging">
+       <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
+       <ul class="pages">
+		<%= will_paginate @articles %> TODO
+       </ul>
+     </div> <!-- /.paging -->
+   </div> <!-- /.col2 -->
+ </div> <!-- /.box -->

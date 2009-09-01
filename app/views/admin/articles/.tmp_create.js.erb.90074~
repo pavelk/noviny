@@ -1,0 +1,3 @@
+$(".recordHeader a").click();
+getArticles($("#articles h2"));
+getArticles($("#articles h2"));

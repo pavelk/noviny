@@ -1,0 +1,12 @@
+<div class="item itemSmallImage <%= (@comments.last == comment) ? 'last' : '' %>">
+	<div class="img">
+	  TODO image
+	</div> <!-- /.img -->
+	
+	<div class="self">
+	  <h4><%= comment.user.user_name %>, TODO Mladá Boleslav</h4>
+	  <p><%= comment.comment_date %></p>
+	  <p><a href="">TODO Zavadny link</a></p>
+	  <p class="comment"><%= h(comment.text) %></p>
+	</div> <!-- /.self -->
+</div> <!-- /.item -->

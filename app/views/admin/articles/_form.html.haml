@@ -39,13 +39,20 @@
   %div{ :id => "checkbox-#{@article.id}-#{section.id}" }
     = check_box_tag :section_ids, section.id, @article.sections.include?(section), :name => 'article[section_ids][]'
     = label_tag :section_ids, section.name
-    - if @article.sections.include?(section) && !section.leaf?
-      %div{ :id => "subsection-#{section.id}" } 
-        Podrubriky pro tuto rubriku:
-        - section.children.each do |c|
-          %div.l2
-            = check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
-            = label_tag :section_ids, c.name
+    -#- if @article.sections.include?(section) && !section.leaf?
+      -#%div{ :id => "subsection-#{section.id}" }
+        -#- section.children.each do |c|
+          -#%div.l2
+            -#= check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
+            -#= label_tag :section_ids, c.name
+%p{ :id => 'appendSubsection'} Zaradte clanek do podrubriky:
+- Section.roots.each do |subsection|
+  - if @article.sections.include?(subsection) && !subsection.leaf?
+    %div{ :id => "subsection-#{subsection.id}" }
+      - subsection.children.each do |c|
+        %div
+          = check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
+          = label_tag :section_ids, c.name          
 %br
 %br
 
@@ -65,8 +72,6 @@
 %select{ :id => 'article_priority_home', :name => 'article[priority_home]' }
   - %w{ 0 1 2 3 4 5 6 7 8 9 }.each do |i|
     %option{ :value => "#{i}" }= i
-
-
 %br
 %br
 = f.label :priority_section, 'Priorita pro sekci:'

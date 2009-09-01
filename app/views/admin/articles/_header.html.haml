@@ -1,7 +1,8 @@
--#%form
-  -#%fieldset
-    -#%strong filtr:
-    -#%input{ :type => 'text', :name => 'groupSearch', :id => 'groupSearch' }
-    -#%input{ :type => 'submit', :value => 'Hledej' }
-= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new'
+- form_tag admin_articles_path, :method => :get, :id => 'search_articles' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search, params[:search]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchArticles', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' } 
+= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new', :onclick => 'newArticle(); return false'
 .clearer

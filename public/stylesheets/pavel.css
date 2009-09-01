@@ -1,5 +1,5 @@
 /* na vetve bez potomku neni mozne klikat */
-span { color: grey;  }
+span { color: gray;  }
 .listContent table .listItem span.active { padding-left: 30px; display: block; line-height: 18px; height: 18px; background: url('../images/minus-small.gif') top left no-repeat;  }
 
 /* ajax loader style */

@@ -37,22 +37,10 @@ $("div[id^='checkbox-'] input").each(function() {
           }
         });
       }else{
-        $("div[id='subsection-"+ $(this).parent().attr('id').split('-')[1]  +"']").remove();
+        $("div[id='subsection-"+ $(this).parent().attr('id').split('--')[1]  +"']").remove();
       }  
   });  
 });
-
-
-$("form[id^='new_article']").ajaxForm(
-  {
-    dataType: 'script',
-    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
-    resetForm: true,
-    complete: function(XMLHttpRequest, textStatus) {
-       
-    }
-  }
-);
 
 $("#article_content_type_id").change(function() 
 { 

@@ -1,0 +1,14 @@
+%h1 Listing info_boxes
+
+%table
+  %tr
+  - @info_boxes.each do |info_box|
+    %tr
+        
+      %td= link_to 'Show', object_url(info_box)
+      %td= link_to 'Edit', edit_object_url(info_box)
+      %td= link_to 'Destroy', object_url(info_box), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New info_box', new_object_url

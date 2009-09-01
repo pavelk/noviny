@@ -1,12 +1,14 @@
--#%form
-  -#%fieldset
-    -#%strong filtr:
-    -#%input{ :type => 'text', :name => 'groupSearch', :id => 'groupSearch' }
-    -#%input{ :type => 'submit', :value => 'Hledej' }
+- form_tag search_admin_albums_path, :method => :get, :id => "search_assets_#{params[:type]}" do
+  %fieldset
+    %strong filtr:
+    %input{ :id => "search_assets_#{params[:type]}", :name => "search_assets_#{params[:type]}", :type => "text" }    
+    = hidden_field_tag :type, params[:type]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => "cancelSearch#{params[:type]}", :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' }   
 .navigation
   %ul
-    %li= link_to 'nová větev', "#", :class => "newLeaf-#{params[:type]}"
-    %li= link_to 'nový soubor', "#", :class => 'newAtt'
-    -#%li= link_to 'nová větev', new_admin_album_path, :class => 'newLeaf'
-    -#%li= link_to 'nový obrázek', new_admin_picture_path
+    %li= link_to 'nová větev', "#", :class => "newLeaf-#{params[:type]}", :onclick => 'newLeaf( $(this).attr("class").split("-")[1] ); return false'
+    %li= link_to 'nový soubor', "#", :class => "newAtt-#{params[:type]}", :onclick => 'newAtt($(this).attr("class").split("-")[1] ); return false'
 .clearer
+
+

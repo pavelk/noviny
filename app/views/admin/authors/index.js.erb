@@ -1,2 +1,17 @@
+<% if(params[:search_author]) %>
+$("#authors .listFilter").empty();
+$("#authors .listContent").empty();
+<% end %>
+
 $("#authors .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
 $("#authors .listContent").append("<%= escape_javascript(render(:partial => 'authors_header', :object => @uthors)) %>");
+
+$("form[id='search_authors']").ajaxForm(
+{
+	dataType: 'script',
+	beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
+	resetForm: true,
+	complete: function(XMLHttpRequest, textStatus) { 
+	}
+}
+);

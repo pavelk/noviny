@@ -1,1 +1,2 @@
-$("div[id='checkbox-<%= @article.id %>-<%= @section.id %>']").append("<%= escape_javascript(render(:partial => 'section', :object => @subsection)) %>");
+//$("div[id='checkbox-<%= @article.id %>-<%= @section.id %>']").append("<%= escape_javascript(render(:partial => 'section', :object => @subsection)) %>");
+$("p[id='appendSubsection']").append("<%= escape_javascript(render(:partial => 'section', :object => @subsection)) %>");

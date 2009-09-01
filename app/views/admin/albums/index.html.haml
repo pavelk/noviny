@@ -23,7 +23,15 @@
       .clearer
     .listFilter
     .listContent   
-    .clearer        
+    .clearer
+  .listGroup#infoboxes
+    .listHeader
+      %h2.folder= link_to "Info Boxy (#{InfoBox.all.length})", '#', :onclick => 'getBoxes($("#infoboxes h2")); return false'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer              
   .listGroup#articles
     .listHeader
       %h2.folder= link_to "Články (#{Article.all.length})", '#', :onclick => 'getArticles($("#articles h2")); return false'
@@ -31,7 +39,7 @@
       .clearer
     .listFilter
     .listContent   
-    .clearer
+    .clearer      
   .listGroup#authors
     .listHeader
       %h2.folder= link_to "Autoři (#{Author.all.length})", '#', :onclick => 'getAuthors($("#authors h2")); return false'

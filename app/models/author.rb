@@ -15,4 +15,11 @@ class Author < ActiveRecord::Base
     [firstname, surname].join(" ") 
   end
   
+  define_index do
+    indexes firstname
+    indexes surname
+    indexes nickname
+    indexes cv
+  end
+  
 end

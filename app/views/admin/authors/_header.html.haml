@@ -1,2 +1,7 @@
+- form_tag admin_authors_path, :method => :get, :id => 'search_authors' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_author, params[:search_author]
+    = submit_tag "Hledej", :name => nil
 = link_to '+ nový autor', "#", :class => 'fr', :id => 'authors_new'
 .clearer

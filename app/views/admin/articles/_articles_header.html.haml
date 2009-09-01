@@ -1,10 +1,11 @@
 %table
   %tr
-    %th{ :width => '30%', :class => 'l1' }= link_to 'nadpis', '#'
+    %th{ :width => '25%', :class => 'l1' }= link_to 'nadpis', '#'
     %th{ :width => '10%'    }= link_to 'typ', '#'
+    %th{ :width => '5%'    } verze
     %th{ :width => '10%'     }= link_to 'datum', '#'
     %th{ :width => '15%'    }= link_to 'autor', '#'
     %th{ :width => '30%'    } perex
     %th{ :width => '5%'    } &nbsp;    
     = render(:partial => 'article', :collection => @articles)
-    -#= will_paginate @articles, :previous_label => 'Předchozí', :next_label => 'Další'    
+    = will_paginate @articles, :previous_label => 'Předchozí', :next_label => 'Další'    

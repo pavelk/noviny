@@ -1,0 +1,17 @@
+<div class="box">
+   <div class="in">
+   	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>false} %>
+   </div> <!-- /.in -->
+    <div class="paging">
+              <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
+              <ul class="pages">
+                <%= will_paginate @articles,
+							:inner_window=> 3,
+							:outer_window=> 1,
+							:prev_label   => 'Předešlé',
+ 							:next_label   => 'Následující',
+							:params=>{} %>
+              </ul>
+
+            </div> 
+</div> <!-- /.box -->

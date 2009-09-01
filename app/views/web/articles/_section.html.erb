@@ -1,0 +1,8 @@
+<div class="item">
+	<%= article_first_photo(section) %>
+	<p class="info"><%= section.content_type.name %></p>
+	<h3 class="head">
+		<%= link_to section.name, articles_path(:action=>"detail",:id=>section.id) %>
+	</h3>
+	<p class="perex"><%= section.perex %></p>
+</div><!-- /.item -->

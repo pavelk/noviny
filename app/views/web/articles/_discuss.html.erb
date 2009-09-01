@@ -1,0 +1,33 @@
+<h3 class="h line">Diskuze (<%= @comments.length -%> příspěvků)</h3>
+<div class="in">
+  <p>TODO Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
+  <ul>
+    <li><a href="">TODO Registrovat</a></li>
+    <li><a href="">TODO Prihlasit</a></li>
+  </ul>
+  
+  <% form_for(:comment,@comment,:url=>{:action=>"add_comment",:id=>@article.id},:html=>{:class=>"item itemSmallImage formBox"}) do |f| %>
+	<fieldset>
+	    <div class="img">
+	      <img src="img/img-nazor1.jpg" alt="" />
+	    </div> <!-- /.img -->
+	    
+	    <div class="self">
+	        <h4>Jiří Karban, Domažlice TODO</h4>
+	        <a href="">Odhlásit se TODO</a>
+	        <p>TODO Zbyva 1000 znaku</p>
+	        <%= f.text_area :text, :size=>"30x7", :class=>"button w100"%>
+			<%= f.hidden_field :article_id, :value=> @article.id %>
+			<%= f.submit "Post your comment", :class=>"submit fl"%>
+	        <a href="" class="fr">Kodex - Pravidla diskuze TODO</a>
+	    </div>
+   </fieldset>
+   <% end %>
+  <%= render :partial=>"web/articles/comment", :collection=>@comments %>
+  <p>TODO Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
+
+  <ul>
+    <li><a href="">TODO Registrovat</a></li>
+    <li><a href="">TODO Prihlasit</a></li>
+  </ul>
+</div> <!-- /.in -->

@@ -1,0 +1,22 @@
+/* ----------------------------------------------------------------------------------------------------------
+
+    LT WebDevelopment (www.lukastomek.cz)
+
+    Výstupní zařízení: print
+    Autor:             Lukáš Tomek (info@lukastomek.cz)
+    Vytvořeno:         28/12/2008
+
+---------------------------------------------------------------------------------------------------------- */
+
+/* -- Basics -- */
+body                    { margin: 0; padding: 0; border: 0; font-size: 12pt; }
+
+h1, h2, h3, h4, h5, h6  { page-break-before: avoid; page-break-after: avoid; page-break-inside: avoid; }
+table                   { width: 100%; border-collapse: collapse; border-spacing: 0; border-top: 0.5pt solid #000; }
+th, td                  { display: table-cell; border-bottom: 0.5pt solid #000; }
+blockquote              { page-break-inside: avoid; }
+ul, ol, dl              { page-break-before: avoid; }
+img                     { border: 0; }
+
+/* -- Hidden fields -- */
+.noscreen, .noprint { display: none !important; }

@@ -1,0 +1,6 @@
+$("div[id='versions_name']").html("").html('<%= @version.name %>');
+$("div[id='versions_perex']").html("").html('<%= @version.perex %>');
+$("div[id='versions_text']").html("").html('<%= @version.text %>');
+$("div[id='versions_poznamka']").html("").html('<%= @version.poznamka %>');
+$("div[id='revert']").empty();
+$("div[id='revert']").append("<a href=\"#\" onclick=\"revertVersion( '<%= @version.id %>', '<%= @article.id %>' ); return false\">Vratit clanek na zobrazenou verzi</a>");

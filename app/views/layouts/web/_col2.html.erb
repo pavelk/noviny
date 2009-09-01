@@ -1,0 +1,7 @@
+<div class="box boxNews">
+	<% if (@section && @section.id == Section::UMENI) %>
+		<%= render :partial=>"layouts/web/opinions" %>
+	<% else %>
+		<%= render :partial=>"layouts/web/news" %>
+	<% end %>
+</div> <!-- /.box --> 

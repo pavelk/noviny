@@ -9,6 +9,10 @@ class Inset < ActiveRecord::Base
   has_many :author_insets
   has_many :authors, :through => :author_insets
   
+  define_index do
+    indexes :name, :sortable => true
+    indexes data_file_name
+  end
   
   has_attached_file :data,
                     :url  => "/assets/files/:id/:style/:basename.:extension",

@@ -1,0 +1,6 @@
+$(".recordHeader").remove();
+$(".recordPath").remove();
+$(".recordEdit").remove();
+$("#viewRecord").append("<%= escape_javascript(render(:partial => 'get_versions')) %>");
+$("#viewRecord").show();
+$("#revert a").live("click", function() { return cancelArticle() });

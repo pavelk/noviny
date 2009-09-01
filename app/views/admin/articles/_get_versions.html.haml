@@ -1,0 +1,41 @@
+.recordHeader
+  %h2= link_to 'Správa verzí', '#'
+.recordPath
+.recordEdit
+  
+  %strong Verze:
+  %br
+  - @article.versions.reverse.each do |version|
+    = link_to "Verze c.#{version.version}, #{version.updated_at.strftime('%d/%m/%y')}, #{version.author.full_name}", "#", :onclick => "getVersion( '#{version.id}', '#{@article.id}' ); return false"
+    %br
+    
+  %br
+  %br
+  %br
+  - if @content_type[0] != 0
+    %strong Nadpis:
+    %br
+    #versions_name= @article.name
+  %br
+  %br
+  - if @content_type[1] != 0
+    %strong Perex:
+    %br
+    #versions_perex= @article.perex
+  %br
+  %br    
+  - if @content_type[2] != 0
+    %strong Text:
+    %br
+    #versions_text= @article.text
+  %br
+  %br    
+  - if @content_type[3] != 0
+    %strong Poznamka:
+    %br
+    #versions_poznamka= @article.poznamka
+  %br
+  %br
+  #revert
+    
+    

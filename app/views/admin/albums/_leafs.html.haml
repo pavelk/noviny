@@ -5,36 +5,32 @@
     - @str = "#{params[:type]}-#{@tree}-#{index + 1}"
   %tr{ :id => @str, :class => "ident-#{album.id}" }
     %td.listItem{ :class => "l#{album.level}", :id => "#{album.id}" }
-      -#= album.id
       - if (params[:type] == 'image')
         
         - if (album.children.size > 0 || album.pictures.size > 0)
-          = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.pictures_count == 0), :onclick => 'navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ); return false';
         - else
           %span{ :class => 'active'  }= album.name
       
       - if (params[:type] == 'inset')
       
         - if (album.children.size > 0 || album.insets.size > 0)
-          = link_to album.name, '#', :class => leaf(album.leaf? && album.insets_count == 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.insets_count == 0), :onclick => 'navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ); return false';
         - else
           %span{ :class => 'active'  }= album.name
         
       - if (params[:type] == 'audio')  
         
         - if (album.children.size > 0 || album.audios.size > 0)
-          = link_to album.name, '#', :class => leaf(album.leaf? && album.audios_count == 0)
+          = link_to album.name, '#', :class => leaf(album.leaf? && album.audios_count == 0), :onclick => 'navigationClick( $(this), $(this).parent().attr("id"), $(this).parent().parent().parent().parent().parent().parent() ); return false';
         - else
           %span{ :class => 'active'  }= album.name 
-        
-      -#= @str 
-    -#%td= album.descendants.count
-    -#%td= album.pictures_count
-    -#%td= number_to_human_size(album.pictures.sum(:data_file_size))
-    -#%td= album.created_at.to_s(:short)
+          
     %td= album.updated_at.strftime('%d/%m/%y') 
     %td= album.user.user_name
     %td= album.description
     %td.center
-      = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :class => "editLeaf-#{params[:type]}", :eid => "#{album.id}"
+      = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :class => "editLeaf-#{params[:type]}", :id => "editLeaf-#{album.id}", :onclick => 'editLeaf( $(this).attr("id").split("-")[1], $(this).attr("class").split("-")[1]  ); return false'
       = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"),  object_url(album), :title => 'Smazat', :confirm => 'Jste si jistí?', :method => :delete
+      
+      

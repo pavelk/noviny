@@ -1,0 +1,9 @@
+%h1 New info_box
+
+= error_messages_for :info_box
+
+- form_for(:info_box, :url => collection_url) do |f|
+  = render :partial => "form", :locals => { :f => f }
+  %p= submit_tag "Create"
+
+= link_to 'Back', collection_url

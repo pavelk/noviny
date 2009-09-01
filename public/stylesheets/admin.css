@@ -13,6 +13,7 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 .bold { font-weight: bold; }
 .center { text-align: center !important; }
 .fr { float: right; }
+.fl { float: left; }
 .clearer { clear: both; display: block; height: 1px; }
 
 .header { width: 100%; display: block; }

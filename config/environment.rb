@@ -1,6 +1,6 @@
-#ENV['RAILS_ENV'] ||= 'development'
+ENV['RAILS_ENV'] ||= 'production'
 
-#RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
 
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -13,15 +13,11 @@ Rails::Initializer.run do |config|
              :version => '~> 2.0.9' 
   #config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
 
-   
-  #config.action_controller.use_accept_header = true
-  
-  #config.time_zone = 'UTC'
   config.active_record.default_timezone = :utc
   
-  #config.i18n.load_path = Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
-  #config.i18n.default_locale = :cz
-
+  config.i18n.load_path = Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
+  config.i18n.default_locale = :cz
+  
   config.action_controller.session_store = :active_record_store
   
 end

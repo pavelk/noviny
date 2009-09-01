@@ -42,7 +42,7 @@ $("div[id^='checkbox-'] input").each(function() {
           }
         });
       }else{
-        $("div[id='subsection-"+ $(this).parent().attr('id').split('-')[1]  +"']").remove();
+        $("div[id='subsection-"+ $(this).parent().attr('id').split('-')[2]  +"']").remove();
       }  
   });  
 });  
@@ -54,7 +54,7 @@ $("form[id^='edit_article']").ajaxForm(
     beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
     resetForm: true,
     complete: function(XMLHttpRequest, textStatus) {
-       
+  
     }
   }
 );

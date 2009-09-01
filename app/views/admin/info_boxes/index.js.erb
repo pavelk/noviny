@@ -1,0 +1,16 @@
+<% if(params[:search_boxes]) %>
+$("#infoboxes .listFilter").empty();
+$("#infoboxes .listContent").empty();
+<% end %>
+$("#infoboxes .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#infoboxes .listContent").append("<%= escape_javascript(render(:partial => 'infoboxes_header', :object => @info_boxes)) %>");
+
+$("form[id='search_boxes']").ajaxForm(
+{
+	dataType: 'script',
+	beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
+	resetForm: true,
+	complete: function(XMLHttpRequest, textStatus) { 
+	}
+}
+);

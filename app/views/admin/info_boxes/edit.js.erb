@@ -1,0 +1,17 @@
+$(".recordHeader").remove();
+$(".recordPath").remove();
+$(".recordEdit").remove();
+$("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit')) %>");
+$("#viewRecord").show();
+
+
+$("form[id^='edit_info_box']").ajaxForm(
+  {
+    dataType: 'script',
+    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
+    resetForm: true,
+    complete: function(XMLHttpRequest, textStatus) {
+  
+    }
+  }
+);

@@ -1,2 +1,12 @@
+<% if(params[:search_theme]) %>
+$("#themes .listFilter").empty();
+$("#themes .listContent").empty();
+<% end %>
+
 $("#themes .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
 $("#themes .listContent").append("<%= escape_javascript(render(:partial => 'themes_header', :object => @themes)) %>");
+
+$("input[id='cancelSearchThemes']").bind("click", function() {
+  getThemes($("#themes h2"));
+  getThemes($("#themes h2"));
+});

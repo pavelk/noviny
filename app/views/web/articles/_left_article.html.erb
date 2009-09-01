@@ -1,0 +1,20 @@
+<div class="item itemSmallImage">
+	<div class="img">
+	  <%= article_first_photo(left_article) %>
+	</div> <!-- /.self -->
+	
+	<div class="self">
+	  <p class="info">
+	  	<%= left_article.head -%>
+		<% if with_date %>
+			<span><%= left_article.publish_date.to_s(:cz_date) %></span>
+		<% end %>
+	  </p>
+	  <h3 class="head">
+	  	<%= link_to left_article.name, articles_path(:action=>"detail",:id=>left_article.id) -%>
+	  </h3>
+	  <p class="perex">
+	  	<%= left_article.perex -%>
+	  </p>
+	</div> <!-- /.self -->
+</div> <!-- /.item -->
