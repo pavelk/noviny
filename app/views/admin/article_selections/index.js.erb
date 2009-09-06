@@ -1,0 +1,6 @@
+<% if(params[:search]) %>
+$("#article_selections .listFilter").empty();
+$("#article_selections .listContent").empty();
+<% end %>
+$("#article_selections .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#article_selections .listContent").append("<%= escape_javascript(render(:partial => 'article_selections_header', :object => @article_selections)) %>");

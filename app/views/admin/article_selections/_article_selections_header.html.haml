@@ -1,0 +1,9 @@
+%table
+  %tr
+    %th{ :width => '15%', :class => 'l1' }= link_to 'datum', '#'
+    %th{ :width => '15%'    }= link_to 'rubrika', '#'
+    %th{ :width => '45%'    } hlavni clanek
+    %th{ :width => '20%'    } ostatni clanky
+    %th{ :width => '5%'    } &nbsp;    
+    = render(:partial => 'article_selection', :collection => @article_selections)
+    -#= will_paginate @articles, :previous_label => 'Předchozí', :next_label => 'Další'

@@ -1,0 +1,8 @@
+- form_tag admin_article_selections_path, :method => :get, :id => 'search_article_selections' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_article_selections, params[:search_article_selections]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchArticleSelections', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' } 
+= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'article_selection_new', :onclick => 'newArticleSelection(); return false'
+.clearer

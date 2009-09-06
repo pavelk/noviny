@@ -1,0 +1,6 @@
+%tr{ :id => "relationship_#{relationship.id}" }
+  %td
+    %input{ :type => 'checkbox', :value => relationship.id }
+  %td= relationship.name
+  %td= relationship.updated_at.strftime('%d/%m/%Y')
+  %td= relationship.author.full_name

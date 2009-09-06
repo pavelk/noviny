@@ -39,6 +39,14 @@
       .clearer
     .listFilter
     .listContent   
+    .clearer
+  .listGroup#article_selections
+    .listHeader
+      %h2.folder= link_to "Vyber z clanku", '#', :onclick => 'getArticleSelections($("#article_selections h2")); return false'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
     .clearer      
   .listGroup#authors
     .listHeader

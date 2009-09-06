@@ -23,9 +23,12 @@ class Picture < ActiveRecord::Base
   #validates_uniqueness_of :name
   #before_save :save_dimensions 
   
-  has_attached_file :data, :styles => { :small => "x85>" },
+  has_attached_file :data, :styles => { :small => "x85>", :test => "100x100>" },
+                    :convert_options => { :test => ' -extent 100x30 +repage' },
+                    #:commands => { :test => "-background white -gravity center -extent 100x30 +repage" },
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/pictures/:id/:style/:basename.:extension"
+                    
                     
   #validates_attachment_presence :data
   #validates_attachment_size :data, :less_than => 5.megabytes

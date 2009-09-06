@@ -9,6 +9,7 @@ $("class^='count'").each(function() {
 });
 
 $('#publish_date').each(function() {
+ $.datepick.setDefaults({dateFormat: 'dd/mm/yy'});
  $(this).datepick({onSelect: pickedDate, defaultDate: null});
 });
 

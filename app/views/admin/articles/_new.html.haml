@@ -12,6 +12,11 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
+      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(); return false'
+      #related
+      %br
+      %hr
+      %br
       %strong Obrazky
       .dndContent
         %div{ :class => "listFiles" }

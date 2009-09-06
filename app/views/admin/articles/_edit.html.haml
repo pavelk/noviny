@@ -11,14 +11,31 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
-      = link_to "Souvisejici clanky", "#"
+      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(); return false', :id => "relart_#{@article.id}"
       #related
-      - Article.all.each do |art|
-        -#= art.name
-        -#= link_to "Pridat k souvisejicim", admin_relationships_path(:relarticle_id => art), :method => :post
-        -#= check_box_tag :relarticle_ids, art.id, @article.relarticles.include?(art), :name => 'article[relarticle_ids][]'
-        -#= label_tag :relarticle_ids, art.name
-    %br
+      - if(@article.inverse_relarticles.size > 0)
+        %br
+        %br
+        %strong Clanky odkazujici na tento clanek
+        %br
+        %br
+        - @article.inverse_relarticles.each do |inv|
+          = inv.name
+        %br
+        %br        
+      - if(@article.relationships.size > 0)  
+        %br
+        %br
+        %strong Souvisejici clanky
+        %br
+        %br
+        - @article.relationships.each do |relationship|
+          %div
+            = relationship.relarticle.name
+            = link_to "X", '#', :id => "relationship_#{@article.id}_#{relationship.id}", :onclick => 'removeRelationship( $(this)); return false'
+        %br
+        %hr
+        %br
       -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
       %strong Obrazky
       .dndContent

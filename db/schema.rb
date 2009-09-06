@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090831163015) do
+ActiveRecord::Schema.define(:version => 20090906145421) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -80,6 +80,20 @@ ActiveRecord::Schema.define(:version => 20090831163015) do
 
   add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
   add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
+
+  create_table "article_selections", :force => true do |t|
+    t.integer  "section_id"
+    t.integer  "main_article_id"
+    t.string   "sidebar_articles_ids"
+    t.date     "publish_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_selections", ["main_article_id"], :name => "article_selections_main_article_id_index"
+  add_index "article_selections", ["publish_date"], :name => "article_selections_publish_date_index"
+  add_index "article_selections", ["section_id"], :name => "article_selections_section_id_index"
+  add_index "article_selections", ["sidebar_articles_ids"], :name => "article_selections_sidebar_articles_ids_index"
 
   create_table "article_versions", :force => true do |t|
     t.integer  "article_id"

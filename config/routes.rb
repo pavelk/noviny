@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   
+
+  
   #Added by Jan Uhlar
   map.home "home", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
@@ -43,7 +45,11 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :sections
     admin.resources :relationships
     admin.resources :info_boxes
+    admin.resources :article_selections
   end
+  
+  
+  map.remove_relationship 'admin/relationships/remove_rel/:id/:rel', :controller => 'admin/relationships', :action => 'delete', :method => 'post'
   
   map.add_img 'admin/articles/add_img/:art/:pic', :controller => 'admin/articles', :action => 'add_img'
   map.remove_img 'admin/articles/remove_img/:art/:pic', :controller => 'admin/articles', :action => 'remove_img'

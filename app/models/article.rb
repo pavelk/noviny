@@ -7,6 +7,8 @@ class Article < ActiveRecord::Base
   belongs_to :user
   belongs_to :author
   
+  has_many :article_selections
+  
   belongs_to :section #added by Jan Uhlar
   belongs_to :subsection #added by Jan Uhlar
   
@@ -29,20 +31,33 @@ class Article < ActiveRecord::Base
   has_many :article_boxes
   has_many :info_boxes, :through => :article_boxes
   
+  #souvisejici clanky
   has_many :relationships
   has_many :relarticles, :through => :relationships
+  
+  has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "relarticle_id"
+  has_many :inverse_relarticles, :through => :inverse_relationships, :source => :article
   
   define_index do
     indexes text
     indexes perex
     indexes poznamka
+    indexes publish_date
+    indexes created_at
+    indexes updated_at, :sortable => true
     indexes :name, :sortable => true
     indexes [author.firstname, author.surname], :as => :author_name
     indexes [tags.name, tags.description], :as => :tags
     indexes [sections.name, sections.description], :as => :sections
     indexes content_type.name, :as => :content_type_name
+    set_property :enable_star => true
+    set_property :min_prefix_len => 3
   end
 
+  #named_scope :by_publish_date, lambda { {:conditions => ["publish_date <= ?", Time.now.utc]} }
+  named_scope :by_publish_date,  :conditions => ["publish_date <= ?", Time.now.utc]
+  
+  
   
   
   before_save do |a|

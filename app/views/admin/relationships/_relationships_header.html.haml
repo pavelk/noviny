@@ -1,0 +1,9 @@
+%table{ :width => '100%' }
+  %tr
+    %th{ :width => '4%'    } &nbsp;
+    %th{ :width => '56%' }= link_to 'nadpis', '#'
+    %th{ :width => '20%'     }= link_to 'datum', '#'
+    %th{ :width => '20%'    }= link_to 'autor', '#'
+    = render(:partial => 'relationship', :collection => @relationships)
+    %th{ :colspan => '4' }
+      = will_paginate @relationships, :previous_label => 'Předchozí', :next_label => 'Další'

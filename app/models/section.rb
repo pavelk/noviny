@@ -27,6 +27,7 @@ class Section < ActiveRecord::Base
   #has_many :articles
   has_many :article_sections
   has_many :articles, :through => :article_sections
+  has_many :article_selections
   
   
 end

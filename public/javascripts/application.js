@@ -1,7 +1,22 @@
-// kazdy request se spravnym headerem
+// all requests with valid header
 jQuery.ajaxSetup({ 
   'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
 })
+
+//global vars
+var relarticles = new Array();
+var thickbox_id = 0;
+
+
+function checkBoxes()
+{
+  $("div[id='TB_ajaxContent'] input[type='checkbox']").each(function (i) {  
+    if(relarticles.findItem($(this).val()))
+    {
+      $(this).attr('checked', true);
+    }
+  });  
+}
 
 //onload
 $(function()
@@ -34,6 +49,44 @@ $(function()
   });  
     
   $("#viewRecord").hide();
+  
+  $("input[class='hideSearch']").livequery(function() {
+    $(this).hide();
+  });
+  
+  $("input[class='showSearch']").livequery(function() {
+    $(this).show();
+  });
+  
+  $("a[class='thickbox']").livequery(function() {
+    tb_init('a.thickbox');
+  });
+  
+  $("a[class='thickbox_main']").livequery(function() {
+    tb_init('a.thickbox_main');
+  });
+  
+  $("a[class='thickbox_sidebar']").livequery(function() {
+    tb_init('a.thickbox_sidebar');
+  });
+  
+  $("div[id='TB_ajaxContent'] input[type='checkbox']").livequery(function() {
+    $(this).change(function() {
+      related_id = "related";
+      if (thickbox_id != 0) related_id = "related_"+thickbox_id;
+
+      if($(this).attr('checked'))
+      {
+        $("div[id='"+related_id+"']").append("<input type='hidden' name='"+related_id+"[id_"+ $(this).val() +"]' value='"+ $(this).val() +"' id='"+related_id+"-"+ $(this).val() +"'>");
+        relarticles.push($(this).val());
+      }else{
+        $("input[id='"+related_id+"-"+ $(this).val() +"']").remove();
+        relarticles.removeItem($(this).val());
+      }
+    });    
+  });
+  
+  
 });
 
 /** ARTICLES **/
@@ -42,9 +95,9 @@ function pickedDate( value, date, inst )
 { 
     if($("#article_publish_date").val().length == 0 )
     {
-      $("#article_publish_date").val("20" + value.split("/").reverse().join("-") + ' 00:00:00');
+      $("#article_publish_date").val(value.split("/").reverse().join("-") + ' 00:00:00');
     }else{
-      $("#article_publish_date").val("20" + value.split("/").reverse().join("-") + $("#article_publish_date").val().substring(10,19));
+      $("#article_publish_date").val(value.split("/").reverse().join("-") + $("#article_publish_date").val().substring(10,19));
     }   
 }
 
@@ -347,14 +400,16 @@ function getArticles( obj )
       //$("tr[id^='article_'] a.file").live("click", function() { return editArticle( $(this))} );
       //$("tr[id^='article_'] a.edit_article").live("click", function() { return editArticle( $(this))} );
       //$("a[id^='articles_new']").live("click", function() { return newArticle()} );
-      $(".pagination a").live("click", function() {
+      
+      $("div[id='articles'] .pagination a").live("click", function() {
       $("#articles .listFilter > *").remove();
       $("#articles .listContent > *").remove();
       $.get(this.href, null, function ( data ){
         $("input[id^='cancelSearch']").hide(); 
 	  }, "script");
     return false;
-  }); 
+  });
+   
     }
   });
   
@@ -379,7 +434,6 @@ function newArticle()
   
 }
 
-
 function editArticle( obj )
 {
   $("#listView").addClass("listSmall");
@@ -399,6 +453,108 @@ function editArticle( obj )
   return false;
 
 }
+
+function removeRelationship( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/relationships/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
+
+function getRelationship(tb_id)
+{
+  if (tb_id != null) thickbox_id = tb_id;
+  if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    //if($("a[id^='relart_']").attr("id").split("_")[1].length() == 0)
+    //{
+      url: '/admin/relationships/',
+    //}else{
+      //url: '/admin/relationships/?id=' + $("a[id^='relart_']").attr("id").split("_")[1],
+    //}    
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $("div[id='TB_ajaxContent'] .pagination a").live("click", function() {
+      $("#TB_ajaxContent > *").remove();
+      $.get(this.href, null, function ( data ){
+        //$("input[id='cancelSearchRelationships']").hide(); 
+	  }, "script");
+    return false;
+  });
+    }
+  });
+  return false;
+}
+
+
+function getArticleSelections( obj  )
+{
+  if(obj.attr("class") == 'active')
+  {
+    obj.removeClass('active');
+    obj.addClass('folder');
+    $("#article_selections .listFilter > *").remove();
+    $("#article_selections .listContent > *").remove();
+  }else{
+    obj.removeClass('folder');
+    obj.addClass('active');
+  
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/article_selections/',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      
+    }
+  });
+  return false;
+}
+}
+
+function newArticleSelection()
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/article_selections/new',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      setCounterEvents();
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });     
+    }
+  });
+  return false;
+}
+
+function editArticleSelection( obj )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/article_selections/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      setCounterEvents();
+      $(".recordHeader a").bind("click", function() { return cancelArticle() }); 
+    }
+  });
+  return false;
+  
+}
+
+
 
 function revertVersion( version, article )
 {

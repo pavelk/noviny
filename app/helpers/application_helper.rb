@@ -35,9 +35,9 @@ module ApplicationHelper
   #helpers for formatting date/time in jQuery date/time pickers
   def www_date(date)
     if date.nil?
-      Time.now.strftime('%d/%m/%y')
+      Time.now.strftime('%d/%m/%Y')
     else  
-      date.strftime('%d/%m/%y')
+      date.strftime('%d/%m/%Y')
     end
   end
   

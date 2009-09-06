@@ -1,14 +1,14 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
-  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_adding_boxes, :process_sections, :multi_tag_create 
-  update.after :process_sections
+  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_adding_boxes, :process_sections, :multi_tag_create, :process_related 
+  update.after :process_sections, :process_related
   update.before :multi_tag 
   
   def index
-    #@articles = Article.all.paginate( :per_page => 2, :page => params[:page] )
+    #debugger
     if(params[:search])
-      @articles = Article.search params[:search], :page => params[:page], :per_page => 10
+      @articles = Article.search params[:search], :page => params[:page], :per_page => 10, :order => 'updated_at DESC'
     else
       @articles = Article.all.paginate( :per_page => 10, :page => params[:page] )
     end 
@@ -209,6 +209,15 @@ class Admin::ArticlesController < Admin::AdminController
 
 private
   
+  def process_related
+    if(params[:related])
+      params[:related].each_value do |r|
+        relationship = @article.relationships.build(:relarticle_id => r)
+        relationship.save
+      end
+    end  
+  end
+    
   def multi_tag    
     if(params[:tag_list_multi])
       tlm = params[:tag_list_multi].join(", ")

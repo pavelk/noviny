@@ -1,0 +1,14 @@
+<% if(params[:search_relationships]) %>
+$("#TB_ajaxContent").empty();
+var cl1 = 'hideSearch';
+var cl2 = 'showSearch';
+<% else %>
+var cl1 = 'showSearch';
+var cl2 = 'hideSearch';
+<% end %>
+$("#TB_ajaxContent").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#TB_ajaxContent").append("<%= escape_javascript(render(:partial => 'relationships_header')) %>");
+$("input[id='cancelSearchRelationships']").removeClass( cl1 );
+$("input[id='cancelSearchRelationships']").addClass( cl2 );
+$("input[id='cancelSearchRelationships'], input[class='showSearch']").bind("click", function() { $("#TB_ajaxContent").empty(); return getRelationship(); }); 
+checkBoxes();
