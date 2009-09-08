@@ -18,26 +18,26 @@ class Picture < ActiveRecord::Base
   end
   
   
-    
-  #validates_presence_of :name
-  #validates_uniqueness_of :name
-  #before_save :save_dimensions 
-  
-  has_attached_file :data, :styles => { :small => "x85>", :test => "100x100>" },
-                    :convert_options => { :test => ' -extent 100x30 +repage' },
-                    #:commands => { :test => "-background white -gravity center -extent 100x30 +repage" },
+  has_attached_file :data, :styles => { :small => "85x85", 
+                                        :hp_main => "440x",
+                                        :hp_sidebar => "140x140^",
+                                        :author_little => "65x65^",
+                                        :preview_bottom => "140x140^",
+                                        :sidebar_article => "65x65^",
+                                        :articles_preview => "140x",
+                                        :article_profile => "178x",
+                                        :gallery_big => "440x440",
+                                        :author_image => "178x178^"
+                                         },
+                    :convert_options => { :hp_sidebar => ' -gravity Center -extent 140x130',
+                                          :author_little => ' -gravity Center -extent 65x60',
+                                          :preview_bottom => ' -gravity Center -extent 140x90',
+                                          :sidebar_article => ' -gravity Center -extent 65x41',
+                                          :author_image => ' -gravity Center -extent 178x178'
+                                        },
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/pictures/:id/:style/:basename.:extension"
-                    
-                    
-  #validates_attachment_presence :data
-  #validates_attachment_size :data, :less_than => 5.megabytes
-  #validates_attachment_content_type :data, 
-  #                                  :content_type => ['image/jpeg', 'image/pjpeg', 'image/jpg', 
-  #                                                    'image/png']
-                                                                                                                   
-  #default_style => :original
-  
+                      
   #Added by Jan Uhlar
   #Returns paginated pictures from article given by 'article_id' 
   def self.paginate_from_article(article_id, page = 1, per_page = 3)
@@ -48,11 +48,5 @@ class Picture < ActiveRecord::Base
          :per_page=>per_page)
   end
   
-  private
-  
-    #def save_dimensions(style = :styles => :original) 
-    #  self.data_width = Paperclip::Geometry.from_file(to_file(style)).width 
-    #  self.data_height = Paperclip::Geometry.from_file(to_file(style)).height 
-    #end
   
 end

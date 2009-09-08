@@ -3,7 +3,7 @@
 %br
 %br
 = f.label :section_id, 'Vyber clanku pro sekci:'
-= f.select(:section_id, Section.roots.collect {|s| [ s.name, s.id ] })
+= f.select(:section_id, (Section.roots + Home_placeholder.new.to_a).collect {|s| [ s.name, s.id ] })
 %br
 %br
 %strong Hlavni headlinovy clanek
