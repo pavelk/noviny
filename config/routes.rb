@@ -1,4 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
+
+
+  #map.resources :question_votes
+
+  
+
   
 
   
@@ -46,6 +52,10 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :relationships
     admin.resources :info_boxes
     admin.resources :article_selections
+    admin.resources :dailyquestions
+    admin.resources :tag_selections
+    admin.resources :article_banners
+    admin.resources :headliner_boxes
   end
   
   

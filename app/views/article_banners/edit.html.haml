@@ -1,0 +1,11 @@
+%h1 Editing article_banner
+
+= error_messages_for :article_banner
+
+- form_for(:article_banner, :url => object_url, :html => { :method => :put }) do |f|
+  = render :partial => "form", :locals => { :f => f }
+  %p= submit_tag "Update"
+  
+= link_to 'Show', object_url
+|
+= link_to 'Back', collection_url

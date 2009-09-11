@@ -1,0 +1,7 @@
+- form_tag admin_dailyquestions_path, :method => :get, :id => 'search_daily_questions' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_boxes, params[:search_daily_questions]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newDailyQuestion(); return false', :id => 'dailyquestions_new'
+.clearer

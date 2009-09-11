@@ -85,7 +85,15 @@ $(function()
       }
     });    
   });
-  
+  /*
+  $("'#publish_date'").livequery(function() {
+    $(this).each(function() {
+     $.datepick.setDefaults({dateFormat: 'dd/mm/yy'});
+     $(this).datepick({onSelect: pickedDate, defaultDate: null});
+
+    });
+  });
+  */
   
 });
 
@@ -554,7 +562,63 @@ function editArticleSelection( obj )
   
 }
 
+function getDailyQuestions( obj )
+{
+    if(obj.attr("class") == 'active')
+    {
+      obj.removeClass('active');
+      obj.addClass('folder');
+      $("#daily_selections .listFilter > *").remove();
+      $("#daily_selections .listContent > *").remove();
+    }else{
+      obj.removeClass('folder');
+      obj.addClass('active');
 
+    $.ajax({
+      type: 'GET',
+      dataType: 'script',
+      url: '/admin/dailyquestions/',
+      error: function(msg) { alert("Chyba v přenosu dat."); },
+      success: function(data, status) {
+
+      }
+    });
+    return false;
+  }
+}
+
+function newDailyQuestion()
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/dailyquestions/new',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      setCounterEvents();
+      $(".recordHeader a").bind("click", function() { return cancelLeaf() });     
+    }
+  });
+  return false;
+  
+}
+
+function editDailyQuestion( obj )
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/dailyquestions/' + $(obj).parent().parent().attr("id").split("_")[2] + "/edit",
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelArticle() }); 
+    }
+  });
+  return false;
+  
+}
 
 function revertVersion( version, article )
 {

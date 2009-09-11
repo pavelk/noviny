@@ -1,0 +1,14 @@
+%h1 Listing dailyquestions
+
+%table
+  %tr
+  - @dailyquestions.each do |dailyquestion|
+    %tr
+        
+      %td= link_to 'Show', object_url(dailyquestion)
+      %td= link_to 'Edit', edit_object_url(dailyquestion)
+      %td= link_to 'Destroy', object_url(dailyquestion), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New dailyquestion', new_object_url

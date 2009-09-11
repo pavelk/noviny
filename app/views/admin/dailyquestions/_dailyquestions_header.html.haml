@@ -1,0 +1,7 @@
+%table
+  %tr
+    %th{ :width => '20%', :class => 'l1' }= link_to 'nazev', '#'
+    %th{ :width => '20%', :class => 'l1' }= link_to 'otazka', '#'
+    %th{ :width => '10%'     }= link_to 'datum', '#'
+    %th{ :width => '25%'    } &nbsp;    
+    = render(:partial => 'daily_question', :collection => @dailyquestions)

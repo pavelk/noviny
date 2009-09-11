@@ -1,0 +1,14 @@
+%h1 Listing tag_selections
+
+%table
+  %tr
+  - @tag_selections.each do |tag_selection|
+    %tr
+        
+      %td= link_to 'Show', object_url(tag_selection)
+      %td= link_to 'Edit', edit_object_url(tag_selection)
+      %td= link_to 'Destroy', object_url(tag_selection), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New tag_selection', new_object_url

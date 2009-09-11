@@ -1,0 +1,36 @@
+= f.label :headline, 'Headline:'
+= f.text_field :headline, :class => 'inp'
+%br
+%br
+= f.label :question_text, 'Text otazky:'
+%br
+= f.text_area :question_text, :class => 'smallText'
+%br
+%br
+%label{ :for => "publish_date" } Datum publikace:
+%input{ :id => "publish_date", :name => "publish_date", :size => "30", :type => "text", :value => www_date(@dailyquestion.publish_date)}
+%br
+%br  
+= f.label :perex, 'Perex:'
+= f.text_area :perex
+%br
+%br
+= f.label :author_yes_id, 'Vyber autora - ANO:'
+= f.select(:author_yes_id, (Author.all).collect {|a| [ a.full_name, a.id ] })
+%br
+%br
+= f.label :text_yes, 'Nazor - ANO:'
+%br
+= f.text_area :text_yes, :class => 'smallText'
+%br
+%br
+= f.label :author_no_id, 'Vyber autora - NE:'
+= f.select(:author_no_id, (Author.all).collect {|a| [ a.full_name, a.id ] })
+%br
+%br
+= f.label :text_no, 'Nazor - NE:'
+%br
+= f.text_area :text_no, :class => 'smallText'
+%br
+%br
+%hr

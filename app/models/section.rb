@@ -1,5 +1,16 @@
 class Section < ActiveRecord::Base
   
+  #new migrations
+  has_many :headliner_sections
+  has_many :headliner_boxes, :through => :headliner_sections
+  
+  has_many :articlebanner_sections
+  has_many :article_banners, :through => :articlebanner_sections
+  
+  has_many :theme_selections
+  has_many :tag_selections, :through => :theme_selections
+  #
+  
   #Added by Jan Uhlar  
     DOMOV = 1
     SVET = 2
@@ -28,6 +39,8 @@ class Section < ActiveRecord::Base
   has_many :article_sections
   has_many :articles, :through => :article_sections
   has_many :article_selections
+  
+  
   
   
 end

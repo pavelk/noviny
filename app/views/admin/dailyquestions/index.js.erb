@@ -1,0 +1,6 @@
+<% if(params[:search_daily_questions]) %>
+$("#daily_selections .listFilter").empty();
+$("#daily_selections .listContent").empty();
+<% end %>
+$("#daily_selections .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#daily_selections .listContent").append("<%= escape_javascript(render(:partial => 'dailyquestions_header', :object => @dailyselections)) %>");

@@ -1,0 +1,2 @@
+module ArticleBannersHelper
+end

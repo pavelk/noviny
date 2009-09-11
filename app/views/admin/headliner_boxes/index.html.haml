@@ -1,0 +1,14 @@
+%h1 Listing headliner_boxes
+
+%table
+  %tr
+  - @headliner_boxes.each do |headliner_box|
+    %tr
+        
+      %td= link_to 'Show', object_url(headliner_box)
+      %td= link_to 'Edit', edit_object_url(headliner_box)
+      %td= link_to 'Destroy', object_url(headliner_box), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New headliner_box', new_object_url

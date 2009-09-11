@@ -1,3 +1,4 @@
+= request.env['REMOTE_ADDR'].to_a.size
 #viewRecord
 #listView
   .listGroup#group-image
@@ -40,9 +41,17 @@
     .listFilter
     .listContent   
     .clearer
-  .listGroup#article_selections
+  .listGroup#headliner_boxes
     .listHeader
-      %h2.folder= link_to "Vyber z clanku", '#', :onclick => 'getArticleSelections($("#article_selections h2")); return false'
+      %h2.folder= link_to "Headlinovy box (#{HeadlinerBox.all.length})", '#', :onclick => 'getHeadlinerBoxes($("#daily_selections h2")); return false'
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer    
+  .listGroup#daily_selections
+    .listHeader
+      %h2.folder= link_to "Otazka dne (#{Dailyquestion.all.length})", '#', :onclick => 'getDailyQuestions($("#daily_selections h2")); return false'
       %span Volitelny popis sekce
       .clearer
     .listFilter

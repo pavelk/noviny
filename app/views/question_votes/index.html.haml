@@ -1,0 +1,14 @@
+%h1 Listing question_votes
+
+%table
+  %tr
+  - @question_votes.each do |question_vote|
+    %tr
+        
+      %td= link_to 'Show', object_url(question_vote)
+      %td= link_to 'Edit', edit_object_url(question_vote)
+      %td= link_to 'Destroy', object_url(question_vote), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New question_vote', new_object_url

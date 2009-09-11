@@ -2,7 +2,15 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   version_fu do
     belongs_to :author, :class_name=>'::Author'
-  end  
+  end
+  
+  #new  migrations
+  has_many :headliner_boxes
+  has_many :article_banners
+  
+  has_many :headliner_articles
+  has_many :headliner_boxes, :through => :headliner_articles
+  # 
       
   belongs_to :user
   belongs_to :author

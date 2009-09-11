@@ -1,5 +1,10 @@
 class Picture < ActiveRecord::Base
   
+  #new  migrations
+  has_many :headliner_boxes
+  has_many :article_banners
+  #
+  
   belongs_to :user
   belongs_to :album, :counter_cache => true
   

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090906145421) do
+ActiveRecord::Schema.define(:version => 20090911063254) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -38,6 +38,19 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
 
   add_index "article_audios", ["article_id"], :name => "article_audios_article_id_index"
   add_index "article_audios", ["audio_id"], :name => "article_audios_audio_id_index"
+
+  create_table "article_banners", :force => true do |t|
+    t.string   "headline"
+    t.date     "publish_date"
+    t.integer  "picture_id"
+    t.integer  "article_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_banners", ["article_id"], :name => "article_banners_article_id_index"
+  add_index "article_banners", ["picture_id"], :name => "article_banners_picture_id_index"
+  add_index "article_banners", ["publish_date"], :name => "article_banners_publish_date_index"
 
   create_table "article_boxes", :force => true do |t|
     t.integer "article_id"
@@ -81,20 +94,6 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
   add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
   add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
 
-  create_table "article_selections", :force => true do |t|
-    t.integer  "section_id"
-    t.integer  "main_article_id"
-    t.string   "sidebar_articles_ids"
-    t.date     "publish_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "article_selections", ["main_article_id"], :name => "article_selections_main_article_id_index"
-  add_index "article_selections", ["publish_date"], :name => "article_selections_publish_date_index"
-  add_index "article_selections", ["section_id"], :name => "article_selections_section_id_index"
-  add_index "article_selections", ["sidebar_articles_ids"], :name => "article_selections_sidebar_articles_ids_index"
-
   create_table "article_versions", :force => true do |t|
     t.integer  "article_id"
     t.integer  "version"
@@ -117,6 +116,14 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
   end
 
   add_index "article_views", ["article_id"], :name => "article_views_article_id_index"
+
+  create_table "articlebanner_sections", :force => true do |t|
+    t.integer "article_banner_id"
+    t.integer "section_id"
+  end
+
+  add_index "articlebanner_sections", ["article_banner_id"], :name => "articlebanner_sections_article_banner_id_index"
+  add_index "articlebanner_sections", ["section_id"], :name => "articlebanner_sections_section_id_index"
 
   create_table "articles", :force => true do |t|
     t.integer  "user_id"
@@ -194,6 +201,64 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
     t.string "name"
   end
 
+  create_table "dailyquestion_authors", :force => true do |t|
+    t.integer "dailyquestion_id"
+    t.integer "author_id"
+    t.boolean "question_value"
+    t.string  "question_text"
+  end
+
+  add_index "dailyquestion_authors", ["author_id"], :name => "dailyquestion_authors_author_id_index"
+  add_index "dailyquestion_authors", ["dailyquestion_id"], :name => "dailyquestion_authors_dailyquestion_id_index"
+
+  create_table "dailyquestions", :force => true do |t|
+    t.string   "headline"
+    t.string   "question_text"
+    t.text     "perex"
+    t.date     "publish_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "headliner_articles", :force => true do |t|
+    t.integer "headliner_box_id"
+    t.integer "article_id"
+  end
+
+  add_index "headliner_articles", ["article_id"], :name => "headliner_articles_article_id_index"
+  add_index "headliner_articles", ["headliner_box_id"], :name => "headliner_articles_headliner_box_id_index"
+
+  create_table "headliner_boxes", :force => true do |t|
+    t.string   "headline"
+    t.string   "perex"
+    t.date     "publish_date"
+    t.integer  "picture_id"
+    t.integer  "article_id"
+    t.string   "picture_title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "headliner_boxes", ["article_id"], :name => "headliner_boxes_article_id_index"
+  add_index "headliner_boxes", ["picture_id"], :name => "headliner_boxes_picture_id_index"
+  add_index "headliner_boxes", ["publish_date"], :name => "headliner_boxes_publish_date_index"
+
+  create_table "headliner_sections", :force => true do |t|
+    t.integer "headliner_box_id"
+    t.integer "section_id"
+  end
+
+  add_index "headliner_sections", ["headliner_box_id"], :name => "headliner_sections_headliner_box_id_index"
+  add_index "headliner_sections", ["section_id"], :name => "headliner_sections_section_id_index"
+
+  create_table "headliner_themes", :force => true do |t|
+    t.integer "headliner_box_id"
+    t.integer "theme_id"
+  end
+
+  add_index "headliner_themes", ["headliner_box_id"], :name => "headliner_themes_headliner_box_id_index"
+  add_index "headliner_themes", ["theme_id"], :name => "headliner_themes_theme_id_index"
+
   create_table "info_box_pictures", :force => true do |t|
     t.integer "picture_id"
     t.integer "info_box_id"
@@ -256,6 +321,18 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
+  create_table "question_votes", :force => true do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.boolean  "vote_value"
+    t.datetime "created_at"
+  end
+
+  add_index "question_votes", ["created_at"], :name => "question_votes_created_at_index"
+  add_index "question_votes", ["question_id"], :name => "question_votes_question_id_index"
+  add_index "question_votes", ["user_id"], :name => "question_votes_user_id_index"
+  add_index "question_votes", ["vote_value"], :name => "question_votes_vote_value_index"
+
   create_table "relationships", :force => true do |t|
     t.integer  "article_id"
     t.integer  "relarticle_id"
@@ -300,6 +377,11 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
     t.datetime "updated_at"
   end
 
+  create_table "tag_selections", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -319,6 +401,22 @@ ActiveRecord::Schema.define(:version => 20090906145421) do
   end
 
   add_index "tags", ["user_id"], :name => "tags_user_id_index"
+
+  create_table "themeselection_sections", :force => true do |t|
+    t.integer "tag_selection_id"
+    t.integer "section_id"
+  end
+
+  add_index "themeselection_sections", ["section_id"], :name => "themeselection_sections_section_id_index"
+  add_index "themeselection_sections", ["tag_selection_id"], :name => "themeselection_sections_tag_selection_id_index"
+
+  create_table "themeselection_themes", :force => true do |t|
+    t.integer "tag_selection_id"
+    t.integer "theme_id"
+  end
+
+  add_index "themeselection_themes", ["tag_selection_id"], :name => "themeselection_themes_tag_selection_id_index"
+  add_index "themeselection_themes", ["theme_id"], :name => "themeselection_themes_theme_id_index"
 
   create_table "users", :force => true do |t|
     t.string   "user_name",           :default => "", :null => false
