@@ -1,0 +1,5 @@
+%div{ :id => "subsection-#{@section.id}" }
+  - subsection.each do |c|
+    %div
+      = check_box_tag :section_ids, c.id, @object.sections.include?(c), :name => "#{return_classname(@object)}[section_ids][]"
+      = label_tag :section_ids, c.name

@@ -1,0 +1,6 @@
+<% if(params[:search_article_banners]) %>
+$("#article_banners .listFilter").empty();
+$("#article_banners .listContent").empty();
+<% end %>
+$("#article_banners .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#article_banners .listContent").append("<%= escape_javascript(render(:partial => 'article_banner_header', :object => @article_banners)) %>");

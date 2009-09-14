@@ -1,0 +1,6 @@
+$(".listFiles.listImgr").append("<%= escape_javascript(render(:partial => 'image', :object => @picture)) %>");
+$("a[id^='img_<%= @picture.id %>']").bind("click", function() { 
+  return tmpremoveFileFromArticle( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_image' ) });
+  
+  
+  controller,         article, file, action

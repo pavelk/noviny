@@ -33,8 +33,10 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   private
   
+  
     def set_values
-      @dailyquestion.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-'))   
+      #@dailyquestion.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-'))
+      @dailyquestion.update_attributes( :publish_date => params[:dailyquestion][:publish_date].split('/').reverse.join('-'))
     end
   
 end

@@ -4,6 +4,10 @@ class Admin::AdminController < ResourceController::Base
   
   before_filter { |c| Tag.current_user = c.current_user }
   
+  index.response do |wants|
+    wants.js
+  end
+  
   new_action.response do |wants|
     wants.js
   end

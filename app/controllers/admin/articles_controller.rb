@@ -69,7 +69,7 @@ class Admin::ArticlesController < Admin::AdminController
     @article.content_type_id = params[:content_value]
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[params[:content_type]]
     end
-    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
     respond_to do |format|  
       format.js
     end

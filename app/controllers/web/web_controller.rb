@@ -17,7 +17,8 @@ protected
    add_breadcrumb "Deník Referendum", "home_path"
 
    def set_variables
-     @tags = Article.top_taggings(4)
+     @week =  Web::Calendar.week?
+     @tags = Article.top_taggings(6)
      @type = 1 #for partial readest menu
      @readest = Article.all_readest(Time.now-24.hours)
      @authors = Author.find(:all,:limit=>10)

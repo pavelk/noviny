@@ -5,4 +5,6 @@ class Dailyquestion < ActiveRecord::Base
   has_many :dailyquestion_authors
   has_many :authors, :through => :dailyquestion_authors
   
+  accepts_nested_attributes_for :question_votes
+  
 end

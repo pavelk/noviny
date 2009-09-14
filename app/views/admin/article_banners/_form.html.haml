@@ -1,0 +1,11 @@
+= f.label :headline, 'Headline:'
+= f.text_field :headline, :class => 'inp'
+%br
+%br
+%label{ :for => "article_banner_publish_date" } Datum publikace:
+%input{ :id => "article_banner_publish_date", :name => "article_banner[publish_date]", :size => "30", :type => "text", :value => www_date(@article_banner.publish_date)}
+%br
+%br
+%p Zaradte upoutavku do rubrik:
+= render(:partial => "shared/admin/section_checkboxes", :object => @object)
+%hr

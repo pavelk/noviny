@@ -14,7 +14,9 @@
      <div class="box">
        <h3 class="h line">Další témata TODO</h3>
        <ul>
-			<li><a href="">Ekologie TODO</a></li>
+       		<% @next_topics.each do |topic| %>
+			<li><%= link_to topic.name %></li>
+			<% end if @next_topics%>
        </ul>
      </div> <!-- /.box -->
    </div> <!-- /.col1 -->

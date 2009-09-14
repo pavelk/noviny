@@ -1,0 +1,6 @@
+<% if(params[:search_headliner_boxes]) %>
+$("#headliner_boxes .listFilter").empty();
+$("#headliner_boxes .listContent").empty();
+<% end %>
+$("#headliner_boxes .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#headliner_boxes .listContent").append("<%= escape_javascript(render(:partial => 'headliner_box_header', :object => @headliner_boxes)) %>");

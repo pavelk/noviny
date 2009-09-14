@@ -1,0 +1,11 @@
+.recordHeader
+  %h2= link_to 'Nova graficka upoutavka', '#'
+.recordPath
+.recordEdit
+
+  = error_messages_for :article_banner
+
+  - form_for @article_banner, :url => collection_url do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %p= submit_tag "Ulozit"

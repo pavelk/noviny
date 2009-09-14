@@ -1,0 +1,11 @@
+<h3 class="h line">Související</h3>
+<div class="in">
+<% @related.each do |rel| %>
+	 <div class="item itemSmall noImg">
+		<div class="self">
+		  <p class="info"><%= rel.head %></p>
+		  <h3 class="head"><%= link_to(rel.name,articles_path(:action=>"detail",:id=>rel.id))%></h3>
+		</div> <!-- /.self -->
+	 </div> <!-- /.item -->
+<% end if @related %>     
+</div> <!-- /.in -->

@@ -1,31 +1,14 @@
 <p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", "TODO" %></p>
-<div class="item itemBig">
-  <div class="img">
-    <a href=""><%= image_tag "web/banner-top.jpg",:alt=>"TODO" %></a>
-    <div class="caption">
-      <span>TODO</span>
-    </div> <!-- /.caption -->
-  </div> <!-- /.img -->
-  
-  <div class="self">
-    <h2 class="head">
-    	<a href="">TODO TODO TODO TODO nadpis</a>
-				  </h2>
-    <p class="perex">
-    	TODO TODO TODO perex [...]
-				  </p>
-  </div> <!-- /.self -->
-</div> <!-- /.item -->
-
+<%= render :partial=> "web/articles/headliner_box" %>
 <ul class="list item">
-	<% @articles.each do |article| -%>
+	<% @rel_articles.each do |article| -%>
 		<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
 	<% end -%>
 </ul>
 	        
 <div class="box">
   <h2 class="h line">Názory</h2>
-  <div class="in">
+  <div class="in itemList">
   	<%= "No opinions" if @opinions.blank? %> 
 	<%= render :partial=>"web/articles/left_article", :collection=>@opinions,:locals=>{:with_date=>true} %>   
     
@@ -73,7 +56,7 @@
 <div class="box cols cols3">
   <div class="col1">
     <h2 class="h line">Domov</h2>
-				  	<%= render :partial=>"web/articles/section",:collection=>@homes %>
+	<%= render :partial=>"web/articles/section",:collection=>@homes %>
   </div> <!-- /.col1 -->
   
   <div class="col2">

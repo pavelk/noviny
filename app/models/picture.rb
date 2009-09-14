@@ -43,15 +43,15 @@ class Picture < ActiveRecord::Base
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/pictures/:id/:style/:basename.:extension"
                       
-  #Added by Jan Uhlar
-  #Returns paginated pictures from article given by 'article_id' 
-  def self.paginate_from_article(article_id, page = 1, per_page = 3)
-    paginate(:all,
-         :conditions=>["article_pictures.article_id = ?",article_id],
-         :page=>page,
-         :joins=>[:articles],
-         :per_page=>per_page)
-  end
+    #Added by Jan Uhlar
+    #Returns paginated pictures from article given by 'article_id' 
+    def self.paginate_from_article(article_id, page = 1, per_page = 6)
+      paginate(:all,
+           :conditions=>["article_pictures.article_id = ?",article_id],
+           :page=>page,
+           :joins=>[:articles],
+           :per_page=>per_page)
+    end
   
   
 end

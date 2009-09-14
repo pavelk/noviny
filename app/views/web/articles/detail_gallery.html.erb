@@ -1,68 +1,49 @@
 <div class="box boxDetail">
    <h2 class="head"><%= @article.name %></h2>
    <p class="perex"><%= @article.perex %></p>
-   
    <div class="cols detailImage line">
      <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless @author_image -%>">
        <%= render :partial=>"web/articles/author_box" %>
      </div> <!-- /.col1 -->
      
      <div class="col2 gallery">
-         <div class="paging" id="paging">
-             <%= render :partial=>"web/articles/paging" %>
-          </div> <!-- /.paging -->
-                
-          <div class="thumbs" id="thumbs">
-          	<%= render :partial=>"web/articles/thumb",:collection=>@pictures %>
-          </div> <!-- /.thumbs -->
-          <%= spinner_tag('thumb') %>      
-          <div class="main" id="main_image">
-             <%= render :partial=>"web/articles/main_image" %>
-          </div> <!-- /.main -->
-       </div> <!-- /.col2 -->
-
-	 
+       <div class="paging">
+			<ul class="pages">
+			  <li class="nav prev"><a href="">predchozi</a></li>
+			  <li><span class="actual">1</span> / 6</li>
+			  <li class="nav next"><a href="">nasledujici</a></li>
+			</ul>
+       </div> <!-- /.paging -->
+       
+       <div class="thumbs">
+		<ul>
+			<%= render :partial=>"web/articles/thumb", :collection=>@pictures %>
+		</ul>
+       </div> <!-- /.thumbs -->
+       <div class="main">
+			<%= render :partial=>"web/articles/main_image" %>
+       </div> <!-- /.main -->
+     </div> <!-- /.col2 -->
    </div> <!-- /.cols -->
+
    
    <div class="cols detailContent">
      <div class="col1">
        <div class="box boxLine">
-		<ul>
-		  <li><a href="">Vytisknout článek TODO</a></li>
-		  <li><a href="">Poslat e-mailem TODO</a></li>
-		  <li><a href="">Sdílet TODO</a></li>
-		  <li>Velikost textu TODO<a href="">+</a> <a href="">–</a></li>
-		</ul>
-       </div> <!-- /.box -->
+		<%= render :padtial=>"web/articles/left_box" %>
+		</div> <!-- /.box -->
        
-       <div class="box">
-		<h3 class="h line">Profil</h3>
-		<div class="in">
-		  TODO
-		</div> <!-- /.in -->
-       </div> <!-- /.box -->
-       
-       <div class="box">
-		<h3 class="h line">Souvisejici - TODO</h3>
-
-		<div class="in">
-		  <div class="item itemSmall noImg">
-		    <div class="self">
-		      <p class="info">Film Analýza - TODO</p>
-		      <h3 class="head"><a href="">TODO - Po volbách musí daně nahoru. Jinak končí sametové časy</a></h3>
-		    </div> <!-- /.self -->
-		  </div> <!-- /.item -->
-		</div> <!-- /.in -->
-
-       </div> <!-- /.box -->
-     </div> <!-- /.col1 -->
-     
-     <div class="col2">
-       <div class="text">
-		<p><%= @article.text %></p>
-       </div> <!-- /.text -->
-	   
-     </div> <!-- /.col2 -->
-   </div> <!-- /.cols -->
+	<div class="box">
+		<%= render :partial=>"web/articles/rel_articles" %>
+	 </div> <!-- /.box -->
+	
+	 </div> <!-- /.col1 -->
+	     
+	<div class="col2">
+	       <div class="text">
+			<p><%= @article.text %></p>
+	       </div> <!-- /.text -->       
+	</div> <!-- /.col2 -->
+	
+	</div> <!-- /.cols -->
  </div> <!-- /.box -->
-        

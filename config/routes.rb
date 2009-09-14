@@ -64,6 +64,9 @@ ActionController::Routing::Routes.draw do |map|
   map.add_img 'admin/articles/add_img/:art/:pic', :controller => 'admin/articles', :action => 'add_img'
   map.remove_img 'admin/articles/remove_img/:art/:pic', :controller => 'admin/articles', :action => 'remove_img'
   
+  map.add_image 'admin/pictures/add_image/:object/:id/:class', :controller => 'admin/pictures', :action => 'add_image'
+  map.remove_image 'admin/pictures/remove_image/:object/:id/:class', :controller => 'admin/pictures', :action => 'remove_image'
+  
   map.add_file 'admin/articles/add_file/:art/:pic', :controller => 'admin/articles', :action => 'add_file'
   map.remove_file 'admin/articles/remove_file/:art/:pic', :controller => 'admin/articles', :action => 'remove_file'
   
@@ -80,7 +83,8 @@ ActionController::Routing::Routes.draw do |map|
   map.remove_author_file 'admin/authors/remove_file/:art/:pic', :controller => 'admin/authors', :action => 'remove_file'
   
   map.get_content_type 'admin/articles/get_content_type/:content_type/:content_value/:id', :controller => 'admin/articles', :action => 'get_content_type'
-  map.get_subsection 'admin/articles/get_subsection/:section/:id', :controller => 'admin/articles', :action => 'get_subsection'
+  #map.get_subsection 'admin/articles/get_subsection/:section/:id', :controller => 'admin/articles', :action => 'get_subsection'
+  map.get_subsection 'admin/sections/get_subsection/:section/:id/:class', :controller => 'admin/sections', :action => 'get_subsection'
   
   map.get_versions 'admin/articles/get_versions/:id', :controller => 'admin/articles', :action => 'get_versions'
   map.get_version 'admin/articles/get_version/:id/:version', :controller => 'admin/articles', :action => 'get_version'

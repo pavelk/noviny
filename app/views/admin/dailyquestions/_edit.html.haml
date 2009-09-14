@@ -8,5 +8,7 @@
   - form_for @dailyquestion, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
+      - f.fields_for @dailyquestion_authors do |a|
+        = a.text_field :question_text
       %p= submit_tag "Upravit"
 

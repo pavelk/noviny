@@ -111,6 +111,7 @@ Video:
     perex: 80/480
     text: 0
     poznamka: 0
+    video: 1
 
 MP3:
     nadpis: 0/80

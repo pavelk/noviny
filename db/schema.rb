@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090911063254) do
+ActiveRecord::Schema.define(:version => 20090912100234) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -322,14 +322,14 @@ ActiveRecord::Schema.define(:version => 20090911063254) do
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
   create_table "question_votes", :force => true do |t|
-    t.integer  "question_id"
+    t.integer  "dailyquestion_id"
     t.integer  "user_id"
     t.boolean  "vote_value"
     t.datetime "created_at"
   end
 
   add_index "question_votes", ["created_at"], :name => "question_votes_created_at_index"
-  add_index "question_votes", ["question_id"], :name => "question_votes_question_id_index"
+  add_index "question_votes", ["dailyquestion_id"], :name => "question_votes_question_id_index"
   add_index "question_votes", ["user_id"], :name => "question_votes_user_id_index"
   add_index "question_votes", ["vote_value"], :name => "question_votes_vote_value_index"
 
@@ -380,6 +380,8 @@ ActiveRecord::Schema.define(:version => 20090911063254) do
   create_table "tag_selections", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "headline"
+    t.date     "publish_date"
   end
 
   create_table "taggings", :force => true do |t|

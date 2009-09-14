@@ -1,3 +1,5 @@
+- if @content_type[4] == 1
+  VIDEO!
 - if @content_type[0] != 0
   = f.label :name, 'Nadpis:'
   = f.text_field :name, :class => "inp countable count-#{@content_type[0].split('/')[0]}-#{@content_type[0].split('/')[1]}"
@@ -35,26 +37,7 @@
 %br
 %br
 %p Zaradte clanek do rubriky:
-- Section.roots.each do |section|
-  %div{ :id => "checkbox-#{@article.id}-#{section.id}" }
-    = check_box_tag :section_ids, section.id, @article.sections.include?(section), :name => 'article[section_ids][]'
-    = label_tag :section_ids, section.name
-    -#- if @article.sections.include?(section) && !section.leaf?
-      -#%div{ :id => "subsection-#{section.id}" }
-        -#- section.children.each do |c|
-          -#%div.l2
-            -#= check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
-            -#= label_tag :section_ids, c.name
-%p{ :id => 'appendSubsection'} Zaradte clanek do podrubriky:
-- Section.roots.each do |subsection|
-  - if @article.sections.include?(subsection) && !subsection.leaf?
-    %div{ :id => "subsection-#{subsection.id}" }
-      - subsection.children.each do |c|
-        %div
-          = check_box_tag :section_ids, c.id, @article.sections.include?(c), :name => 'article[section_ids][]'
-          = label_tag :section_ids, c.name          
-%br
-%br
+= render(:partial => "shared/admin/section_checkboxes", :object => @object)
 
 = f.label :tag_list, 'Témata'
 %br

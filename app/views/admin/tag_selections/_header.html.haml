@@ -1,0 +1,7 @@
+- form_tag admin_tag_selections_path, :method => :get, :id => 'search_tag_selections' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_tag_selections, params[:search_tag_selections]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newTagSelection(); return false', :id => 'tagselection_new'
+.clearer

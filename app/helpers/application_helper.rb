@@ -8,6 +8,10 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def main_image_tag(path,options={})
+    image_tag("http://referendum.glow.cz#{path}",options)
+  end
+  
   #Returns normalize form of string for formatting the url
   #Example: 'Kůň úpěl' -> 'kun-upel'
   def norm_string(string)
@@ -20,9 +24,9 @@ module ApplicationHelper
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     if (article.section_id == Section::NAZORY || arr.include?(article.content_type_id))
       author = article.author
-      return link_to(image_tag(author.pictures.first.data.url(:small)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
+      return link_to(main_image_tag(author.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
     else
-      return link_to(image_tag(article.pictures.first.data.url(:small)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
+      return link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
     end
   end
   
@@ -31,6 +35,20 @@ module ApplicationHelper
   def remote_readest_link(name,begin_date,type)
     link_to_remote name || "24 hodin",:url=>{:controller=>"web/ajax",:action=>"update_readest",:begin_date=>begin_date || (Time.now-24.hours),:type=>type || 1},:loading=>"Element.show('readest_spinner');",:complete=>"Element.hide('readest_spinner');"
   end
+  
+  #return id for form object
+  def return_id(obj)
+    if(obj.new_record?)
+      'new_rec'
+    else
+       obj.id 
+    end  
+  end
+  
+  #return class name as string for forms
+  def return_classname(obj)
+    obj.class.name.underscore
+  end     
   
   #helpers for formatting date/time in jQuery date/time pickers
   def www_date(date)

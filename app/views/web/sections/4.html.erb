@@ -1,28 +1,5 @@
-<div class="item itemBig">
-  <div class="img">
-    <a href=""><%= image_tag "web/banner-top.jpg",:alt=>"TODO" %></a>
-    <div class="caption">
-      <span>TODO</span>
-    </div> <!-- /.caption -->
-  </div> <!-- /.img -->
-  
-  <div class="self">
-    <h2 class="head">
-    	<%= "No first article" if @first_article.blank? %>
-    	<%= link_to @first_article.name,"TODO" if @first_article %>
-	</h2>
-    <p class="perex">
-    	<%= @first_article.perex if @first_article %> [...]
-	</p>
-  </div> <!-- /.self -->
-</div> <!-- /.item -->
-
-<ul class="list item">
-	<%= "No articles" if @articles.blank? %>
-	<% @articles.each do |article| -%>
-		<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
-	<% end -%>
-</ul>
+<%= render :partial=>"web/articles/headliner_box" %>
+<%= render :partial=> "web/articles/related" %>
 	        
 <div class="box">
   <h2 class="h line">Dnes <%= Time.now.to_s(:cz_date) %></h2>
@@ -46,7 +23,7 @@
 		<% date = (Time.now - day.days).to_s(:cz_date) %>
 		<li><%= link_to "Vydání ke dni #{date}", articles_path(:action=>"archiv",:date=>date) -%></li>
 	<% end %>
-     <li><%- link_to "Archiv vydání", "TODO" %></li>
+     <li><%= link_to "Archiv vydání", articles_path(:action=>"archiv") %></li>
    </ul>
 </div> <!-- /.box -->
 
@@ -54,7 +31,7 @@
 <div class="box cols cols3">
   <div class="col1">
     <h2 class="h line">Domov</h2>
-				  	<%= render :partial=>"web/articles/section",:collection=>@homes %>
+	<%= render :partial=>"web/articles/section",:collection=>@homes %>
   </div> <!-- /.col1 -->
   
   <div class="col2">

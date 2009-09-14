@@ -1,27 +1,5 @@
-<div class="bImg">
-	<%= image_tag "web/banner-dr.jpg" %>
-	<div class="caption">
-	  <span>TODO</span>
-	</div> <!-- /.caption -->
-</div> <!-- /.bImg -->
-
-<div class="bImg">
-	<%= image_tag "web/banner-dr.jpg" %>
-	<div class="caption">
-	  <span>TODO</span>
-	</div> <!-- /.caption -->
-</div> <!-- /.bImg -->
-
-<div class="bImg">
-	<%= image_tag "web/banner-dr.jpg" %>
-	<div class="caption">
-	  <span>TODO</span>
-	</div> <!-- /.caption -->
-</div> <!-- /.bImg -->
-
-<div class="bImg">
-	<%= image_tag "web/banner-dr.jpg" %>
-	<div class="caption">
-	  <span>TODO</span>
-	</div> <!-- /.caption -->
-</div> <!-- /.bImg -->
+<% if @right_boxes %>
+	<%= render :partial=>"web/articles/right_box", :collection=>@right_boxes %>
+<% else %>
+	No boxes
+<% end %>

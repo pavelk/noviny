@@ -1,5 +1,3 @@
-<%= link_to_remote(image_tag(thumb.data.url(:small)),
-		:url=>{:action=>"change_main_image",:id=>thumb.id},
-		:class=>(@pictures.last == thumb) ? "last" : nil,
-		:loading=>"Element.show('thumb_spinner')",
-		:complete=>"Element.hide('thumb_spinner')") %>
+<li>
+<%= link_to(main_image_tag(thumb.data.url(:author_little)),thumb.data.url(:gallery_big)) %>
+<li>		

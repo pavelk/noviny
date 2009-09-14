@@ -1,0 +1,6 @@
+<% if(params[:search_tag_selections]) %>
+$("#tag_selections .listFilter").empty();
+$("#tag_selections .listContent").empty();
+<% end %>
+$("#tag_selections .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#tag_selections .listContent").append("<%= escape_javascript(render(:partial => 'tag_selection_header', :object => @tag_selections)) %>");

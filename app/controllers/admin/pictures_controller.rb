@@ -24,6 +24,27 @@ class Admin::PicturesController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
+  def add_image
+    @object = params[:class].constantize.find(params[:object])
+    @picture = Picture.find(params[:id])
+    @object.pictures << @picture
+    @model = params[:class]
+    
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_image
+    @object = params[:class].constantize.find(params[:object])
+    @picture = Picture.find(params[:id])
+    @object.pictures.delete(@picture)
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
    
   private
 

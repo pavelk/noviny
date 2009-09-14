@@ -8,7 +8,7 @@
      </div> <!-- /.col1 -->
      
      <div class="col2 mainImage">
-       <%= link_to(image_tag(@article_image.data.url(:original)),:action=>"detail_gallery",:id=>@article.id) %>
+       <%= link_to(image_tag(@article_image.data.url(:hp_main)),:action=>"detail_gallery",:id=>@article.id) %>
        <p class="info"><%= link_to "Galerie", :action=>"detail_gallery",:id=>@article.id %><%= @article_image.name %></p>
      </div> <!-- /.col2 -->
 	 
@@ -17,12 +17,7 @@
    <div class="cols detailContent">
      <div class="col1">
        <div class="box boxLine">
-		<ul>
-		  <li><a href="">Vytisknout článek TODO</a></li>
-		  <li><a href="">Poslat e-mailem TODO</a></li>
-		  <li><a href="">Sdílet TODO</a></li>
-		  <li>Velikost textu TODO<a href="">+</a> <a href="">–</a></li>
-		</ul>
+		<%= render :partial=>"web/articles/left_box" %>
        </div> <!-- /.box -->
        
        <div class="box">
@@ -33,17 +28,7 @@
        </div> <!-- /.box -->
        
        <div class="box">
-		<h3 class="h line">Souvisejici - TODO</h3>
-
-		<div class="in">
-		  <div class="item itemSmall noImg">
-		    <div class="self">
-		      <p class="info">Film Analýza - TODO</p>
-		      <h3 class="head"><a href="">TODO - Po volbách musí daně nahoru. Jinak končí sametové časy</a></h3>
-		    </div> <!-- /.self -->
-		  </div> <!-- /.item -->
-		</div> <!-- /.in -->
-
+		<%= render :partial=>"web/articles/rel_articles" %>
        </div> <!-- /.box -->
      </div> <!-- /.col1 -->
      

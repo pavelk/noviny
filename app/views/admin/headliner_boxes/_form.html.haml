@@ -1,0 +1,25 @@
+= f.label :headline, 'Headline:'
+= f.text_field :headline, :class => 'inp'
+%br
+%br
+%label{ :for => "headliner_box_publish_date" } Datum publikace:
+%input{ :id => "headliner_box_publish_date", :name => "headliner_box[publish_date]", :size => "30", :type => "text", :value => www_date(@object.publish_date)}
+%br
+%br
+= f.label :perex, 'Perex:'
+= f.text_area :perex
+%br
+%br
+= f.label :picture_title, 'Popis obrazku:'
+= f.text_field :picture_title, :class => 'inp'
+%br
+%br
+%p Zaradte headliner do rubrik:
+= render(:partial => "shared/admin/section_checkboxes", :object => @object)
+%strong Postranni headlinove clanky
+%br
+= link_to "+ Vyber clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false'
+#related_sidebar
+%br
+%br
+%hr

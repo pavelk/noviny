@@ -25,6 +25,20 @@ class Admin::SectionsController < Admin::AdminController
     wants.js
   end
   
+  def get_subsection
+    if(params[:id] != 'new_rec')
+      @object = params[:class].constantize.find(params[:id])
+    else
+      @object = params[:class].constantize.new 
+    end  
+    @section = Section.find(params[:section])
+    @subsection = @section.children
+    
+    respond_to do |format|  
+      format.js
+    end
+  end
+  
   private
   
   def set_user

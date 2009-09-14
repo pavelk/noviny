@@ -24,25 +24,6 @@ $('#publish_time').each(function() {
   });
 });
 
-
-$("div[id^='checkbox-'] input").each(function() {
-    $(this).change(function() {
-      if($(this).attr('checked'))
-      {
-        $.ajax({
-          type: 'GET',
-          dataType: 'script',
-          url: '/admin/articles/get_subsection/' + $(this).parent().attr('id').split('-')[2] + '/' + $(this).parent().attr('id').split('-')[1],
-          error: function(msg) { alert("Chyba v přenosu dat."); },
-          success: function(data, status) {          
-          }
-        });
-      }else{
-        $("div[id='subsection-"+ $(this).parent().attr('id').split('--')[1]  +"']").remove();
-      }  
-  });  
-});
-
 $("#article_content_type_id").change(function() 
 { 
 

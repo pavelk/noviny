@@ -2,11 +2,13 @@
    <li class="nav prev">
    	<%= link_to_remote("Prev", :url=>{:action=>:update_thumb,:page=>@page-1,:article_id=>@article.id},
 		:loading=>"Element.show('thumb_spinner')",
-		:complete=>"Element.hide('thumb_spinner')") if (@page != 1) %></li>
-   <li><%= @page %> / <%= @pictures.page_count %></li>
+		:complete=>"Element.hide('thumb_spinner')") if (@page != 1) %>
+	</li>
+   <li><%= @page %> / <%= @pictures.total_pages %></li>
    <li class="nav next">
    	<%= link_to_remote("Next", :url=>{:action=>:update_thumb,:page=>@page+1,:article_id=>@article.id},
 		:loading=>"Element.show('thumb_spinner')",
-		:complete=>"Element.hide('thumb_spinner')") if @pictures.page_count != @page %></li>
+		:complete=>"Element.hide('thumb_spinner')") if @pictures.total_pages != @page %>
+	</li>
    <%=  %>
 </ul>

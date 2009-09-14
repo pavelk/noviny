@@ -1,0 +1,36 @@
+<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", "TODO" %></p>
+<%= render :partial=>"web/articles/headliner_box" %>
+<%= render :partial=> "web/articles/related" %>
+
+<div class="box">
+  <h2 class="h line"><%= Web::Calendar.current_sunday %></h2>
+  <div class="in">
+  	<%= "No sunday articles" if @sunday_articles.blank? %> 
+	<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false} %>
+   </div> <!-- /.in -->
+</div> <!-- /.box -->
+
+<div class="box">
+  <h2 class="h line"><%= Web::Calendar.current_saturday %></h2>
+  <div class="in">
+  	<%= "No saturday articles" if @saturday_articles.blank? %> 
+	<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false} %>
+   </div> <!-- /.in -->
+</div> <!-- /.box -->
+
+<div class="box cols cols3">
+  <div class="col1">
+    <h2 class="h line">Domov</h2>
+	<%= render :partial=>"web/articles/section",:collection=>@homes %>
+  </div> <!-- /.col1 -->
+  
+  <div class="col2">
+    <h2 class="h line">Svět</h2>
+    <%= render :partial=>"web/articles/section",:collection=>@worlds %>
+  </div> <!-- /.col2 -->
+  
+  <div class="col3">
+    <h2 class="h line">Umění</h2>
+    <%= render :partial=>"web/articles/section",:collection=>@arts %>
+  </div> <!-- /.col3 -->
+</div> <!-- /.cols -->

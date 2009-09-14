@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="cs" />
+    <meta name="author" content="Lukas Tomek (info@lukastomek.cz)" />
+    <meta name="copyright" content="2008 Lukas Tomek - www.lukastomek.cz" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>Noviny</title>
+    <%= stylesheet_link_tag 'web/css/default' %>
+	<%= javascript_include_tag "calendar" %>
+	<%= stylesheet_link_tag "calendar" %>
+	<%= javascript_include_tag "jquery-1.3.2.min" %>
+	<%= javascript_include_tag "jquery.scrollTo-1.4.0-min" %>
+	<%= javascript_include_tag "jquery.serialScroll-1.2.1-min" %>
+	<%= javascript_include_tag "init" %>
+	<!--[if IE]><link rel="stylesheet" type="text/css" href="/stylesheets/web/css/msie.css" media="screen" /><![endif]-->
+    <link rel="shortcut icon" href="" />
+  </head>
+	<%= render :partial=>"layouts/web/top_html" %>
+
+	<hr class="hidden" />
+
+      <div id="content" class="cols cols2v1">
+        <div class="col1">
+        	<%= yield %>
+        </div> <!-- /.col1 -->
+        
+        <div class="col2">
+        
+          <div class="box boxAdvert boxAdvert300">
+            <div class="in">
+              <%= link_to(image_tag("web/banner-300.jpg"),"TODO") %>
+            </div> <!-- /.in -->
+          </div> <!-- /.box -->
+          
+          <div class="box boxSettings">
+            <h2 class="h line">Nejnovější</h2>            
+            <div class="in">            
+              <%= render :partial=>"web/articles/readest",:collection=>@newest %>
+            </div> <!-- /.in -->
+          </div> <!-- /.box -->
+          
+          <div class="box boxSettings">
+           		<h2 class="h line">Nejčtenější</h2>            
+	            <div class="in" id="in_readest">    
+					<%= render :partial=>"web/articles/readest",:collection=>@readest %>
+	            </div> <!-- /.in -->
+	            
+	            <ul class="settings" id="readest_settings">
+	              	<%= render :partial=>"web/articles/readest_menu" %>
+	            </ul>
+				<%= spinner_tag('readest') %>
+          </div> <!-- /.box -->
+          
+        </div> <!-- /.col2 -->
+      </div> <!-- /#content -->
+
+      <hr class="hidden noprint" />
+
+      <div id="foot">
+        <%= render :partial=>"layouts/web/foot" %>
+      </div> <!-- /#foot -->
+    </div> <!-- /#view -->
+
+  </body>
+</html>
