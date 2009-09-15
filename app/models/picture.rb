@@ -25,14 +25,14 @@ class Picture < ActiveRecord::Base
   
   has_attached_file :data, :styles => { :small => "85x85", 
                                         :hp_main => "440x",
-                                        :hp_sidebar => "140x140^",
-                                        :author_little => "65x65^",
-                                        :preview_bottom => "140x140^",
-                                        :sidebar_article => "65x65^",
+                                        :hp_sidebar => "140x140",
+                                        :author_little => "65x65",
+                                        :preview_bottom => "140x140",
+                                        :sidebar_article => "65x65",
                                         :articles_preview => "140x",
                                         :article_profile => "178x",
                                         :gallery_big => "440x440",
-                                        :author_image => "178x178^"
+                                        :author_image => "178x178"
                                          },
                     :convert_options => { :hp_sidebar => ' -gravity Center -extent 140x130',
                                           :author_little => ' -gravity Center -extent 65x60',
@@ -42,7 +42,8 @@ class Picture < ActiveRecord::Base
                                         },
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/pictures/:id/:style/:basename.:extension"
-                      
+  
+    
     #Added by Jan Uhlar
     #Returns paginated pictures from article given by 'article_id' 
     def self.paginate_from_article(article_id, page = 1, per_page = 6)
