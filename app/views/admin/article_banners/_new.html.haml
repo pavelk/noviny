@@ -8,4 +8,12 @@
   - form_for @article_banner, :url => collection_url do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
+      %strong Obrazek
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgrs' } Zde pretahnete obrazek 
+      .clearer &nbsp;
+      %br
       %p= submit_tag "Ulozit"

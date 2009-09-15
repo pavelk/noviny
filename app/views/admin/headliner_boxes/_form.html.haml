@@ -16,6 +16,10 @@
 %br
 %p Zaradte headliner do rubrik:
 = render(:partial => "shared/admin/section_checkboxes", :object => @object)
+%strong Hlavni clanek
+%br
+= link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_article', :onclick => 'getRelationship(\'main\'); return false'
+#related_main
 %strong Postranni headlinove clanky
 %br
 = link_to "+ Vyber clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false'

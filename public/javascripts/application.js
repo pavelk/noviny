@@ -70,6 +70,11 @@ $(function()
     tb_init('a.thickbox_sidebar');
   });
   
+  $("a[class='thickbox_article']").livequery(function() {
+    tb_init('a.thickbox_article');
+  });
+  
+  
   $("div[id='TB_ajaxContent'] input[type='checkbox']").livequery(function() {
     $(this).change(function() {
       related_id = "related";
@@ -521,6 +526,40 @@ function getRelationship(tb_id)
   return false;
 }
 
+function getRelationthemeship(tb_id)
+{
+  if (tb_id != null) thickbox_id = tb_id;
+  //pole if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/relationthemeships/',   
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $("div[id='TB_ajaxContent'] .pagination a").live("click", function() {
+      $("#TB_ajaxContent > *").remove();
+      $.get(this.href, null, function ( data ){ 
+	  }, "script");
+    return false;
+  });
+    }
+  });
+  return false;
+}
+
+function removeRelationthemeship( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/relationthemeships/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
 
 function getArticleSelections( obj  )
 {
@@ -863,14 +902,24 @@ function dragAndDrop()
   	  }
   });
   */
+  $(".dnd.imgrs").droppable({
+    accept: "div[id^='picture_']",
+  	drop: function(ev, ui) {
+  	  var id = ui.draggable.attr("id").split("_")[1];
+  	  $("div[class='addedFile forImgr'] > *").remove();
+  	  $("div[id='headliner_box_picture_id'] > *").remove();
+  	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
+  	  $("fieldset").append("<input type='hidden' id='headliner_box_picture_id' name='headliner_box[picture_id]' value='"+ id +"'>");  	  
+  	}
+  });
   
   if($("form").attr("id").split("_")[0] == 'edit')
   {
     $(".dnd.imgr").droppable({
       accept: "div[id^='picture_']",
     	drop: function(ev, ui) {
-    	  alert($(this).attr("id"));	
-    	  tmpaddFileToArticle( $(this).attr("id").split("_")[2], $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[3] ,ui.draggable.attr("id").split("_")[1], 'add_image' );
+    	  //alert($(this).attr("id").split("-")[2] + ','+ $(this).attr("id").split("-")[1]+ ','+ $(this).attr("id").split("-")[3] + ','+ui.draggable.attr("id").split("_")[1]);	
+    	  tmpaddFileToArticle( $(this).attr("id").split("-")[2], $(this).attr("id").split("-")[1], $(this).attr("id").split("-")[3] ,ui.draggable.attr("id").split("_")[1], 'add_image' );
     	  
     	  }
     });
@@ -968,7 +1017,7 @@ function tmpremoveFileFromArticle( model, controller, article, file, action )
 {
   $.ajax({
      type: 'POST',
-     url: '/admin/'+controller+'/'+ action +'/'+ article +'/'+ file +'/'+ model,
+     url: '/'+controller+'/'+ action +'/'+ article +'/'+ file +'/'+ model,
      dataType: 'script',
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {      

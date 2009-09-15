@@ -2,8 +2,8 @@ class Admin::ArticleBannersController < Admin::AdminController
   
   #create.before :set_values
   #update.before :set_values
-  create.after :set_values, :process_sections
-  update.after :set_values, :process_sections
+  create.after :process_related, :set_values, :process_sections
+  update.after :process_related, :set_values, :process_sections
   
   index.response do |wants|
     wants.js
@@ -35,6 +35,13 @@ class Admin::ArticleBannersController < Admin::AdminController
     
     def process_sections
       @article_banner.attributes = {'section_ids' => []}.merge(params[:article_banner] || {})
+    end
+    
+    def process_related
+      if(params[:related_main])
+        article_id = params[:related_main].shift[1]
+        @article_banner.update_attributes( :article_id => article_id )
+      end
     end  
   
 end

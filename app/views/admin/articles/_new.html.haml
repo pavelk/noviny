@@ -2,9 +2,8 @@
   %h2= link_to 'Nový článek', '#'
 .recordPath
 .recordEdit
-
   = error_messages_for :article
-
+  -#= @object
   - form_for @article, :url => collection_url, :html => { :multipart => true } do |f|
     %fieldset
       = label(:article, :content_type_id, "Typ článku:", :class => "bold")
@@ -12,8 +11,8 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
-      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(); return false'
-      #related
+      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(\'main\'); return false'
+      #related_main
       %br
       %hr
       %br

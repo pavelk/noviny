@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090912100234) do
+ActiveRecord::Schema.define(:version => 20090915105053) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -342,6 +342,16 @@ ActiveRecord::Schema.define(:version => 20090912100234) do
 
   add_index "relationships", ["article_id"], :name => ":relationships_article_id_index"
   add_index "relationships", ["relarticle_id"], :name => ":relationships_relarticle_id_index"
+
+  create_table "relationthemeships", :force => true do |t|
+    t.integer  "theme_id"
+    t.integer  "reltheme_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationthemeships", ["reltheme_id"], :name => ":relationthemeships_reltheme_id_index"
+  add_index "relationthemeships", ["theme_id"], :name => ":relationthemeships_theme_id_index"
 
   create_table "sections", :force => true do |t|
     t.string   "name"

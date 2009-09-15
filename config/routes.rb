@@ -50,6 +50,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :themes
     admin.resources :sections
     admin.resources :relationships
+    admin.resources :relationthemeships
     admin.resources :info_boxes
     admin.resources :article_selections
     admin.resources :dailyquestions
@@ -60,6 +61,7 @@ ActionController::Routing::Routes.draw do |map|
   
   
   map.remove_relationship 'admin/relationships/remove_rel/:id/:rel', :controller => 'admin/relationships', :action => 'delete', :method => 'post'
+  map.remove_relationthemeship 'admin/relationthemeships/remove_rel/:id/:rel', :controller => 'admin/relationthemeships', :action => 'delete', :method => 'post'
   
   map.add_img 'admin/articles/add_img/:art/:pic', :controller => 'admin/articles', :action => 'add_img'
   map.remove_img 'admin/articles/remove_img/:art/:pic', :controller => 'admin/articles', :action => 'remove_img'

@@ -1,7 +1,9 @@
 class Admin::HeadlinerBoxesController < Admin::AdminController
   
-  create.after :set_values, :process_sections
-  update.after :set_values, :process_sections
+  create.after :process_related, :set_values, :process_sections
+  update.after :process_related, :set_values, :process_sections
+  #create.after :set_values, :process_sections
+  #update.after :set_values, :process_sections
   
   index.response do |wants|
     wants.js
@@ -23,7 +25,20 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
-  private 
+  private
+  
+    def process_related
+      if(params[:related_sidebar])
+        params[:related_sidebar].each_value do |r|
+          art = Article.find(r)
+          @headliner_box.articles << art
+        end
+      end
+      if(params[:related_main])
+        article_id = params[:related_main].shift[1]
+        @headliner_box.update_attributes( :article_id => article_id )
+      end
+    end
   
     def set_values
       #debugger
@@ -32,7 +47,7 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     end
     
     def process_sections
-      debugger
+      #debugger
       @headliner_box.attributes = {'section_ids' => []}.merge(params[:headliner_box] || {})
     end
   

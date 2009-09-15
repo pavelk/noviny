@@ -64,14 +64,14 @@
     .listFilter
     .listContent   
     .clearer            
-  .listGroup#daily_selections
-    .listHeader
-      %h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => 'getDailyQuestions($("#daily_selections h2")); return false'
-      %span Volitelny popis sekce
-      .clearer
-    .listFilter
-    .listContent   
-    .clearer      
+  -#.listGroup#daily_selections
+    -#.listHeader
+      -#%h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => 'getDailyQuestions($("#daily_selections h2")); return false'
+      -#%span Volitelny popis sekce
+      -#.clearer
+    -#.listFilter
+    -#.listContent   
+    -#.clearer      
   .listGroup#authors
     .listHeader
       %h2.folder= link_to "Autoři (#{Author.all.length})", '#', :onclick => 'getAuthors($("#authors h2")); return false'

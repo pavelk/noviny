@@ -6,6 +6,10 @@
 %input{ :id => "tag_selection_publish_date", :name => "tag_selection[publish_date]", :size => "30", :type => "text", :value => www_date(@tag_selection.publish_date)}
 %br
 %br
+= link_to "Pridat temata", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationthemeship(\'sidebar\'); return false'
+#related_sidebar
+%br
+%br
 %p Zaradte vyber do rubrik:
 = render(:partial => "shared/admin/section_checkboxes", :object => @object)
 %hr

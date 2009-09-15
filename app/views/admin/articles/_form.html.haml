@@ -1,5 +1,3 @@
-- if @content_type[4] == 1
-  VIDEO!
 - if @content_type[0] != 0
   = f.label :name, 'Nadpis:'
   = f.text_field :name, :class => "inp countable count-#{@content_type[0].split('/')[0]}-#{@content_type[0].split('/')[1]}"
@@ -36,8 +34,14 @@
   = f.text_area :poznamka, :class => "smallText countable count-#{@content_type[3].split('/')[0]}-#{@content_type[3].split('/')[1]}"
 %br
 %br
+- if @content_type[4] == 1
+  = f.label :videodata, 'Kod pro YouTube:'
+  %br
+  = f.text_area :videodata, :class => "smallText"
+%br
+%br
 %p Zaradte clanek do rubriky:
-= render(:partial => "shared/admin/section_checkboxes", :object => @object)
+= render(:partial => "shared/admin/section_checkboxes", :object => @article)
 
 = f.label :tag_list, 'Témata'
 %br

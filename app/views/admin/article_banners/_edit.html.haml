@@ -8,4 +8,15 @@
   - form_for @article_banner, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
+      %strong Obrazek
+      .dndContent
+        %div{ :class => "listFiles listImgr", :id => "filesLista_#{@object.id}" }
+          %div{ :class => 'addedFile forImgr' }
+            - if (@object.picture != nil)
+              = image_tag(@object.picture.data.url(:small))
+              %br
+      .dndContainer
+        %div{ :class => 'dnd imgrs' } Zde pretahnete obrazek 
+      .clearer &nbsp;
+      %br
       %p= submit_tag "Upravit"

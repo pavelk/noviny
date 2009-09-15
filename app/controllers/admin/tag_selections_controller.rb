@@ -1,7 +1,7 @@
 class Admin::TagSelectionsController <  Admin::AdminController
   
-  create.after :set_values, :process_sections
-  update.after :set_values, :process_sections
+  create.after :process_related, :set_values, :process_sections
+  update.after :process_related, :set_values, :process_sections
   
   index.response do |wants|
     wants.js
@@ -33,6 +33,15 @@ class Admin::TagSelectionsController <  Admin::AdminController
     
     def process_sections
       @tag_selection.attributes = {'section_ids' => []}.merge(params[:tag_selection] || {})
+    end
+    
+    def process_related
+      if(params[:related_sidebar])
+        params[:related_sidebar].each_value do |r|
+          art = Theme.find(r)
+          @tag_selection.themes << art
+        end
+      end
     end
   
 end

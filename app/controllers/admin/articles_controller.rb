@@ -210,8 +210,8 @@ class Admin::ArticlesController < Admin::AdminController
 private
   
   def process_related
-    if(params[:related])
-      params[:related].each_value do |r|
+    if(params[:related_main])
+      params[:related_main].each_value do |r|
         relationship = @article.relationships.build(:relarticle_id => r)
         relationship.save
       end

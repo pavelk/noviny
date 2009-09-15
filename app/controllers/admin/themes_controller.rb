@@ -1,5 +1,8 @@
 class Admin::ThemesController < Admin::AdminController
   
+  create.after :process_related 
+  update.after :process_related
+  
   def index
     #debugger
     if(params[:search_theme])
@@ -19,6 +22,17 @@ class Admin::ThemesController < Admin::AdminController
   update.response do |wants|
     wants.js
   end
+  
+  private
+  
+    def process_related
+      if(params[:related_main])
+        params[:related_main].each_value do |r|
+          relationthemeship = @theme.relationthemeships.build(:reltheme_id => r)
+          relationthemeship.save
+        end
+      end  
+    end
   
   
 end

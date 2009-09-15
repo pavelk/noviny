@@ -5,6 +5,22 @@
   - form_for @theme, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
+      %br
+      %br
+      = link_to "Pridat souvisejici temata", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationthemeship(\'main\'); return false', :id => "relart_#{@theme.id}"
+      #related_main
+      - if(@theme.relationthemeships.size > 0)  
+        %br
+        %br
+        %strong Souvisejici temata
+        %br
+        %br
+        - @theme.relationthemeships.each do |relationthemeship|
+          %div
+            = relationthemeship.reltheme.name
+            = link_to "X", '#', :id => "relationthemeship_#{@theme.id}_#{relationthemeship.id}", :onclick => 'removeRelationthemeship( $(this)); return false'
+        %br
+        %hr
       -#%p
         -#= Article.find_tagged_with(@theme.name).map(&:name).join(", ")
       %br
