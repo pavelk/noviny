@@ -2,7 +2,7 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   create.after :set_values
   update.after :set_values
-  
+    
   def index
     #debugger
     if(params[:search_article_selections])
@@ -14,7 +14,12 @@ class Admin::DailyquestionsController < Admin::AdminController
       format.js
     end
   end
-    
+  
+  def new
+    @dailyquestion = Dailyquestion.new
+    2.times { @dailyquestion.dailyquestion_authors.build }
+  end
+      
   new_action.response do |wants|
     wants.js
   end

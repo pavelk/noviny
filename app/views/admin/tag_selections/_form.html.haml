@@ -10,6 +10,13 @@
 #related_sidebar
 %br
 %br
+%strong Vybrana temata
+- @tag_selection.themeselection_themes.each do |ts|
+  %div
+    = ts.theme.name
+    = link_to "X", '#', :id => "tagselection_#{@tag_selection.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
+%br
+%br  
 %p Zaradte vyber do rubrik:
 = render(:partial => "shared/admin/section_checkboxes", :object => @object)
 %hr

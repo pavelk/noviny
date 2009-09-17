@@ -4,5 +4,5 @@
   %td= article_selection.article_id
   %td= article_selection.sidebar_articles_ids
   %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => 'editSection($(this)); return false', :title => 'Editovat', :class => "edit_article"
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => 'editArticleSelection($(this)); return false', :title => 'Editovat', :class => "edit_article"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'

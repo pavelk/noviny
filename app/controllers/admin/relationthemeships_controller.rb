@@ -15,8 +15,6 @@ class Admin::RelationthemeshipsController < Admin::AdminController
     end
     if(params[:id])
       @relationthemeship = Theme.find(params[:id])
-      #@related =  @relationthemeships - @relationthemeship.relationships
-      #@relationships = @relationships - @related
     end    
     respond_to do |format|  
       format.js

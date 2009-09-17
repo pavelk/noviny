@@ -116,7 +116,15 @@ $(function()
      $(this).datepick({onSelect: pickedDate, defaultDate: null});
   });
   
+  $("label[for$='0_author_id']").livequery(function() {
+     $("p[class='dayQuestionYes']").append("<strong>Otazka ANO</strong>");
+     $("p[class='dayQuestionNo']").remove();
+  });
   
+  $("label[for$='1_author_id']").livequery(function() {
+     $("span[class='dayQuestionNo']").append("<strong>Otazka NE</strong>");
+     $("p[class='dayQuestionYes']").remove();
+  });  
   
 });
 
@@ -396,6 +404,7 @@ function newBox()
 function editBox( obj )
 {
   $("#listView").addClass("listSmall");
+  alert($(obj).parent().parent().attr("id").split("_")[1]);
   $.ajax({
     type: 'GET',
     dataType: 'script',
@@ -553,6 +562,35 @@ function removeRelationthemeship( obj )
     type: 'POST',
     dataType: 'script',
     url: '/admin/relationthemeships/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
+
+function removeTagSelection( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/tag_selections/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+  
+}
+
+function removeHeadlinerArticle( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/headliner_boxes/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
       removeElement($(obj).parent());

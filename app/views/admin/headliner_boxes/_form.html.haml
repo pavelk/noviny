@@ -20,10 +20,24 @@
 %br
 = link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_article', :onclick => 'getRelationship(\'main\'); return false'
 #related_main
+%br
+- if(!@object.new_record?)
+  %strong Prilozeny clanek:
+  %br
+  = @object.article.name rescue nil
+%br
+%br
+%hr
 %strong Postranni headlinove clanky
 %br
 = link_to "+ Vyber clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false'
 #related_sidebar
+%br
+%strong Prilozene clanky
+- @object.headliner_articles.each do |ha|
+  %div
+    = ha.article.name
+    = link_to "X", '#', :id => "headlinerarticles_#{@object.id}_#{ha.id}", :onclick => 'removeHeadlinerArticle( $(this)); return false'
 %br
 %br
 %hr

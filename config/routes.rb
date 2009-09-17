@@ -62,6 +62,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.remove_relationship 'admin/relationships/remove_rel/:id/:rel', :controller => 'admin/relationships', :action => 'delete', :method => 'post'
   map.remove_relationthemeship 'admin/relationthemeships/remove_rel/:id/:rel', :controller => 'admin/relationthemeships', :action => 'delete', :method => 'post'
+  map.remove_tagselection 'admin/tag_selections/remove_rel/:id/:rel', :controller => 'admin/tag_selections', :action => 'delete', :method => 'post'
+  map.remove_headliner_article 'admin/headliner_boxes/remove_rel/:id/:rel', :controller => 'admin/headliner_boxes', :action => 'delete', :method => 'post'
   
   map.add_img 'admin/articles/add_img/:art/:pic', :controller => 'admin/articles', :action => 'add_img'
   map.remove_img 'admin/articles/remove_img/:art/:pic', :controller => 'admin/articles', :action => 'remove_img'

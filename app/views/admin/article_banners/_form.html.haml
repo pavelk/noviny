@@ -11,6 +11,11 @@
 = link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_main', :onclick => 'getRelationship(\'main\'); return false'
 #related_main
 %br
+- if(!@object.new_record?)
+  %strong Prilozeny clanek:
+  %br
+  = @object.article.name rescue nil
+%br
 %br
 %p Zaradte upoutavku do rubrik:
 = render(:partial => "shared/admin/section_checkboxes", :object => @object)

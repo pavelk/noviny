@@ -15,3 +15,21 @@
 = f.text_area :perex
 %br
 %br
+%br
+%br
+#dq
+- f.fields_for :dailyquestion_authors do |a|
+  %p{ :class => 'dayQuestion' }
+  %br  
+  = a.label :author_id, 'Vyberte autora:'
+  %br
+  = a.select( :author_id, Author.all.map {|u| [u.full_name, u.id]} )
+  %br
+  %br
+  = a.label :question_text, 'Nazor:'
+  %br
+  = a.text_area :question_text, :class => 'smallText'
+  %br
+  %br
+  %br
+  %br 

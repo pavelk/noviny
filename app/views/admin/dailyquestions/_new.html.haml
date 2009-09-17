@@ -8,6 +8,6 @@
   - form_for @dailyquestion, :url => collection_url do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
-      - f.fields_for @question_votes do |a|
-        = a.text_field :vote_value
       %p= submit_tag "Ulozit"
+      
+      

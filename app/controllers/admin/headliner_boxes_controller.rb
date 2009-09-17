@@ -25,6 +25,13 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
+  def delete
+    headliner_article = HeadlinerArticle.find(params[:rel])
+    headliner_article.destroy
+    
+    render :nothing => true
+  end
+  
   private
   
     def process_related

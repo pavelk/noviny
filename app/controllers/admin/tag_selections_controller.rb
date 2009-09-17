@@ -23,6 +23,13 @@ class Admin::TagSelectionsController <  Admin::AdminController
     wants.js { render :layout => false }
   end
   
+  def delete
+    tag_selection = ThemeselectionTheme.find(params[:rel])
+    tag_selection.destroy
+    
+    render :nothing => true
+  end
+    
   private 
   
     def set_values
