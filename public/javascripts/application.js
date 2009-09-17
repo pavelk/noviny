@@ -404,7 +404,6 @@ function newBox()
 function editBox( obj )
 {
   $("#listView").addClass("listSmall");
-  alert($(obj).parent().parent().attr("id").split("_")[1]);
   $.ajax({
     type: 'GET',
     dataType: 'script',
@@ -538,7 +537,7 @@ function getRelationship(tb_id)
 function getRelationthemeship(tb_id)
 {
   if (tb_id != null) thickbox_id = tb_id;
-  //pole if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+  if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
   $.ajax({
     type: 'GET',
     dataType: 'script',
@@ -957,8 +956,8 @@ function dragAndDrop()
       accept: "div[id^='picture_']",
     	drop: function(ev, ui) {
     	  //alert($(this).attr("id").split("-")[2] + ','+ $(this).attr("id").split("-")[1]+ ','+ $(this).attr("id").split("-")[3] + ','+ui.draggable.attr("id").split("_")[1]);	
-    	  tmpaddFileToArticle( $(this).attr("id").split("-")[2], $(this).attr("id").split("-")[1], $(this).attr("id").split("-")[3] ,ui.draggable.attr("id").split("_")[1], 'add_image' );
-    	  
+    	  //tmpaddFileToArticle( $(this).attr("id").split("-")[2], $(this).attr("id").split("-")[1], $(this).attr("id").split("-")[3] ,ui.draggable.attr("id").split("_")[1], 'add_image' );
+    	  addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
     	  }
     });
     
@@ -1066,7 +1065,8 @@ function tmpremoveFileFromArticle( model, controller, article, file, action )
 
 function addFileToArticle( controller, article, file, action )
 {
-  //alert(controller + ',' + article + ',' + file + ',' + action);
+  if(controller == "info") controller = "info_boxes"
+  alert(controller + ',' + article + ',' + file + ',' + action);
   $.ajax({
      type: 'POST',
      url: '/admin/'+ controller  +'/'+ action +'/'+ article +'/'+ file,

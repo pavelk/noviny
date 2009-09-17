@@ -18,7 +18,7 @@
               %br
               = link_to 'Odstranit', '#', :id => "img_#{picture.id}"    
       .dndContainer
-        %div{ :class => 'dnd imgr', :id => "dropi_info_boxes_#{@info_box.id}" } Zde pretahnete obrazek    
+        %div{ :class => 'dnd imgr', :id => "dropi_info_#{@info_box.id}" } Zde pretahnete obrazek    
       .clearer &nbsp;
       %br
       %p= submit_tag "Upravit"
