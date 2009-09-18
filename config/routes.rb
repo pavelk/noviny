@@ -1,13 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
 
-
-  #map.resources :question_votes
-
-  
-
-  
-
-  
   #Added by Jan Uhlar
   map.home "home", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
@@ -22,18 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   #Added by Jan Uhlar
   
   map.resources :info_boxes
-=begin
 
-  map.resources :themes
-  map.resources :insets
-  map.resources :audios
-  map.resources :content_types
-  map.resources :authors
-  map.resources :sections
-  map.resources :articles
-  map.resources :albums
-  map.resources :pictures
-=end
   map.root :controller => 'admin/albums', :action => 'index'
   
   map.namespace :admin do |admin|
@@ -83,6 +64,9 @@ ActionController::Routing::Routes.draw do |map|
   map.add_author_img 'admin/authors/add_img/:art/:pic', :controller => 'admin/authors', :action => 'add_img'
   map.remove_author_img 'admin/authors/remove_img/:art/:pic', :controller => 'admin/authors', :action => 'remove_img'
   
+  map.add_dailyquestion_img 'admin/dailyquestions/add_img/:art/:pic', :controller => 'admin/dailyquestions', :action => 'add_img'
+  map.remove_dailyquestion_img 'admin/dailyquestions/remove_img/:art/:pic', :controller => 'admin/dailyquestions', :action => 'remove_img'
+  
   map.add_author_file 'admin/authors/add_file/:art/:pic', :controller => 'admin/authors', :action => 'add_file'
   map.remove_author_file 'admin/authors/remove_file/:art/:pic', :controller => 'admin/authors', :action => 'remove_file'
   
@@ -96,6 +80,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.add_infobox_img 'admin/info_boxes/add_img/:art/:pic', :controller => 'admin/info_boxes', :action => 'add_img'
   map.remove_infobox_img 'admin/info_boxes/remove_img/:art/:pic', :controller => 'admin/info_boxes', :action => 'remove_img'
+  
+  map.get_relarticles 'admin/articles/get_relarticles', :controller => 'admin/articles', :action => 'get_relarticles'
+  map.get_relthemes 'admin/themes/get_relthemes', :controller => 'admin/themes', :action => 'get_relthemes'
   
   map.resource  :user_session,
                 :as => 'prihlaseni',

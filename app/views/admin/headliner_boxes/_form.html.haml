@@ -15,10 +15,11 @@
 %br
 %br
 %p Zaradte headliner do rubrik:
-= render(:partial => "shared/admin/section_checkboxes", :object => @object)
+= render(:partial => "shared/admin/section_top_checkboxes", :object => @object)
+%hr
 %strong Hlavni clanek
 %br
-= link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_article', :onclick => 'getRelationship(\'main\'); return false'
+= link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_main', :onclick => 'getRelationship(\'main\'); return false'
 #related_main
 %br
 - if(!@object.new_record?)
@@ -28,7 +29,7 @@
 %br
 %br
 %hr
-%strong Postranni headlinove clanky
+%strong Souvisejici clanky
 %br
 = link_to "+ Vyber clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false'
 #related_sidebar
@@ -41,3 +42,15 @@
 %br
 %br
 %hr
+= link_to "+ Pridej temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false'
+#related_themes
+%br
+%br
+%strong Vybrana temata
+- @object.headliner_themes.each do |ts|
+  %div
+    = ts.theme.name
+    = link_to "X", '#', :id => "headlinerarticles_#{@object.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
+%hr
+%br
+%br

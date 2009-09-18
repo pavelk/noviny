@@ -74,6 +74,10 @@ $(function()
     tb_init('a.thickbox_article');
   });
   
+  $("a[class='thickbox_themes']").livequery(function() {
+    tb_init('a.thickbox_themes');
+  });
+  
   
   $("div[id='TB_ajaxContent'] input[type='checkbox']").livequery(function() {
     $(this).change(function() {
@@ -113,23 +117,19 @@ $(function()
   //date input field
   $("input[id$='publish_date']").livequery(function() {
      $.datepick.setDefaults({dateFormat: 'dd/mm/yy'});
-     $(this).datepick({onSelect: pickedDate, defaultDate: null});
+     $(this).datepick({defaultDate: null});
   });
   
-  $("label[for$='0_author_id']").livequery(function() {
-     $("p[class='dayQuestionYes']").append("<strong>Otazka ANO</strong>");
-     $("p[class='dayQuestionNo']").remove();
+  //time input field
+  $("input[id$='publish_time']").livequery(function() {
+   $(this).timeEntry({show24Hours: true })
   });
-  
-  $("label[for$='1_author_id']").livequery(function() {
-     $("span[class='dayQuestionNo']").append("<strong>Otazka NE</strong>");
-     $("p[class='dayQuestionYes']").remove();
-  });  
   
 });
 
 /** ARTICLES **/
 // date picker
+/*
 function pickedDate( value, date, inst ) 
 { 
     if($("#article_publish_date").val().length == 0 )
@@ -139,6 +139,23 @@ function pickedDate( value, date, inst )
       $("#article_publish_date").val(value.split("/").reverse().join("-") + $("#article_publish_date").val().substring(10,19));
     }   
 }
+*/
+
+function editAttachment(obj)
+{
+ $("#listView").addClass("listSmall");
+ $.ajax({
+   type: 'GET',
+   dataType: 'script',
+   data: 'type=' + $(obj).attr("id").split("-")[3],
+   url: '/admin/'+ $(obj).attr("id").split("-")[1] + '/'+ $(obj).attr("id").split("-")[2] +'/edit', 
+   error: function(msg) { alert("Chyba v přenosu dat."); },
+   success: function(data, status) {
+     $(".recordHeader a").bind("click", function() { return cancelLeaf() });      
+   }
+ });
+  return false;
+  }
 
 // word counter
 function getCounter( formObj ){
@@ -440,7 +457,7 @@ function getArticles( obj )
       //$("tr[id^='article_'] a.edit_article").live("click", function() { return editArticle( $(this))} );
       //$("a[id^='articles_new']").live("click", function() { return newArticle()} );
       
-      $("div[id='articles'] .pagination a").live("click", function() {
+      $("div[id='articles'] .pagination a").live("click", function() {      
       $("#articles .listFilter > *").remove();
       $("#articles .listContent > *").remove();
       $.get(this.href, null, function ( data ){
@@ -509,8 +526,11 @@ function removeRelationship( obj )
 
 function getRelationship(tb_id)
 {
+  //alert(tb_id);
   if (tb_id != null) thickbox_id = tb_id;
   if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+
+  $('#TB_window').live("unload",getRelatedAfterSave);
   $.ajax({
     type: 'GET',
     dataType: 'script',
@@ -534,10 +554,50 @@ function getRelationship(tb_id)
   return false;
 }
 
+function getRelatedAfterSave(){
+  switch(thickbox_id){
+      case 'sidebar':
+      //case 'main':
+      	$.ajax({
+          type: 'POST',
+          dataType: 'script',
+          url: '/admin/articles/get_relarticles', 
+          data: $("input[id^='related_"+ thickbox_id +"']").serialize(),
+          error: function(msg) { alert("Chyba v přenosu dat."); },
+          success: function(data, status) {
+            //$("div[id^='related_sidebar']").append(data);
+            //alert('ahoj');
+            	thickbox_id = "";
+          }
+        });
+
+        break;
+      case 'themes':
+        //alert('todo fill related themes');
+        $.ajax({
+          type: 'POST',
+          dataType: 'script',
+          url: '/admin/themes/get_relthemes', 
+          data: $("input[id^='related_themes']").serialize(),
+          error: function(msg) { alert("Chyba v přenosu dat."); },
+          success: function(data, status) {
+            //$("div[id^='related_themes']").append(data);
+            	thickbox_id = "";
+          }
+        });
+        break;
+      default:
+        break;
+  }
+	$('#TB_window').die("unload",getRelatedAfterSave);
+	return false;  	
+}
+
 function getRelationthemeship(tb_id)
 {
   if (tb_id != null) thickbox_id = tb_id;
   if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+  $('#TB_window').live("unload",getRelatedAfterSave);
   $.ajax({
     type: 'GET',
     dataType: 'script',
@@ -707,7 +767,8 @@ function editDailyQuestion( obj )
     url: '/admin/dailyquestions/' + $(obj).parent().parent().attr("id").split("_")[2] + "/edit",
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-      $(".recordHeader a").bind("click", function() { return cancelArticle() }); 
+      $(".recordHeader a").bind("click", function() { return cancelArticle() });
+      $("a[id^='img_']").bind("click", function() { return removeFileFromDailyquestion( $(this).parent().parent().attr("id").split("_")[1], $(this).attr("id").split("_")[1], 'remove_img'  ) });
     }
   });
   return false;  
@@ -939,7 +1000,7 @@ function dragAndDrop()
   	  }
   });
   */
-  $(".dnd.imgrs").droppable({
+  $(".dnd.imgrs.headliner").droppable({
     accept: "div[id^='picture_']",
   	drop: function(ev, ui) {
   	  var id = ui.draggable.attr("id").split("_")[1];
@@ -947,6 +1008,17 @@ function dragAndDrop()
   	  $("div[id='headliner_box_picture_id'] > *").remove();
   	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
   	  $("fieldset").append("<input type='hidden' id='headliner_box_picture_id' name='headliner_box[picture_id]' value='"+ id +"'>");  	  
+  	}
+  });
+  
+  $(".dnd.imgrs.banner").droppable({
+    accept: "div[id^='picture_']",
+  	drop: function(ev, ui) {
+  	  var id = ui.draggable.attr("id").split("_")[1];
+  	  $("div[class='addedFile forImgr'] > *").remove();
+  	  $("div[id='article_banner_picture_id'] > *").remove();
+  	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
+  	  $("fieldset").append("<input type='hidden' id='article_banner_picture_id' name='article_banner[picture_id]' value='"+ id +"'>");  	  
   	}
   });
   
@@ -1023,7 +1095,7 @@ function dragAndDrop()
       accept: "tr[id^='infobox_']",
     	drop: function(ev, ui) {
     	  var id = ui.draggable.attr("id").split("_")[1];
-		  $("div[class='addedFile forBoxr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
+		  $("table[class='addedFile forBoxr']").append(ui.draggable.clone().append("<a onclick=removeElement($(this).parent())>Odstranit</a>"));
     	  $("fieldset").append("<input type='hidden' name='boxes[id_"+ id +"]' value='"+ id +"' id='newbox-"+ id +"'>");
     	  }
     });  
@@ -1066,7 +1138,7 @@ function tmpremoveFileFromArticle( model, controller, article, file, action )
 function addFileToArticle( controller, article, file, action )
 {
   if(controller == "info") controller = "info_boxes"
-  alert(controller + ',' + article + ',' + file + ',' + action);
+  //alert(controller + ',' + article + ',' + file + ',' + action);
   $.ajax({
      type: 'POST',
      url: '/admin/'+ controller  +'/'+ action +'/'+ article +'/'+ file,
@@ -1097,6 +1169,19 @@ function removeFileFromArticle( article, file, action )
   $.ajax({
      type: 'POST',
      url: '/admin/articles/'+ action +'/'+ article +'/'+ file,
+     dataType: 'script',
+     error: function(msg) { alert("Chyba v přenosu dat."); },
+     success: function(data, status) {      
+     }
+   });
+   return false;
+}
+
+function removeFileFromDailyquestion( article, file, action )
+{
+  $.ajax({
+     type: 'POST',
+     url: '/admin/dailyquestions/'+ action +'/'+ article +'/'+ file,
      dataType: 'script',
      error: function(msg) { alert("Chyba v přenosu dat."); },
      success: function(data, status) {      

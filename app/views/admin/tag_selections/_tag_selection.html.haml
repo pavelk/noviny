@@ -1,6 +1,6 @@
 %tr{ :id => "tag_selection_#{tag_selection.id}" }
   %td{ :class => "listItem l1"}= link_to tag_selection.headline, '#', :onclick => 'editTagSelection($(this)); return false'
-  %td= tag_selection.publish_date.strftime('%d/%m/%Y')
+  %td= tag_selection.updated_at.strftime('%d/%m/%Y')
   %td{ :class => 'center' }
     = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => 'editTagSelection($(this)); return false', :title => 'Editovat', :class => "edit_article"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat' 

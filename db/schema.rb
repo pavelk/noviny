@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090915105053) do
+ActiveRecord::Schema.define(:version => 20090918165542) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(:version => 20090915105053) do
 
   add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
   add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
+
+  create_table "article_themes", :force => true do |t|
+    t.integer "article_id"
+    t.integer "theme_id"
+  end
+
+  add_index "article_themes", ["article_id"], :name => "article_themes_article_id_index"
+  add_index "article_themes", ["theme_id"], :name => "article_themes_theme_id_index"
 
   create_table "article_versions", :force => true do |t|
     t.integer  "article_id"
@@ -193,6 +201,10 @@ ActiveRecord::Schema.define(:version => 20090915105053) do
     t.text     "cv"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "linkedin"
+    t.string   "twitter"
+    t.string   "facebook"
+    t.string   "phone"
   end
 
   add_index "authors", ["user_id"], :name => "authors_user_id_index"
@@ -211,6 +223,14 @@ ActiveRecord::Schema.define(:version => 20090915105053) do
   add_index "dailyquestion_authors", ["author_id"], :name => "dailyquestion_authors_author_id_index"
   add_index "dailyquestion_authors", ["dailyquestion_id"], :name => "dailyquestion_authors_dailyquestion_id_index"
 
+  create_table "dailyquestion_pictures", :force => true do |t|
+    t.integer "picture_id"
+    t.integer "dailyquestion_id"
+  end
+
+  add_index "dailyquestion_pictures", ["dailyquestion_id"], :name => "dailyquestion_pictures_dailyquestion_id_index"
+  add_index "dailyquestion_pictures", ["picture_id"], :name => "dailyquestion_pictures_picture_id_index"
+
   create_table "dailyquestions", :force => true do |t|
     t.string   "headline"
     t.string   "question_text"
@@ -218,7 +238,14 @@ ActiveRecord::Schema.define(:version => 20090915105053) do
     t.date     "publish_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "author_yes_id"
+    t.integer  "author_no_id"
+    t.string   "text_yes"
+    t.string   "text_no"
   end
+
+  add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
+  add_index "dailyquestions", ["author_yes_id"], :name => "dailyquestions_author_yes_id_index"
 
   create_table "headliner_articles", :force => true do |t|
     t.integer "headliner_box_id"

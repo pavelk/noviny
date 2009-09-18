@@ -11,8 +11,8 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
-      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(\'main\'); return false'
-      #related_main
+      = link_to "+ Pridej souvisejici clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false'
+      #related_sidebar
       %br
       %hr
       %br
@@ -43,7 +43,7 @@
       %strong Info Boxy
       .dndContent
         %div{ :class => "listFiles" }
-          %div{ :class => 'addedFile forBoxr' }
+          %table{ :class => 'addedFile forBoxr' }
       .dndContainer
         %div{ :class => 'dnd boxr' } Zde pretahnete infobox    
       .clearer &nbsp;            

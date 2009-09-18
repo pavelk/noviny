@@ -8,6 +8,17 @@
   - form_for @dailyquestion, :url => collection_url do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
+      %br
+      %hr
+      %br
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
       %p= submit_tag "Ulozit"
       
       

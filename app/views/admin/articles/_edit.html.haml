@@ -11,8 +11,8 @@
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
-      = link_to "Pridat souvisejici clanky", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationship(\'main\'); return false', :id => "relart_#{@article.id}"
-      #related_main
+      = link_to "+ Pridej souvisejici clanky", "#?width=700&height=500", :class => 'thickbox_sidebar', :onclick => 'getRelationship(\'sidebar\'); return false', :id => "relart_#{@article.id}"
+      #related_sidebar
       - if(@article.inverse_relarticles.size > 0)
         %br
         %br
@@ -41,14 +41,14 @@
       .dndContent
         %div{ :class => "listFiles listImgr", :id => "filesLista_#{@article.id}" }
           - @article.pictures.each do |picture|
-            = image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
             %div{ :class => 'addedFile forImgr' }
               = image_tag(picture.data.url(:small))
               %br
               = link_to 'Odstranit', '#', :id => "img_#{picture.id}"
       .dndContainer
         -#%div{ :class => 'dnd imgr', :id => "dropi-pictures-#{@object.class.name}-#{@object.id}" } Zde pretahnete obrazek
-        %div{ :class => 'dnd imgr', :id => "dropi_pictures_#{@article.id}" } Zde pretahnete obrazek
+        %div{ :class => 'dnd imgr', :id => "dropi_articles_#{@article.id}" } Zde pretahnete obrazek
       .clearer &nbsp;
       %br
       %strong Soubory

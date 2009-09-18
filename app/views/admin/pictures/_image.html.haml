@@ -1,4 +1,4 @@
 .addedFile
-  = image_tag(image.data.url(:small))
+  = image_tag(image.data.url(:hp_sidebar))
   %br
   = link_to 'Odstranit', '#', :id => "ajaxImage-#{@object.class.name}-#{params[:controller]}-#{@object.id}-#{image.id}"

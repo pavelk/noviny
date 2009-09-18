@@ -2,7 +2,7 @@
   %td{ :class => 'listItem l1'}= link_to article.name, '#', :class => 'file', :onclick => 'editArticle( $(this)); return false'
   %td= article.content_type.name
   %td= version(article)
-  %td= article.updated_at.strftime('%d/%m/%y')
+  %td= article.publish_date.strftime('%d/%m/%y')
   %td= article.author.full_name
   %td= truncate(article.perex, :length => 100, :omission => "&hellip;")   
   %td{ :class => 'center' }

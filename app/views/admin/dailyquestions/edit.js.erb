@@ -3,9 +3,3 @@ $(".recordPath").remove();
 $(".recordEdit").remove();
 $("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit')) %>");
 $("#viewRecord").show();
-
-$('#publish_date').each(function() {
- $.datepick.setDefaults({dateFormat: 'dd/mm/yy'});
- $(this).datepick({onSelect: pickedDate, defaultDate: null});
-
-});

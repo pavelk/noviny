@@ -1,7 +1,7 @@
 class Admin::TagSelectionsController <  Admin::AdminController
   
-  create.after :process_related, :set_values, :process_sections
-  update.after :process_related, :set_values, :process_sections
+  create.after :process_related, :process_sections
+  update.after :process_related, :process_sections
   
   index.response do |wants|
     wants.js
@@ -32,19 +32,20 @@ class Admin::TagSelectionsController <  Admin::AdminController
     
   private 
   
-    def set_values
+    #def set_values
       #debugger
       #params[:article_banner][:publish_date] = params[:article_banner][:publish_date].split('/').reverse.join('-')
-      @tag_selection.update_attributes( :publish_date => params[:tag_selection][:publish_date].split('/').reverse.join('-')) 
-    end
+      #@tag_selection.update_attributes( :publish_date => params[:tag_selection][:publish_date].split('/').reverse.join('-')) 
+    #end
     
     def process_sections
       @tag_selection.attributes = {'section_ids' => []}.merge(params[:tag_selection] || {})
     end
     
     def process_related
-      if(params[:related_sidebar])
-        params[:related_sidebar].each_value do |r|
+      #debugger
+      if(params[:related_themes])
+        params[:related_themes].each_value do |r|
           art = Theme.find(r)
           @tag_selection.themes << art
         end

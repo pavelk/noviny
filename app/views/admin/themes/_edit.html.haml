@@ -7,8 +7,8 @@
       = render :partial => "form", :locals => { :f => f }
       %br
       %br
-      = link_to "Pridat souvisejici temata", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationthemeship(\'main\'); return false', :id => "relart_#{@theme.id}"
-      #related_main
+      = link_to "Pridat souvisejici temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false', :id => "relart_#{@theme.id}"
+      #related_themes
       - if(@theme.relationthemeships.size > 0)  
         %br
         %br

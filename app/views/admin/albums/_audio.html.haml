@@ -11,5 +11,5 @@
       %td= aud.user.user_name
       %td= aud.name
       %td{ :class => 'center' }
-        = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', {:title => 'Editovat',:id => 'editPict', :class => "#{aud.id}"}
+        = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', {:title => 'Editovat',:id => "edit-audios-#{aud.id}-#{params[:type]}", :onclick => 'editAttachment( $(this)); return false'}
         = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), {:controller => 'insets', :action => 'destroy', :id => aud}, :title => 'Smazat', :confirm => 'Jste si jistí?', :method => :delete

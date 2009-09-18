@@ -5,31 +5,8 @@
   = f.text_field :name, :class => "inp countable count-#{@content_type[0].split('/')[0]}-#{@content_type[0].split('/')[1]}"
   %br
   %br
-
-- if @content_type[1] != 0
-  = f.label :perex, 'Perex:'
-  %br
-  = f.text_area :perex, :class => "smallText countable count-#{@content_type[1].split('/')[0]}-#{@content_type[1].split('/')[1]}"
-%br
-%br
-
-- if @content_type[2] != 0
-  = f.label :text, 'Text:'
-  %br
-  = f.text_area :text, :class => "countable count-#{@content_type[2].split('/')[0]}-#{@content_type[2].split('/')[1]}"
-%br
-%br
-
-- if @content_type[3] != 0
-  = f.label :poznamka, 'Poznamka:'
-  %br
-  = f.text_area :poznamka, :class => "smallText countable count-#{@content_type[3].split('/')[0]}-#{@content_type[3].split('/')[1]}"
-%br
-%br
-- if @content_type[4] == 1
-  = f.label :videodata, 'Kod pro YouTube:'
-  %br
-  = f.text_area :videodata, :class => "smallText"
+= f.label :author_id, 'Vyberte autora clanku:'
+= f.select(:author_id, Author.all.collect {|a| [ a.full_name, a.id ] })
 %br
 %br
 %label{ :for => "publish_date" } Datum publikace:
@@ -40,28 +17,66 @@
 %input{ :id => "publish_time", :name => "publish_time", :size => "10", :type => "text", :value => www_time(@article.publish_date)}
 %br
 %br
-= f.hidden_field(:publish_date)
+
+- if @content_type[1] != 0
+  = f.label :perex, 'Perex:'
+  %br
+  = f.text_area :perex, :class => "smallText countable count-#{@content_type[1].split('/')[0]}-#{@content_type[1].split('/')[1]}"
+  %br
+  %br
+- if @content_type[2] != 0
+  = f.label :text, 'Text:'
+  %br
+  = f.text_area :text, :class => "countable count-#{@content_type[2].split('/')[0]}-#{@content_type[2].split('/')[1]}"
+  %br
+  %br
+- if @content_type[3] != 0
+  = f.label :poznamka, 'Poznamka:'
+  %br
+  = f.text_area :poznamka, :class => "smallText countable count-#{@content_type[3].split('/')[0]}-#{@content_type[3].split('/')[1]}"
+  %br
+  %br
+- if @content_type[4] == 1
+  = f.label :videodata, 'Kod pro YouTube:'
+  %br
+  = f.text_area :videodata, :class => "smallText"
+  %br
+  %br
+
+
 %p Zaradte clanek do rubriky:
 = render(:partial => "shared/admin/section_checkboxes", :object => @article)
 
-= f.label :tag_list, 'Témata'
-%br
-= f.text_area :tag_list, :class => "smallText"
-%br
-%br
-%select{ :name => "tag_list_multi[]", :size => "10", :multiple => "multiple" }
-  - (Tag.all - @article.tags).each do |t|
-    %option{ :value => "#{t.name}" }
-      = t.name
+= link_to "+ Pridej temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false'
+#related_themes
 %br
 %br
+%strong Vybrana temata
+- @object.article_themes.each do |ts|
+  %div
+    = ts.theme.name
+    = link_to "X", '#', :id => "articles#{@object.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
+%br
+%br
+
+-#= f.label :tag_list, 'Témata'
+-#%br
+-#= f.text_area :tag_list, :class => "smallText"
+-#%br
+-#%br
+-#%select{ :name => "tag_list_multi[]", :size => "10", :multiple => "multiple" }
+-#  - (Tag.all - @article.tags).each do |t|
+-#    %option{ :value => "#{t.name}" }
+-#      = t.name
+-#%br
+-#%br
 = f.label :priority_home, 'Priorita pro homepage:'
 -#= f.select(:priority_home, %w{ 0 1 2 3 4 5 6 7 8 9 } )
 %select{ :id => 'article_priority_home', :name => 'article[priority_home]' }
   - %w{ 0 1 2 3 4 5 6 7 8 9 }.each do |i|
-    %option{ :value => "#{i}" }= i
+    %option{ :value => "#{i}", :selected => i.to_s == @object.priority_home.to_s }= i
 %br
-%br
+
 = f.label :priority_section, 'Priorita pro sekci:'
 -#= f.select(:priority_home, %w{ 9999 1 2 3 4 5 6 7 8 9 } )
 %select{ :id => 'article_priority_section', :name => 'article[priority_section]' }
@@ -69,7 +84,8 @@
     - if( i.to_s == '9999' )
       %option{ :value => "#{i}" }= '-----'
     - else
-      %option{ :value => "#{i}" }= i
+      %option{ :value => "#{i}", :selected => i.to_s == @object.priority_section.to_s }= i
+
 %br
 %br
 = f.label :approved, 'Schváleno:'
@@ -77,10 +93,6 @@
 %br
 = f.label :visibility, 'Skrýt článek:'
 = f.check_box :visibility
-%br
-%br
-= f.label :author_id, 'Vyberte autora clanku:'
-= f.select(:author_id, Author.all.collect {|a| [ a.full_name, a.id ] })
 %br
 %br
 %hr

@@ -1,9 +1,10 @@
 class Author < ActiveRecord::Base
   
   #new migrations
-  has_many :dailyquestion_authors
-  has_many :dailyquestions, :through => :dailyquestion_authors
+  #has_many :dailyquestion_authors
+  #has_many :dailyquestions, :through => :dailyquestion_authors
   #
+  has_many :dailyquestions
   
   belongs_to :user
   has_many :articles

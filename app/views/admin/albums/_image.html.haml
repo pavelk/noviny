@@ -16,7 +16,8 @@
           ,
           = picture.data_content_type
           %br
-          = link_to 'editovat', '#', {:id => 'editPict', :class => "#{picture.id}"}
+          -#= link_to 'editovat', '#', {:id => 'editPict', :class => "#{picture.id}"}
+          = link_to 'editovat', '#', :id => "edit-pictures-#{picture.id}-#{params[:type]}", :onclick => 'editAttachment( $(this)); return false'
           |
           -#= link_to 'smazat', object_url(picture), :confirm => 'Jste si jistí?', :method => :delete
           = link_to 'smazat', {:controller => 'pictures', :action => 'destroy', :id => picture}, :confirm => 'Jste si jistí?', :method => :delete    

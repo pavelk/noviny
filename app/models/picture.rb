@@ -11,6 +11,9 @@ class Picture < ActiveRecord::Base
   has_many :article_pictures
   has_many :articles, :through => :article_pictures
   
+  has_many :dailyquestion_pictures
+  has_many :dailyquestions, :through => :dailyquestion_pictures
+  
   has_many :author_pictures
   has_many :authors, :through => :author_pictures
   
@@ -25,23 +28,27 @@ class Picture < ActiveRecord::Base
   
   has_attached_file :data, :styles => { :small => "85x85", 
                                         :hp_main => "440x",
-                                        :hp_sidebar => "140x140",
-                                        :author_little => "65x65",
-                                        :preview_bottom => "140x140",
-                                        :sidebar_article => "65x65",
+                                        :hp_main_crop => "440x440#",
+                                        :hp_sidebar => "140x140#",
+                                        :author_little => "65x65#",
+                                        :preview_bottom => "140x140#",
+                                        :sidebar_article => "65x65#",
                                         :articles_preview => "140x",
                                         :article_profile => "178x",
                                         :gallery_big => "440x440",
-                                        :author_image => "178x178"
+                                        :author_image => "178x178#"
                                          },
-                    :convert_options => { :hp_sidebar => ' -gravity Center -extent 140x130',
+                    :convert_options => { :hp_main_crop => " -gravity Center -extent 440x270",
+                                          :hp_sidebar => " -gravity Center -extent 140x130",
                                           :author_little => ' -gravity Center -extent 65x60',
                                           :preview_bottom => ' -gravity Center -extent 140x90',
-                                          :sidebar_article => ' -gravity Center -extent 65x41',
-                                          :author_image => ' -gravity Center -extent 178x178'
+                                          :sidebar_article => ' -gravity Center -extent 65x41'
+                                          #:author_image => ' -gravity Center -extent 178x178'
                                         },
                     :url  => "/assets/pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/pictures/:id/:style/:basename.:extension"
+    
+    #convert vstup.jpg -resize x356 -resize '356x<' -resize 50% -gravity Center -extent 178x178 vystup-crop.jpg
   
     
     #Added by Jan Uhlar

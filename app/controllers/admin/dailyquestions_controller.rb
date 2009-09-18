@@ -1,7 +1,10 @@
 class Admin::DailyquestionsController < Admin::AdminController
   
-  create.after :set_values
+  #create.before :set_author
+  #create.after :process_adding_pictures, :set_values
   update.after :set_values
+  update.before :set_author
+
     
   def index
     #debugger
@@ -15,10 +18,10 @@ class Admin::DailyquestionsController < Admin::AdminController
     end
   end
   
-  def new
-    @dailyquestion = Dailyquestion.new
-    2.times { @dailyquestion.dailyquestion_authors.build }
-  end
+  #def new
+  #  @dailyquestion = Dailyquestion.new
+  #  2.times { @dailyquestion.dailyquestion_authors.build }
+  #end
       
   new_action.response do |wants|
     wants.js
@@ -32,11 +35,59 @@ class Admin::DailyquestionsController < Admin::AdminController
     wants.js
   end
   
-  create.response do |wants|
-    wants.js { render :layout => false }
+  #create.response do |wants|
+  #  wants.js { render :layout => false }
+  #end
+  
+  def add_img
+    @dailyquestion = Dailyquestion.find(params[:art])
+    @picture = Picture.find(params[:pic])
+    @dailyquestion.pictures << @picture
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_img
+    @dailyquestion = Dailyquestion.find(params[:art])
+    @picture = Picture.find(params[:pic])
+    @dailyquestion.pictures.delete(@picture)
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def create
+    params[:dailyquestion][:author_yes] = Author.find(params[:dailyquestion][:author_yes])
+    params[:dailyquestion][:author_no] = Author.find(params[:dailyquestion][:author_no])
+    @dailyquestion = Dailyquestion.new(params[:dailyquestion])
+    process_adding_pictures
+    set_values
+    respond_to do |format|
+      if @dailyquestion.save
+        format.js
+      end
+    end
   end
   
   private
+  
+    def set_author
+      #debugger
+      params[:dailyquestion][:author_yes] = Author.find(params[:dailyquestion][:author_yes])
+      params[:dailyquestion][:author_no] = Author.find(params[:dailyquestion][:author_no])
+    end  
+  
+    def process_adding_pictures
+      if(params[:pictures])
+        params[:pictures].each_value do |p|
+          pict = Picture.find(p)
+          @dailyquestion.pictures << pict
+        end
+      end      
+    end
   
   
     def set_values

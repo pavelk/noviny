@@ -8,6 +8,9 @@ class Theme < Tag
   has_many :tag_selections, :through => :theme_selections
   #
   
+  has_many :article_themes
+  has_many :articles, :through => :article_themes
+  
   #souvisejici temata
   has_many :relationthemeships
   has_many :relthemes, :through => :relationthemeships

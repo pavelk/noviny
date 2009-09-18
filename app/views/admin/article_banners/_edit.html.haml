@@ -13,10 +13,10 @@
         %div{ :class => "listFiles listImgr", :id => "filesLista_#{@object.id}" }
           %div{ :class => 'addedFile forImgr' }
             - if (@object.picture != nil)
-              = image_tag(@object.picture.data.url(:small))
+              = image_tag(@object.picture.data.url(:hp_sidebar))
               %br
       .dndContainer
-        %div{ :class => 'dnd imgrs' } Zde pretahnete obrazek 
+        %div{ :class => 'dnd imgrs banner' } Zde pretahnete obrazek 
       .clearer &nbsp;
       %br
       %p= submit_tag "Upravit"

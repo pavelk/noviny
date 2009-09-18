@@ -87,3 +87,9 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 .hidden { display: none}
 .visible { display: block; }
 #counter { position: absolute;  }
+
+table.addedFile{
+  display: block;
+  width: 100%;
+
+}

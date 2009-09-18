@@ -1,6 +1,6 @@
 .form
   - form_for @user_session, :url => user_session_path, :html => { :class => 'formBox' } do |f|
-    -#= f.error_messages
+    = f.error_messages
     %fieldset
       %h2 Sign in
       .clearfix

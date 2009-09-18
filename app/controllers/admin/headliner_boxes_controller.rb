@@ -41,6 +41,12 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
           @headliner_box.articles << art
         end
       end
+      if(params[:related_themes])
+        params[:related_themes].each_value do |r|
+          theme = Theme.find(r)
+          @headliner_box.themes << theme
+        end
+      end
       if(params[:related_main])
         article_id = params[:related_main].shift[1]
         @headliner_box.update_attributes( :article_id => article_id )

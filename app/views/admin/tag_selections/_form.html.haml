@@ -1,13 +1,14 @@
 = f.label :headline, 'Headline:'
 = f.text_field :headline, :class => 'inp'
+-#%br
+-#%br
+-#%label{ :for => "tag_selection_publish_date" } Datum publikace:
+-#%input{ :id => "tag_selection_publish_date", :name => "tag_selection[publish_date]", :size => "30", :type => "text", :value => www_date(@tag_selection.publish_date)}
 %br
 %br
-%label{ :for => "tag_selection_publish_date" } Datum publikace:
-%input{ :id => "tag_selection_publish_date", :name => "tag_selection[publish_date]", :size => "30", :type => "text", :value => www_date(@tag_selection.publish_date)}
-%br
-%br
-= link_to "Pridat temata", "#?width=700&height=500", :class => 'thickbox', :onclick => 'getRelationthemeship(\'sidebar\'); return false'
-#related_sidebar
+%hr
+= link_to "+ Pridat temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false'
+#related_themes
 %br
 %br
 %strong Vybrana temata
@@ -16,7 +17,8 @@
     = ts.theme.name
     = link_to "X", '#', :id => "tagselection_#{@tag_selection.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
 %br
+%hr
 %br  
 %p Zaradte vyber do rubrik:
-= render(:partial => "shared/admin/section_checkboxes", :object => @object)
+= render(:partial => "shared/admin/section_top_checkboxes", :object => @object)
 %hr

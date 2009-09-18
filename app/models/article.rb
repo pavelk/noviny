@@ -10,6 +10,9 @@ class Article < ActiveRecord::Base
   
   has_many :headliner_articles
   has_many :headliner_boxes, :through => :headliner_articles
+  
+  has_many :article_themes
+  has_many :themes, :through => :article_themes
   # 
       
   belongs_to :user
@@ -50,7 +53,7 @@ class Article < ActiveRecord::Base
     indexes text
     indexes perex
     indexes poznamka
-    indexes publish_date
+    indexes publish_date, :sortable => true
     indexes created_at
     indexes updated_at, :sortable => true
     indexes :name, :sortable => true
@@ -69,8 +72,8 @@ class Article < ActiveRecord::Base
   
   
   before_save do |a|
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{a.priority_home} && priority_home <= 9" 
+    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 
+    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{a.priority_home} && priority_home <= 9" 
   end
   
   #Added by Jan Uhlar

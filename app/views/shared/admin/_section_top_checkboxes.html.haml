@@ -1,0 +1,6 @@
+- Section.roots.each do |section|
+  %div{ :id => "checkboxes-section-top" }
+    = check_box_tag :section_ids, section.id, @object.sections.include?(section), :name => "#{return_classname(section_top_checkboxes)}[section_ids][]"
+    = label_tag :section_ids, section.name
+%br
+%br

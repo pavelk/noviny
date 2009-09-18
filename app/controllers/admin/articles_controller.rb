@@ -1,22 +1,32 @@
 class Admin::ArticlesController < Admin::AdminController
   
   create.before :set_user
-  create.after :process_adding_pictures, :process_adding_files, :process_adding_audios, :process_adding_boxes, :process_sections, :multi_tag_create, :process_related 
-  update.after :process_sections, :process_related
+  create.after :process_adding_pictures, :process_adding_files, 
+               :process_adding_audios, :process_adding_boxes, 
+               :process_sections, :multi_tag_create, :process_related, :set_values 
+  update.after :process_sections, :process_related, :set_values
   update.before :multi_tag 
   
   def index
     #debugger
     if(params[:search])
-      @articles = Article.search params[:search], :page => params[:page], :per_page => 10, :order => 'updated_at DESC'
+      @articles = Article.search params[:search], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
-      @articles = Article.all.paginate( :per_page => 10, :page => params[:page] )
+      @articles = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end 
     respond_to do |format|
       format.js
     end
   end  
   
+  def get_relarticles
+    #debugger
+    @articles = Article.all(:conditions => "id in (#{params[:related_sidebar].values.join(',')})") 
+    
+    respond_to do |format|  
+      format.js
+    end
+  end
   
   show.response do |wants|
     wants.js
@@ -210,10 +220,16 @@ class Admin::ArticlesController < Admin::AdminController
 private
   
   def process_related
-    if(params[:related_main])
-      params[:related_main].each_value do |r|
+    if(params[:related_sidebar])
+      params[:related_sidebar].each_value do |r|
         relationship = @article.relationships.build(:relarticle_id => r)
         relationship.save
+      end
+    end
+    if(params[:related_themes])
+      params[:related_themes].each_value do |r|
+        art = Theme.find(r)
+        @article.themes << art
       end
     end  
   end
@@ -270,6 +286,16 @@ private
         @article.info_boxes << box
       end
     end      
+  end
+  
+  def set_values
+    #debugger
+    if(params[:publish_time].size == 0)
+      p_time = ' 04:00:00'
+    else
+      p_time = ' ' + params[:publish_time] + ':00'
+    end    
+    @article.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time) 
   end  
 
   def adjust_home_priority( p, id )

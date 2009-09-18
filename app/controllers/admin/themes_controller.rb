@@ -14,6 +14,15 @@ class Admin::ThemesController < Admin::AdminController
       format.js
     end
   end
+  
+  def get_relthemes
+    #debugger
+    @themes = Theme.all(:conditions => "id in (#{params[:related_themes].values.join(',')})") 
+    
+    respond_to do |format|  
+      format.js
+    end
+  end
 
   edit.response do |wants|
     wants.js
@@ -26,8 +35,8 @@ class Admin::ThemesController < Admin::AdminController
   private
   
     def process_related
-      if(params[:related_main])
-        params[:related_main].each_value do |r|
+      if(params[:related_themes])
+        params[:related_themes].each_value do |r|
           relationthemeship = @theme.relationthemeships.build(:reltheme_id => r)
           relationthemeship.save
         end
