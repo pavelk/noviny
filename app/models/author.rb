@@ -28,4 +28,15 @@ class Author < ActiveRecord::Base
     indexes cv
   end
   
+  #Added by Jan Uhlar
+  def self.all_right
+    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+    find(:all,
+         :select=>"authors.*",
+         :joins=>[:articles],
+         :conditions=>["articles.publish_date >= ? AND articles.publish_date <= ? AND articles.content_type_id IN (?)",Time.now-2.days,Time.now,arr],
+         :order=>"authors.surname ASC",
+         :group=>"authors.id")
+  end
+  
 end
