@@ -5,6 +5,7 @@ class ContentType < ActiveRecord::Base
   SLOUPEK = 2
   KOMENTAR = 3
   GLOSA = 4
+  VIDEO = 19
   ############
   
   has_many :articles

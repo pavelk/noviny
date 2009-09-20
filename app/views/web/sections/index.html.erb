@@ -3,37 +3,38 @@
 <ul class="list item">
 	<% @rel_articles.each do |article| -%>
 		<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
-	<% end -%>
+	<% end if @rel_articles -%>
 </ul>
 	        
 <div class="box">
-  <h2 class="h line">Názory</h2>
+  <h2 class="h line"><% if !week? %>Názory<% end %></h2>
   <div class="in itemList">
-  	<%= "No opinions" if @opinions.blank? %> 
-	<%= render :partial=>"web/articles/left_article", :collection=>@opinions,:locals=>{:with_date=>true} %>   
-    
+  	<%= "No articles" if @articles.blank? %> 
+	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true} %>   
+<!-- 
     <div class="cols cols3 next">
       <div class="col1">
         <h4 class="h">Další komentáře</h4>
         <ul>
           <li><a href="">TODO</a></li>
         </ul>
-      </div> <!-- /.col1 -->
+      </div>
       
       <div class="col2">
         <h4 class="h">Další sloupky</h4>
         <ul>
           <li><a href="">TODO</a></li>
         </ul>
-      </div> <!-- /.col2 -->
+      </div>
       
       <div class="col3">
         <h4 class="h">Další glosy</h4>
         <ul>
           <li><a href="">TODO</a></li>
         </ul>
-      </div> <!-- /.col3 -->
-    </div> <!-- /.cols -->            
+      </div> 
+    </div>          
+-->  
   </div> <!-- /.in -->
 </div> <!-- /.box -->
 
@@ -54,18 +55,5 @@
 </div> <!-- /.box -->
 
 <div class="box cols cols3">
-  <div class="col1">
-    <h2 class="h line">Domov</h2>
-	<%= render :partial=>"web/articles/section",:collection=>@homes %>
-  </div> <!-- /.col1 -->
-  
-  <div class="col2">
-    <h2 class="h line">Svět</h2>
-    <%= render :partial=>"web/articles/section",:collection=>@worlds %>
-  </div> <!-- /.col2 -->
-  
-  <div class="col3">
-    <h2 class="h line">Umění</h2>
-    <%= render :partial=>"web/articles/section",:collection=>@arts %>
-  </div> <!-- /.col3 -->
+  <%= render :partial=>"web/sections/box" %>
 </div> <!-- /.cols -->

@@ -1,0 +1,6 @@
+<% @down_boxes.each_with_index do |boxes,i| %>
+	<div class="col<%=i+1-%>">
+    <h2 class="h line"><%= boxes[0] -%></h2>
+	<%= render :partial=>"web/articles/section",:collection=>boxes[1] %>
+  </div> <!-- /.col1 -->
+<% end if @down_boxes %>

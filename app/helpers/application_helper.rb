@@ -9,7 +9,11 @@ module ApplicationHelper
   end
   
   def main_image_tag(path,options={})
-    image_tag("http://referendum.glow.cz#{path}",options)
+    image_tag("#{path}",options)
+  end
+  
+  def week?
+    Web::Calendar.week?
   end
   
   #Returns normalize form of string for formatting the url

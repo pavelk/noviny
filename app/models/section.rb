@@ -1,4 +1,5 @@
 class Section < ActiveRecord::Base
+  HOME_SECTION_ID = 9999
   
   #new migrations
   has_many :headliner_sections

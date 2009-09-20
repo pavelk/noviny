@@ -1,14 +1,14 @@
-$(document).ready(function() {
+jQuery(document).ready(function() {
   
   // search
-  $("#search .button").click(function() {
-    if($(this).val() == 'Co hledáte?') $(this).val('');
+  jQuery("#search .button").click(function() {
+    if(jQuery(this).val() == 'Co hledáte?') jQuery(this).val('');
   }).blur(function() {
-    if($(this).val() == '') $(this).val('Co hledáte?');
+    if(jQuery(this).val() == '') jQuery(this).val('Co hledáte?');
   });
   
   // gallery slider
-  $(".gallery").serialScroll({
+  jQuery(".gallery").serialScroll({
 		target: '.thumbs',
 	  items: 'li',
 		prev: '.pages li.prev a',
@@ -25,27 +25,27 @@ $(document).ready(function() {
 	});
 	
 	// show big image from thumb
-	$(".gallery .thumbs a").click(function() {
-	  $(this).parents(".thumbs").find("li span").remove();
-    $(this).parents(".gallery").find(".main img").attr("src", $(this).attr("href"));
-    $(this).parents(".gallery").find(".main .info").text($(this).attr("title"));
-    $(this).find("img").after("<span></span>");
+	jQuery(".gallery .thumbs a").click(function() {
+	  jQuery(this).parents(".thumbs").find("li span").remove();
+    jQuery(this).parents(".gallery").find(".main img").attr("src", jQuery(this).attr("href"));
+    jQuery(this).parents(".gallery").find(".main .info").text(jQuery(this).attr("title"));
+    jQuery(this).find("img").after("<span></span>");
     return false;
   });
   
   // share box
-  $(".share").click(function() {
-    var position = $(this).offset();
-    $(".shareBox").remove();
+  jQuery(".share").click(function() {
+    var position = jQuery(this).offset();
+    jQuery(".shareBox").remove();
 
     // structure
-    $("body").append('<div class="shareBox"><div class="head"></div><div class="content"><div class="in"><h3 class="h">Share this on:</h3><ul><li class="facebook"><a href="">Facebook</a></li><li class="facebook"><a href="">Twitter</a></li><li class="facebook"><a href="">del.icio.us</a></li></ul><a href="#" class="close overlaid">Close<span></span></a></div></div><div class="bottom"></div></div>');
+    jQuery("body").append('<div class="shareBox"><div class="head"></div><div class="content"><div class="in"><h3 class="h">Share this on:</h3><ul><li class="facebook"><a href="">Facebook</a></li><li class="facebook"><a href="">Twitter</a></li><li class="facebook"><a href="">del.icio.us</a></li></ul><a href="#" class="close overlaid">Close<span></span></a></div></div><div class="bottom"></div></div>');
     
     // position
-    $(".shareBox").css({ top: position.top - 20, left: (position.left + $(".shareBox").width()) });
+    jQuery(".shareBox").css({ top: position.top - 20, left: (position.left + jQuery(".shareBox").width()) });
     
     // close
-    $(".shareBox .close").click(function() { $(".shareBox").remove(); return false; });
+    jQuery(".shareBox .close").click(function() { jQuery(".shareBox").remove(); return false; });
     return false;
   });
   

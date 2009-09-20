@@ -33,6 +33,7 @@ class Web::ArticlesController < Web::WebController
     @article_image = @article.pictures.first
     @comments = @article.article_comments
     @newest = Article.newest(@section.id)
+    @info_box = @article.info_boxes.first
     
     add_breadcrumb @article.section.name, ""
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
@@ -89,6 +90,7 @@ class Web::ArticlesController < Web::WebController
     redirect_to :action=>"detail",:id=>params[:id] and return if @pictures.blank?
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @pictures.first
+    @info_box = @article.info_boxes.first
     
     @newest = Article.newest(@section.id)
     

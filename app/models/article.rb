@@ -85,16 +85,29 @@ class Article < ActiveRecord::Base
     return header
   end
   
-  #pouze názory, definované typem článku (Glosa, Komentář, Sloupek), 
-  #řazené podle priority a data, na HP pouze aktuální den, v případě že bude
-  #méně jak 2 doplnit staršími 
-  def self.home_opinions(beg_date = Time.now, limit = 5)
-    length_limit = 2
+  def short_text
+    return self.text if self.text.length <= 550
+    limit = 500
+    sh = self.text.slice(0..limit)
+    while sh.last != " "
+      limit += 1
+      sh = self.text.slice(0..limit-1)
+    end
+    return sh
+  end
+  
+  #pouze nazory, definovane typem clanku (Glosa, Komentr, Sloupek), 
+  #razene podle priority a data vzestupne, na HP pouze aktualni­ den, v pripade ze bude
+  #mene jak 2 doplnit starsimi
+  #pokud je pondeli, tak limit nastavit na 4
+  #minimalni limit pocet clanku = 6
+  def self.home_opinions(beg_date = Time.now, limit = 2)
+    length_limit = 6
     limit -= 1
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     ops = find(:all,
-               :conditions=>["section_id = ? AND priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?)",Section::NAZORY,0,beg_date.beginning_of_day,Time.now,arr],
-               :order=>"publish_date DESC, priority_home DESC",
+               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?)",0,beg_date.beginning_of_day,Time.now,arr],
+               :order=>"priority_home ASC, publish_date ASC",
                :include=>[:content_type])
     return ops if ops.length >= length_limit
     return ops if limit == 0
@@ -150,30 +163,30 @@ class Article < ActiveRecord::Base
                  :limit=>limit)
   end
   
-  #Returns all today news from all sections
+  #Returns all today news from all sections except NAZORY and HP 
   def self.today_top_news(limit = 10)
-    #news_arr = [Section::DOMOV,Section::SVET,Section::UMENI]
     find(:all,
          :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now],
-         :order=>"publish_date DESC,priority_section DESC",
-         :include=>[:section],
+         :order=>"publish_date DESC, priority_section DESC",
+         :include=>[:section,:content_type],
          :limit=>limit)
   end
   
-  #Returns all today opinions from section NAZORY
-  def self.today_top_opinions(limit = 10)
-    news_arr = [Section::NAZORY]
+  #Returns all today opinions not from section NAZORY and HP
+  def self.today_top_opinions(section_id,limit = 10)
+    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     find(:all,
-         :conditions=>["section_id IN (?) AND publish_date >= ? AND publish_date <= ?",news_arr,(Time.now - 2.days).beginning_of_day,Time.now],
+         :conditions=>["content_type_id IN (?) AND section_id != ? AND publish_date >= ? AND publish_date <= ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now],
          :order=>"publish_date DESC",
-         :include=>[:content_type],
+         :include=>[:content_type,:section],
          :limit=>limit)
   end
   
   #Returns all today articles belonging to the section as params 'section_id'
   #limited by param 'limit'
+  #neni v opinions na HP
   def self.from_section(options={})
-    def_options = {:section_id=>0,:ignore_arr => [0],:limit => 2, :from_date => nil}
+    def_options = {:ignore_arr => [0],:limit => 2, :from_date => nil}
     options = def_options.merge(options)
     op = ""
     if options[:from_date]
@@ -181,7 +194,7 @@ class Article < ActiveRecord::Base
     end
     find(:all,
          :conditions=>["section_id = ? AND id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op}",options[:section_id],options[:ignore_arr],Time.now,0],
-         :order=>"publish_date DESC, priority_section DESC",
+         :order=>"publish_date DESC",
          :include=>[:content_type],
          :limit=>options[:limit])
   end
@@ -221,24 +234,35 @@ class Article < ActiveRecord::Base
          :order=>"priority_home DESC")
   end
   
+  def self.h_box(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date)
+    op = section_id.nil? ? "headliner_sections.section_id IS ? AND headliner_boxes.publish_date = ?" : "headliner_sections.section_id = ? AND headliner_boxes.publish_date = ?"
+    HeadlinerBox.find(:first,
+                      :conditions=>[op,section_id,beg_date],
+                      :joins=>[:headliner_sections],
+                      :include=>[:article,:picture])
+  end
+  
   #výstup z modulu Headlinový box, bude definován pro danný den a konkretní 
   #sekci, pokud není pro danný den vytvořen bere se starší datum
-  def self.headliner_box(section_id = 0, beg_date = Time.now.to_date, limit = 2)
-     box = HeadlinerBox.find(:first,
-                             :conditions=>["headliner_sections.section_id = ? AND publish_date = ?",section_id,beg_date],
-                             :joins=>[:headliner_sections],
-                             :include=>[:article,:picture])
-     return box unless box.blank?
-     return nil if section_id == Section::VIKEND
-     #pokud není definován pro sekci a danný den, 
-     #zkontroluj existenci pro danný den a HP až pak teprve zobraz starší datum
-     return Article.headliner_box(0,beg_date,limit) if section_id != 0
+  def self.headliner_box(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date)
+     return Article.headliner_box_rec(section_id, beg_date)
+  end
+  
+  def self.headliner_box_rec(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit = 10)
+     box = Article.h_box(section_id, beg_date)
+     return box if box
+     #pokud neni definovan pro sekci a danny den, 
+     #zkontroluj existenci pro danny den a HP az pak teprve zobraz starsi datum
+     #NULL muze byt kdekoliv
+     box = Article.h_box(Section::HOME_SECTION_ID,beg_date) if (section_id != Section::HOME_SECTION_ID)
+     return box if box
+     box = Article.h_box(nil,beg_date) unless box #section_id NULL muze byt kdekoliv
+     return box if box
+     
      return nil if limit == 0
      limit -= 1
-      while box.blank?
-        beg_date = beg_date - 1.days
-        return Article.headliner_box(section_id,beg_date,limit)
-      end
+     beg_date = beg_date - 1.days
+     return Article.headliner_box_rec(section_id,beg_date,limit)
   end
   
   #Postranní boxy: výstup z modulu Grafické upoutávky (GP) / nezohledňuje se parametr Sekce
@@ -248,23 +272,51 @@ class Article < ActiveRecord::Base
   #    - maximální počet GP staršiho data je 3, tato podmínka platí pouze tehdy 
   #      je li naplněn minimální počet. Příklad mám 4 GP definované pro dnešek, 
   #      můžu doplnit 3x GP ze včerejška = celkem 7.
-  def self.right_boxes(boxes = [], section_id = 0, beg_date = Time.now.to_date, limit_back = 2, limit_count = 8)
-     boxes += ArticleBanner.find(:all,
-                                :conditions=>["articlebanner_sections.section_id = ? AND article_banners.publish_date = ? AND articles.section_id != ?",section_id,beg_date,section_id],
-                                :select=>"article_banners.*",
-                                :joins=>[:articlebanner_sections, :article],
-                                :include=>[:article,:picture],
-                                :limit=>limit_count)
-     return boxes if (boxes.length == limit_count)
-     #return Article.right_boxes(boxes,0,beg_date,limit_back,limit_count) if section_id != 0
+  #default section_id = 9999 ; pokud neni section_id, tak muze byt cokoliv , kde section_id je NULL
+  #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
+  def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
+    op = section_id.nil? ? "articlebanner_sections.section_id IS ? AND article_banners.publish_date = ?" : "articlebanner_sections.section_id = ? AND article_banners.publish_date = ?"
+    ArticleBanner.find(:all,
+                       :conditions=>[op,section_id,beg_date],
+                       :joins=>[:articlebanner_sections],
+                       :include=>[:article,:picture],
+                       :limit=>limit_count)
+  end
+  
+  def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
+     return Article.right_boxes_rec([], section_id, beg_date).uniq
+  end
+  
+  def self.right_boxes_rec(boxes = [], section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_back = 5, limit_count = 8)
+     min_limit_count = 5
+     # look at actual section_id
+     boxes += Article.r_boxes(section_id,beg_date,limit_count)
+     return boxes if boxes.length >= min_limit_count
+     # look at section_id 9999
+     boxes += Article.r_boxes(Section::HOME_SECTION_ID,beg_date,limit_count)
+     return boxes if boxes.length >= min_limit_count 
+     # look at section_id NULL
+     boxes += Article.r_boxes(nil,beg_date,limit_count) 
+     return boxes if boxes.length >= min_limit_count
+
      return boxes if limit_back == 0
      limit_back -= 1
-      while (boxes.length != limit_count)
-        beg_date = (beg_date - 1.days).to_date
-        return Article.right_boxes(boxes,section_id,beg_date,limit_back,3)
+     beg_date = (beg_date - 1.days).to_date
+     return Article.right_boxes_rec(boxes,section_id,beg_date,limit_back,min_limit_count - boxes.length)
+  end
+  
+  def self.down_boxes(section_id,ign_arr)
+    down_boxes = []
+    [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
+      if section_id == sec
+        ar = Article.from_section(:section_id=>Section::NAZORY,:ignore_arr=>ign_arr)
+        down_boxes << ["Názory",ar] unless ar.blank?
+      else
+        ar = Article.from_section(:section_id=>sec,:ignore_arr=>ign_arr)
+        down_boxes << [Section.find(sec).name,ar] unless ar.blank?
       end
+    end
+    down_boxes
   end
   ########################## end added by Jan Uhlar
-  
-   
 end

@@ -2,8 +2,15 @@ class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
   def index
-    set_common_variables(0)
-    @opinions = Article.home_opinions
+    if Web::Calendar.week?
+      @articles = Article.find(:all,
+                               :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,Time.now.beginning_of_day,Time.now],
+                               :order=>"publish_date DESC",
+                               :include=>[:content_type])
+    else
+      @articles = Article.home_opinions(Time.now,Web::Calendar.set_opinion_limit)
+    end
+    set_common_variables(Section::HOME_SECTION_ID)
   end
   
   def detail
@@ -33,20 +40,14 @@ class Web::SectionsController < Web::WebController
   def search
     @text = params[:text]
     @articles = Article.find(:all,:conditions=>["publish_date <= ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?","%#{@text}%","%#{@text}%","%#{@text}%",Time.now])
-    @opinions = Article.find(:all,
-                             :conditions=>["section_id = ? AND priority_home > ? AND publish_date <= ?",Section::NAZORY,0,Time.now],
-                             :order=>"priority_home DESC",
-                             :include=>[:content_type])
+    @opinions = Article.today_top_opinions(9)
                              
-    @homes = Article.from_section(:section_id=>Section::DOMOV)
-    @worlds = Article.from_section(:section_id=>Section::SVET)
-    @arts = Article.from_section(:section_id=>Section::UMENI)
+    set_common_variables(Section::HOME_SECTION_ID)
     render :action=>"index"
   end
   
 protected
   def set_default_variables
-    set_common_variables(@section.id)
     case @section.id
       when Section::NAZORY
         set_opinions_variables
@@ -55,6 +56,7 @@ protected
       else
         set_non_opinion_variables(@section.id)
     end
+    set_common_variables(@section.id)
   end
 
   def set_opinions_variables
@@ -68,12 +70,16 @@ protected
   end
   
   def set_weekend_variables
-    @sunday_articles = Article.from_section(:section_id=>Section::VIKEND,
-                                            :from_date=>Web::Calendar.sunday_date,
-                                            :limit=>nil)
-    @saturday_articles = Article.from_section(:section_id=>Section::VIKEND,
-                                              :from_date=>Web::Calendar.saturday_date,
-                                              :limit=>nil)                                        
+    @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
+    @sunday_articles = Article.find(:all,
+                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day],
+                                    :order=>"publish_date DESC",
+                                    :include=>[:content_type])
+         
+    @saturday_articles = Article.find(:all,
+                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day],
+                                      :order=>"publish_date DESC",
+                                      :include=>[:content_type])
   end
   
   def set_non_opinion_variables(section_id)
@@ -83,20 +89,18 @@ protected
                                  :order=>"priority_section DESC, publish_date DESC",
                                  :page=>params[:page],
                                  :per_page=>per_page)
-    @opinions = Article.today_top_opinions(10)                                  
-    ign_arr = (@rel_articles + @news + @opinions).map{|a| a.id}                                  
-    @down_opinions = Article.from_section(:section_id=>Section::NAZORY,:ignore_arr=>ign_arr)
+    @opinions = Article.today_top_opinions(section_id,10)                                  
   end
   
   def set_common_variables(section_id)
     @headliner_box = Article.headliner_box(section_id)
     @rel_articles = @headliner_box ? @headliner_box.article.relarticles : []
-    @right_boxes = Article.right_boxes([],section_id)
-    @news = Article.today_top_news(10)
-    
-    ign_arr = (@rel_articles + @news).map{|a| a.id}
-    @homes = Article.from_section(:section_id=>Section::DOMOV,:ignore_arr=>ign_arr)
-    @worlds = Article.from_section(:section_id=>Section::SVET,:ignore_arr=>ign_arr)
-    @arts = Article.from_section(:section_id=>Section::UMENI,:ignore_arr=>ign_arr)
+    @right_boxes = Article.right_boxes(section_id)
+    @news = Article.today_top_news if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
+    arr = @rel_articles
+    arr += @news if @news
+    arr += @opinions if @opinions
+    ign_arr = arr.map{|a| a.id}
+    @down_boxes = Article.down_boxes(section_id,ign_arr)
   end
 end

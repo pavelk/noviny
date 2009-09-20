@@ -10,7 +10,7 @@
        <div class="paging">
 			<ul class="pages">
 			  <li class="nav prev"><a href="">predchozi</a></li>
-			  <li><span class="actual">1</span> / 6</li>
+			  <li><span class="actual">1</span> / <%= @pictures.total_pages %></li>
 			  <li class="nav next"><a href="">nasledujici</a></li>
 			</ul>
        </div> <!-- /.paging -->
@@ -30,10 +30,12 @@
    <div class="cols detailContent">
      <div class="col1">
        <div class="box boxLine">
-		<%= render :padtial=>"web/articles/left_box" %>
+		<%= render :partial=>"web/articles/left_box" %>
 		</div> <!-- /.box -->
        
-	<div class="box">
+		<%= render :partial=>"web/articles/profil" %>
+	   
+	 <div class="box">
 		<%= render :partial=>"web/articles/rel_articles" %>
 	 </div> <!-- /.box -->
 	
@@ -41,7 +43,8 @@
 	     
 	<div class="col2">
 	       <div class="text">
-			<p><%= @article.text %></p>
+				<p><%= @article.short_text %>...</p>
+				<%= link_to "Celý článek", articles_path(:action=>"detail",:id=>@article.id) %>
 	       </div> <!-- /.text -->       
 	</div> <!-- /.col2 -->
 	

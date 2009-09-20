@@ -3,18 +3,5 @@
 <%= render :partial=> "web/articles/article_div" %>	        
 
 <div class="box cols cols3">
-  <div class="col1">
-    <h2 class="h line">Názory</h2>
-	<%= render :partial=>"web/articles/section",:collection=>@down_opinions %>
-  </div> <!-- /.col1 -->
-  
-  <div class="col2">
-    <h2 class="h line">Svět</h2>
-    <%= render :partial=>"web/articles/section",:collection=>@worlds %>
-  </div> <!-- /.col2 -->
-  
-  <div class="col3">
-    <h2 class="h line">Umění</h2>
-    <%= render :partial=>"web/articles/section",:collection=>@arts %>
-  </div> <!-- /.col3 -->
+ <%= render :partial=>"web/sections/box" %>	
 </div> <!-- /.cols -->

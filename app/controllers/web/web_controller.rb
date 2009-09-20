@@ -1,6 +1,7 @@
 class Web::WebController < ApplicationController
   layout "web/referendum"
   before_filter :set_variables
+  before_filter :set_printable
 
 protected
    def add_breadcrumb name, url = ''  
@@ -21,9 +22,12 @@ protected
      @tags = Article.top_taggings(6)
      @type = 1 #for partial readest menu
      @readest = Article.all_readest(Time.now-24.hours)
-     @authors = Author.find(:all,:limit=>10)
+     @authors = Author.all_right
    end
  
+    def set_printable
+      @printable = params[:print] ? true : false
+    end
 private  
   def check_authentication
     

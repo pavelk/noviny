@@ -1,5 +1,5 @@
 <div class="box boxNews">
-	<% if (@section && (@section.id != Section::NAZORY)) %>
+	<% if (@section && (@section.id != Section::NAZORY && @section.id != Section::VIKEND)) %>
 		<%= render :partial=>"layouts/web/opinions" %>
 	<% else %>
 		<%= render :partial=>"layouts/web/news" %>
