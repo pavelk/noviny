@@ -1,8 +1,7 @@
 <% if @articles %>
-<div class="box">
-  <% if @headliner_box %><h2 class="h line"></h2><% end %>
-  <div class="in">
-		<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true} %>
+<div class="box boxLine">
+  <div class="in itemList">
+		<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true,:small_class=>false} %>
   </div> <!-- /.in -->
   <%= will_paginate @articles %>
 </div> <!-- /.box -->

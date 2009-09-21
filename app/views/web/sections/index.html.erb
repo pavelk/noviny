@@ -10,7 +10,7 @@
   <h2 class="h line"><% if !week? %>Názory<% end %></h2>
   <div class="in itemList">
   	<%= "No articles" if @articles.blank? %> 
-	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true} %>   
+	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true,:small_class=>true} %>   
 <!-- 
     <div class="cols cols3 next">
       <div class="col1">

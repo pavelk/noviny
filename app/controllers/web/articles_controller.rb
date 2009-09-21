@@ -29,7 +29,7 @@ class Web::ArticlesController < Web::WebController
     @related = @article.relarticles
     @section = @article.section
     @author = @article.author
-    @author_image = @author.pictures.first.data.url(:small) if @author && @author.pictures.first
+    @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
     @comments = @article.article_comments
     @newest = Article.newest(@section.id)
@@ -37,7 +37,7 @@ class Web::ArticlesController < Web::WebController
     
     add_breadcrumb @article.section.name, ""
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
-    render :action=>"detail_noimg" unless @article_image
+    render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
   end
   
   def question
@@ -45,6 +45,8 @@ class Web::ArticlesController < Web::WebController
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no
+    @newest = Article.newest
+    add_breadcrumb "Otázka", ""
   end
   
   def archiv

@@ -1,2 +1,0 @@
-$("#sections .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
-$("#sections .listContent").append("<%= escape_javascript(render(:partial => 'sections_header', :object => @sections)) %>");

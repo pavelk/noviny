@@ -1,8 +1,0 @@
-$(".recordHeader a").click();
-<% if @album.child?  %>
-$("tr[class='ident-<%=  @album.parent.id %>'] > td.listItem a").click();
-$("tr[class='ident-<%=  @album.parent.id %>'] > td.listItem a").click();
-<% else  %>
-navigationClick(  $("#group-<%=params[:type]%> h2"), null, $(".listGroup#group-<%=params[:type]%>")  );
-navigationClick(  $("#group-<%=params[:type]%> h2"), null, $(".listGroup#group-<%=params[:type]%>")  );
-<% end  %>

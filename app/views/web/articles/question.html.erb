@@ -16,7 +16,8 @@
 
      
      <div class="col2 mainImage">
-       <%= link_to(image_tag(@question_image.data.url(:hp_main)),:action=>"TODO",:id=>@question.id) if @question_image %>
+       <%= link_to(image_tag(@question_image.data.url(:hp_main)), "TODO") if @question_image %>
+	   <p class="info"><%= @question_image.name %></p>
      </div> <!-- /.col2 -->
 	 
    </div> <!-- /.cols -->

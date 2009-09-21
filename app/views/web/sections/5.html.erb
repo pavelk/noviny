@@ -6,7 +6,7 @@
 <div class="box">
   <h2 class="h line">Neděle <%= @sunday.to_s(:cz_date) %></h2>
   <div class="in">
-	<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false} %>
+	<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
    </div> <!-- /.in -->
 </div> <!-- /.box -->
 <% end %>
@@ -15,7 +15,7 @@
 <div class="box">
   <h2 class="h line">Sobota <%= (@sunday - 1.days).to_s(:cz_date) %></h2>
   <div class="in">
-	<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false} %>
+	<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
    </div> <!-- /.in -->
 </div> <!-- /.box -->
 <% end %>
