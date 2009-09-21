@@ -22,7 +22,7 @@
    </div> <!-- /.col1 -->
    
    <div class="col2">
-     <%= render :partial=>"web/articles/left_article",:collection=>@articles,:locals=>{:with_date=>true} %>
+     <%= render :partial=>"web/articles/left_article",:collection=>@articles,:locals=>{:with_date=>true,:small_class=>false} %>
      <div class="paging">
        <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
        <ul class="pages">

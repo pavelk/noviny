@@ -41,11 +41,11 @@ class Web::SectionsController < Web::WebController
   
   def search
     @text = params[:text]
-    @articles = Article.find(:all,:conditions=>["publish_date <= ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?","%#{@text}%","%#{@text}%","%#{@text}%",Time.now])
-    @opinions = Article.today_top_opinions(9)
-                             
-    set_common_variables(Section::HOME_SECTION_ID)
-    render :action=>"index"
+    @articles = Article.paginate(:all,
+                                 :conditions=>["publish_date <= ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,"%#{@text}%","%#{@text}%","%#{@text}%"],
+                                 :page=>params[:page],
+                                 :per_page=>25)
+    render :layout=>"web/gallery"
   end
   
 protected

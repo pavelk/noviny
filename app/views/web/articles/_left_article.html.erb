@@ -7,7 +7,7 @@
 	  <p class="info">
 	  	<%= left_article.head -%>
 		<% if with_date %>
-			<span><%= left_article.publish_date.to_s(:cz_date) %></span>
+			<span><%= left_article.publish_date.to_s(:cz_date) if left_article.publish_date %></span>
 		<% end %>
 	  </p>
 	  <h3 class="head">

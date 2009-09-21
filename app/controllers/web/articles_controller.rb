@@ -5,7 +5,7 @@ class Web::ArticlesController < Web::WebController
     @article = Article.find(params[:id])
     @section = @article.section
     @author = @article.author
-    @author_image = @author.pictures.first.data.url(:small) if @author && @author.pictures.first
+    @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
     
     @newest = Article.newest(@section.id)
@@ -35,7 +35,7 @@ class Web::ArticlesController < Web::WebController
     @newest = Article.newest(@section.id)
     @info_box = @article.info_boxes.first
     
-    add_breadcrumb @article.section.name, ""
+    add_breadcrumb @article.section.name, "" if @article.section
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
     render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
   end

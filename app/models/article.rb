@@ -20,7 +20,7 @@ class Article < ActiveRecord::Base
   
   has_many :article_selections
   
-  belongs_to :section #added by Jan Uhlar
+  #belongs_to :section #added by Jan Uhlar
   belongs_to :subsection #added by Jan Uhlar
   
   belongs_to :content_type
@@ -85,6 +85,10 @@ class Article < ActiveRecord::Base
     return header
   end
   
+  def section
+    self.sections.first
+  end
+  
   def short_text
     return self.text if self.text.length <= 550
     limit = 500
@@ -120,10 +124,11 @@ class Article < ActiveRecord::Base
   #Returns last articles limited as param
   def self.newest(limit=3, section_id = nil)
     op = ""
-    op += "section_id = '#{section_id}' AND " if section_id
+    op += "article_sections.section_id = '#{section_id}' AND " if section_id
     Article.find(:all,
                  :conditions=>["#{op}publish_date <= ?",Time.now],
                  :order=>"publish_date DESC",
+                 :joins=>[:article_sections],
                  :limit=>limit)
   end
   
@@ -143,11 +148,11 @@ class Article < ActiveRecord::Base
     arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
     arr.each do |a|
       article = Article.find(:first,
-                                 :conditions=>["articles.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ?",a,begin_date,Time.now],
+                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ?",a,begin_date,Time.now],
                                  :select=>"articles.*,COUNT(article_views.article_id) as c",
                                  :group=>"articles.id",
                                  :order=>"c DESC",
-                                 :joins=>[:article_views])
+                                 :joins=>[:article_views,:article_sections])
       readest << article if article
     end
     return readest
@@ -168,7 +173,7 @@ class Article < ActiveRecord::Base
     find(:all,
          :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now],
          :order=>"publish_date DESC, priority_section DESC",
-         :include=>[:section,:content_type],
+         :include=>[:content_type],
          :limit=>limit)
   end
   
@@ -176,9 +181,10 @@ class Article < ActiveRecord::Base
   def self.today_top_opinions(section_id,limit = 10)
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     find(:all,
-         :conditions=>["content_type_id IN (?) AND section_id != ? AND publish_date >= ? AND publish_date <= ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now],
+         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now],
          :order=>"publish_date DESC",
-         :include=>[:content_type,:section],
+         :joins=>[:article_sections],
+         :include=>[:content_type],
          :limit=>limit)
   end
   
@@ -193,8 +199,9 @@ class Article < ActiveRecord::Base
      op += " AND publish_date >= '#{options[:from_date].beginning_of_day.to_s(:db)}' AND publish_date <= '#{options[:from_date].end_of_day.to_s(:db)}'"
     end
     find(:all,
-         :conditions=>["section_id = ? AND id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op}",options[:section_id],options[:ignore_arr],Time.now,0],
+         :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op}",options[:section_id],options[:ignore_arr],Time.now,0],
          :order=>"publish_date DESC",
+         :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>options[:limit])
   end
@@ -203,8 +210,9 @@ class Article < ActiveRecord::Base
   #limited by param 'limit'
   def self.yesterday_from_section(section_id,limit = 4)
     find(:all,
-         :conditions=>["section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0],
+         :conditions=>["article_sections.section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0],
          :order=>"priority_section DESC, publish_date DESC",
+         :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>limit)
   end
