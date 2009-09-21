@@ -11,6 +11,8 @@ class Web::SectionsController < Web::WebController
       @articles = Article.home_opinions(Time.now,Web::Calendar.set_opinion_limit)
     end
     set_common_variables(Section::HOME_SECTION_ID)
+    @question = Dailyquestion.first_by_date
+    @question_image = @question.pictures.first if @question
   end
   
   def detail

@@ -28,7 +28,7 @@ module ApplicationHelper
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     if (article.section_id == Section::NAZORY || arr.include?(article.content_type_id))
       author = article.author
-      return link_to(main_image_tag(author.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
+      return link_to(main_image_tag(author.pictures.first.data.url(:author_little)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
     else
       return link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
     end

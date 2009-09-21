@@ -40,6 +40,13 @@ class Web::ArticlesController < Web::WebController
     render :action=>"detail_noimg" unless @article_image
   end
   
+  def question
+    @question = Dailyquestion.find(params[:id])
+    @question_image = @question.pictures.first
+    @author_yes = @question.author_yes
+    @author_no = @question.author_no
+  end
+  
   def archiv
     datum = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Time.now
     redirect_to home_path and return if datum > Time.now

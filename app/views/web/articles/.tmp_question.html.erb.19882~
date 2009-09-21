@@ -1,0 +1,180 @@
+<div class="box boxDetail">
+   <h2 class="head"><%= @question.headline %></h2>
+   <p class="perex"><%= @question.question_text %></p>
+   
+   <div class="cols detailImage line">
+      <div class="col1 item itemSmallImage itemSmall noImg">                
+                <div class="self">
+                  <h3 class="head alt"><a href="">Redakce</a></h3> 
+                  <p class="info">20. 7. 2009</p>
+                  <ul>
+                    <li><a href="">Referendum dne</a></li>
+                  </ul>
+                </div> <!-- /.self -->
+
+      </div> <!-- /.col1 -->
+
+     
+     <div class="col2 mainImage">
+       <%= link_to(image_tag(@question_image.data.url(:hp_main)),:action=>"TODO",:id=>@question.id) %>
+     </div> <!-- /.col2 -->
+	 
+   </div> <!-- /.cols -->
+   
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box boxLine">
+		<%= render :partial=>"web/articles/left_box" %>
+       </div> <!-- /.box -->
+       
+		<div class="box">
+          <h3 class="h line">Starsi referenda TODO</h3>
+           <div class="in">
+              <div class="item itemSmall noImg">
+                 <div class="self">
+                  <p class="info"><span>TODO</span></p>
+
+                   <h3 class="head"><a href="">TODO</a></h3>
+               </div> <!-- /.self -->
+             </div> <!-- /.item -->
+          </div> <!-- /.in -->
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+     
+     <div class="col2">
+                <div class="box cols cols50">
+                  <div class="col1">
+
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+                        main_image_tag(author.pictures.first.data.url(:author_little))
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><a href="">Jan Novak</a></h4>
+                        <p class="text alt">Ano</p>
+
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    
+                    <p class="text">Setkal jsem se již s názorem, že válka v Iráku se svými výdaji tento program zbrzdila. Nakolik jsou tyto spekulace opodstatněné? Do jaké míry hodlají USA spolupracovat i s jinými kosmickými velmocemi - dotaz mířen ohledně Ruska.</p>
+                  </div> <!-- /.col1 -->
+                  
+                  <div class="col2">
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+
+                        <a href=""><img src="img/img-nazor4.jpg" alt="" /></a>
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><a href="">Josef Palicka</a></h4>
+                        <p class="text alt">Ne</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+
+                    
+                    <p class="text">Stejně tak není pravdou, že nebýt války v Iráku, mohli jsme za ty peníze být „už pětkrát na Marsu“. A to z mnoha důvodů. O tyto peníze se „hlásí“ kdekdo (např. „nebýt války v Iráku, mohla mít Amerika už dávno provedenou reformu zdravotnictví“), takže virtuálně jsou rozdělené nejméně stokrát – kdyby nebylo války, rozhodně by tyto peníze nešly jen do kosmonautiky.</p>
+                  </div> <!-- /.col2 -->
+                </div> <!-- /.cols -->
+                
+                <div class="box boxQuiz">
+                  <h3 class="h"><strong>Otazka:</strong> Should all members of the military be 
+banned from using social networking sites?</h3>
+                  <div class="in">
+
+                  
+                    <div class="answer">
+                      <div class="label">Ano</div>                      
+                      <div class="bar">
+                        <span class="in" style="width: 100%;"><span class="value">100%</span></span>
+                      </div> <!-- /.bar -->
+                    </div> <!-- /.answer -->
+                    
+                    <div class="answer">
+
+                      <div class="label">Ne</div>                      
+                      <div class="bar even">
+                        <span class="in" style="width: 36%;"><span class="value">36%</span></span>
+                      </div> <!-- /.bar -->
+                    </div> <!-- /.answer -->
+                    
+                    <p>Hlasoval jste ‘Ano’ jako 1.589 hlas</p>
+                  
+                  </div> <!-- /.in -->
+
+                </div> <!-- /.box -->
+                
+                <div class="box boxComments">
+                  <h3 class="h line">Diskuze (13 prispevku)</h3>
+                  <div class="in">
+                    <form class="item itemSmallImage formBox">
+                      <fieldset>
+                        <div class="img">
+                          <img src="img/img-nazor2.jpg" alt="" />
+
+                        </div> <!-- /.img -->
+                      
+                        <div class="self">
+                          <h4>Jiří Karban, Domažlice</h4>
+                          <a href="">Odhlásit se</a>
+                          <p>Zbyva 1000 znaku</p>
+                          
+                          <textarea name="" cols="30" rows="7" class="button w100"></textarea>
+
+                          <input type="submit" value="Post your comment" class="submit fl" />
+                          <a href="" class="fr">Kodex - Pravidla diskuze</a>
+                        </div> <!-- /.self -->
+                      </fieldset>
+                    </form> <!-- /.item -->
+                    
+                    <div class="item itemSmallImage">
+                      <div class="img">
+
+                        <img src="img/img-nazor1.jpg" alt="" />
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4>Jiří Karban, Domažlice</h4>
+                        <p>Středa, 29.července 2009, 18:36:41</p>
+                        <p><a href="">Zavadny link</a></p>
+                        <p class="comment">Nevím, jestli bude někdy chladněji, ale pamatuji léta, kdy bylo podstatně tepleji než letos</p>
+
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    
+                    <div class="item itemSmallImage">
+                      <div class="img">
+                        <img src="img/img-nazor2.jpg" alt="" />
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+
+                        <h4>MIchal Prokůpek, Úpice</h4>
+                        <p>Středa, 29.července 2009, 18:34:25</p>
+                        <p><a href="">Zavadny link</a></p>
+                        <p class="comment">Neuvěřitelné....domněnka za domněnkou... Celý článek předkládá vědecké teorie jakožto jedinnou možnou pravdu a zakládá na nich úplně všechno. Jeden vědece si něco myslí a celý článek pak vypadá jakoby si to myslel celý svět. Rád bych si přečetl studie i jiných vědců, které nám ale média neukážou. Cílém této bubliny je jednoznačně jen šokovat a pobláznit. Naštěstí jsme snad rozumní. V životě jsem neslyšel o studené a teplé fázi. Jsem zvědav jaké "fáze ještě vzniknou, aby si omluvili to, že mají pravdu.</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+
+                    
+                    <div class="item itemSmallImage last">
+                      <div class="img">
+                        <img src="img/img-nazor4.jpg" alt="" />
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4>Jaromír Bas, Mladá Boleslav</h4>
+                        <p>Středa, 29.července 2009, 18:37:26</p>
+
+                        <p><a href="">Zavadny link</a></p>
+                        <p class="comment">další blaf který je lidem podstrkáván aby nebodej neřešili něco jiné, takže zakázka koho?? Budete se divit, ale zima bude a to si na mne vzpomeňte až bude - 25 až - 45°celzia... uvidíme za 120 dní frajeři z novinek .- )</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    
+                  </div> <!-- /.in -->
+                </div> <!-- /.box -->
+              </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+        

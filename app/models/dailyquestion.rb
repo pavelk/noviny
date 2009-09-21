@@ -12,5 +12,10 @@ class Dailyquestion < ActiveRecord::Base
   #has_many :authors, :through => :dailyquestion_authors
   
   #accepts_nested_attributes_for :dailyquestion_authors
+   
+  def self.first_by_date(date = Time.now.to_date)
+    find(:first,
+         :conditions=>["publish_date = ?",date])
+  end
     
 end

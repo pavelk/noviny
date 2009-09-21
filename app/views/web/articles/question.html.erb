@@ -1,0 +1,110 @@
+<div class="box boxDetail">
+   <h2 class="head"><%= @question.headline %></h2>
+   <p class="perex"><%= @question.question_text %></p>
+   
+   <div class="cols detailImage line">
+      <div class="col1 item itemSmallImage itemSmall noImg">                
+                <div class="self">
+                  <h3 class="head alt"><a href="">Redakce</a></h3> 
+                  <p class="info">20. 7. 2009</p>
+                  <ul>
+                    <li><a href="">Referendum dne</a></li>
+                  </ul>
+                </div> <!-- /.self -->
+
+      </div> <!-- /.col1 -->
+
+     
+     <div class="col2 mainImage">
+       <%= link_to(image_tag(@question_image.data.url(:hp_main)),:action=>"TODO",:id=>@question.id) if @question_image %>
+     </div> <!-- /.col2 -->
+	 
+   </div> <!-- /.cols -->
+   
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box boxLine">
+		<%= render :partial=>"web/articles/left_box" %>
+       </div> <!-- /.box -->
+       
+		<div class="box">
+          <h3 class="h line">Starsi referenda</h3>
+           <div class="in">
+			 <% (1..5).each do |day| %>
+			 <div class="item itemSmall noImg">
+				<% date = (Time.now - day.days).to_date -%>
+				<% q = Dailyquestion.first_by_date(date) %>
+				<% if q -%>
+				<div class="self">
+                   <p class="info"><span><%= date.to_s(:cz_date) %></span></p>
+                   <h3 class="head"><%= link_to q.headline, articles_path(:action=>:question,:id=>q.id) %></h3>
+                </div> <!-- /.self -->
+				<% end %>
+			</div>	
+			<% end %>
+          </div> <!-- /.in -->
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+     
+     <div class="col2">
+                <div class="box cols cols50">
+                  <div class="col1">
+
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_yes.id)) %>
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><%= link_to(@author_yes.full_name,articles_path(:action=>:author_info,:id=>@author_yes.id)) %></h4>
+                        <p class="text alt">Ano</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    
+                    <p class="text"><%= @question.text_yes %></p>
+                  </div> <!-- /.col1 -->
+                  
+                  <div class="col2">
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_no.id)) %>
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><%= link_to(@author_no.full_name,articles_path(:action=>:author_info,:id=>@author_no.id)) %></h4>
+                        <p class="text alt">Ne</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    <p class="text"><%= @question.text_no %></p>
+                  </div> <!-- /.col2 -->
+                </div> <!-- /.cols -->
+                
+                <div class="box boxQuiz">
+                  <h3 class="h">
+                  	<strong>Otázka:</strong> <%= @question.question_text %>
+				  </h3>
+                  <div class="in">
+                    <div class="answer">
+                      <div class="label">Ano</div>                      
+                      <div class="bar">
+                        <span class="in" style="width: 100%;"><span class="value">TODO 100%</span></span>
+                      </div> <!-- /.bar -->
+                    </div> <!-- /.answer -->
+                    <div class="answer">
+                      <div class="label">Ne</div>                      
+                      <div class="bar even">
+                        <span class="in" style="width: 36%;"><span class="value">TODO 36%</span></span>
+                      </div> <!-- /.bar -->
+                    </div> <!-- /.answer -->
+                    <p> TODO Hlasoval jste ‘Ano’ jako 1.589 hlas</p>
+                  </div> <!-- /.in -->
+                </div> <!-- /.box -->
+                
+                <div class="box boxComments">
+                	TODO 
+                  <h3 class="h line">Diskuze (13 prispevku)</h3>
+                </div> <!-- /.box -->
+              </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+        

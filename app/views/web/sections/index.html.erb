@@ -38,21 +38,23 @@
   </div> <!-- /.in -->
 </div> <!-- /.box -->
 
+<% if @question %>
 <div class="box">
   <h2 class="h line">Referendum dne</h2>
   <div class="in">              
     <div class="item itemSmallImage">
       <div class="img">
-        <a href=""><%= image_tag "web/banner-top.jpg",:alt=>"TODO" %></a>
+        <%= link_to(main_image_tag(@question_image.data.url(:author_little)),articles_path(:action=>:question,:id=>@question.id)) if @question_image %>
       </div> <!-- /.self -->
       
       <div class="self">
-        <h3 class="head"><a href="">TODO</a></h3>
-        <p class="perex">TODO</p>
+        <h3 class="head"><%= link_to @question.headline,articles_path(:action=>:question,:id=>@question.id) %></h3>
+        <p class="perex"><%= @question.perex %></p>
       </div> <!-- /.self -->
     </div> <!-- /.item -->            
   </div> <!-- /.in -->
 </div> <!-- /.box -->
+<% end %>
 
 <div class="box cols cols3">
   <%= render :partial=>"web/sections/box" %>
