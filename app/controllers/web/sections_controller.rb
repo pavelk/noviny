@@ -88,8 +88,9 @@ protected
   def set_non_opinion_variables(section_id)
     per_page = 10
     @articles = Article.paginate(:all,
-                                 :conditions=>["section_id = ? AND publish_date <= ?",section_id,Time.now],
+                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ?",section_id,Time.now],
                                  :order=>"priority_section DESC, publish_date DESC",
+                                 :joins=>[:article_sections],
                                  :page=>params[:page],
                                  :per_page=>per_page)
     @opinions = Article.today_top_opinions(section_id,10)                                  
@@ -98,9 +99,13 @@ protected
   def set_common_variables(section_id)
     @headliner_box = Article.headliner_box(section_id)
     @rel_articles = @headliner_box ? @headliner_box.articles : []
+    @themes = @headliner_box ? @headliner_box.themes : []
     @right_boxes = Article.right_boxes(section_id)
     @news = Article.today_top_news if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
     arr = @rel_articles
+    arr += @articles if @articles
+    arr += @today_articles if @today_articles
+    arr += @yesterday_articles if @yesterday_articles
     arr += @news if @news
     arr += @opinions if @opinions
     ign_arr = arr.map{|a| a.id}

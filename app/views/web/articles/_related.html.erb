@@ -6,3 +6,10 @@
 </ul>
 <% else %>
 <% end %>
+<% if !@themes.blank? %>
+	<strong>Témata:</strong>
+	<% @themes.each do |theme| %>
+		<%= link_to theme.name, articles_path(:action=>"topic",:id=>theme.id) %>,
+	<% end %>
+	<br /><br />
+<% end %>

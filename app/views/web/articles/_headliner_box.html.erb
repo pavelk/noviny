@@ -16,7 +16,7 @@
     	<%= link_to @headliner_box.headline, articles_path(:action=>"detail",:id=>@headliner_box.article.id)  %>
 	</h2>
     <p class="perex">
-    	<%= @headliner_box.perex -%> [...]
+    	<%= @headliner_box.perex -%> <%= link_to "...", articles_path(:action=>"detail",:id=>@headliner_box.article.id) %>
 	</p>
   </div> <!-- /.self -->
 </div> <!-- /.item -->

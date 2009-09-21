@@ -1,3 +1,4 @@
+<% unless @related.blank? %>
 <h3 class="h line">Související</h3>
 <div class="in">
 <% @related.each do |rel| %>
@@ -7,5 +8,6 @@
 		  <h3 class="head"><%= link_to(rel.name,articles_path(:action=>"detail",:id=>rel.id))%></h3>
 		</div> <!-- /.self -->
 	 </div> <!-- /.item -->
-<% end if @related %>     
+<% end %>     
 </div> <!-- /.in -->
+<% end %>   
