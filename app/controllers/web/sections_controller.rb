@@ -45,6 +45,7 @@ class Web::SectionsController < Web::WebController
                                  :conditions=>["publish_date <= ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :page=>params[:page],
                                  :per_page=>25)
+    add_breadcrumb "Vyhledávání", ""
     render :layout=>"web/gallery"
   end
   
@@ -96,7 +97,7 @@ protected
   
   def set_common_variables(section_id)
     @headliner_box = Article.headliner_box(section_id)
-    @rel_articles = @headliner_box ? @headliner_box.article.relarticles : []
+    @rel_articles = @headliner_box ? @headliner_box.articles : []
     @right_boxes = Article.right_boxes(section_id)
     @news = Article.today_top_news if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
     arr = @rel_articles

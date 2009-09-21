@@ -37,6 +37,7 @@
         <div id="mainMenu">
           <ul>
           	<% Section.all_root.each do |root| %>
+				<% next if root.id == 9999 %>
 	            <li><%= (@section && @section.id == root.id) ? root.name : link_to(root.name, sections_path(:action=>"detail",:id=>root.id)) %></li>
 			<% end %>
 	      </ul>

@@ -1,4 +1,4 @@
-<% if @rel_articles.blank? %>
+<% if !@rel_articles.blank? %>
 <ul class="list item">
 		<% @rel_articles.each do |article| -%>
 			<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>

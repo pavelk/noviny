@@ -44,7 +44,7 @@
   <div class="in">              
     <div class="item itemSmallImage">
       <div class="img">
-        <%= link_to(main_image_tag(@question_image.data.url(:author_little)),articles_path(:action=>:question,:id=>@question.id)) if @question_image %>
+        <%= link_to(main_image_tag("../stylesheets/web/img/img-referendum-dne.jpg"),articles_path(:action=>:question,:id=>@question.id)) if @question_image %>
       </div> <!-- /.self -->
       
       <div class="self">

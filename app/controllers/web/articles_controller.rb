@@ -32,10 +32,10 @@ class Web::ArticlesController < Web::WebController
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
     @comments = @article.article_comments
-    @newest = Article.newest(@section.id)
+    @newest = Article.newest(@section.id) if @section
     @info_box = @article.info_boxes.first
     
-    add_breadcrumb @article.section.name, "" if @article.section
+    add_breadcrumb @section.name, "" if @section
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
     render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
   end
@@ -58,9 +58,10 @@ class Web::ArticlesController < Web::WebController
   end
   
   def topic
-    @tag = Tag.find(params[:id])
+    @tag = Theme.find(params[:id])
     @newest = Article.newest
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
+    @next_topics = @tag.relthemes
     add_breadcrumb "Témata", ""                                 
   end
   
@@ -101,9 +102,9 @@ class Web::ArticlesController < Web::WebController
     @article_image = @pictures.first
     @info_box = @article.info_boxes.first
     
-    @newest = Article.newest(@section.id)
+    @newest = Article.newest(@section.id) if @section
     
-    add_breadcrumb @article.section.name, ""
+    add_breadcrumb @section.name, "" if @section
     #render :layout=>"web/gallery"
   end
 end

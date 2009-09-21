@@ -11,8 +11,12 @@
      	<% if @article.content_type_id == ContentType::VIDEO %>
 			<%= @article.videodata %>
 		<% else %>
-	       <%= link_to(image_tag(@article_image.data.url(:hp_main)),:action=>"detail_gallery",:id=>@article.id) %>
-	       <p class="info"><%= link_to "Galerie", :action=>"detail_gallery",:id=>@article.id %><%= @article_image.name %></p>
+			<% im = main_image_tag(@article_image.data.url(:hp_main)) %>
+	       <%= (@article.pictures.count > 1) ? link_to(im,:action=>"detail_gallery",:id=>@article.id) : im %>
+	       <p class="info">
+	       	<%= link_to("Galerie", :action=>"detail_gallery",:id=>@article.id) if @article.pictures.count > 1 %>
+			<%= @article_image.name %>
+			</p>
 		<% end %>
      </div> <!-- /.col2 -->
 	 
