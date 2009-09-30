@@ -1,4 +1,4 @@
-<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", "TODO" %></p>
+<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", articles_path(:action=>"archiv") %></p>
 <%= render :partial=> "web/articles/headliner_box" %>
 <ul class="list item">
 	<% @rel_articles.each do |article| -%>
@@ -41,7 +41,7 @@
 <% if @question %>
 <div class="box">
   <h2 class="h line">Referendum dne</h2>
-  <div class="in">              
+  <div class="in itemList">              
     <div class="item itemSmallImage">
       <div class="img">
         <%= link_to(main_image_tag("../stylesheets/web/img/img-referendum-dne.jpg"),articles_path(:action=>:question,:id=>@question.id)) if @question_image %>
@@ -49,7 +49,7 @@
       
       <div class="self">
         <h3 class="head"><%= link_to @question.headline,articles_path(:action=>:question,:id=>@question.id) %></h3>
-        <p class="perex"><%= @question.perex %></p>
+        <p class="perex"><%=th @question.perex %></p>
       </div> <!-- /.self -->
     </div> <!-- /.item -->            
   </div> <!-- /.in -->

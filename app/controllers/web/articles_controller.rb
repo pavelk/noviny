@@ -8,7 +8,6 @@ class Web::ArticlesController < Web::WebController
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
     
-    @newest = Article.newest(@section.id)
     add_breadcrumb @article.section.name, ""
     if request.post?
       @comment = ArticleComment.new(params[:comment])
@@ -27,15 +26,23 @@ class Web::ArticlesController < Web::WebController
   def detail
     @article = Article.find(params[:id])
     @related = @article.relarticles
+    @newest = Article.newest(3,@article.id)
     @section = @article.section
+    if (cookies[:section_id] && @section && @section.id != cookies[:section_id].to_i)
+      @section = Section.find(cookies[:section_id])
+    end
     @author = @article.author
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
     @comments = @article.article_comments
-    @newest = Article.newest(@section.id) if @section
     @info_box = @article.info_boxes.first
     
-    add_breadcrumb @section.name, "" if @section
+     if @section
+       add_breadcrumb @section.name, ""
+     else
+       add_breadcrumb "Detail", ""
+     end
+   
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
     render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
   end
@@ -45,7 +52,6 @@ class Web::ArticlesController < Web::WebController
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no
-    @newest = Article.newest
     add_breadcrumb "Otázka", ""
   end
   
@@ -59,7 +65,6 @@ class Web::ArticlesController < Web::WebController
   
   def topic
     @tag = Theme.find(params[:id])
-    @newest = Article.newest
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
     @next_topics = @tag.relthemes
     add_breadcrumb "Témata", ""                                 
@@ -68,7 +73,6 @@ class Web::ArticlesController < Web::WebController
   def author_info
     @author = Author.find(params[:id])
     @articles = Article.paginate_from_author(@author.id,params[:page])
-    @newest = Article.newest 
     @author_image = @author.pictures.first
     add_breadcrumb "Autor", ""
   end
@@ -101,8 +105,7 @@ class Web::ArticlesController < Web::WebController
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @pictures.first
     @info_box = @article.info_boxes.first
-    
-    @newest = Article.newest(@section.id) if @section
+    @newest = Article.newest(3,@article.id)
     
     add_breadcrumb @section.name, "" if @section
     #render :layout=>"web/gallery"

@@ -2,23 +2,34 @@
 <%= render :partial=>"web/articles/headliner_box" %>
 <%= render :partial=> "web/articles/related" %>
 
-<% unless @sunday_articles.blank? %>
-<div class="box">
-  <h2 class="h line">Neděle <%= @sunday.to_s(:cz_date) %></h2>
-  <div class="in">
-	<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
-   </div> <!-- /.in -->
-</div> <!-- /.box -->
+<% if @only_saturday %>
+	<div class="box">
+		  <h2 class="h line"></h2>
+		  <div class="in">
+			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+		   </div> <!-- /.in -->
+	</div> <!-- /.box -->
+<% else %>
+	<% unless @sunday_articles.blank? %>
+		<div class="box">
+		  <h2 class="h line">Neděle <%= @sunday.to_s(:cz_date) %></h2>
+		  <div class="in">
+			<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+		   </div> <!-- /.in -->
+		</div> <!-- /.box -->
+	<% end %>
+	
+	<% unless @saturday_articles.blank? %>
+		<div class="box">
+		  <h2 class="h line">Sobota <%= (@sunday - 1.days).to_s(:cz_date) %></h2>
+		  <div class="in">
+			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+		   </div> <!-- /.in -->
+		</div> <!-- /.box -->
+	<% end %>
 <% end %>
 
-<% unless @saturday_articles.blank? %>
-<div class="box">
-  <h2 class="h line">Sobota <%= (@sunday - 1.days).to_s(:cz_date) %></h2>
-  <div class="in">
-	<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
-   </div> <!-- /.in -->
-</div> <!-- /.box -->
-<% end %>
+
 
 <div class="box">
    <h2 class="h line">Přehledy vydání</h2>
