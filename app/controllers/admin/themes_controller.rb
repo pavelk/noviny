@@ -6,14 +6,15 @@ class Admin::ThemesController < Admin::AdminController
   def index
     #debugger
     if(params[:search_theme])
-      @themes = Theme.search params[:search_theme], :page => params[:page], :per_page => 15
+      @themes = Theme.search params[:search_theme], :page => params[:page], :per_page => 15, :order => 'name ASC'
     else
-      @themes = Theme.all.paginate( :per_page => 15, :page => params[:page] )
+      @themes = Theme.all( :order => 'name ASC' ).paginate( :per_page => 15, :page => params[:page] )
     end 
     respond_to do |format|
       format.js
     end
   end
+  
   
   def get_relthemes
     #debugger
@@ -29,6 +30,14 @@ class Admin::ThemesController < Admin::AdminController
   end
   
   update.response do |wants|
+    wants.js
+  end
+  
+  new_action.response do |wants|
+    wants.js
+  end
+  
+  create.response do |wants|
     wants.js
   end
   

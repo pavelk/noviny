@@ -9,9 +9,9 @@ class Admin::RelationthemeshipsController < Admin::AdminController
   
   def index
     if(params[:search_relationthemeships])
-      @relationthemeships = Theme.search params[:search_relationthemeships], :page => params[:page], :per_page => 20
+      @relationthemeships = Theme.search params[:search_relationthemeships], :page => params[:page], :per_page => 20, :order => 'name ASC'
     else  
-      @relationthemeships = Theme.all.paginate( :per_page => 20, :page => params[:page] )
+      @relationthemeships = Theme.all( :order => 'name ASC' ).paginate( :per_page => 20, :page => params[:page] )
     end
     if(params[:id])
       @relationthemeship = Theme.find(params[:id])

@@ -363,6 +363,22 @@ function editSection( obj )
   
 }
 
+function newTheme()
+{
+  $("#listView").addClass("listSmall");
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/themes/new',
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $(".recordHeader a").bind("click", function() { return cancelArticle() });     
+    }
+  });
+  return false;
+  
+}
+
 function editTheme( obj )
 {
   $("#listView").addClass("listSmall");
@@ -555,6 +571,8 @@ function getRelationship(tb_id)
 }
 
 function getRelatedAfterSave(){
+  if($("input[id^='related_"+ thickbox_id +"']").length > 0 )
+  {
   switch(thickbox_id){
       case 'sidebar':
       //case 'main':
@@ -590,6 +608,7 @@ function getRelatedAfterSave(){
         break;
   }
 	$('#TB_window').die("unload",getRelatedAfterSave);
+  }
 	return false;  	
 }
 
