@@ -18,11 +18,11 @@ protected
    add_breadcrumb "Deník Referendum", "home_path"
 
    def set_variables
-     @week =  Web::Calendar.week?
      @tags = Article.top_taggings(6)
      @type = 1 #for partial readest menu
      @readest = Article.all_readest(Time.now-24.hours)
      @authors = Author.all_right
+     @newest = Article.newest
    end
  
     def set_printable

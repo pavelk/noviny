@@ -1,11 +1,15 @@
 <div class="item<%=small_class ? ' itemSmallImage' : '' -%>">
 	<div class="img">
-	  <%= article_first_photo(left_article) %>
+		<% if @article_photo_show %>
+		  <%= article_first_photo(left_article) %>
+		<% else %>
+			<%= article_photo(left_article) %>
+	  	<% end %>
 	</div> <!-- /.self -->
 	
 	<div class="self">
 	  <p class="info">
-	  	<%= left_article.head -%>
+	  	<%=th left_article.head -%>
 		<% if with_date %>
 			<span><%= left_article.publish_date.to_s(:cz_date) if left_article.publish_date %></span>
 		<% end %>
@@ -14,7 +18,7 @@
 	  	<%= link_to left_article.name, articles_path(:action=>"detail",:id=>left_article.id) -%>
 	  </h3>
 	  <p class="perex">
-	  	<%= left_article.perex -%>
+	  	<%=th left_article.perex -%>
 	  </p>
 	</div> <!-- /.self -->
 </div> <!-- /.item -->

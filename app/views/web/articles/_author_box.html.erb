@@ -7,8 +7,17 @@
 	<div class="self">
 	 <h3 class="head alt"><%= link_to @author.full_name, :action=>"author_info",:id=>@author.id %></h3> 
 	 <p class="info"><%= @article.publish_date.to_s(:cz_date) %></p>
+	 <% if @article.updated_at > @article.publish_date %>
+	 	<p class="info">aktualizováno: 
+	 	<% if @article.updated_at.day == @article.publish_date.day %>
+	 		<%= @article.updated_at.strftime("%H:%M") %>
+		<% else %>
+			<%= @article.updated_at.strftime("%d.%m.%Y %H:%M") %>
+		<% end %>
+		</p>
+	 <% end %>
 	 <ul>
-	   <li><%= link_to "Domov", sections_path(:action=>"detail",:id=>Section::DOMOV) %></li>
-	   <li><b>Rozhovor</b></li>
+	   <li><%= link_to @section.name, sections_path(:action=>"detail",:id=>@section.id) if @section %></li>
+	   <li><%= @article.content_type.name %></li>
 	 </ul>
 	</div> <!-- /.self -->

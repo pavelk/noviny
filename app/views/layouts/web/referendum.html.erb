@@ -66,7 +66,14 @@
 	              <a href=""><%= image_tag "web/banner-300.jpg" %></a>
 	            </div> <!-- /.in -->
 	          </div> <!-- /.box -->
-	          
+			  
+	          <div class="box boxSettings">
+	            <h2 class="h line">Nejnovější</h2>            
+	            <div class="in">            
+	              <%= render :partial=>"web/articles/readest",:collection=>@newest %>
+	            </div> <!-- /.in -->
+	          </div> <!-- /.box -->
+		  
 	          <div class="box boxSettings">
 	            <h2 class="h line">Nejčtenější</h2>            
 	            <div class="in" id="in_readest">    
@@ -79,6 +86,11 @@
 				<%= spinner_tag('readest') %>
 	          </div> <!-- /.box -->
 	        </div> <!-- /.col3 -->
+			<% if controller.action_name == "index" %>
+			<div class="rightAdvert">
+	          <%= link_to(image_tag("../stylesheets/web/img/img-scyscraper.jpg"),"TODO")%>
+	        </div> <!-- /.rightAdvert -->
+			<% end %>
 	      </div> <!-- /#content -->
 	
 	      <hr class="hidden noprint" />

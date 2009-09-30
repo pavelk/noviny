@@ -16,6 +16,10 @@ module ApplicationHelper
     Web::Calendar.week?
   end
   
+  def th(text)
+    return text.gsub("\r\n","<br>")
+  end
+  
   #Returns normalize form of string for formatting the url
   #Example: 'Kůň úpěl' -> 'kun-upel'
   def norm_string(string)
@@ -32,6 +36,12 @@ module ApplicationHelper
     else
       return link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
     end
+  end
+  
+  #Added by Jan Uhlar
+  #Returns first picture link for article
+  def article_photo(article)
+      link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
   end
   
   #Added by Jan Uhlar

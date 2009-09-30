@@ -122,12 +122,14 @@ class Article < ActiveRecord::Base
   end
   
   #Returns last articles limited as param
-  def self.newest(limit=3, section_id = nil)
+  def self.newest(limit=3,ign_id = nil, section_id = nil)
     op = ""
     op += "article_sections.section_id = '#{section_id}' AND " if section_id
+    op += "articles.id != '#{ign_id}' AND " if ign_id
     Article.find(:all,
                  :conditions=>["#{op}publish_date <= ?",Time.now],
                  :order=>"publish_date DESC",
+                 :group=>"articles.id",
                  :joins=>[:article_sections],
                  :limit=>limit)
   end
@@ -145,15 +147,19 @@ class Article < ActiveRecord::Base
   #Returns the array of readest articles from each section
   def self.all_readest(begin_date)
     readest = []
+    ids = [0]
     arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
     arr.each do |a|
       article = Article.find(:first,
-                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ?",a,begin_date,Time.now],
+                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?)",a,begin_date,Time.now,ids],
                                  :select=>"articles.*,COUNT(article_views.article_id) as c",
                                  :group=>"articles.id",
                                  :order=>"c DESC",
                                  :joins=>[:article_views,:article_sections])
-      readest << article if article
+      if article
+        ids << article.id
+        readest << article 
+      end  
     end
     return readest
   end
@@ -197,6 +203,9 @@ class Article < ActiveRecord::Base
     op = ""
     if options[:from_date]
      op += " AND publish_date >= '#{options[:from_date].beginning_of_day.to_s(:db)}' AND publish_date <= '#{options[:from_date].end_of_day.to_s(:db)}'"
+    end
+    if !options[:ignore_content_type].blank?
+      op += " AND articles.content_type_id NOT IN (#{options[:ignore_content_type].join(",")})"
     end
     find(:all,
          :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op}",options[:section_id],options[:ignore_arr],Time.now,0],
@@ -315,12 +324,13 @@ class Article < ActiveRecord::Base
   
   def self.down_boxes(section_id,ign_arr)
     down_boxes = []
+    ign_cont = [ContentType::ZPRAVA,ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
       if section_id == sec
-        ar = Article.from_section(:section_id=>Section::NAZORY,:ignore_arr=>ign_arr)
+        ar = Article.from_section(:section_id=>Section::NAZORY,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
         down_boxes << ["Názory",ar] unless ar.blank?
       else
-        ar = Article.from_section(:section_id=>sec,:ignore_arr=>ign_arr)
+        ar = Article.from_section(:section_id=>sec,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
         down_boxes << [Section.find(sec).name,ar] unless ar.blank?
       end
     end

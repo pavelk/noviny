@@ -1,6 +1,6 @@
 <div class="box boxDetail">
    <h2 class="head"><%= @question.headline %></h2>
-   <p class="perex"><%= @question.question_text %></p>
+   <p class="perex"><%=th @question.question_text %></p>
    
    <div class="cols detailImage line">
       <div class="col1 item itemSmallImage itemSmall noImg">                
@@ -62,7 +62,7 @@
                       </div> <!-- /.self -->
                     </div> <!-- /.item -->
                     
-                    <p class="text"><%= @question.text_yes %></p>
+                    <p class="text"><%=th @question.text_yes %></p>
                   </div> <!-- /.col1 -->
                   
                   <div class="col2">
@@ -76,7 +76,7 @@
                         <p class="text alt">Ne</p>
                       </div> <!-- /.self -->
                     </div> <!-- /.item -->
-                    <p class="text"><%= @question.text_no %></p>
+                    <p class="text"><%=th @question.text_no %></p>
                   </div> <!-- /.col2 -->
                 </div> <!-- /.cols -->
                 

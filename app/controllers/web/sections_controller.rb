@@ -2,6 +2,7 @@ class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
   def index
+    redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
     if Web::Calendar.week?
       @articles = Article.find(:all,
                                :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,Time.now.beginning_of_day,Time.now],
@@ -13,9 +14,11 @@ class Web::SectionsController < Web::WebController
     set_common_variables(Section::HOME_SECTION_ID)
     @question = Dailyquestion.first_by_date
     @question_image = @question.pictures.first if @question
+    @article_photo_show = true
   end
   
   def detail
+    cookies[:section_id] = params[:id]
     @section = Section.find(params[:id])
     set_default_variables
     add_breadcrumb @section.name, ""
@@ -55,6 +58,7 @@ protected
       when Section::NAZORY
         set_opinions_variables
       when Section::VIKEND
+        @week =  true
         set_weekend_variables
       else
         set_non_opinion_variables(@section.id)
@@ -74,15 +78,19 @@ protected
   
   def set_weekend_variables
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
-    @sunday_articles = Article.find(:all,
-                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day],
-                                    :order=>"publish_date DESC",
-                                    :include=>[:content_type])
          
     @saturday_articles = Article.find(:all,
-                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day],
+                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now],
                                       :order=>"publish_date DESC",
                                       :include=>[:content_type])
+    if Web::Calendar.saturday? && @sunday > Time.now
+      @only_saturday = true
+      return
+    end
+    @sunday_articles = Article.find(:all,
+                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now],
+                                    :order=>"publish_date DESC",
+                                    :include=>[:content_type])                                  
   end
   
   def set_non_opinion_variables(section_id)
@@ -108,6 +116,7 @@ protected
     arr += @yesterday_articles if @yesterday_articles
     arr += @news if @news
     arr += @opinions if @opinions
+    arr += @right_boxes if @right_boxes
     ign_arr = arr.map{|a| a.id}
     @down_boxes = Article.down_boxes(section_id,ign_arr)
   end

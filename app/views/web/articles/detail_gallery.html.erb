@@ -1,6 +1,6 @@
 <div class="box boxDetail">
    <h2 class="head"><%= @article.name %></h2>
-   <p class="perex"><%= @article.perex %></p>
+   <p class="perex"><%=th @article.perex %></p>
    <div class="cols detailImage line">
      <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless @author_image -%>">
        <%= render :partial=>"web/articles/author_box" %>
@@ -43,7 +43,7 @@
 	     
 	<div class="col2">
 	       <div class="text">
-				<p><%= @article.short_text %>...</p>
+				<p><%=th @article.short_text %>...</p>
 				<%= link_to "Celý článek", articles_path(:action=>"detail",:id=>@article.id) %>
 	       </div> <!-- /.text -->       
 	</div> <!-- /.col2 -->
