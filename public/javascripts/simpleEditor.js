@@ -181,13 +181,7 @@
 			simpleEditor.tempImage.id = -1;
 			
 			$('#imagePicker img').live("click",function(){
-<<<<<<< HEAD:public/javascripts/simpleEditor.js
-<<<<<<< HEAD:public/javascripts/simpleEditor.js
 			  //alert("click");
-=======
->>>>>>> b3629e5af341a2900b688520acbfd8ceb10e201c:public/javascripts/simpleEditor.js
-=======
->>>>>>> b3629e5af341a2900b688520acbfd8ceb10e201c:public/javascripts/simpleEditor.js
 				simpleEditor.tempImage.src = $(this).attr('src');
 				simpleEditor.tempImage.id = $(this).attr('id');
 				tb_remove();
@@ -203,18 +197,8 @@
 			//LOAD EXTERNALL WINDOW WITH LINKED IMAGES
 			var imgIds = $('#'+simpleEditor.tempImage.idField).val();
 			if (imgIds != '')
-<<<<<<< HEAD:public/javascripts/simpleEditor.js
-<<<<<<< HEAD:public/javascripts/simpleEditor.js
 			  //alert(options.imageButton);
 				tb_show("Kliknutím vyberte obrázek který chcete vložit.", "#?height=300&width=410", addImagesToTBBox(imgIds));
-=======
-=======
->>>>>>> b3629e5af341a2900b688520acbfd8ceb10e201c:public/javascripts/simpleEditor.js
-				tb_show("Kliknutím vyberte obrázek který chcete vložit.", "imageHandler.html?height=300&width=410&ids="+imgIds, null);
-<<<<<<< HEAD:public/javascripts/simpleEditor.js
->>>>>>> b3629e5af341a2900b688520acbfd8ceb10e201c:public/javascripts/simpleEditor.js
-=======
->>>>>>> b3629e5af341a2900b688520acbfd8ceb10e201c:public/javascripts/simpleEditor.js
 			else
 				alert('Vyberte nejprve nějaké obrázky');
         },
