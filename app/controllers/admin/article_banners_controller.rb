@@ -5,8 +5,16 @@ class Admin::ArticleBannersController < Admin::AdminController
   create.after :process_related, :set_values, :process_sections
   update.after :process_related, :set_values, :process_sections
   
-  index.response do |wants|
-    wants.js
+  #index.response do |wants|
+  #  wants.js
+  #end
+  def index
+    if(params[:search_article_banners])
+      @article_banners = ArticleBanner.search params[:search_article_banners]
+    else
+      @article_banners = ArticleBanner.all
+    end 
+    render 'shared/admin/index.js.erb'
   end
   
   new_action.response do |wants|

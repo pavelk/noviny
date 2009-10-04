@@ -20,6 +20,9 @@ class Picture < ActiveRecord::Base
   has_many :info_box_pictures
   has_many :info_boxes, :through => :info_box_pictures
   
+  has_many :text_page_pictures
+  has_many :text_pages, :through => :text_page_pictures
+  
   define_index do
     indexes :name, :sortable => true
     indexes data_file_name

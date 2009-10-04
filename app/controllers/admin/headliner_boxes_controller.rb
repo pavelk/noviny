@@ -5,8 +5,13 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
   #create.after :set_values, :process_sections
   #update.after :set_values, :process_sections
   
-  index.response do |wants|
-    wants.js
+  def index
+    if(params[:search_headliner_boxes])
+      @headliner_boxes = HeadlinerBox.search params[:search_headliner_boxes], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
+    else
+      @headliner_boxes = HeadlinerBox.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
+    end
+    render 'shared/admin/index.js.erb'
   end
   
   new_action.response do |wants|

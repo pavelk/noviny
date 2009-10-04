@@ -5,8 +5,13 @@ class Admin::SectionsController < Admin::AdminController
   create.after  :set_parent
   update.after  :set_parent
   
-  index.response do |wants|
-    wants.js
+  def index
+    if(params[:search_sections])
+      @sections = Section.search params[:search_sections], :page => params[:page], :per_page => 10, :order => 'name ASC'
+    else
+      @sections = Section.all( :order => 'name ASC' ).paginate( :per_page => 10, :page => params[:page] )
+    end
+    render 'shared/admin/index.js.erb'
   end
   
   edit.response do |wants|

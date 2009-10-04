@@ -8,17 +8,6 @@
   - form_for @info_box, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = render :partial => "form", :locals => { :f => f }
-      %strong Obrazky
-      .dndContent
-        %div{ :class => "listFiles listImgr", :id => "filesLista_#{@info_box.id}" }
-          - @info_box.pictures.each do |picture|
-            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-            %div{ :class => 'addedFile forImgr' }
-              = image_tag(picture.data.url(:small))
-              %br
-              = link_to 'Odstranit', '#', :id => "img_#{picture.id}"    
-      .dndContainer
-        %div{ :class => 'dnd imgr', :id => "dropi_info_#{@info_box.id}" } Zde pretahnete obrazek    
-      .clearer &nbsp;
+      = render(:partial => 'shared/admin/add_images_to_edit')
       %br
       %p= submit_tag "Upravit"

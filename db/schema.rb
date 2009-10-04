@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090918165542) do
+ActiveRecord::Schema.define(:version => 20091004160256) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -93,6 +93,17 @@ ActiveRecord::Schema.define(:version => 20090918165542) do
 
   add_index "article_sections", ["article_id"], :name => "article_sections_article_id_index"
   add_index "article_sections", ["section_id"], :name => "article_sections_section_id_index"
+
+  create_table "article_selections", :force => true do |t|
+    t.integer  "section_id"
+    t.integer  "article_id"
+    t.string   "sidebar_articles_ids"
+    t.date     "publish_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_selections", ["section_id"], :name => "article_selections_section_id_index"
 
   create_table "article_themes", :force => true do |t|
     t.integer "article_id"
@@ -343,20 +354,21 @@ ActiveRecord::Schema.define(:version => 20090918165542) do
     t.integer  "data_file_size"
     t.string   "data_width"
     t.string   "data_height"
+    t.string   "author"
   end
 
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
   create_table "question_votes", :force => true do |t|
-    t.integer  "dailyquestion_id"
+    t.integer  "question_id"
     t.integer  "user_id"
     t.boolean  "vote_value"
     t.datetime "created_at"
   end
 
   add_index "question_votes", ["created_at"], :name => "question_votes_created_at_index"
-  add_index "question_votes", ["dailyquestion_id"], :name => "question_votes_question_id_index"
+  add_index "question_votes", ["question_id"], :name => "question_votes_question_id_index"
   add_index "question_votes", ["user_id"], :name => "question_votes_user_id_index"
   add_index "question_votes", ["vote_value"], :name => "question_votes_vote_value_index"
 
@@ -440,6 +452,35 @@ ActiveRecord::Schema.define(:version => 20090918165542) do
   end
 
   add_index "tags", ["user_id"], :name => "tags_user_id_index"
+
+  create_table "text_page_insets", :force => true do |t|
+    t.integer "inset_id"
+    t.integer "text_page_id"
+  end
+
+  add_index "text_page_insets", ["inset_id"], :name => "text_page_insets_inset_id_index"
+  add_index "text_page_insets", ["text_page_id"], :name => "text_page_insets_text_page_id_index"
+
+  create_table "text_page_pictures", :force => true do |t|
+    t.integer "picture_id"
+    t.integer "text_page_id"
+  end
+
+  add_index "text_page_pictures", ["picture_id"], :name => "text_page_pictures_picture_id_index"
+  add_index "text_page_pictures", ["text_page_id"], :name => "text_page_pictures_text_page_id_index"
+
+  create_table "text_pages", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "title"
+    t.text     "perex"
+    t.text     "text"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "text_pages", ["user_id"], :name => "text_pages_user_id_index"
 
   create_table "themeselection_sections", :force => true do |t|
     t.integer "tag_selection_id"

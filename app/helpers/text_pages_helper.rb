@@ -1,0 +1,2 @@
+module TextPagesHelper
+end

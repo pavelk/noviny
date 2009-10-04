@@ -19,6 +19,26 @@ class Admin::AudiosController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
+  def add_audio
+    @object = params[:class].constantize.find(params[:object])
+    @audio = Audio.find(params[:id])
+    @object.audios << @audio
+    #@model = params[:class]
+    
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_audio
+    @object = params[:class].constantize.find(params[:object])
+    @audio = Audio.find(params[:id])
+    @object.audios.delete(@audio)
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
    
   private
 

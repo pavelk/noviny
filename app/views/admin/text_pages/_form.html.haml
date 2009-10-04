@@ -1,0 +1,17 @@
+= f.label :title, 'Název:'
+= f.text_field :title, :class => 'inp'
+%br
+%br
+= f.label :name, 'Nadpis:'
+= f.text_field :name, :class => 'inp'
+%br
+%br  
+= f.label :perex, 'Perex:'
+%br
+= f.text_area :perex
+%br
+%br  
+= f.label :text, 'Text:'
+%br
+= f.text_area :text
+%input{ :type => 'hidden', :id => 'linkedImages', :value => '' }

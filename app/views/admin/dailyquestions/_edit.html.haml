@@ -11,17 +11,6 @@
       %br
       %hr
       %br
-      %strong Obrazky
-      .dndContent
-        %div{ :class => "listFiles listImgr", :id => "filesLista_#{@object.id}" }
-          - @object.pictures.each do |picture|
-            %div{ :class => 'addedFile forImgr' }
-              = image_tag(picture.data.url(:small))
-              %br
-              = link_to 'Odstranit', '#', :id => "img_#{picture.id}"
-      .dndContainer
-        %div{ :class => 'dnd imgr', :id => "dropi_dailyquestions_#{@object.id}" } Zde pretahnete obrazek
-      .clearer &nbsp;
-      %br
+      = render(:partial => 'shared/admin/add_images_to_edit')
       %p= submit_tag "Upravit"
 

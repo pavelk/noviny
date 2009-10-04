@@ -1,0 +1,10 @@
+.recordHeader
+  %h2= link_to 'Editovat textovou stranku', '#'
+.recordPath
+.recordEdit
+  - form_for @text_page, :url => object_url, :html => { :method => :put } do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      = render(:partial => 'shared/admin/add_images_to_edit')
+      = render(:partial => 'shared/admin/add_files_to_edit')
+      %p= submit_tag "Upravit"

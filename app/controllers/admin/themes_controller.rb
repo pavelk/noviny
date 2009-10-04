@@ -5,14 +5,12 @@ class Admin::ThemesController < Admin::AdminController
   
   def index
     #debugger
-    if(params[:search_theme])
-      @themes = Theme.search params[:search_theme], :page => params[:page], :per_page => 15, :order => 'name ASC'
+    if(params[:search_themes])
+      @themes = Theme.search params[:search_themes], :page => params[:page], :per_page => 15, :order => 'name ASC'
     else
       @themes = Theme.all( :order => 'name ASC' ).paginate( :per_page => 15, :page => params[:page] )
     end 
-    respond_to do |format|
-      format.js
-    end
+    render 'shared/admin/index.js.erb'
   end
   
   

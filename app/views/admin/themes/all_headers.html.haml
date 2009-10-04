@@ -1,0 +1,79 @@
+#BOX
+- form_tag admin_info_boxes_path, :method => :get, :id => 'search_boxes' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_boxes, params[:search_boxes]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newBox(); return false', :id => 'boxes_new'
+.clearer
+
+
+#ARTICLE
+- form_tag admin_articles_path, :method => :get, :id => 'search_articles' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search, params[:search]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchArticles', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' } 
+= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new', :onclick => 'newArticle(); return false'
+.clearer
+
+#HEADLINERBOX
+- form_tag admin_headliner_boxes_path, :method => :get, :id => 'search_headliner_boxes' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_boxes, params[:search_headliner_boxes]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newHeadlinerBox(); return false', :id => 'headlinerbox_new'
+.clearer
+
+#ARTICLEBANNER
+- form_tag admin_article_banners_path, :method => :get, :id => 'search_article_banners' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_article_banners, params[:search_article_banners]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newArticleBanner(); return false', :id => 'articlebanner_new'
+.clearer
+
+#TAGSELECTION
+- form_tag admin_tag_selections_path, :method => :get, :id => 'search_tag_selections' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_tag_selections, params[:search_tag_selections]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newTagSelection(); return false', :id => 'tagselection_new'
+.clearer
+
+#DAILYQUESTION
+- form_tag admin_dailyquestions_path, :method => :get, :id => 'search_daily_questions' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_boxes, params[:search_daily_questions]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newDailyQuestion(); return false', :id => 'dailyquestions_new'
+.clearer
+
+#AUTHOR
+- form_tag admin_authors_path, :method => :get, :id => 'search_authors' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_author, params[:search_author]
+    = submit_tag "Hledej", :name => nil
+= link_to '+ nový autor', "#", :class => 'fr', :id => 'authors_new'
+.clearer
+
+#THEMES
+- form_tag admin_themes_path, :method => :get, :id => 'search_themes' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_theme, params[:search_theme]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchThemes', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' }
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newTheme(); return false', :id => 'theme_new'
+.clearer
+
+#SECTIONS
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newSection(); return false', :id => 'sections_new'
+.clearer
+

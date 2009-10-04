@@ -1,0 +1,4 @@
+.addedFile
+  = link_to audio.name, audio.data.url, :class => 'file'
+  %br
+  = link_to 'Odstranit', '#', :id => "ajaxAudio-#{@object.class.name}-#{params[:controller]}-#{@object.id}-#{audio.id}"

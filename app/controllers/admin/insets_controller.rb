@@ -19,6 +19,26 @@ class Admin::InsetsController < Admin::AdminController
     wants.js { render :layout => false }
   end
   
+  def add_file
+    @object = params[:class].constantize.find(params[:object])
+    @inset = Inset.find(params[:id])
+    @object.insets << @inset
+    #@model = params[:class]
+    
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_file
+    @object = params[:class].constantize.find(params[:object])
+    @inset = Inset.find(params[:id])
+    @object.insets.delete(@inset)
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
    
   private
 

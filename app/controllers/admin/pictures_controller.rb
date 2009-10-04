@@ -28,7 +28,7 @@ class Admin::PicturesController < Admin::AdminController
     @object = params[:class].constantize.find(params[:object])
     @picture = Picture.find(params[:id])
     @object.pictures << @picture
-    @model = params[:class]
+    #@model = params[:class]
     
     respond_to do |format|  
       format.js
@@ -45,6 +45,13 @@ class Admin::PicturesController < Admin::AdminController
     end 
   end
   
+  def get_linked_imgs
+    @pictures = Picture.all(:conditions => "id in (#{params[:imgs]})") 
+    
+    respond_to do |format|  
+      format.js
+    end
+  end
    
   private
 

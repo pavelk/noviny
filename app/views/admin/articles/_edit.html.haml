@@ -35,58 +35,9 @@
             = link_to "X", '#', :id => "relationship_#{@article.id}_#{relationship.id}", :onclick => 'removeRelationship( $(this)); return false'
         %br
         %hr
-        %br
-      -#%div{ :class => "imageItem", :id => "filesList_#{@article.id}" }    
-      %strong Obrazky
-      .dndContent
-        %div{ :class => "listFiles listImgr", :id => "filesLista_#{@article.id}" }
-          - @article.pictures.each do |picture|
-            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-            %div{ :class => 'addedFile forImgr' }
-              = image_tag(picture.data.url(:small))
-              %br
-              = link_to 'Odstranit', '#', :id => "img_#{picture.id}"
-      .dndContainer
-        -#%div{ :class => 'dnd imgr', :id => "dropi-pictures-#{@object.class.name}-#{@object.id}" } Zde pretahnete obrazek
-        %div{ :class => 'dnd imgr', :id => "dropi_articles_#{@article.id}" } Zde pretahnete obrazek
-      .clearer &nbsp;
-      %br
-      %strong Soubory
-      .dndContent
-        %div{ :class => "listFiles listFilr", :id => "filesListb_#{@article.id}" }
-          - @article.insets.each do |picture|
-            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-            %div{ :class => 'addedFile forFilr' }
-              = link_to picture.name, picture.data.url, :class => 'file'
-              %br
-              = link_to 'Odstranit', '#', :id => "file_#{picture.id}"    
-      .dndContainer
-        %div{ :class => 'dnd filr', :id => "dropf_articles_#{@article.id}" } Zde pretahnete soubor    
-      .clearer &nbsp;
-      %br
-      %strong Audio
-      .dndContent
-        %div{ :class => "listFiles listAudr", :id => "filesListc_#{@article.id}" }
-          - @article.audios.each do |picture|
-            -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
-            %div{ :class => 'addedFile forAudr' }
-              = link_to picture.name, picture.data.url, :class => 'file'
-              %br
-              = link_to 'Odstranit', '#', :id => "audio_#{picture.id}"    
-      .dndContainer
-        %div{ :class => 'dnd audr', :id => "dropa_articles_#{@article.id}" } Zde pretahnete audio    
-      .clearer &nbsp;
-      %br
-      %strong Info boxy
-      .dndContent
-        %div{ :class => "listFiles listBoxr", :id => "filesListd_#{@article.id}" }
-          - @article.info_boxes.each do |picture|
-            %div{ :class => 'addedFile forBoxr' }
-              = link_to picture.name, picture, :class => 'file'
-              %br
-              = link_to 'Odstranit', '#', :id => "box_#{picture.id}"    
-      .dndContainer
-        %div{ :class => 'dnd boxr', :id => "dropb_articles_#{@article.id}" } Zde pretahnete infobox    
-      .clearer &nbsp;                  
-      
+        %br  
+      = render(:partial => 'shared/admin/add_images_to_edit')
+      = render(:partial => 'shared/admin/add_files_to_edit')
+      = render(:partial => 'shared/admin/add_audios_to_edit')
+      = render(:partial => 'shared/admin/add_boxes_to_edit')                  
       %p= submit_tag "Upravit"

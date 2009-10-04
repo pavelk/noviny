@@ -9,14 +9,12 @@ class Admin::ArticlesController < Admin::AdminController
   
   def index
     #debugger
-    if(params[:search])
-      @articles = Article.search params[:search], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
+    if(params[:search_articles])
+      @articles = Article.search params[:search_articles], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
       @articles = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
-    end 
-    respond_to do |format|
-      format.js
     end
+    render 'shared/admin/index.js.erb'
   end  
   
   def get_relarticles

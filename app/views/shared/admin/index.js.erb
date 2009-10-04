@@ -1,0 +1,27 @@
+<%
+  @c_name = controller.controller_name
+  searching = { 
+                :info_boxes => false,
+                :articles => true,
+                :headliner_boxes => false,
+                :article_banners => false,
+                :tag_selections => false,
+                :dailyquestions => false,
+                :authors => false,
+                :themes => false,
+                :sections => false,
+                :text_pages => false        
+              }
+%>
+<% if(params["search_#{@c_name}".to_sym]) %>
+$("#<%= @c_name %> .listFilter").empty();
+$("#<%= @c_name %> .listContent").empty();
+<% end %>
+$("#<%= @c_name %> .listFilter").append("<%= escape_javascript(render(:partial => 'shared/admin/header', :locals => { :search => searching[@c_name.to_sym] } )) %>");
+$("#<%= @c_name %> .listContent").append("<%= escape_javascript(render(:partial => "#{@c_name}_header", :object => @collection)) %>");
+
+$("input[id='cancelSearchArticles']").bind("click", function() {
+  getArticles($("#articles h2"));
+  getArticles($("#articles h2"));
+});
+

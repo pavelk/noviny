@@ -1,7 +1,7 @@
-%tr{ :id => "article_banner_#{article_banner.id}" }
-  %td{ :class => "listItem l1"}= link_to article_banner.headline, '#', :onclick => 'editArticleBanner($(this)); return false'
+%tr{ :id => "articlebanner_#{article_banner.id}" }
+  %td{ :class => "listItem l1"}= link_to article_banner.headline, '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   -#%td= truncate(article_banner.perex, :length => 100, :omission => "&hellip;")   
   %td= article_banner.publish_date.strftime('%d/%m/%Y')
   %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => 'editArticleBanner($(this)); return false', :title => 'Editovat', :class => "edit_article"
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'

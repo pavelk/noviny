@@ -9,6 +9,9 @@ class Inset < ActiveRecord::Base
   has_many :author_insets
   has_many :authors, :through => :author_insets
   
+  has_many :text_page_insets
+  has_many :text_pages, :through => :text_page_insets
+  
   define_index do
     indexes :name, :sortable => true
     indexes data_file_name

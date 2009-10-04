@@ -181,6 +181,7 @@
 			simpleEditor.tempImage.id = -1;
 			
 			$('#imagePicker img').live("click",function(){
+			  //alert("click");
 				simpleEditor.tempImage.src = $(this).attr('src');
 				simpleEditor.tempImage.id = $(this).attr('id');
 				tb_remove();
@@ -196,7 +197,8 @@
 			//LOAD EXTERNALL WINDOW WITH LINKED IMAGES
 			var imgIds = $('#'+simpleEditor.tempImage.idField).val();
 			if (imgIds != '')
-				tb_show("Kliknutím vyberte obrázek který chcete vložit.", "imageHandler.html?height=300&width=410&ids="+imgIds, null);
+			  //alert(options.imageButton);
+				tb_show("Kliknutím vyberte obrázek který chcete vložit.", "#?height=300&width=410", addImagesToTBBox(imgIds));
 			else
 				alert('Vyberte nejprve nějaké obrázky');
         },

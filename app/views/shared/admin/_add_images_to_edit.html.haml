@@ -1,0 +1,14 @@
+%strong Obrazky
+.dndContent
+  %div{ :class => "listFiles listImgr", :id => "filesLista_#{@object.id}" }
+    - @object.pictures.each do |picture|
+      -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+      %div{ :class => 'addedFile forImgr' }
+        = image_tag(picture.data.url(:small))
+        %br
+        = link_to 'Odstranit', '#', :id => "ajaxImage-#{@object.class.name}-admin/pictures-#{@object.id}-#{picture.id}"
+.dndContainer
+  %div{ :class => 'dnd imgr', :id => "dropi-pictures-#{@object.class.name}-#{@object.id}" } Zde pretahnete obrazek
+  -#%div{ :class => 'dnd imgr', :id => "dropi_articles_#{@article.id}" } Zde pretahnete obrazek
+.clearer &nbsp;
+%br

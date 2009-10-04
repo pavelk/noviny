@@ -10,11 +10,10 @@ class Admin::InfoBoxesController < Admin::AdminController
     else
       @info_boxes = InfoBox.all
     end 
-    respond_to do |format|
-      format.js
-    end
+    render 'shared/admin/index.js.erb'
   end 
   
+=begin
   def add_img
     @info_box = InfoBox.find(params[:art])
     @picture = Picture.find(params[:pic])
@@ -29,6 +28,28 @@ class Admin::InfoBoxesController < Admin::AdminController
     @info_box = InfoBox.find(params[:art])
     @picture = Picture.find(params[:pic])
     @info_box.pictures.delete(@picture)
+
+    respond_to do |format|  
+      format.js
+    end 
+  end
+=end
+
+  def add_box
+    @object = params[:class].constantize.find(params[:object])
+    @info_box = InfoBox.find(params[:id])
+    @object.info_boxes << @info_box
+    #@model = params[:class]
+    
+    respond_to do |format|  
+      format.js
+    end 
+  end
+  
+  def remove_box
+    @object = params[:class].constantize.find(params[:object])
+    @info_box = InfoBox.find(params[:id])
+    @object.info_boxes.delete(@info_box)
 
     respond_to do |format|  
       format.js

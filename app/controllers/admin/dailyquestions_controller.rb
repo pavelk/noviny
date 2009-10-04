@@ -8,14 +8,12 @@ class Admin::DailyquestionsController < Admin::AdminController
     
   def index
     #debugger
-    if(params[:search_article_selections])
-      @dailyquestions = Dailyquestion.search params[:search_daily_questions], :page => params[:page], :per_page => 20, :order => 'publish_date DESC'
+    if(params[:search_dailyquestions])
+      @dailyquestions = Dailyquestion.search params[:search_dailyquestions], :page => params[:page], :per_page => 20, :order => 'publish_date DESC'
     else  
       @dailyquestions = Dailyquestion.all( :order => 'publish_date DESC'  ).paginate( :per_page => 20, :page => params[:page] )
     end   
-    respond_to do |format|  
-      format.js
-    end
+    render 'shared/admin/index.js.erb'
   end
   
   #def new

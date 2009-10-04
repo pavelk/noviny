@@ -1,0 +1,27 @@
+.recordHeader
+  %h2= link_to 'Nova textova stranka', '#'
+.recordPath
+.recordEdit
+
+  = error_messages_for :text_page
+
+  - form_for @text_page, :url => collection_url, :html => { :multipart => true } do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %strong Obrazky
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forImgr' }
+      .dndContainer
+        %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
+      .clearer &nbsp;
+      %br
+      %strong Soubory
+      .dndContent
+        %div{ :class => "listFiles" }
+          %div{ :class => 'addedFile forFilr' }
+      .dndContainer
+        %div{ :class => 'dnd filr' } Zde pretahnete soubor 
+      .clearer &nbsp;
+      %br
+      %p= submit_tag "Uložit"

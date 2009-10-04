@@ -1,0 +1,9 @@
+- if (search)
+  - form_tag "admin/#{@c_name}", :method => :get, :id => "search_#{@c_name}" do
+    %fieldset
+      %strong filtr:
+      = text_field_tag "search_#{@c_name}".to_sym, params["search_#{@c_name}".to_sym]
+      = submit_tag "Hledej", :name => nil
+      %input{ :id => "cancelSearch#{@c_name.camelize}", :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' } 
+= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new', :onclick => "newRecord('#{@c_name}'); return false"
+.clearer

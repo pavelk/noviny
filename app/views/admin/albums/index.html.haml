@@ -24,9 +24,9 @@
     .listFilter
     .listContent   
     .clearer
-  .listGroup#infoboxes
+  .listGroup#info_boxes
     .listHeader
-      %h2.folder= link_to "Info Boxy (#{InfoBox.all.length})", '#', :onclick => 'getBoxes($("#infoboxes h2")); return false'
+      %h2.folder= link_to "Info Boxy (#{InfoBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no' ); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -34,7 +34,7 @@
     .clearer              
   .listGroup#articles
     .listHeader
-      %h2.folder= link_to "Články (#{Article.all.length})", '#', :onclick => 'getArticles($("#articles h2")); return false'
+      %h2.folder= link_to "Články (#{Article.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -42,7 +42,7 @@
     .clearer
   .listGroup#headliner_boxes
     .listHeader
-      %h2.folder= link_to "Headlinový box (#{HeadlinerBox.all.length})", '#', :onclick => 'getHeadlinerBoxes($("#headliner_boxes h2")); return false'
+      %h2.folder= link_to "Headlinový box (#{HeadlinerBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -50,7 +50,7 @@
     .clearer
   .listGroup#article_banners
     .listHeader
-      %h2.folder= link_to "Grafické upoutávky (#{ArticleBanner.all.length})", '#', :onclick => 'getArticleBanners($("#article_banners h2")); return false'
+      %h2.folder= link_to "Grafické upoutávky (#{ArticleBanner.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -58,23 +58,31 @@
     .clearer
   .listGroup#tag_selections
     .listHeader
-      %h2.folder= link_to "Výběr z témat (#{TagSelection.all.length})", '#', :onclick => 'getTagSelections($("#tag_selections h2")); return false'
+      %h2.folder= link_to "Výběr z témat (#{TagSelection.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
     .listContent   
     .clearer            
-  .listGroup#daily_selections
+  .listGroup#dailyquestions
     .listHeader
-      %h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => 'getDailyQuestions($("#daily_selections h2")); return false'
+      %h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
     .listContent   
-    .clearer      
+    .clearer
+  .listGroup#text_pages
+    .listHeader
+      %h2.folder= link_to "Textová stránka (#{TextPage.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer          
   .listGroup#authors
     .listHeader
-      %h2.folder= link_to "Autoři (#{Author.all.length})", '#', :onclick => 'getAuthors($("#authors h2")); return false'
+      %h2.folder= link_to "Autoři (#{Author.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -82,7 +90,7 @@
     .clearer
   .listGroup#themes
     .listHeader
-      %h2.folder= link_to "Témata (#{Tag.all.length})", '#', :onclick => 'getThemes($("#themes h2")); return false'
+      %h2.folder= link_to "Témata (#{Tag.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -90,11 +98,10 @@
     .clearer
   .listGroup#sections
     .listHeader
-      %h2.folder= link_to "Rubriky (#{Section.all.length})", '#', :onclick => 'getSections($("#sections h2")); return false'
+      %h2.folder= link_to "Rubriky (#{Section.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
     .listContent   
-    .clearer      
-            
+    .clearer            
 .clearer

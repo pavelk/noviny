@@ -1,0 +1,14 @@
+%strong Soubory
+.dndContent
+  %div{ :class => "listFiles listFilr", :id => "filesListb_#{@object.id}" }
+    - @object.insets.each do |picture|
+      -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+      %div{ :class => 'addedFile forFilr' }
+        = link_to picture.name, picture.data.url, :class => 'file'
+        %br
+        = link_to 'Odstranit', '#', :id => "ajaxFile-#{@object.class.name}-admin/pictures-#{@object.id}-#{picture.id}"
+.dndContainer
+  %div{ :class => 'dnd filr', :id => "dropi-insets-#{@object.class.name}-#{@object.id}" } Zde pretahnete soubor
+  -#%div{ :class => 'dnd filr', :id => "dropf_articles_#{@article.id}" } Zde pretahnete soubor    
+.clearer &nbsp;
+%br

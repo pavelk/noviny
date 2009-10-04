@@ -1,0 +1,14 @@
+%strong Audio
+.dndContent
+  %div{ :class => "listFiles listAudr", :id => "filesListc_#{@object.id}" }
+    - @object.audios.each do |picture|
+      -#= image_tag(picture.data.url(:small), :id => "file_#{picture.id}")
+      %div{ :class => 'addedFile forAudr' }
+        = link_to picture.name, picture.data.url, :class => 'file'
+        %br
+        = link_to 'Odstranit', '#', :id => "ajaxAudio-#{@object.class.name}-admin/audios-#{@object.id}-#{picture.id}"
+.dndContainer
+  %div{ :class => 'dnd audr', :id => "dropi-audios-#{@object.class.name}-#{@object.id}" } Zde pretahnete audio
+  -#%div{ :class => 'dnd audr', :id => "dropa_articles_#{@article.id}" } Zde pretahnete audio    
+.clearer &nbsp;
+%br

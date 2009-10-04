@@ -1,0 +1,3 @@
+#imagePicker
+  - @pictures.each do |picture|
+    = image_tag(picture.data.url(:small), :id => "img_#{picture.id}")

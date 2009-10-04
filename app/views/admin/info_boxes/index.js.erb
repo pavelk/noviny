@@ -2,7 +2,7 @@
 $("#infoboxes .listFilter").empty();
 $("#infoboxes .listContent").empty();
 <% end %>
-$("#infoboxes .listFilter").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#infoboxes .listFilter").append("<%= escape_javascript(render(:partial => 'shared/admin/header')) %>");
 $("#infoboxes .listContent").append("<%= escape_javascript(render(:partial => 'infoboxes_header', :object => @info_boxes)) %>");
 
 $("form[id='search_boxes']").ajaxForm(

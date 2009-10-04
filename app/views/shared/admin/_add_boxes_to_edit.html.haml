@@ -1,0 +1,12 @@
+%strong Info boxy
+.dndContent
+  %div{ :class => "listFiles listBoxr", :id => "filesListd_#{@object.id}" }
+    - @object.info_boxes.each do |picture|
+      %div{ :class => 'addedFile forBoxr' }
+        = link_to picture.name, picture, :class => 'file'
+        %br
+        = link_to 'Odstranit', '#', :id => "ajaxBox-#{@object.class.name}-admin/info_boxes-#{@object.id}-#{picture.id}"
+.dndContainer
+  %div{ :class => 'dnd boxr', :id => "dropi-boxes-#{@object.class.name}-#{@object.id}" } Zde pretahnete infobox
+  -#%div{ :class => 'dnd boxr', :id => "dropb_articles_#{@article.id}" } Zde pretahnete infobox    
+.clearer &nbsp;

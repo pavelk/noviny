@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :articles
   has_many :sections
   has_many :tags
+  has_many :text_pages
   
   acts_as_authentic do |c|
     c.login_field = 'email'
