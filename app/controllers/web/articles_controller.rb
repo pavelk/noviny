@@ -25,7 +25,7 @@ class Web::ArticlesController < Web::WebController
   
   def detail
     @article = Article.find(params[:id])
-    @related = @article.relarticles
+    @related = @article.relarticles + @article.inverse_relarticles
     @newest = Article.newest(3,@article.id)
     @section = @article.section
     if (cookies[:section_id] && @section && @section.id != cookies[:section_id].to_i)
@@ -38,7 +38,7 @@ class Web::ArticlesController < Web::WebController
     @info_box = @article.info_boxes.first
     
      if @section
-       add_breadcrumb @section.name, ""
+       add_breadcrumb @section.name, sections_path(:action=>"detail",:id=>@section.id)
      else
        add_breadcrumb "Detail", ""
      end

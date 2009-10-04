@@ -9,9 +9,9 @@ class Admin::RelationshipsController < Admin::AdminController
   
   def index
     if(params[:search_relationships])
-      @relationships = Article.search params[:search_relationships], :page => params[:page], :per_page => 20
+      @relationships = Article.search params[:search_relationships], :page => params[:page], :per_page => 20, :order => 'publish_date DESC'
     else  
-      @relationships = Article.all.paginate( :per_page => 20, :page => params[:page] )
+      @relationships = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 20, :page => params[:page] )
     end
     if(params[:id])
       @article = Article.find(params[:id])

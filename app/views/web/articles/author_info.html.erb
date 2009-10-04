@@ -6,23 +6,36 @@
    <div class="col2">
      <h2 class="head"><%= @author.full_name %></h2>
      <table>
-
+	   <% if !@author.email.blank? %>
        <tr>
 		<th>E-mail</th>
-		<td><%= link_to @author.email if @author.email %></td>
+		<td><%= mail_to @author.email, @author.email %></td>
        </tr>
+	   <% end %>
+	   <% if !@author.linkedin.blank? %>
        <tr>
 		<th>LinkedIn</th>
-		<td><a href="">TODO</a></td>
+		<td><%= link_to @author.linkedin, @author.linkedin %></td>
        </tr>
+	   <% end %>
+       <% if !@author.twitter.blank? %>
        <tr>
 		<th>Twitter</th>
-		<td><a href="">TODO</a></td>
+		<td><%= link_to @author.twitter, @author.twitter %></td>
        </tr>
+	   <% end %>
+	   <% if !@author.facebook.blank? %>
+       <tr>
+		<th>Facebook</th>
+		<td><%= link_to @author.facebook, @author.facebook %></td>
+       </tr>
+	   <% end %>
+	   <% if !@author.phone.blank? %>
        <tr>
 		<th>Mobil</th>
-		<td>TODO</td>
+		<td><%= @author.phone %></td>
        </tr>
+	   <% end %>
      </table>       
    </div> <!-- /.col2 -->
  </div> <!-- /.cols -->

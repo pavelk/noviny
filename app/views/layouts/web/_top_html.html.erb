@@ -24,7 +24,11 @@
           	<% @breadcrumbs[0..-2].each do |txt, path| %>  
 				<%= link_to(h(txt), path) -%>  
 			<% end %>  
-			<%= h(@breadcrumbs.last.first) %>
+			<% if (@section && @breadcrumbs.last.first == @section.name) %>
+				<%= link_to(h(@breadcrumbs.last.first),@breadcrumbs.last.last,:style=>"color:black;") %>
+			<% else %>
+				<%= h(@breadcrumbs.last.first) %>
+			<% end %>
 		  </h1>
         </div> <!-- /#main -->
         <% form_tag({:controller=>"sections",:action=>"search"},:id=>"search") do %>
@@ -38,7 +42,11 @@
           <ul>
           	<% Section.all_root.each do |root| %>
 				<% next if root.id == 9999 %>
-	            <li><%= (@section && @section.id == root.id) ? root.name : link_to(root.name, sections_path(:action=>"detail",:id=>root.id)) %></li>
+				<% if (@section && @section.id == root.id) %>
+	            	<li><%= link_to(root.name, sections_path(:action=>"detail",:id=>root.id),:style=>"color:black;") %></li>
+				<% else %>
+					<li><%= link_to(root.name, sections_path(:action=>"detail",:id=>root.id)) %></li>
+				<% end %>
 			<% end %>
 	      </ul>
         </div> <!-- /#mainMenu -->

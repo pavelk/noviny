@@ -4,5 +4,5 @@
     = text_field_tag :search_theme, params[:search_theme]
     = submit_tag "Hledej", :name => nil
     %input{ :id => 'cancelSearchThemes', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' }
-= link_to '+ novy zaznam', "#", :class => 'fr', :id => 'articles_new'
+= link_to '+ novy zaznam', "#", :class => 'fr', :onclick => 'newTheme(); return false', :id => 'theme_new'
 .clearer

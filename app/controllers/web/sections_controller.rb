@@ -21,7 +21,7 @@ class Web::SectionsController < Web::WebController
     cookies[:section_id] = params[:id]
     @section = Section.find(params[:id])
     set_default_variables
-    add_breadcrumb @section.name, ""
+    add_breadcrumb @section.name, sections_path(:action=>"detail",:id=>@section.id)
     render :action=>"#{@section.id}"
   end
   

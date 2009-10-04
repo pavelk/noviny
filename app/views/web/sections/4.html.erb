@@ -2,7 +2,7 @@
 <%= render :partial=> "web/articles/related" %>
 	        
 <div class="box">
-  <h2 class="h line">Dnes <%= Time.now.to_s(:cz_date) %></h2>
+  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>">Dnes <%= Time.now.to_s(:cz_date) %></h2>
   <div class="in">
   	<%= "No today articles" if @today_articles.blank? %> 
 	<%= render :partial=>"web/articles/left_article", :collection=>@today_articles,:locals=>{:with_date=>false,:small_class=>true} %>

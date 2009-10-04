@@ -24,6 +24,7 @@
   = f.text_area :perex, :class => "smallText countable count-#{@content_type[1].split('/')[0]}-#{@content_type[1].split('/')[1]}"
   %br
   %br
+  -#%textarea{ :id => 'htmlArea', :rows => '10', :cols => '10' }
 - if @content_type[2] != 0
   = f.label :text, 'Text:'
   %br

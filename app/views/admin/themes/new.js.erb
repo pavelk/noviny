@@ -1,0 +1,5 @@
+$(".recordHeader").remove();
+$(".recordPath").remove();
+$(".recordEdit").remove();
+$("#viewRecord").append("<%= escape_javascript(render(:partial => 'new')) %>");
+$("#viewRecord").show();

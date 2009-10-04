@@ -1,0 +1,18 @@
+.recordHeader
+  %h2= link_to 'Nove tema', '#'
+.recordPath
+.recordEdit
+
+  = error_messages_for :theme
+
+  - form_for @theme, :url => collection_url do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %br
+      %br
+      = link_to "Pridat souvisejici temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false', :id => "relart_#{@theme.id}"
+      #related_themes
+      %br
+      %hr
+      %br
+      %p= submit_tag "Ulozit"
