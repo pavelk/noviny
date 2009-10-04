@@ -1,4 +1,4 @@
-#ENV['RAILS_ENV'] ||= 'production'
+ENV['RAILS_ENV'] ||= 'production'
 
 RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
 
