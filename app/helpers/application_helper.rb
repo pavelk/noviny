@@ -8,6 +8,10 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def will_paginate(arr,options = {})
+    super(arr,options.merge(:prev_label=>"Předchozí",:next_label=>"Další"))
+  end
+  
   def main_image_tag(path,options={})
     image_tag("#{path}",options)
   end

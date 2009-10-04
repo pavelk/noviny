@@ -15,8 +15,8 @@ class Theme < Tag
   has_many :relationthemeships
   has_many :relthemes, :through => :relationthemeships
   
-  #has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "relarticle_id"
-  #has_many :inverse_relarticles, :through => :inverse_relationships, :source => :article
+  has_many :inverse_relationthemeships, :class_name => "Relationthemeship", :foreign_key => "reltheme_id"
+  has_many :inverse_relthemes, :through => :inverse_relationthemeships, :source => :theme
   
   define_index do
     indexes description
