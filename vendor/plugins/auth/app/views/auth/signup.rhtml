@@ -1,0 +1,6 @@
+<%= error_messages_for 'newuser' %>
+<div style="width:500px;">
+	<% form_tag({:action => 'signup'}) do -%>
+		<%= render :partial => "auth/user" %>
+	<% end -%>
+</div>

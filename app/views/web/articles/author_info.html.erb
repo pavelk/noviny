@@ -36,6 +36,12 @@
 		<td><%= @author.phone %></td>
        </tr>
 	   <% end %>
+	    <% if @author.web_user %>
+       <tr>
+		<th>Diskuze</th>
+		<td><%= link_to "Diskuze", :controller=>"web/web_users",:action=>"info",:id=>@author.web_user.id %></td>
+       </tr>
+	   <% end %>
      </table>       
    </div> <!-- /.col2 -->
  </div> <!-- /.cols -->

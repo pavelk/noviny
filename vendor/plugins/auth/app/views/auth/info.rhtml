@@ -1,0 +1,7 @@
+<% form_for(:newuser,@newuser,:url=>{:controller=>"auth",:action => "info"}, :html=>{:multipart => true}) do |f| %>
+
+  <div class="Message"><%= error_messages_for 'newuser' %></div>
+
+<%= render :partial => "auth/user", :locals=>{:f=>f} %>
+<%= submit_tag "Save" -%>
+<% end %>

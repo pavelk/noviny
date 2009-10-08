@@ -71,9 +71,21 @@
 
         
         <div id="user">
-          <!--<ul>
-            <li><a href="">Login</a></li>
+          <ul>
+            <li>
+            	<%if web_user_logged_in? %>
+				<% if @web_user.is_admin? %>
+					<% a_url = {:controller=>"/authadmin"} %>
+				<% else %>
+					<% a_url = {:controller=>"/auth",:action=>"info"} %>
+				<% end %>
+					<%= link_to @web_user.login, a_url  %>
+					<%= link_to "Logout", logout_path %>
+				<% else %>
+					<%= link_to "Login", login_path %>
+				<% end %>
+			</li>
             <li><a href="">Odebrat Zpravodaj</a></li>
-          </ul>-->
+          </ul>
         </div> <!-- /#user -->
       </div> <!-- /#head -->

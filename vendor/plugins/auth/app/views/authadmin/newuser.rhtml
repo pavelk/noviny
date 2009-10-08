@@ -1,0 +1,29 @@
+<div class="Message"><%= error_messages_for 'newuser' %></div>
+ <% form_for(:newuser,@newuser,:url=>{:action => 'crateuser'}, :html=>{:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
+
+<%= render :partial => "auth/user",:locals=>{:admin=>true,:f=>f} %>
+<%= hidden_field_tag "author_id", @author ? @author.id : nil -%>
+<div id="author">
+	<% if @author %>
+		<%= render :partial => "authadmin/author" %>
+	<% else %>
+		<%= render :partial => "authadmin/add_author" %>
+	<% end %>
+</div>
+<table>
+<tr>
+	<td>
+		<label for="post_notify">Uvědomit ho:</label>
+	</td>
+	<td>
+		<%= check_box "post", "notify", :checked_value=>'1', :unchecked_value=>'0' %>
+	</td>
+</tr>
+
+<tr><td colspan="2">
+Poznámka: účet bude ihned aktivní.<br />
+Můžete uživatele uvědomit, bude mu zaslán email s přístupovými údaji.
+</td></tr>
+<tr><td><%= submit_tag "Save" -%></td></tr>
+</table>
+<% end %>

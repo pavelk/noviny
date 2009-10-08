@@ -1,0 +1,179 @@
+<fieldset>
+		<table cellpadding="1" cellspacing="1" border="0" class="signup">
+			<tr><td>
+			  <label for="newuser_login">* Přihlašovací jméno:</label>
+				</td><td>
+				  <%= f.text_field "login" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Titul:
+				</td><td>
+				  <%= f.text_field "title", :size => 10 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Jméno:
+				</td><td>
+				  <%= f.text_field "firstname", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			    Příjmení:
+				</td><td>
+				  <%= f.text_field "lastname", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  * Email:
+				</td><td>
+				  <%= f.text_field "email", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  * Heslo:
+				</td><td>
+				  <%= password_field "newuser", "password", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  * Heslo znovu:
+				</td><td>
+				  <%= password_field_tag "password_conf","", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Ulice:
+				</td><td>
+				  <%= f.text_field "street", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Číslo:
+				</td><td>
+				  <%= f.text_field "number", :size => 10 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Město:
+				</td><td>
+				  <%= f.text_field "city", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  PSČ:
+				</td><td>
+				  <%= f.text_field "psc", :size => 10 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Profese:
+				</td><td>
+				  <%= f.text_field "profession", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Telefon:
+				</td><td>
+				  <%= f.text_field "phone", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Web:
+				</td><td>
+				  <%= f.text_field "web", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Skype:
+				</td><td>
+				  <%= f.text_field "skype", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  Twitter:
+				</td><td>
+				  <%= f.text_field "twitter", :size => 20 -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_mail">Zveřejnit email?:</label>
+				</td><td>
+				  <%= f.check_box "show_mail" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_phone">Zveřejnit telefon?:</label>
+				</td><td>
+				  <%= f.check_box "show_phone" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_address">Zveřejnit adresu?:</label>
+				</td><td>
+				  <%= f.check_box "show_address" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_web">Zveřejnit web?:</label>
+				</td><td>
+				  <%= f.check_box "show_web" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_skype">Zveřejnit skype?:</label>
+				</td><td>
+				  <%= f.check_box "show_skype" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_show_twitter">Zveřejnit twitter?:</label>
+				</td><td>
+				  <%= f.check_box "show_twitter" -%>
+				</td>
+			</tr>
+			<tr><td>
+			  <label for="newuser_send_reports">Posílat reporty?:</label>
+				</td><td>
+				  <%= f.check_box "send_reports" -%>
+				</td>
+			</tr>
+			<tr><td>
+			    <%= f.label(:photo, 'Upload photo') %>
+				</td>
+				<td>
+			    <%= f.file_field(:photo) %>
+				</td>
+			</tr>
+			  <% unless @newuser.new_record? || !@newuser.photo? -%>
+			<tr><td>
+			      <%= image_tag(@newuser.photo.url(:thumb), :alt => 'Photo', :title => 'Current photo') %>
+			    </td>
+			</tr>
+				<% end %>
+			<tr><td>
+			  <label for="newuser_payed">Zaplacen účet?:</label>
+				</td>
+				<td>
+				 <% if @web_user.is_admin? %>
+				 <%= f.check_box "payed" -%>
+				 <% else %>
+				 	<%= @newuser.payed? ? "ANO" : "NE" %>
+				 <% end %>
+				</td>
+			</tr>
+			<tr><td>
+			  Datum vypršení předplatného:
+				</td><td>
+					<% if @web_user.is_admin? %>
+						<%= calendar({:text_field => "expire_date",
+				              :value => @expire_date,
+				              :update_div => nil,
+				              :class_name => "cal"}) -%>
+					 <% else %>
+					 	<%= @newuser.expire_date.to_s(:cz_date) %>
+					 <% end %>
+				</td>
+			</tr>
+		</table>
+	</fieldset>

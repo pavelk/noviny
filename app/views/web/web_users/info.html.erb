@@ -1,0 +1,28 @@
+<h1><%= @web_user.full_name %></h1>
+<hr/>
+<h2>Kontakty</h2>
+<% if @web_user.show_mail? %>
+Email: <%= @web_user.email %><br/>
+<% end %>
+<% if @web_user.show_phone? %>
+Telefon: <%= @web_user.phone %><br/>
+<% end %>
+<% if @web_user.show_address?  %>
+Adresa: <%= @web_user.address %><br/>
+<% end %>
+<% if @web_user.show_web? %>
+Web: <%= @web_user.web %><br/>
+<% end %>
+<% if @web_user.show_skype? %>
+Skype: <%= @web_user.skype %><br/>
+<% end %>
+<% if @web_user.show_twitter? %>
+Twitter: <%= @web_user.twitter %><br/>
+<% end %>
+<%= "Autor si nepřál zveřejnit žádné kontakty."  if @web_user.no_info? %>
+<hr/>
+<h3>Příspěvky: <%= @comments.total_entries %></h3>
+<table border="1">
+<%= render :partial=>"web/web_users/comment", :collection=>@comments %>
+</table>
+<%= will_paginate @comments %>

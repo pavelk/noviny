@@ -1,0 +1,12 @@
+Hello <%= @web_user.name %>,
+
+You asked to change your email address. You need to confirm that change.
+
+Please visit the following URL :
+
+<%= @app[:url] %>/auth/confirm/<%= @web_user.email %>,<%= @web_user.validkey %>
+
+Thank you,
+
+<%= @app[:title] %> Administrator
+<%= @app[:url] %>
