@@ -1,1 +1,2 @@
-$("#TB_ajaxContent").append("<%= escape_javascript(render(:partial => 'linked_pictures')) %>");
+$("#TB_ajaxContent").remove();
+$("#TB_ajaxContent").prepend("<%= escape_javascript(render(:partial => 'linked_pictures')) %>");

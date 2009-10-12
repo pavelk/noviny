@@ -165,6 +165,12 @@ $(function()
   $("a[id^='ajaxAudio']").livequery('click', function(event) { 
     return tmpremoveFileFromArticle( $(this).attr("id").split("-")[1], $(this).attr("id").split("-")[2], $(this).attr("id").split("-")[3], $(this).attr("id").split("-")[4], 'remove_audio' ) 
   });
+  
+  //counter events
+  $("form[id^='edit_article'], form[id^='new_article'] ").livequery(function() {
+    setCounterEvents();
+  });
+  
 });
 
 //get records for all modules without assets
@@ -245,10 +251,11 @@ function addImagesToTBBox(imgIds)
     data: "imgs=" + imgs.slice(0,imgs.length - 1),
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {
-
+      //alert(status);
     }
   });
-  
+  $('#TB_window').die("unload",addImagesToTBBox);
+  return false;
 }
 
 /** ARTICLES **/
