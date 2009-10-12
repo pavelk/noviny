@@ -1,0 +1,82 @@
+<p>
+&gt; Upravujete uživatele <b><%= @newuser.login %></b>.<br />
+&gt; <%= link_to "Všichni uživatelé", :action => '' %>.
+</p>
+<div style="float:left;">
+	 <% form_for(:newuser,@newuser,:url=>{:action => 'edituser'}, :html=>{:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
+		<%= hidden_field "newuser", "id", :value => params[:id] %>
+		
+		  <div class="Message"><%= error_messages_for 'newuser' %></div>
+		
+			<div id="edituserinfo"></div>
+		<%= render :partial => "auth/user", :locals=>{:admin=>true, :f=>f} -%>
+		<%= hidden_field_tag "author_id", @author ? @author.id : nil -%>
+		<div id="author">
+			<% if @author %>
+				<%= render :partial => "authadmin/author" %>
+			<% else %>
+				<%= render :partial => "authadmin/add_author" %>
+			<% end %>
+		</div>
+		<table cellpadding="3" cellspacing="3" border="0" class="signup">
+		<tr>
+		   <td>
+		      <label for="newuser_confirmed">Aktivni?</label>
+		   </td>
+		   <td>
+				  <%= f.check_box "confirmed", :disabled=>(@web_user == @newuser) -%>
+		   </td>
+		</tr>
+		<tr>
+		   <td>
+		      <label for="notify">Uvědomit ho o změně hesla</label>
+		   </td>
+		   <td>
+		   	<%= check_box_tag "notify",1,false%>
+		   </td>
+		</tr>
+		<tr><td>Vytvořen</td><td><%= @newuser.created_at.strftime("%d.%m.%Y %H:%M:%S") %></td></tr>
+		<tr><td>Upraven</td><td><%= @newuser.updated_at.strftime("%d.%m.%Y %H:%M:%S") %></td></tr>
+		
+		<tr><td colspan="2">
+		<hr width="200"/>
+		</td></tr>
+		<tr><td><%= submit_tag "Save" -%></td></tr>
+		</table>
+	<% end %>
+</div>
+<div>	
+	<table>
+		<tr>
+			<td valign="top">
+			<h1>Skupiny</h1>
+			<p>
+			Tento uživatel patří do následujících skupin.<br />
+			Můžete přidat i více skupin.
+			</p>
+			<% form_remote_tag(
+				:update => 'domains',
+				:url => authadmin_url(:action => 'editdomains'),
+				:loading => "Toggle.display('domain_spinner');",
+				:complete => "Toggle.display('domain_spinner'); $('domain_form').reset();",
+				:html => { 'id' => 'domain_form' }
+				) do %>
+			  <%= hidden_field "post", "id", :value => @newuser.id %>
+			
+			<div id="domains">
+			<%= render :partial => 'domains' %>
+			</div>
+			
+			<%= text_field "post", "domain" , :size => 15, :class=>"form" %>
+			<%= select_tag("post[domain_level]", options_for_select({1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9}.sort) ) %>
+			<input type="submit" value="Přidat uživatele do této skupiny &#187;" class="primary" />
+			<%= spinner_tag('domain') %>
+			<p>
+			tip: můžete vybrat rozdílné stupně pro stejnou skupinu.
+			</p>
+			<% end %>
+			</td>
+		</tr>
+	</table>
+</div>
+<div style="clear:both;"></div>

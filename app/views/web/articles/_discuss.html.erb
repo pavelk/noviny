@@ -1,33 +1,41 @@
 <h3 class="h line">Diskuze (<%= @comments.length -%> příspěvků)</h3>
 <div class="in">
-  <p>TODO Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
-  <ul>
-    <li><a href="">TODO Registrovat</a></li>
-    <li><a href="">TODO Prihlasit</a></li>
-  </ul>
-  
-  <% form_for(:comment,@comment,:url=>{:action=>"add_comment",:id=>@article.id},:html=>{:class=>"item itemSmallImage formBox"}) do |f| %>
-	<fieldset>
-	    <div class="img">
-	      <img src="img/img-nazor1.jpg" alt="" />
-	    </div> <!-- /.img -->
-	    
-	    <div class="self">
-	        <h4>Jiří Karban, Domažlice TODO</h4>
-	        <a href="">Odhlásit se TODO</a>
-	        <p>TODO Zbyva 1000 znaku</p>
-	        <%= f.text_area :text, :size=>"30x7", :class=>"button w100"%>
-			<%= f.hidden_field :article_id, :value=> @article.id %>
-			<%= f.submit "Post your comment", :class=>"submit fl"%>
-	        <a href="" class="fr">Kodex - Pravidla diskuze TODO</a>
-	    </div>
-   </fieldset>
-   <% end %>
+	
+  <% if !web_user_logged_in? %>
+	  <p>Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
+	  <ul>
+	    <li><%= link_to "Registrovat", signup_path %></li>
+	    <li><%= link_to "Přihlásit", login_path %></li>
+	  </ul>
+  <% end %>
   <%= render :partial=>"web/articles/comment", :collection=>@comments %>
-  <p>TODO Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
-
-  <ul>
-    <li><a href="">TODO Registrovat</a></li>
-    <li><a href="">TODO Prihlasit</a></li>
-  </ul>
+	<% if !web_user_logged_in? %>
+	  <p>Pro vlozeni prispevku musite byt zaregristrovani a prihlaseni.</p>
+	  <ul>
+	    <li><%= link_to "Registrovat", signup_path %></li>
+	    <li><%= link_to "Přihlásit", login_path %></li>
+	  </ul>
+	<% elsif @web_user.can_create_comment?(@article) %>
+	  <% form_for(:comment,@comment,:url=>{:action=>"add_comment",:id=>@article.id},:html=>{:class=>"item itemSmallImage formBox"}) do |f| %>
+	  	<div style="color:red;"><%= f.error_messages %></div>
+		<fieldset>
+		    <div class="img">
+		      <%= image_tag(@web_user.photo.url(:thumb)) if @web_user.photo.file? %>
+		    </div> <!-- /.img -->
+		    
+		    <div class="self">
+		        <h4><%= @web_user.comment_info %></h4>
+		        <%= link_to "Odhlásit se", logout_path %>
+		        <p>TODO Zbyva 1000 znaku</p>
+		        <%= f.text_area :text, :size=>"30x7", :class=>"button w100"%>
+				<%= f.hidden_field :article_id, :value=> @article.id %>
+				<%= f.hidden_field :web_user_id, :value=> @web_user.id %>
+				<%= f.submit "Post your comment", :class=>"submit fl"%>
+		        <a href="" class="fr">Kodex - Pravidla diskuze TODO</a>
+		    </div>
+	   </fieldset>
+	   <% end %>
+	<% else %>
+		Nemáte zaplacený účet, nebo nemáte dovoleno psát do této diskuze	   
+   <% end %>
 </div> <!-- /.in -->

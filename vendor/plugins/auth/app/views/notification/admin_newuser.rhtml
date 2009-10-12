@@ -1,0 +1,15 @@
+Dobrý den <%= @web_user.name %>,
+
+administrátor <%= @new_us ? "vytvořil" : "upravil" -%> Váš účet. Přihlašovací údaje jsou:
+
+login    : <%= @web_user.login %>
+heslo : <%= @password %>
+
+Můžete upravit své údaje pomocí:
+
+<%= @app[:url] %>/auth/info
+
+Děkujeme,
+
+<%= @app[:title] %> Administrátor
+<%= @app[:url] %>

@@ -1,0 +1,5 @@
+Author: <%= @author.whole_name %>
+<%= link_to_function "X" do |page| 
+	page.replace_html "author", :partial=>"authadmin/add_author"
+	page['author_id'].value = nil
+end -%>

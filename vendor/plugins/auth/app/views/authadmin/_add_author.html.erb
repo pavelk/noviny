@@ -1,0 +1,11 @@
+<label>Autor:</label>
+<%= text_field_tag "auhtor_name" -%>
+	<div id="add_authors">
+	</div>
+	<%= observe_field :auhtor_name, :url => { :controller=>"web/ajax",:action => "choose_author"},
+      :update => :add_authors,
+	  :frequency => 0.1,
+	  :with => "'name='+$F('auhtor_name')",
+	  :loading => "Element.show('value_spinner')",
+	  :complete => "Element.hide('value_spinner')" %>
+	<%= spinner_tag("value") %>

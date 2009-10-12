@@ -1,0 +1,8 @@
+<% for author in @authors %>
+	<div>
+		<%= link_to_remote author.whole_name,:url=>{:controller=>"/authadmin",:action=>"set_author",:author_id=>author.id},
+									   :loading=>"Element.show('np_spinner')",
+									   :complete=>"Element.hide('np_spinner')" -%>
+	</div>
+<% end %>
+<%= spinner_tag("np") -%>

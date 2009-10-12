@@ -1,7 +1,22 @@
 class Web::WebController < ApplicationController
   layout "web/referendum"
+  include AuthSystem
   before_filter :set_variables
   before_filter :set_printable
+  before_filter :app_config, :ident
+
+  # Used to be able to leave out the action
+  def process(request, response)
+    catch(:abort) do
+      super(request, response)
+    end
+    response
+  end
+
+  def this_auth
+    @app
+  end
+  helper_method :this_auth
 
 protected
    def add_breadcrumb name, url = ''  

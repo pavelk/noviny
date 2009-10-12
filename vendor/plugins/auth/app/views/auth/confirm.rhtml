@@ -1,0 +1,35 @@
+<% form_tag() do %>
+    <h1>Confirmation</h1>
+
+    <% if flash['notice'] %>
+    <div class="Message"><%= flash['notice'] %></div>
+    <% else %>
+    <div class="Message">This page allows you to confirm an account. Please enter your email and the validation key you have received.</div>
+    <% end %>
+
+		<table cellpadding="1" cellspacing="1" border="0" class="signup">
+		<tr><td>
+		<label for="user_email">Email address:</label>
+		</td><td>
+    <%= text_field "user", "email", :size => 20, :class=>"form", :value => @email %>
+		</td></tr>
+
+		<tr><td>
+		<label for="user_email">Validation Key:</label>
+		</td><td>
+    <%= text_field "user", "validkey", :size => 45, :maxlength => 40,  :class=>"form" , :value=>params[:validkey] %>
+		</td></tr>
+
+		<tr><td>&nbsp;</td>
+		<td>
+    <input type="submit" value="Confirm &#187;" class="primary" />
+		</td></tr>
+
+		<tr><td>&nbsp;</td>
+		<td>
+		<%= link_to 'Resend the mail', :action => 'resendsignup' %>
+		</td></tr>
+		
+		</table>
+
+<% end %>

@@ -1,0 +1,23 @@
+<% form_tag({:action => 'login'}, { :onSubmit => "Element.show('ident_spinner');" }) do -%>
+<table cellpadding="3" cellspacing="3" border="0" class="signup">
+	<tr><td>
+	  <label for="post_login">Login</label>
+	</td><td>
+	  <%= text_field "post", "login", :size => 	15, :class=>"username", :value => @web_user ? @web_user.login : "" %>
+	</td>
+	</tr>
+	
+	<tr><td>
+	  <label for="post_password">Heslo</label>
+	</td><td>
+	  <%= password_field "post", "password", :size => 15, :class=>"password" %><br />
+	</td>
+	</tr>
+	
+	<tr><td>&nbsp;</td>
+	<td>
+	  <input type="submit" value="Přihlásit &#187;" class="primary" />
+		<%= spinner_tag %>
+	</td></tr>
+</table>
+<% end %>

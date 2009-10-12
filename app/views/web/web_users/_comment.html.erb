@@ -1,0 +1,10 @@
+<tr>
+	<td><%= comment.text.slice(0..50) %></td>
+	<td>
+		<%= link_to comment.article.author.full_name, articles_path(:action=>"author_info",:id=>comment.article.author_id) %>
+		<br/>
+		<%= link_to comment.article.name, articles_path(:action=>"detail",:id=>comment.article_id) %>
+		<br/>
+		<%= comment.article.perex %>
+	</td>
+</tr>

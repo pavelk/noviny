@@ -16,6 +16,10 @@ class Author < ActiveRecord::Base
   has_many :author_insets
   has_many :insets, :through => :author_insets
   
+  def web_user
+    return WebUser.find(:first,:conditions=>{:author_id=>self.id})
+  end
+  
   #virtual atribute for full name in views
   def full_name 
     [firstname, surname].join(" ") 
@@ -29,6 +33,10 @@ class Author < ActiveRecord::Base
   end
   
   #Added by Jan Uhlar
+  def whole_name
+    return "#{self.firstname} #{self.surname}"
+  end
+  
   def self.all_right
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     find(:all,

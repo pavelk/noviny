@@ -1,0 +1,33 @@
+<%
+	dom = ""
+	user.domains.each { |key, value|
+		dom << link_to(key, :action => 'list', :id => key)
+		dom << ": #{value}<br />"
+	}
+
+%>
+	 <tr id="user-<%= user.id %>">
+		<td><%= user.id %></td>
+	   <td><%= link_to user.login, authadmin_url(:action => 'edituser', :id => user) %></td>
+		<td><%= user.email %></td>
+		<td>&nbsp;<%= user.firstname %></td>
+		<td>&nbsp;<%= user.lastname %></td>
+		<td><%= user.updated_at.strftime("%d.%m.%Y %H:%M:%S") %> </td>
+		<td><%= dom %></td>
+		<td><% if user.confirmed?; %>Ano<% else; %>Ne<% end %></td>
+
+		<td>&nbsp;
+		<% if user.id > 1 %>
+		<%= form_remote_tag(
+			:url => authadmin_url(:action => 'deluser', :id => user.id),
+			:complete => "new Effect.Fade('user-#{user.id}')",
+			:confirm => 'Opravdu?'
+		)%>
+
+		<input type="submit" value="X" %>
+		</form>
+		<% end %>
+		</td>
+
+	 </tr>
+

@@ -1,12 +1,18 @@
 <div class="item itemSmallImage <%= (@comments.last == comment) ? 'last' : '' %>">
 	<div class="img">
-	  TODO image
+	  <%= image_tag(comment.web_user.photo.url(:thumb)) if comment.web_user.photo.file? %>
 	</div> <!-- /.img -->
 	
 	<div class="self">
-	  <h4><%= comment.user.user_name %>, TODO Mladá Boleslav</h4>
+	  <h4>
+	  	<%= link_to comment.web_user.comment_info, :controller=>"web/web_users",:action=>"info",:id=>comment.web_user.id %>
+		<%= "- Autor" if comment.web_user.author == comment.article.author %>
+	  </h4>
 	  <p><%= comment.comment_date %></p>
-	  <p><a href="">TODO Zavadny link</a></p>
+	  <p>
+	  	<a href="">TODO Zavadny link</a>
+		<%= link_to "Smazat", {:controller=>"articles", :action=>"delete_comment", :id=>comment.id}, :confirm=>"Opravdu?" if (@web_user && @web_user.can_modify?(comment)) %>
+	  </p>
 	  <p class="comment"><%= h(comment.text) %></p>
 	</div> <!-- /.self -->
 </div> <!-- /.item -->

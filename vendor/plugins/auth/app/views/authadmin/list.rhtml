@@ -1,0 +1,32 @@
+<%= link_to 'Nový uživatel', authadmin_url(:action=>"newuser") %>
+<% if params[:id] %>
+<p>
+&gt; You are listing web_users included in the <%= params[:id] %> domain.<br />
+&gt; <%= link_to 'View all web_users', authadmin_url %>.
+</p>
+<% end %>
+
+<p style="text-align: center;">
+<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:prev_label   => '&laquo; ' +  'Předchozí',
+ 	          :next_label   => 'Další' +  ' &raquo;'%>
+</p>
+
+<table border="1">
+	<tr>
+		<td>id</td>
+		<td>Login</td>
+		<td>Email</td>
+		<td>Jméno</td>
+		<td>Příjmení</td>
+		<td>Upraven</td>
+		<td>Domény</td>
+		<td>Aktivní?</td>
+		<td>Smaž</td>
+	</tr>
+<%= render :partial => "user", :collection => @web_users %>
+</table>
+
+<p style="text-align: center;">
+<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:prev_label   => '&laquo; ' +  'Předchozí',
+ 	          :next_label   => 'Další' +  ' &raquo;'%>
+</p>

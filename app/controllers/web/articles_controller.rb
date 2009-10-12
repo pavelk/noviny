@@ -1,18 +1,21 @@
 class Web::ArticlesController < Web::WebController
   layout "web/gallery"
+  before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
   
   def add_comment
     @article = Article.find(params[:id])
+    if request.get?
+      redirect_to :action=>"detail", :id=>@article.id  and return
+    end
     @section = @article.section
     @author = @article.author
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
+    @comments = @article.article_comments
     
     add_breadcrumb @article.section.name, ""
     if request.post?
       @comment = ArticleComment.new(params[:comment])
-      @comment.user_id = 5
-      @comment.created_at = Time.now
       if @comment.save
         redirect_to :action=>"detail", :id=>@article.id
       else
@@ -20,7 +23,12 @@ class Web::ArticlesController < Web::WebController
         render :action=>"detail"
       end
     end
-    
+  end
+  
+  def delete_comment
+    com = ArticleComment.find(params[:id])
+    com.destroy
+    redirect_to :action=>"detail", :id=>com.article_id
   end
   
   def detail
@@ -109,5 +117,9 @@ class Web::ArticlesController < Web::WebController
     
     add_breadcrumb @section.name, "" if @section
     #render :layout=>"web/gallery"
+  end
+protected
+  def authorize_users_only
+    require_auth 'USERS'
   end
 end
