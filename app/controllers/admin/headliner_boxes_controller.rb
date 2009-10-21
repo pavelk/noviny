@@ -1,7 +1,7 @@
 class Admin::HeadlinerBoxesController < Admin::AdminController
   
-  create.after :process_related, :set_values, :process_sections
-  update.after :process_related, :set_values, :process_sections
+  create.after :process_related, :set_values, :process_sections, :add_flash_photo
+  update.after :process_related, :set_values, :process_sections, :add_flash_photo
   #create.after :set_values, :process_sections
   #update.after :set_values, :process_sections
   
@@ -13,6 +13,16 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     end
     render 'shared/admin/index.js.erb'
   end
+  
+  def add_flash_image
+    #debugger
+    @fp = FlashphotoHeadliner.new(:photo => params[:Filedata])
+    @fp.save!
+    #render :nothing => true
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
+  end  
   
   new_action.response do |wants|
     wants.js
@@ -38,6 +48,14 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
   end
   
   private
+    
+    def add_flash_photo
+      #debugger
+      if(params[:flashimage_id])
+        @fi = FlashphotoHeadliner.find(params[:flashimage_id])
+        @headliner_box.flashphoto_headliners << @fi
+      end  
+    end  
   
     def process_related
       if(params[:related_sidebar])

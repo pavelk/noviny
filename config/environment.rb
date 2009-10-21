@@ -6,7 +6,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   
-  #config.gem 'fiveruns_tuneup'
   config.gem 'authlogic',
              :version => '~> 2.1.0'
   config.gem 'haml',

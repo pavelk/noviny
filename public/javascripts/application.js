@@ -21,7 +21,11 @@ function checkBoxes()
 //onload
 $(function()
 {
-  //attachments live draggable actions
+  
+	//alert($("#TB_ajaxContent").html());
+	//$("#TB_ajaxContent").html('pokus')
+
+	//attachments live draggable actions
   $("div[id^='picture_'], div[id^='inset_'], div[id^='audio_'],  tr[id^='infobox_']").livequery(function() {
     $(this).draggable({
     	revert: 'invalid',
@@ -170,8 +174,61 @@ $(function()
   $("form[id^='edit_article'], form[id^='new_article'] ").livequery(function() {
     setCounterEvents();
   });
+
+  //update wysiwyg on submit
+  $("input[type='submit']").livequery('click', function(event) {
+	$("#article_text, #text_page_text").simpleditor("updateTextArea");
+  });
   
 });
+
+function insertEditor( sourcePath, width, height )
+{
+      //alert('funkce');
+	  var flashvars = {};
+      flashvars.input_image = sourcePath;
+      flashvars.target_width = width;
+      flashvars.target_height = height;
+      flashvars.target_url = "/admin/headliner_boxes/add_flash_image";
+      flashvars.exit_function = "closeEditor";
+	  flashvars.save_function = "saveEditor";	
+      var params = {};
+      params.menu = "false";
+      params.scale = "noscale";
+	  params.align = "tl";
+      params.allowscriptaccess = "always";
+      var attributes = {};
+      swfobject.embedSWF("/images/main.swf", "flashDiv", width + 100, height + 100, "9.0.24", "/images/expressInstall.swf", flashvars, params, attributes);
+}
+
+function saveEditor(val)
+{
+	//alert(val);
+	$("#flashImageHidden").html("<input type='hidden' id='flashimage_id' name='flashimage_id' value='"+ val +"'>");
+}
+
+function closeEditor()
+{
+	alert('close');
+}
+
+//delete all records
+function deleteRecord(obj, controller, model)
+{
+	if(confirm('Opravdu smazat?'))
+	{
+		$.ajax({
+	        url: '/admin/'+ controller +'/' + $(obj).parent().parent().attr("id").split("_")[1] + '/?class=' + model,
+	        type: 'post',
+	        dataType: 'script',
+	        data: { '_method': 'delete' },
+	        success: function() {
+				$(obj).parent().parent().remove();
+	        }
+	    });
+	}
+	return false;	
+}
 
 //get records for all modules without assets
 function getRecords( statObj, paging )
@@ -540,7 +597,10 @@ function dragAndDrop()
   	  $("div[class='addedFile forImgr'] > *").remove();
   	  $("div[id='headliner_box_picture_id'] > *").remove();
   	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
-  	  $("fieldset").append("<input type='hidden' id='headliner_box_picture_id' name='headliner_box[picture_id]' value='"+ id +"'>");  	  
+  	  $("fieldset").append("<input type='hidden' id='headliner_box_picture_id' name='headliner_box[picture_id]' value='"+ id +"'>");
+  	  var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
+	  insertEditor( sourcePath, 440, 255 );
+	  $('#flashDiv').css('width:540px;height:355px');
   	}
   });
   

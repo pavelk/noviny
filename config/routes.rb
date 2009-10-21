@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :text_pages
   end
   
+  map.detail 'articles/detail/:id', :controller => 'articles', :action => 'detail'
   
   map.remove_relationship 'admin/relationships/remove_rel/:id/:rel', :controller => 'admin/relationships', :action => 'delete', :method => 'post'
   map.remove_relationthemeship 'admin/relationthemeships/remove_rel/:id/:rel', :controller => 'admin/relationthemeships', :action => 'delete', :method => 'post'
@@ -63,6 +64,8 @@ ActionController::Routing::Routes.draw do |map|
   map.add_box 'admin/info_boxes/add_box/:object/:id/:class', :controller => 'admin/info_boxes', :action => 'add_box'
   map.remove_box 'admin/info_boxes/remove_box/:object/:id/:class', :controller => 'admin/info_boxes', :action => 'remove_box'
   ###
+  
+  map.add_flashimage_headliner 'admin/headliner_boxes/add_flash_image', :controller => 'admin/headliner_boxes', :action => 'add_flash_image'
   
   ###
   #old assets

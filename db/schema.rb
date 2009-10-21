@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091004160256) do
+ActiveRecord::Schema.define(:version => 20091021192828) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -62,13 +62,14 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
 
   create_table "article_comments", :force => true do |t|
     t.integer  "article_id"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.text     "text"
+    t.integer  "web_user_id"
   end
 
   add_index "article_comments", ["article_id"], :name => "article_comments_article_id_index"
-  add_index "article_comments", ["user_id"], :name => "article_comments_user_id_index"
+  add_index "article_comments", ["article_id"], :name => "index_article_comments_on_article_id"
+  add_index "article_comments", ["web_user_id"], :name => "index_article_comments_on_web_user_id"
 
   create_table "article_insets", :force => true do |t|
     t.integer "inset_id"
@@ -157,12 +158,13 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
     t.integer  "section_id"
     t.integer  "subsection_id"
     t.integer  "content_type_id"
-    t.integer  "priority_home",    :default => 9999,  :null => false
-    t.integer  "priority_section", :default => 9999,  :null => false
+    t.integer  "priority_home",    :default => 1,     :null => false
+    t.integer  "priority_section", :default => 1,     :null => false
     t.boolean  "visibility",       :default => false, :null => false
     t.integer  "author_id"
     t.string   "videodata"
     t.integer  "version",          :default => 1
+    t.datetime "order_date"
   end
 
   add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
@@ -257,6 +259,18 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
 
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
   add_index "dailyquestions", ["author_yes_id"], :name => "dailyquestions_author_yes_id_index"
+
+  create_table "flashphoto_headliners", :force => true do |t|
+    t.integer  "headliner_box_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  add_index "flashphoto_headliners", ["headliner_box_id"], :name => "flashphoto_headliners_headliner_box_id_index"
 
   create_table "headliner_articles", :force => true do |t|
     t.integer "headliner_box_id"
@@ -355,6 +369,7 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
     t.string   "data_width"
     t.string   "data_height"
     t.string   "author"
+    t.string   "type_image"
   end
 
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
@@ -411,7 +426,7 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
   add_index "sections", ["user_id"], :name => "sections_user_id_index"
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :default => "", :null => false
+    t.string   "session_id", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -500,10 +515,10 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
 
   create_table "users", :force => true do |t|
     t.string   "user_name",           :default => "", :null => false
-    t.string   "email",               :default => "", :null => false
-    t.string   "crypted_password",    :default => "", :null => false
-    t.string   "password_salt",       :default => "", :null => false
-    t.string   "persistence_token",   :default => "", :null => false
+    t.string   "email",                               :null => false
+    t.string   "crypted_password",                    :null => false
+    t.string   "password_salt",                       :null => false
+    t.string   "persistence_token",                   :null => false
     t.string   "single_access_token", :default => "", :null => false
     t.string   "perishable_token",    :default => "", :null => false
     t.integer  "login_count",         :default => 0,  :null => false
@@ -523,5 +538,49 @@ ActiveRecord::Schema.define(:version => 20091004160256) do
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
+
+  create_table "web_user_payments", :force => true do |t|
+    t.datetime "created_at"
+    t.date     "payed_at"
+    t.integer  "web_user_id"
+    t.decimal  "price",       :precision => 10, :scale => 2
+  end
+
+  create_table "web_users", :force => true do |t|
+    t.string   "login",              :limit => 40,                     :null => false
+    t.string   "cryptpassword",      :limit => 40,                     :null => false
+    t.string   "validkey",           :limit => 40
+    t.string   "email",              :limit => 100,                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "confirmed",                         :default => false
+    t.text     "domains",                                              :null => false
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "street"
+    t.string   "city"
+    t.string   "number"
+    t.string   "psc"
+    t.string   "profession"
+    t.string   "phone"
+    t.string   "title"
+    t.boolean  "send_reports",                      :default => false
+    t.boolean  "payed",                             :default => false
+    t.integer  "author_id"
+    t.date     "expire_date"
+    t.date     "born_date"
+    t.string   "web"
+    t.string   "skype"
+    t.string   "twitter"
+    t.boolean  "show_mail",                         :default => false
+    t.boolean  "show_phone",                        :default => false
+    t.boolean  "show_address",                      :default => false
+    t.boolean  "show_web",                          :default => false
+    t.boolean  "show_skype",                        :default => false
+    t.boolean  "show_twitter",                      :default => false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+  end
 
 end

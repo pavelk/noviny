@@ -1,6 +1,6 @@
-- if(@object.nil?)
-  - @object = Article.new
-- if @content_type[0] != 0
+-#- if(@object.nil?)
+  -#- @object = Article.new
+%div{ :id => "nadpis-visible" }
   = f.label :name, 'Nadpis:'
   = f.text_field :name, :class => "inp countable count-#{@content_type[0].split('/')[0]}-#{@content_type[0].split('/')[1]}"
   %br
@@ -17,20 +17,19 @@
 %input{ :id => "publish_time", :name => "publish_time", :size => "10", :type => "text", :value => www_time(@article.publish_date)}
 %br
 %br
-
-- if @content_type[1] != 0
+%div{ :id => "perex-visible" }
   = f.label :perex, 'Perex:'
   %br
   = f.text_area :perex, :class => "smallText countable count-#{@content_type[1].split('/')[0]}-#{@content_type[1].split('/')[1]}"
   %br
   %br
-- if @content_type[2] != 0
+%div{ :id => "text-visible" }
   = f.label :text, 'Text:'
   %br
   = f.text_area :text, :class => "countable count-#{@content_type[2].split('/')[0]}-#{@content_type[2].split('/')[1]}"
   %br
   %br
-- if @content_type[3] != 0
+%div{ :id => "poznamka-visible" }
   = f.label :poznamka, 'Poznamka:'
   %br
   = f.text_area :poznamka, :class => "smallText countable count-#{@content_type[3].split('/')[0]}-#{@content_type[3].split('/')[1]}"

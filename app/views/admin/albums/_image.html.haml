@@ -8,10 +8,10 @@
       - image.pictures.each do |picture|
         .listImageBox
           -#= link_to image_tag(picture.data.url(:small), :id => "picture_#{picture.id}"), ''
-          %div{ :id => "picture_#{picture.id}"}= image_tag(picture.data.url(:small))
+          %div{ :id => "picture_#{picture.id}", :class => 'listImageItemBox' }= image_tag(picture.data.url(:small))
           %br
-          = picture.name
-          %br
+          .cropLine
+            = picture.name
           = number_to_human_size(picture.data_file_size)
           ,
           = picture.data_content_type

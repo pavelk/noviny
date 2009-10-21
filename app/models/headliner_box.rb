@@ -12,4 +12,6 @@ class HeadlinerBox < ActiveRecord::Base
   has_many :headliner_themes
   has_many :themes, :through => :headliner_themes
   
+  has_many :flashphoto_headliners
+  
 end

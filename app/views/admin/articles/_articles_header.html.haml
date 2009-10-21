@@ -7,5 +7,6 @@
     %th{ :width => '15%'    }= link_to 'autor', '#'
     %th{ :width => '30%'    } perex
     %th{ :width => '5%'    } &nbsp;    
-    = render(:partial => 'article', :collection => @articles)
-    = will_paginate @articles, :previous_label => 'Předchozí', :next_label => 'Další'
+    = render(:partial => 'article', :collection => @collection)
+  %tr
+    %td{ :colspan => '7'}= will_paginate @collection, :previous_label => 'Předchozí', :next_label => 'Další'

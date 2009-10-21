@@ -3,108 +3,126 @@ Zpráva:
   perex: 80/480
   text: 0/6500
   poznamka: 0/480
+  video: 0
   
 Sloupek:
     nadpis: 0/80
     perex: 80/480
     text: 3500/6500
     poznamka: 0/480
+    video: 0
   
 Komentář:
     nadpis: 0/80
     perex: 80/480
     text: 3500/6500
     poznamka: 0/480
+    video: 0
   
 Glosa:
     nadpis: 0/80
     perex: 80/480
     text: 0/3500
     poznamka: 0/480
+    video: 0
   
 Analýza:
     nadpis: 0/80
     perex: 80/480
     text: 6500/0
     poznamka: 0/480
+    video: 0
     
 Esej:
     nadpis: 0/80
     perex: 80/480
     text: 6500/0
     poznamka: 0/480
+    video: 0
   
 Recenze:
     nadpis: 0/80
     perex: 80/480
     text: 0/6500
     poznamka: 0/480
+    video: 0
 
 Kritika:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Reportáž:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Dokument:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
     
 Rozhovor:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
     
 Fejeton:
     nadpis: 0/80
     perex: 80/480
     text: 1500/6500
     poznamka: 0/480
+    video: 0
     
 Živě:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Tip:
     nadpis: 0/80
     perex: 80/480
     text: 500/1500
     poznamka: 0/480
+    video: 0
 
 Vzpomínka:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Vyprávění:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Polemika:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Fotogalerie:
     nadpis: 0/80
     perex: 80/480
     text: 0
     poznamka: 0
+    video: 0
 
 Video:
     nadpis: 0/80
@@ -118,45 +136,53 @@ MP3:
     perex: 80/480
     text: 0
     poznamka: 0
+    video: 0
 
 Štěstí z šesti:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Portrét:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Báseň:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Povídka:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Komix:
   nadpis: 0/80
   perex: 80/480
   text: 0
   poznamka: 0
+  video: 0
 
 Žebříček:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0
 
 Volný text:
     nadpis: 0/80
     perex: 80/480
     text: 100/0
     poznamka: 0/480
+    video: 0

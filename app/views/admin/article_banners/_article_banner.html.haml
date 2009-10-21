@@ -1,5 +1,6 @@
 %tr{ :id => "articlebanner_#{article_banner.id}" }
-  %td{ :class => "listItem l1"}= link_to article_banner.headline, '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+  %td{ :class => "listItem l1"}
+    .cropLine= link_to article_banner.headline, '#', :title => article_banner.headline, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   -#%td= truncate(article_banner.perex, :length => 100, :omission => "&hellip;")   
   %td= article_banner.publish_date.strftime('%d/%m/%Y')
   %td{ :class => 'center' }

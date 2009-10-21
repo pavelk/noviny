@@ -1,2 +1,5 @@
-$("#TB_ajaxContent").remove();
-$("#TB_ajaxContent").prepend("<%= escape_javascript(render(:partial => 'linked_pictures')) %>");
+var tbContent = "<%= escape_javascript(render(:partial => 'linked_pictures')) %>";
+if(document.getElementById('TB_ajaxContent'))
+{
+  document.getElementById('TB_ajaxContent').innerHTML = tbContent;
+}

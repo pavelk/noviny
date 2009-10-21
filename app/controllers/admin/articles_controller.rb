@@ -1,5 +1,8 @@
 class Admin::ArticlesController < Admin::AdminController
   
+  layout "admin", :except => [:detail]
+  layout "detail", :only => [:detail]
+  
   create.before :set_user
   create.after :process_adding_pictures, :process_adding_files, 
                :process_adding_audios, :process_adding_boxes, 
@@ -10,9 +13,9 @@ class Admin::ArticlesController < Admin::AdminController
   def index
     #debugger
     if(params[:search_articles])
-      @articles = Article.search params[:search_articles], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
+      @collection = Article.search params[:search_articles], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
-      @articles = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
+      @collection = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end
     render 'shared/admin/index.js.erb'
   end  
@@ -66,18 +69,26 @@ class Admin::ArticlesController < Admin::AdminController
   
   edit.after do
     #adjust_home_priority(params[:id][:priority_home], params[:id][:id])
-  end  
+  end
+  
+  def detail
+    @article = Article.find(params[:id])
+    respond_to do |format|  
+      format.html
+    end
+  end    
   
   def get_content_type
-    if(params[:id])
-    @article = Article.find(params[:id])
-    @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]  
-    else  
-    @article = Article.new
-    @article.content_type_id = params[:content_value]
+    #if(params[:id])
+    #@article = Article.find(params[:id])
+    #@article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]  
+    #else  
+    #@article = Article.new
+    #@article.content_type_id = params[:content_value]
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[params[:content_type]]
-    end
+    #end
     @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
+    #debugger
     respond_to do |format|  
       format.js
     end
@@ -293,7 +304,13 @@ private
     else
       p_time = ' ' + params[:publish_time] + ':00'
     end    
-    @article.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time) 
+    @article.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time)
+    
+    if(@article.publish_date < @article.updated_at )
+      @article.update_attributes( :order_date => @article.updated_at)
+    else
+      @article.update_attributes( :order_date => @article.publish_date)
+    end   
   end  
 
   def adjust_home_priority( p, id )

@@ -24,4 +24,13 @@ class Admin::AdminController < ResourceController::Base
     wants.js { render :layout => false }
   end
   
+  def destroy
+    @object = params[:class].constantize.find( params[:id] )
+    #@object = Article.find( params[:id] )
+    @object.destroy
+    respond_to do |format|
+        format.js { render :nothing => true }
+    end
+  end 
+  
 end

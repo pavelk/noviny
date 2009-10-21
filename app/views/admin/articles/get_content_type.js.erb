@@ -1,40 +1,51 @@
-$(".recordHeader").remove();
-$(".recordPath").remove();
-$(".recordEdit").remove();
-<% if @article.id != nil %>  
-$("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit')) %>");
-<% else %>
-$("#viewRecord").append("<%= escape_javascript(render(:partial => 'new')) %>");
-<% end  %>
-$(".recordHeader a").bind("click", function() { return cancelLeaf() });  
+$("div[id='nadpis-visible']").each(function() {
+  if("<%= @content_type[0] %>" == '0')
+	{
+		$(this).hide();
+	}else{
+		$(this).show();
+		$("input[id=article_name]").removeAttr('class');
+		$("input[id=article_name]").attr({
+              class: "inp countable count-<%= @content_type[0].to_s.split('/')[0]  %>-<%= @content_type[0].to_s.split('/')[1]  %>"
+            })
+	}
+});
 
-$("form[id^='new_article']").ajaxForm(
-  {
-    dataType: 'script',
-    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
-    resetForm: true,
-    complete: function(XMLHttpRequest, textStatus) {
-       
-    }
-  }
-);
+$("div[id='perex-visible']").each(function() {
+  if("<%= @content_type[1] %>" == '0')
+	{
+		$(this).hide();
+	}else{
+		$(this).show();
+		$("textarea[id=article_perex]").removeAttr('class');
+		$("textarea[id=article_perex]").attr({
+              class: "smallText countable count-<%= @content_type[1].to_s.split('/')[0]  %>-<%= @content_type[1].to_s.split('/')[1]  %>"
+            })
+	}
+});
 
+$("div[id='text-visible']").each(function() {
+  if("<%= @content_type[2] %>" == '0')
+	{
+		$(this).hide();
+	}else{
+		$(this).show();
+		$("textarea[id=article_text]").removeAttr('class');
+		$("textarea[id=article_text]").attr({
+              class: "countable count-<%= @content_type[2].to_s.split('/')[0]  %>-<%= @content_type[2].to_s.split('/')[1] %>"
+            })     
+	}
+});
 
-$("#article_content_type_id").change(function() 
-{ 
-
-  $.ajax({
-    type: 'GET',
-    dataType: 'script',
-    <% if @article.id != nil %>
-      url: '/admin/articles/get_content_type/' + $("#article_content_type_id :selected").text() + '/'+ $(this).val()+ '/'+ <%= @article.id %>,
-    <% else %>
-    url: '/admin/articles/get_content_type/' + $("#article_content_type_id :selected").text() + '/'+ $(this).val(),
-    <% end  %>
-    
-    error: function(msg) { alert("Chyba v přenosu dat."); },
-    success: function(data, status) {         
-    }
-  });
- 
+$("div[id='poznamka-visible']").each(function() {
+  if("<%= @content_type[3] %>" == '0')
+	{
+		$(this).hide();
+	}else{
+		$(this).show();
+		$("textarea[id=article_poznamka]").removeAttr('class');
+		$("textarea[id=article_poznamka]").attr({
+              class: "smallText countable count-<%= @content_type[3].to_s.split('/')[0]  %>-<%= @content_type[3].to_s.split('/')[1]  %>"
+            })
+	}
 });

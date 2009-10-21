@@ -72,8 +72,25 @@ class Article < ActiveRecord::Base
   
   
   before_save do |a|
-    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 
-    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{a.priority_home} && priority_home <= 9" 
+    if(a.article_sections.size > 0)
+    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section - 1 
+                                           WHERE priority_section <= #{a.priority_section} 
+                                           && priority_section > 1 
+                                           && publish_date LIKE '%#{a.publish_date.strftime("%Y-%m-%d").to_s}%'
+                                           && id <> #{a.id}
+                                           && id IN ( SELECT article_id FROM article_sections WHERE section_id IN (#{a.article_sections.collect {|f| f.section_id }.join(',')}) )"                                      
+    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home - 1 
+                                           WHERE priority_home <= #{a.priority_home} 
+                                           && priority_home > 1 
+                                           && publish_date LIKE '%#{a.publish_date.strftime("%Y-%m-%d").to_s}%'
+                                           && id <> #{a.id} 
+                                           && id IN ( SELECT article_id FROM article_sections WHERE section_id = 9999 )"
+                                           
+    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = 1 
+                                           WHERE priority_section > 1
+                                           && publish_date < today()"
+                                                                                  
+    end                                       
   end
   
   #Added by Jan Uhlar

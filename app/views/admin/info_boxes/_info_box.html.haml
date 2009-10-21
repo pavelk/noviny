@@ -1,5 +1,6 @@
 %tr{ :id => "infobox_#{info_box.id}" }
-  %td{ :class => "listItem l1"}= link_to info_box.title, '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+  %td{ :class => "listItem l1"}
+    .cropLine= link_to info_box.title, '#', :title => info_box.title ,:onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td= info_box.name
   %td= info_box.updated_at.strftime('%d/%m/%y')
   %td{ :class => 'center' }
