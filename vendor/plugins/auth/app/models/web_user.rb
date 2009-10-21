@@ -1,5 +1,5 @@
 require 'digest/sha1'
-
+ 
 # this model expects a certain database layout and its based on the name/login pattern.
 class WebUser < ActiveRecord::Base
   belongs_to :author
@@ -11,7 +11,7 @@ class WebUser < ActiveRecord::Base
                     :url  => "/assets/author_pictures/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/author_pictures/:id/:style/:basename.:extension"
                     
-
+ 
   
   # Protecting the fields
   attr_protected  :cryptpassword,
@@ -26,22 +26,23 @@ class WebUser < ActiveRecord::Base
                   :photo_file_name,
                   :photo_content_type,
                   :photo_file_size
-
+ 
   # Please change the salt to something else,
   # Every application should use a different one
   @@salt = 'sMre3!Y!yL0q'
   cattr_accessor :salt
   attr_accessor :ident, :expire_at, :password, :passwordbis
-
+ 
   # To the hardcoded USERS,1 you can add a default set of domains for new web_users
   # in the config/auth_generator.yml file.
   def self.default_domains
     { "USERS" => 1 }.reverse_merge!(self.str2domain(@@config[:default_domains]))
   end
-
+ 
   def can_create_comment?(article)
     return true if self.is_admin?
     return true if self.author == article.author
+    return false if self.expire_date.blank?
     return ((self.expire_date >= Time.now.to_date) && self.confirmed?)
     return false
   end
@@ -58,14 +59,14 @@ class WebUser < ActiveRecord::Base
   def self.authenticate(login, pass)
     find(:first,:conditions => ["login = ? AND cryptpassword = ? AND confirmed=1", login, WebUser.crypt_passwd(login,pass)])
   end
-
+ 
    def can_modify?(comment)
      return true if self.is_admin?
      return true if self.author == comment.article.author
      return true if self == comment.web_user
      return false
    end
-
+ 
   def comment_info
     str = ""
     str += self.firstname if self.firstname
@@ -73,7 +74,7 @@ class WebUser < ActiveRecord::Base
     str += ", #{self.city}" if self.city && self.show_address?
     return str
   end
-
+ 
   def full_name
     "#{firstname} #{lastname}"
   end
@@ -81,7 +82,7 @@ class WebUser < ActiveRecord::Base
   def address
     "#{street} #{number}, #{city} #{psc}"
   end
-
+ 
   def name
     case @@config[:name_format]
     when 'full'
@@ -103,19 +104,19 @@ class WebUser < ActiveRecord::Base
     if domains and !domains.empty?
       return domains.key?(domain.upcase)
     end
-
+ 
     return false
   end
-
+ 
   def is_admin?
     #return in_domain?('ADMIN')
     access_for('ADMIN') > 0
   end
-
+ 
   def access_for(domain)
     domains[domain.upcase].to_i unless not in_domain?(domain) || 0
   end
-
+ 
   def access_granted_for?(credentials, restrict_time = false)
     priv = WebUser.str2domain(credentials.to_s)
     if restrict_time
@@ -128,19 +129,19 @@ class WebUser < ActiveRecord::Base
     return true
   end
   alias_method :acl?, :access_granted_for?
-
+ 
   # Time restriction
   def access_granted_now_for?(credentials)
     access_granted_for?(credentials, true)
   end
   alias_method :tacl?, :access_granted_now_for?
-
-
+ 
+ 
   # Set the config environment
   def self.config(app)
     @@config ||= app
   end
-
+ 
   # The 2 functions below allow you to save all the authentification part in a cookie.
   # It prevents you to make a database access to verify if the web_user is connected.
   #
@@ -148,7 +149,7 @@ class WebUser < ActiveRecord::Base
   def self.fromString(string)
      # If you add something in the cookie, increment the number
     p = string.split(":",8)
-
+ 
     login = p[0]
     # if you add something in the cookie, add a p[num]
     chaine = "#{p[0]}:#{p[1]}:#{p[2]}:#{p[3]}:#{p[4]}:#{p[5]}:#{p[6]}"
@@ -172,7 +173,7 @@ class WebUser < ActiveRecord::Base
       return nil
     end
   end
-
+ 
   # The default time for the session
   def sessionstring(expire_at=1.hours.from_now)
     session_id = AuthHelper::Utils::random_string(32)
@@ -182,19 +183,19 @@ class WebUser < ActiveRecord::Base
     crypted = WebUser.sha1(chaine)
     "#{chaine}:#{crypted}"
   end
-
+ 
   # Before creating, we generate a validkey.
   # This is used for confirmation
   def generate_validkey(from_string = nil)
     from_string ||= AuthHelper::Utils::random_string(30)
     write_attribute "validkey", WebUser.sha1(from_string)
   end
-
+ 
   # Check if the validkey is ok.
   def self.email_change_isvalid?(email, validkey)
      WebUser.sha1(email) == validkey
   end
-
+ 
 # To set the password, but we store it crypted...
 #  def password=(new_password)
 #    if new_password.length >= 6
@@ -204,7 +205,7 @@ class WebUser < ActiveRecord::Base
 #      return nil
 #    end
 #  end
-
+ 
   def reload
     # Just to be sure we have all the fields
     u = WebUser.find(:first,:conditions => ["login = ? AND confirmed=1", self.login])
@@ -214,22 +215,22 @@ class WebUser < ActiveRecord::Base
     u.ident = true
     return u
   end
-
+ 
   protected
-
+ 
   # Apply SHA1 encryption to the supplied string.
   def self.sha1(chaine)
     Digest::SHA1.hexdigest("#{salt}--#{chaine}--")
   end
-
+ 
   before_validation_on_create :set_default_fields
   before_create :generate_validkey
   before_save :hash_domains
   before_save :hash_password
   after_save :after_find
-
+ 
   #after_find :dehash_domains
-
+ 
   # Before saving the record to database we will base64encode the domains the
   # web_users belongs to
   def hash_domains
@@ -239,7 +240,7 @@ class WebUser < ActiveRecord::Base
     end
     write_attribute "domains", WebUser.domain2str(self.domains)
   end
-
+ 
   def self.crypt_passwd(login,pass)
     # default is sha1
     if @@config.nil? or not @@config.include? 'crypt_method'
@@ -252,7 +253,7 @@ class WebUser < ActiveRecord::Base
       end
     end
   end
-
+ 
    def check_password
      unless WebUser.valid_password?(password)
        #errors.add('password','must be at least 6 characters long.')
@@ -260,15 +261,15 @@ class WebUser < ActiveRecord::Base
 #       errors.add('password','must be present')
      end
    end
-
+ 
    def validate_on_create(*methods, &block)
      check_password
    end
-
+ 
   def self.valid_password?(str)
     not str.nil? and str.length >= 6
   end
-
+ 
   def hash_password
     if WebUser.valid_password?(password)
       write_attribute "cryptpassword", WebUser.crypt_passwd(login,password)
@@ -280,7 +281,7 @@ class WebUser < ActiveRecord::Base
       # we have an encrypted password already
     end
   end
-
+ 
   # After we load the web_user
   def after_find
     #require 'base64'
@@ -288,9 +289,9 @@ class WebUser < ActiveRecord::Base
     self.domains = WebUser.str2domain(self.domains) if self.domains.is_a?(String)
     #self.domains = WebUser.domain2str(self.domains) if self.domains.is_a?(Hash)
   end
-
+ 
   #before_update :crypt_unless_empty
-
+ 
   # If the record is updated we will check if the password is empty.
   # If its empty we assume that the web_user didn't want to change his
   # password and just reset it to the old value.
@@ -302,7 +303,7 @@ class WebUser < ActiveRecord::Base
       #write_attribute "password", WebUser.sha1(password)
     end
   end
-
+ 
   # Convert the domains hash to a string
   # Ensure that the domains contain at least USERS,1
   def self.domain2str(dom)
@@ -310,7 +311,7 @@ class WebUser < ActiveRecord::Base
     dom.reverse_merge!(self.default_domains)
     { "USERS" => 1 }.reverse_merge(dom).collect { |name, level| "#{name},#{level}" }.join(' ')
   end
-
+ 
   # Convert domains string to a hash
   def self.str2domain(str)
     result = {}
@@ -321,9 +322,9 @@ class WebUser < ActiveRecord::Base
     }
     result
   end
-
+ 
 ## == Model Validation ================================================
-
+ 
   # Set default fields to ensure correct values at creation time
   #
   # login, password and email are provided by the web_user
@@ -335,7 +336,7 @@ class WebUser < ActiveRecord::Base
   def set_default_fields
     self.confirmed ||= false
   end
-
+ 
   # Regex to validate an email
   VALID_EMAIL = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/ unless defined? VALID_EMAIL
   # Regex to validate a login
@@ -348,83 +349,83 @@ class WebUser < ActiveRecord::Base
   VALID_DOMAIN = /^\w+$/i unless defined? VALID_DOMAIN
   # Regex to validate a level
   VALID_LEVEL  = /^\d+$/ unless defined? VALID_LEVEL
-
+ 
   validates_presence_of :login,:message=>"Login nemůže být prázdný"
   validates_presence_of :email,:message=>"Email nemůže být prázdný"
-
+ 
   validates_uniqueness_of :login, :on => :create,:message=>"Tento login již existuje"
   validates_uniqueness_of :login, :on => :update,:message=>"Tento login již existuje"
   validates_uniqueness_of :email, :on => :create,:message=>"Tento email již existuje"
   validates_uniqueness_of :email, :on => :update,:message=>"Tento email již existuje"
-
+ 
   #validates_confirmation_of :password
   validates_format_of :login, :with => VALID_LOGIN,:message=>"Login má nesprávný formát"
-
+ 
   validates_length_of :password, :on => :create, :minimum => 6, :allow_nil => true,:message=>"Heslo musí mít minimálně 6 znaků"
-
+ 
   validates_length_of :email,    :maximum => 100
   validates_format_of :email,    :with => VALID_EMAIL,:message=>"Email má nesprávný formát"
-
+ 
   validates_length_of :validkey, :maximum => 40, :allow_nil => true
-
+ 
   validates_format_of :firstname, :with => VALID_NAME,:message=>"Jméno má nesprávný formát"
   validates_format_of :lastname,  :with => VALID_NAME,:message=>"Příjmení má nesprávný formát"
-
+ 
   validates_inclusion_of :confirmed, :in => [true, false]
-
+ 
   validates_each(:domains) do |record, attr, value|
     value.each do | key, val |
       record.errors.add(attr, "contain invalid domain #{key.inspect}") unless key =~ VALID_DOMAIN
       record.errors.add(attr, "contain invalid access level #{val.inspect} ") unless "#{val}" =~ VALID_LEVEL
     end
   end
-
+ 
 end
-
-
+ 
+ 
 ### Theses class are used for the password crypting. You can change them, add some, etc.
 ### To change the crypt method, add a class and herit from WebUserPasswordCrypt.
 ### See examples.
-
+ 
 class WebUserPasswordCrypt
   def self.inherited(child) #:nodoc:
     @@subclasses ||= []
     @@subclasses << child
     super
   end
-
+ 
   def self.subclasses
     @@subclasses
   end
 end
-
+ 
 require 'digest/sha1'
 class WebUserPasswordCryptSHAMoreSalted < WebUserPasswordCrypt
-
+ 
   def self.crypt(login,pass)
     Digest::SHA1.hexdigest("#{login}#{pass}")
   end
-
+ 
   def self.type
     "SHA1moresalt"
   end
 end
-
+ 
 class WebUserPasswordCryptSHA < WebUserPasswordCrypt
   def self.crypt(login,pass)
     Digest::SHA1.hexdigest(pass)
   end
-
+ 
   def self.type
     "SHA1"
   end
 end
-
+ 
 class WebUserPasswordCryptMD5 < WebUserPasswordCrypt
   def self.crypt(login,pass)
     Digest::MD5.hexdigest(pass)
   end
-
+ 
   def self.type
     "MD5"
   end

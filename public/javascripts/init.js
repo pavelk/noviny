@@ -49,4 +49,18 @@ jQuery(document).ready(function() {
     return false;
   });
   
+   // font resize
+  setUserOptions();
+  jQuery("#fx-fontdecr").click(function() {
+    switchFontSize('dec');
+    return false;
+  });
+  jQuery("#fx-fontincr").click(function() {
+    switchFontSize('inc');
+    return false;
+  });
+  
+  // Cufon
+  Cufon.replace("#logo")(".h")("h2.head"); 
+  
 });

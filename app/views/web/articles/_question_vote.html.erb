@@ -1,0 +1,19 @@
+<div class="answer">
+    <div class="label">Ano</div>    
+    <div class="bar">
+      <span class="in" style="width: <%=@y_votes-%>%;">
+      	<span class="value">
+      		<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) if @question.can_vote? %>
+		</span>
+	  </span>
+    </div> <!-- /.bar -->
+</div> <!-- /.answer -->
+<div class="answer">
+    <div class="label">Ne</div>    
+    <div class="bar even">
+      <span class="in" style="width: <%=@n_votes-%>%;"><span class="value"><%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) if @question.can_vote? %></span></span>
+	</div> <!-- /.bar -->
+</div> <!-- /.answer -->
+<p id="message-<%=@question.id-%>">
+	<%= @message %>
+</p>

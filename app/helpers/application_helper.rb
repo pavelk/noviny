@@ -8,6 +8,15 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def article_name(article)
+    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR]
+    if arr.include?(article.content_type_id)
+      return "#{article.author.full_name}: #{article.name}"
+    else
+      return article.name
+    end
+  end
+  
   def will_paginate(arr,options = {})
     super(arr,options.merge(:prev_label=>"Předchozí",:next_label=>"Další"))
   end
@@ -21,7 +30,7 @@ module ApplicationHelper
   end
   
   def th(text)
-    return text.gsub("\r\n","<br>")
+    return text.gsub("\r\n","<br>").gsub("\n","<br>")
   end
   
   #Returns normalize form of string for formatting the url

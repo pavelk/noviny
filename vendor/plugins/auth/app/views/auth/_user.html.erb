@@ -151,6 +151,7 @@
 			    </td>
 			</tr>
 				<% end %>
+			<% if controller.action_name != "signup" %>		
 			<tr><td>
 			  <label for="newuser_payed">Zaplacen účet?:</label>
 				</td>
@@ -171,9 +172,10 @@
 				              :update_div => nil,
 				              :class_name => "cal"}) -%>
 					 <% else %>
-					 	<%= @newuser.expire_date.to_s(:cz_date) %>
+					 	<%= @newuser.expire_date.to_s(:cz_date) if @newuser.expire_date %>
 					 <% end %>
 				</td>
 			</tr>
+			<% end %>
 		</table>
 	</fieldset>

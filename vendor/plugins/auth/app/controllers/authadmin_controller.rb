@@ -6,9 +6,9 @@ class AuthadminController < Web::WebController
     list
     render :action => 'list'
   end
-
+ 
   def list
-
+ 
 		if params[:post] and params[:post][:s]
 			@web_users = WebUser.paginate :all, :per_page => 20,:page =>params[:page], :order =>'id desc',
 			:conditions => ['login like ? or email like ? or firstname like ? or lastname like ?',
@@ -23,7 +23,7 @@ class AuthadminController < Web::WebController
 			@web_users = WebUser.paginate :all, :per_page => 20,:page =>params[:page], :order =>'id desc'
 		end
 	end
-
+ 
   # Delete the web_user
   def delweb_user
     if request.xhr?
@@ -32,7 +32,7 @@ class AuthadminController < Web::WebController
     end
     render :nothing=>true
   end
-
+ 
   def set_author
     if request.xhr?
       @author = Author.find(params[:author_id])
@@ -43,7 +43,7 @@ class AuthadminController < Web::WebController
       end
     end
   end  
-
+ 
   def edituser
     @newuser = WebUser.find(:first, :conditions => ["id = ?",params[:id]])
     @expire_date = @newuser.expire_date.to_s(:cz_date) if @newuser && @newuser.expire_date
@@ -81,7 +81,7 @@ class AuthadminController < Web::WebController
       end
     end
   end
-
+ 
   # Used to edit domains, add new domain.
   def editdomains
     @newuser = WebUser.find(:first, :conditions => ["id = ?",params[:post][:id]])
@@ -103,11 +103,12 @@ class AuthadminController < Web::WebController
 		end
 		render :layout => false
 	end
-
+ 
 	# Used for new web_user
 	def newuser
+   @newuser = WebUser.new 
 	end
-
+ 
 	# Used to create web_user
 	def createuser
     if request.post? 
@@ -147,7 +148,7 @@ class AuthadminController < Web::WebController
   		end
 		end
 	end
-
+ 
 	# Used to delete a domain
 	def deldomain
 		if not params[:id].nil?
@@ -170,19 +171,19 @@ class AuthadminController < Web::WebController
 			render :layout => false, :action => "editdomains"
 		end
 	end
-
+ 
 protected
-
+ 
   # XXX: repeated from ApplicationController!
   def this_auth
     @app
   end
   helper_method :this_auth
-
+ 
   def theme_layout
     "../authadmin/theme/#{@app[:themeadmin]}/layout.rhtml"
   end
-
+ 
   def authorize_admins_only
     require_auth 'ADMIN'
   end

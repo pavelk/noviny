@@ -3,15 +3,16 @@ class Web::SectionsController < Web::WebController
   
   def index
     redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
-    if Web::Calendar.week?
-      @articles = Article.find(:all,
-                               :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ?",ContentType::ZPRAVA,Time.now.beginning_of_day,Time.now],
-                               :order=>"publish_date DESC",
-                               :include=>[:content_type])
-    else
-      @articles = Article.home_opinions(Time.now,Web::Calendar.set_opinion_limit)
-    end
     set_common_variables(Section::HOME_SECTION_ID)
+    ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
+    #if Web::Calendar.week?
+    #  @articles = Article.find(:all,
+    #                           :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,Time.now.beginning_of_day,Time.now,true,true],
+    #                           :order=>"publish_date DESC",
+    #                           :include=>[:content_type])
+    #else
+      @articles = Article.home_opinions(Time.now,{:limit=>200,:ignore_arr=>ign_arr})
+    #end
     @question = Dailyquestion.first_by_date
     @question_image = @question.pictures.first if @question
     @article_photo_show = true
@@ -30,7 +31,7 @@ class Web::SectionsController < Web::WebController
     @section = @subsection.parent
     set_default_variables
     @articles = Article.paginate(:all,
-                             :conditions=>["subsection_id = ?",@subsection.id],
+                             :conditions=>["subsection_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,true],
                              :order=>"publish_date DESC",
                              :page=>params[:page],
                              :per_page=>10)
@@ -45,7 +46,7 @@ class Web::SectionsController < Web::WebController
   def search
     @text = params[:text]
     @articles = Article.paginate(:all,
-                                 :conditions=>["publish_date <= ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,"%#{@text}%","%#{@text}%","%#{@text}%"],
+                                 :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,true,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :page=>params[:page],
                                  :per_page=>25)
     add_breadcrumb "Vyhledávání", ""
@@ -67,12 +68,26 @@ protected
   end
 
   def set_opinions_variables
+    if Web::Calendar.week? && Web::Calendar.sunday?
+      tfrom_date = Time.now - 1.days
+      tto_date = Time.now
+      yfrom_date = Time.now.yesterday - 2.days
+      yto_date = Time.now.yesterday - 2.days
+    else
+      tfrom_date = Time.now
+      tto_date = Time.now
+      yfrom_date = Time.now.yesterday
+      yto_date = Time.now.yesterday
+    end
+    
     @today_articles = Article.from_section(:section_id=>Section::NAZORY,
-                                           :from_date=>Time.now,
+                                           :from_date=>tfrom_date,
+                                           :to_date => tto_date,
                                            :limit=>nil)
                                           
     @yesterday_articles = Article.from_section(:section_id=>Section::NAZORY,
-                                               :from_date=>Time.now.yesterday,
+                                               :from_date=>yfrom_date,
+                                               :to_date => yto_date,
                                                :limit=>nil)  
   end
   
@@ -80,7 +95,7 @@ protected
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
          
     @saturday_articles = Article.find(:all,
-                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now],
+                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,true],
                                       :order=>"publish_date DESC",
                                       :include=>[:content_type])
     if Web::Calendar.saturday? && @sunday > Time.now
@@ -88,7 +103,7 @@ protected
       return
     end
     @sunday_articles = Article.find(:all,
-                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now],
+                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,true],
                                     :order=>"publish_date DESC",
                                     :include=>[:content_type])                                  
   end
@@ -96,7 +111,7 @@ protected
   def set_non_opinion_variables(section_id)
     per_page = 10
     @articles = Article.paginate(:all,
-                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ?",section_id,Time.now],
+                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now,true,true],
                                  :order=>"priority_section DESC, publish_date DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],

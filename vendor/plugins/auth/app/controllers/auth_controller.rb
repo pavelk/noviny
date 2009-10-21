@@ -1,19 +1,19 @@
 class AuthController < Web::WebController
   layout "web/referendum"
   before_filter :authorize_users_only, :except=>[:index,:login,:signup,:confirm]
-
+ 
   def index
     del_location
     @title = "WebUser Interface"
     #redirect_to :action => "login" unless web_user_logged_in?
   end
-
+ 
   def remoteinfo
     if request.xhr?
       render :layout=>false
     end
   end
-
+ 
   def info
     @newuser = @web_user
     if request.post? and !@newuser.nil?
@@ -31,7 +31,7 @@ class AuthController < Web::WebController
       end
     end
   end
-
+ 
   def login
     case request.method
     when :post
@@ -55,7 +55,7 @@ class AuthController < Web::WebController
       end
     end
   end
-
+ 
   def signup
     redirect_to :action=>"index" and return unless @app[:allow_self_registration]
     if request.post?
@@ -71,7 +71,7 @@ class AuthController < Web::WebController
          return 
        end
       #return if !@newuser.validate
-
+ 
       if @newuser.save
         if WebUser.count == 1
           @newuser.domains = WebUser.default_domains.merge({ "ADMIN" => 1})
@@ -90,12 +90,13 @@ class AuthController < Web::WebController
         flash.now[:error]  = "Objevila se chyba při registraci."
       end
     else
+      @newuser = WebUser.new
       if @web_user and @web_user.ident
         flash.now[:notice]  = "You already have an account and are authentified. Are you sure you want to create a new account ?"
       end
     end
   end
-
+ 
   def logout
     if not @web_user
       redirect_to :action => "index"
@@ -105,17 +106,17 @@ class AuthController < Web::WebController
     flash[:notice] = "Úspěšně odhlášen"
     redirect_to home_path
   end
-
+ 
   def lostpassword
     if @web_user and @web_user.ident
       @web_user.generate_validkey
       @web_user.save
-
+ 
       Notification.deliver_forgot(@web_user, @app)
       flash['notice']  = "Poslali jsme Vám email."
       redirect_to :action => "index" and return
     end
-
+ 
     if request.post? and params[:post][:email]
       @newuser = WebUser.find(:first,:conditions => ["email = ?",params[:post][:email]])
       if not @newuser.nil?
@@ -138,10 +139,10 @@ class AuthController < Web::WebController
         @email = ""
       end
     end
-
-
+ 
+ 
   end
-
+ 
   def reset
     if request.post? and not params[:post].nil?
       @login = params[:post][:login]
@@ -150,7 +151,7 @@ class AuthController < Web::WebController
     else
       @login = ""
     end
-
+ 
     if request.post? and not params[:post].nil?
       @validkey = params[:post][:validkey]
     elsif not params[:validkey].nil?
@@ -158,18 +159,18 @@ class AuthController < Web::WebController
     else
       @validkey = ""
     end
-
+ 
     if not params[:id].nil?
       @login,@validkey = params[:id].split(',',2)
     end
-
+ 
     # If validation key is wrong, we leave right now
     web_user = WebUser.find(:first,:conditions => ["login = ?",@login])
     if web_user and web_user.validkey != @validkey
       flash[:notice]  = "Your validation key is incorrect, please reask for your password."
       redirect_to :action => "lostpassword" and return
     end
-
+ 
     if request.post?
       if params[:post][:password] != params[:post][:passwordconf]
         flash.now[:notice] = "Your passwords don't match!"
@@ -194,7 +195,7 @@ class AuthController < Web::WebController
       end
     end
   end
-
+ 
   def confirm
     @email = ""
     if not params[:id].nil?
@@ -213,7 +214,7 @@ class AuthController < Web::WebController
         if not web_user.confirmed?
           web_user.confirmed= 1
           web_user.validkey = nil
-
+ 
           if web_user.save
             cookies[:email] = nil
             self.saveSession web_user
@@ -243,22 +244,22 @@ class AuthController < Web::WebController
         flash.now['notice']  = "This validation key is incorrect. Maybe you already confirmed your account?"
       end
     end
-
+ 
     if cookies[:email] and not cookies[:email].nil?
       @email = cookies[:email]
     elsif not params[:web_user].nil? and params[:web_user][:email]
       @email = params[:web_user][:email]
     end
   end
-
  
-
+ 
+ 
   def denied
     render :layout => false
   end
-
+ 
   protected
-
+ 
   def saveSession(web_user, keepalive=nil)
     if not keepalive.nil? and keepalive > 0
       if keepalive == 1
@@ -279,17 +280,17 @@ class AuthController < Web::WebController
       }
     end
   end
-
+ 
   def cancelSession
     cookies[:web_user] = nil
     @web_user = WebUser.new
   end
-
+ 
    def this_auth
      @app
    end
    helper_method :this_auth
-
+ 
    def theme_layout
      "../auth/theme/#{@app[:theme]}/layout.rhtml"
    end

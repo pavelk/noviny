@@ -2,15 +2,28 @@
 <%= render :partial=> "web/articles/related" %>
 	        
 <div class="box">
-  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>">Dnes <%= Time.now.to_s(:cz_date) %></h2>
-  <div class="in">
-  	<%= "No today articles" if @today_articles.blank? %> 
-	<%= render :partial=>"web/articles/left_article", :collection=>@today_articles,:locals=>{:with_date=>false,:small_class=>true} %>
-   </div> <!-- /.in -->
+  <% if !@today_articles.blank? %>	
+	  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>">
+	  	<% if Web::Calendar.week? && Web::Calendar.sunday? %>
+	  		Víkend <%= Time.now.to_s(:cz_date) %>
+		<% else %>
+			Dnes <%= Time.now.to_s(:cz_date) %>
+		<% end %>
+	  </h2>
+	  <div class="in">
+		<%= render :partial=>"web/articles/left_article", :collection=>@today_articles,:locals=>{:with_date=>false,:small_class=>true} %>
+	   </div> <!-- /.in -->
+	<% end %>   
 </div> <!-- /.box -->
 
 <div class="box">
-  <h2 class="h line">Včera <%= (Time.now.yesterday).to_s(:cz_date) %></h2>
+  <h2 class="h line">
+  	<% if Web::Calendar.week? && Web::Calendar.sunday? %>
+  		Pátek <%= (Time.now - 2.days).to_s(:cz_date) %>
+	<% else %>
+		Včera <%= (Time.now.yesterday).to_s(:cz_date) %>
+	<% end %>
+  </h2>
   <div class="in">
   	<%= "No yesterday articles" if @yesterday_articles.blank? %> 
 	<%= render :partial=>"web/articles/left_article", :collection=>@yesterday_articles,:locals=>{:with_date=>false,:small_class=>true} %>
