@@ -13,6 +13,10 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options :controller => 'web/sections' do |section|
     section.sections  'sections/:action/:id', :action  => 'index', :id=>nil
   end
+  
+  map.with_options :controller => 'web/text_pages' do |text_page|
+    text_page.show  'text_pages/:action/:id', :action  => 'show', :id=>nil
+  end
   #Added by Jan Uhlar
   
   map.resources :info_boxes

@@ -64,7 +64,7 @@ class Web::Calendar
   
   def self.set_opinion_limit(t = Time.now)
     return 4 if t.wday == 1 || t.wday == 2
-    return 2
+    return 20
   end
   
 end

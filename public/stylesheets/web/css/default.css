@@ -51,7 +51,7 @@ fieldset    { border: 0 !important; }
 /* -- Basics layout -- */
 #view    { text-align: left; }
 #head    { font-size: 1.2em; position: relative; z-index: 10; }
-#content { font-size: 1.2em; position: relative; z-index: 11; }
+#content { font-size: 1.2em; position: relative; z-index: 1; }
 #foot    { font-size: 1.2em; z-index: 1; }
 
 /* -- Main classes -- */
@@ -340,4 +340,10 @@ a.overlaid,
 
   * html .shareBox .head              { background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/sharebox/bg-top.png', sizingMethod='crop'); }
   * html .shareBox .bottom            { background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/sharebox/bg-bottom.png', sizingMethod='crop'); }
-  * html .shareBox .content           { background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/sharebox/bg-content.png', sizingMethod='crop'); }      
+  * html .shareBox .content           { background:none;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/sharebox/bg-content.png', sizingMethod='crop'); }
+
+
+  /* font resize */
+  .font_1 { font-size: 1.0em !important; }
+  .font_2 { font-size: 1.2em !important; }
+  .font_3 { font-size: 1.4em !important; }            

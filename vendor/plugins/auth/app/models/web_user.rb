@@ -42,6 +42,7 @@ class WebUser < ActiveRecord::Base
   def can_create_comment?(article)
     return true if self.is_admin?
     return true if self.author == article.author
+    return false if self.expire_date.blank?
     return ((self.expire_date >= Time.now.to_date) && self.confirmed?)
     return false
   end

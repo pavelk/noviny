@@ -151,6 +151,7 @@
 			    </td>
 			</tr>
 				<% end %>
+			<% if controller.action_name != "signup" %>		
 			<tr><td>
 			  <label for="newuser_payed">Zaplacen účet?:</label>
 				</td>
@@ -175,5 +176,6 @@
 					 <% end %>
 				</td>
 			</tr>
+			<% end %>
 		</table>
 	</fieldset>

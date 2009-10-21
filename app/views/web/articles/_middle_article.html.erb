@@ -1,7 +1,7 @@
 <div class="item noImg">
     <div class="self">
       <p class="info"><%= middle_article.section.name unless middle_article.section.blank? %> <span><%= middle_article.publish_date.to_s(:news_time) %></span></p>
-      <h3 class="head"><%= link_to middle_article.name, articles_path(:action=>"detail",:id=>middle_article.id) %></h3>
+      <h3 class="head"><%= link_to article_name(middle_article), articles_path(:action=>"detail",:id=>middle_article.id) %></h3>
       <p class="perex"><%=th middle_article.perex %></p>
     </div> <!-- /.self -->
 </div> <!-- /.item -->

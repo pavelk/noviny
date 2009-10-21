@@ -1,7 +1,7 @@
 <%= flash[:error] %>
 <%= error_messages_for 'newuser' %>
 <div style="width:500px;">
-	<% form_for(:newuser,@newuser,:url=>{:action => 'signup'}) do |f| -%>
+	<% form_for(:newuser,@newuser,:url=>{:action => 'signup'}, :html=>{:multipart => true}) do |f| -%>
 		<%= render :partial => "auth/user",:locals=>{:f=>f} %>
 		<%= f.submit "Regitrovat" %>
 	<% end -%>
