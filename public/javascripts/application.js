@@ -203,7 +203,7 @@ function insertEditor( sourcePath, width, height )
 
 function saveEditor(val)
 {
-	//alert(val);
+	alert('Fotka byla ulozena');
 	$("#flashImageHidden").html("<input type='hidden' id='flashimage_id' name='flashimage_id' value='"+ val +"'>");
 }
 
@@ -288,7 +288,7 @@ function editRecord( obj, controller )
     $.ajax({
       type: 'GET',
       dataType: 'script',
-      url: '/admin/'+ controller +'/' + $(obj).parent().parent().attr("id").split("_")[1] + "/edit",
+      url: '/admin/'+ controller +'/' + $(obj).attr("id").split("_")[1] + "/edit",
       error: function(msg) { alert("Chyba v přenosu dat."); },
       success: function(data, status) {
         $(".recordHeader a").bind("click", function() { return cancelArticle() }); 

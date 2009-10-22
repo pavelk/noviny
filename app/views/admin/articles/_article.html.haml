@@ -9,7 +9,7 @@
   %td
     .cropLine= truncate(article.perex, :length => 100, :omission => "&hellip;")   
   %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :class => "edit_article", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :id => "edititem2_#{article.id}", :class => "edit_article", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat', :onclick => "deleteRecord($(this), '#{@c_name}', 'Article' ); return false"
     
     

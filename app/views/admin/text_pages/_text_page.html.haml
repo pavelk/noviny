@@ -1,9 +1,9 @@
 %tr{ :id => "textpage_#{text_page.id}" }
   %td{ :class => "listItem l1"}
-    .cropLine= link_to text_page.title, '#', :title => text_page.title, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    .cropLine= link_to text_page.title, '#', :title => text_page.title, :id => "edititem1_#{text_page.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td
     .cropLine= text_page.name
   %td= text_page.updated_at.strftime('%d/%m/%y')
   %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :id => "edititem2_#{text_page.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'

@@ -1,10 +1,10 @@
 %tr{ :id => "section_#{section.id}" }
   %td{ :class => "listItem l#{section.level + 1}"}
-    .cropLine= link_to section.name, '#', :title => section.name, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    .cropLine= link_to section.name, '#', :title => section.name, :id => "edititem1_#{section.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td= section.updated_at.strftime('%d/%m/%y') 
   %td= section.author.full_name
   %td
     .cropLine= truncate(section.description, :length => 100, :omission => "&hellip;")
   %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
+    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :id => "edititem2_#{section.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
     = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'

@@ -88,7 +88,7 @@ class Article < ActiveRecord::Base
                                            
     ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = 1 
                                            WHERE priority_section > 1
-                                           && publish_date < today()"
+                                           && publish_date < current_date()"
                                                                                   
     end                                       
   end
