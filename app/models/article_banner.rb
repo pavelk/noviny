@@ -6,4 +6,6 @@ class ArticleBanner < ActiveRecord::Base
   has_many :articlebanner_sections
   has_many :sections, :through => :articlebanner_sections
   
+  has_many :flashphoto_banners
+  
 end

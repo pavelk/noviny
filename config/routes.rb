@@ -70,7 +70,7 @@ ActionController::Routing::Routes.draw do |map|
   ###
   
   map.add_flashimage_headliner 'admin/headliner_boxes/add_flash_image', :controller => 'admin/headliner_boxes', :action => 'add_flash_image'
-  
+  map.add_flashimage_banner 'admin/article_banners/add_flash_image', :controller => 'admin/article_banners', :action => 'add_flash_image'
   ###
   #old assets
   #map.add_img 'admin/articles/add_img/:art/:pic', :controller => 'admin/articles', :action => 'add_img'

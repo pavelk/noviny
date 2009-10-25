@@ -53,7 +53,7 @@ $(function()
   });  
     
   $("#viewRecord").hide();
-  
+  	
   $("input[class='hideSearch']").livequery(function() {
     $(this).hide();
   });
@@ -182,14 +182,14 @@ $(function()
   
 });
 
-function insertEditor( sourcePath, width, height )
+function insertEditor( path, sourcePath, width, height )
 {
       //alert('funkce');
 	  var flashvars = {};
       flashvars.input_image = sourcePath;
       flashvars.target_width = width;
       flashvars.target_height = height;
-      flashvars.target_url = "/admin/headliner_boxes/add_flash_image";
+      flashvars.target_url = "/admin/" + path + "/add_flash_image";
       flashvars.exit_function = "closeEditor";
 	  flashvars.save_function = "saveEditor";	
       var params = {};
@@ -209,7 +209,7 @@ function saveEditor(val)
 
 function closeEditor()
 {
-	alert('close');
+	$("#flashDiv").hide();
 }
 
 //delete all records
@@ -576,20 +576,16 @@ function getVersions( article )
   return false;
 }
 
+function addFlashTool(path)
+{
+	var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
+	insertEditor( path, sourcePath, 440, 255 );
+	$('#flashDiv').css('width:540px;height:355px');
+}
+
 function dragAndDrop()
 {  
-  //add attachments / edit
-  /*
-  $(".dnd.imgr").droppable({
-    accept: "div[id^='picture_']",
-  	drop: function(ev, ui) {
-      if($("form").attr("id").split("_")[0] == 'edit')
-      {
-  	    addFileToArticle( $(this).attr("id").split("_")[1], $(this).attr("id").split("_")[2] ,ui.draggable.attr("id").split("_")[1], 'add_img' );
-  	  }  
-  	  }
-  });
-  */
+
   $(".dnd.imgrs.headliner").droppable({
     accept: "div[id^='picture_']",
   	drop: function(ev, ui) {
@@ -598,9 +594,7 @@ function dragAndDrop()
   	  $("div[id='headliner_box_picture_id'] > *").remove();
   	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
   	  $("fieldset").append("<input type='hidden' id='headliner_box_picture_id' name='headliner_box[picture_id]' value='"+ id +"'>");
-  	  var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
-	  insertEditor( sourcePath, 440, 255 );
-	  $('#flashDiv').css('width:540px;height:355px');
+	  $("#flashImageLink").html("<br/><a href='#' onclick='addFlashTool(\"headliner_boxes\"); return false'>Upravit orezani obrazku</a>");
   	}
   });
   
@@ -611,10 +605,13 @@ function dragAndDrop()
   	  $("div[class='addedFile forImgr'] > *").remove();
   	  $("div[id='article_banner_picture_id'] > *").remove();
   	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
-  	  $("fieldset").append("<input type='hidden' id='article_banner_picture_id' name='article_banner[picture_id]' value='"+ id +"'>");  	  
-  	}
+  	  $("fieldset").append("<input type='hidden' id='article_banner_picture_id' name='article_banner[picture_id]' value='"+ id +"'>");
+	  $("#flashImageLink").html("<br/><a href='#' onclick='addFlashTool(\"article_banners\"); return false'>Upravit orezani obrazku</a>");	
+	}
   });
   
+
+	//add attachments / edit
   if($("form").attr("id").split("_")[0] == 'edit')
   {
     $(".dnd.imgr").droppable({

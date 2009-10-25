@@ -8,7 +8,10 @@
       %table
         - @users.each do |user|
           %tr
-            %td= link_to user.user_name, object_url(user)
-            %td= link_to 'editovat', edit_object_url(user)
-            %td= link_to 'odstranit', object_url(user), :confirm => 'Jste si jistí?', :method => :delete
--#=link_to 'New user', new_object_url
+            -#%td= link_to user.user_name, object_url(user)
+            %td= user.user_name
+            %td= link_to 'editovat', edit_object_url(user), :id => 'showUsersEdit'
+            -#%td= link_to 'odstranit', object_url(user), :confirm => 'Jste si jistí?', :method => :delete
+%br
+%br
+=link_to 'Novy uzivatel', new_object_url, :id => 'showUsersNew'

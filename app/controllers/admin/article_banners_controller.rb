@@ -2,8 +2,8 @@ class Admin::ArticleBannersController < Admin::AdminController
   
   #create.before :set_values
   #update.before :set_values
-  create.after :process_related, :set_values, :process_sections
-  update.after :process_related, :set_values, :process_sections
+  create.after :process_related, :set_values, :process_sections, :add_flash_photo
+  update.after :process_related, :set_values, :process_sections, :add_flash_photo
   
   #index.response do |wants|
   #  wants.js
@@ -15,6 +15,14 @@ class Admin::ArticleBannersController < Admin::AdminController
       @article_banners = ArticleBanner.all
     end 
     render 'shared/admin/index.js.erb'
+  end
+  
+  def add_flash_image
+    @fp = FlashphotoBanner.new(:photo => params[:Filedata])
+    @fp.save!
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
   end
   
   new_action.response do |wants|
@@ -34,6 +42,14 @@ class Admin::ArticleBannersController < Admin::AdminController
   end
   
   private 
+  
+    def add_flash_photo
+      #debugger
+      if(params[:flashimage_id])
+        @fi = FlashphotoBanner.find(params[:flashimage_id])
+        @article_banner.flashphoto_headliners << @fi
+      end  
+    end
   
     def set_values
       #debugger

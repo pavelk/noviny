@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091021192828) do
+ActiveRecord::Schema.define(:version => 20091025182736) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -260,6 +260,18 @@ ActiveRecord::Schema.define(:version => 20091021192828) do
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
   add_index "dailyquestions", ["author_yes_id"], :name => "dailyquestions_author_yes_id_index"
 
+  create_table "flashphoto_banners", :force => true do |t|
+    t.integer  "article_banner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  add_index "flashphoto_banners", ["article_banner_id"], :name => "flashphoto_banners_article_banner_id_index"
+
   create_table "flashphoto_headliners", :force => true do |t|
     t.integer  "headliner_box_id"
     t.datetime "created_at"
@@ -377,15 +389,17 @@ ActiveRecord::Schema.define(:version => 20091021192828) do
 
   create_table "question_votes", :force => true do |t|
     t.integer  "question_id"
-    t.integer  "user_id"
+    t.integer  "web_user_id"
     t.boolean  "vote_value"
     t.datetime "created_at"
+    t.string   "ipaddr",      :limit => 15
   end
 
   add_index "question_votes", ["created_at"], :name => "question_votes_created_at_index"
+  add_index "question_votes", ["ipaddr"], :name => "index_question_votes_on_ipaddr"
   add_index "question_votes", ["question_id"], :name => "question_votes_question_id_index"
-  add_index "question_votes", ["user_id"], :name => "question_votes_user_id_index"
   add_index "question_votes", ["vote_value"], :name => "question_votes_vote_value_index"
+  add_index "question_votes", ["web_user_id"], :name => "question_votes_user_id_index"
 
   create_table "relationships", :force => true do |t|
     t.integer  "article_id"

@@ -1,11 +1,10 @@
-%h1 Editing user
-
-= error_messages_for :user
-
-- form_for(:user, :url => object_url, :html => { :method => :put }) do |f|
-  = render :partial => "form", :locals => { :f => f }
-  %p= submit_tag "Update"
-  
-= link_to 'Show', object_url
-|
-= link_to 'Back', collection_url
+.recordHeader
+  %h2 Editovat uzivatele
+.recordPath
+.recordEdit  
+  - form_for(:user, :url => object_url, :html => { :method => :put }) do |f|
+    = f.error_messages
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %p= submit_tag "Upravit"
+    = link_to 'Zpět', collection_url
