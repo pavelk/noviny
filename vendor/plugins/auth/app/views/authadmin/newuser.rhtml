@@ -1,5 +1,5 @@
 <div class="Message"><%= error_messages_for 'newuser' %></div>
- <% form_for(:newuser,@newuser,:url=>{:action => 'crateuser'}, :html=>{:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
+ <% form_for(:newuser,@newuser,:url=>{:action => 'createuser'}, :html=>{:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
 
 <%= render :partial => "auth/user",:locals=>{:admin=>true,:f=>f} %>
 <%= hidden_field_tag "author_id", @author ? @author.id : nil -%>

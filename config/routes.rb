@@ -1,6 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  
-
 
   #Added by Jan Uhlar
   map.home "home", :controller=>"web/sections"

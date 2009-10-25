@@ -64,7 +64,7 @@ class Article < ActiveRecord::Base
     set_property :enable_star => true
     set_property :min_prefix_len => 3
   end
-
+ 
   #named_scope :by_publish_date, lambda { {:conditions => ["publish_date <= ?", Time.now.utc]} }
   named_scope :by_publish_date,  :conditions => ["publish_date <= ?", Time.now.utc]
   
@@ -72,25 +72,8 @@ class Article < ActiveRecord::Base
   
   
   before_save do |a|
-    if(a.article_sections.size > 0)
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section - 1 
-                                           WHERE priority_section <= #{a.priority_section} 
-                                           && priority_section > 1 
-                                           && publish_date LIKE '%#{a.publish_date.strftime("%Y-%m-%d").to_s}%'
-                                           && id <> #{a.id}
-                                           && id IN ( SELECT article_id FROM article_sections WHERE section_id IN (#{a.article_sections.collect {|f| f.section_id }.join(',')}) )"                                      
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home - 1 
-                                           WHERE priority_home <= #{a.priority_home} 
-                                           && priority_home > 1 
-                                           && publish_date LIKE '%#{a.publish_date.strftime("%Y-%m-%d").to_s}%'
-                                           && id <> #{a.id} 
-                                           && id IN ( SELECT article_id FROM article_sections WHERE section_id = 9999 )"
-                                           
-    ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = 1 
-                                           WHERE priority_section > 1
-                                           && publish_date < current_date()"
-                                                                                  
-    end                                       
+    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_section = priority_section + 1 WHERE priority_section >= #{a.priority_section} && priority_section <= 9" 
+    #ActiveRecord::Base.connection.execute "UPDATE articles SET priority_home = priority_home + 1 WHERE priority_home >= #{a.priority_home} && priority_home <= 9" 
   end
   
   #Added by Jan Uhlar
@@ -131,7 +114,7 @@ class Article < ActiveRecord::Base
       op += " AND articles.id NOT IN (#{options[:ignore_arr].join(",")})"
     end
     ops = find(:all,
-               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,Time.now,arr,true,true],
+               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,Time.now,arr,true,false],
                :order=>"priority_home DESC, publish_date DESC",
                :include=>[:content_type])
     return ops if ops.length >= length_limit
@@ -148,7 +131,7 @@ class Article < ActiveRecord::Base
     op += "article_sections.section_id = '#{section_id}' AND " if section_id
     op += "articles.id != '#{ign_id}' AND " if ign_id
     Article.find(:all,
-                 :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,true],
+                 :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
                  :order=>"publish_date DESC",
                  :group=>"articles.id",
                  :joins=>[:article_sections],
@@ -159,7 +142,7 @@ class Article < ActiveRecord::Base
   #Conditions is publish_date <= Time.now!
   def self.all_by_date(date, page = 1, per_page = 10)
     Article.paginate(:all,
-                     :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,true,true],
+                     :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,true,false],
                      :page=>page,
                      :per_page=>per_page,
                      :order=>"publish_date DESC")
@@ -172,7 +155,7 @@ class Article < ActiveRecord::Base
     arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
     arr.each do |a|
       article = Article.find(:first,
-                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,true],
+                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,false],
                                  :select=>"articles.*,COUNT(article_views.article_id) as c",
                                  :group=>"articles.id",
                                  :order=>"c DESC",
@@ -198,7 +181,7 @@ class Article < ActiveRecord::Base
   #Returns all today news from all sections except NAZORY and HP 
   def self.today_top_news(limit = 10)
     find(:all,
-         :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,true],
+         :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
          :order=>"publish_date DESC, priority_section DESC",
          :include=>[:content_type],
          :limit=>limit)
@@ -208,7 +191,7 @@ class Article < ActiveRecord::Base
   def self.today_top_opinions(section_id,limit = 10)
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     find(:all,
-         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,true],
+         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
          :order=>"publish_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
@@ -233,7 +216,7 @@ class Article < ActiveRecord::Base
       op += " AND articles.content_type_id NOT IN (#{options[:ignore_content_type].join(",")})"
     end
     find(:all,
-         :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op} AND articles.approved = ? AND articles.visibility = ?",options[:section_id],options[:ignore_arr],Time.now,0,true,true],
+         :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op} AND articles.approved = ? AND articles.visibility = ?",options[:section_id],options[:ignore_arr],Time.now,0,true,false],
          :order=>"publish_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
@@ -244,7 +227,7 @@ class Article < ActiveRecord::Base
   #limited by param 'limit'
   def self.yesterday_from_section(section_id,limit = 4)
     find(:all,
-         :conditions=>["article_sections.section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0,true,true],
+         :conditions=>["article_sections.section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0,true,false],
          :order=>"priority_section DESC, publish_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
@@ -254,7 +237,7 @@ class Article < ActiveRecord::Base
   #Returns paginated articles from author given by 'author_id'
   def self.paginate_from_author(author_id, page = 1, per_page = 10)
     paginate(:all,
-             :conditions=>["author_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",author_id,Time.now,true,true],
+             :conditions=>["author_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",author_id,Time.now,true,false],
              :order=>"publish_date DESC",
              :page=>page,
              :per_page=>per_page)
@@ -263,7 +246,7 @@ class Article < ActiveRecord::Base
   #Returns paginated articles from tag given by 'tag_id'
   def self.paginate_from_tag(tag_id, page = 1, per_page = 10)
     paginate(:all,
-             :conditions=>["taggings.tag_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,true],
+             :conditions=>["taggings.tag_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
              :order=>"publish_date DESC",
              :joins=>"INNER JOIN taggings ON taggings.taggable_id = articles.id",
              :page=>page,
@@ -272,7 +255,7 @@ class Article < ActiveRecord::Base
   
   def self.today_by_priority_home
     find(:all,
-         :conditions=>["publish_date >= ? AND publish_date <= ? AND priority_home > ? AND articles.approved = ? AND articles.visibility = ?",Time.now.beginning_of_day,Time.now,0,true,true],
+         :conditions=>["publish_date >= ? AND publish_date <= ? AND priority_home > ? AND articles.approved = ? AND articles.visibility = ?",Time.now.beginning_of_day,Time.now,0,true,false],
          :order=>"priority_home DESC")
   end
   
@@ -340,7 +323,7 @@ class Article < ActiveRecord::Base
      # look at section_id NULL
      boxes += Article.r_boxes(nil,beg_date,limit_count) 
      return boxes if boxes.length >= min_limit_count
-
+ 
      return boxes if limit_back == 0
      limit_back -= 1
      beg_date = (beg_date - 1.days).to_date

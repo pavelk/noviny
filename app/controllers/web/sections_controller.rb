@@ -1,6 +1,34 @@
 class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
+  def test_paysec
+    #Require The Library
+    
+    require "soap/wsdlDriver"
+    require 'rubygems'
+    require "soap/rpc/driver"
+    require 'http-access2'
+    XSD::Charset.encoding = 'UTF8'
+    
+    client = SOAP::RPC::Driver.new("https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl","http://schemas.mapi.paysec.cz/2008/02")
+    client.options[ "protocol.http.ssl_config.verify_mode" ] = OpenSSL::SSL::VERIFY_NONE
+    #client.soapaction = "http://schemas.mapi.paysec.cz/2008/02/ShoppingService/VerifyTransactionIsPaid"
+    client.add_method("VerifyTransactionIsPaid", "userName","password","merchantOrderId","amount")
+    rate =  client.VerifyTransactionIsPaid("denikreferendum","MapForYou04","asasasasdasdasd","22.0")
+    puts "Rate: #{rate}"
+ return
+    #Connections
+    wsdl_url = "https://mapi.paysec.cz/?wsdl"
+    test_wsdl_url = "https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl"
+    driver = SOAP::WSDLDriverFactory.new(test_wsdl_url).create_rpc_driver
+    #proxy.options['protocol.http.ssl_config.ca_file'] = "#{RAILS_ROOT}/public/cert.cer"
+    #proxy.options["protocol.http.ssl_config.verify_mode"] = OpenSSL::SSL::VERIFY_NONE
+     
+    #Call API Method and Get Exchange Rate
+    result_code = driver.VerifyTransactionIsPaid("denikreferendum","MapForYou04","eur",22.0)
+    puts "Code: #{result_code}" 
+  end
+  
   def index
     redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
     set_common_variables(Section::HOME_SECTION_ID)
@@ -31,7 +59,7 @@ class Web::SectionsController < Web::WebController
     @section = @subsection.parent
     set_default_variables
     @articles = Article.paginate(:all,
-                             :conditions=>["subsection_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,true],
+                             :conditions=>["subsection_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
                              :order=>"publish_date DESC",
                              :page=>params[:page],
                              :per_page=>10)
@@ -66,7 +94,7 @@ protected
     end
     set_common_variables(@section.id)
   end
-
+ 
   def set_opinions_variables
     if Web::Calendar.week? && Web::Calendar.sunday?
       tfrom_date = Time.now - 1.days
@@ -95,7 +123,7 @@ protected
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
          
     @saturday_articles = Article.find(:all,
-                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,true],
+                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
                                       :order=>"publish_date DESC",
                                       :include=>[:content_type])
     if Web::Calendar.saturday? && @sunday > Time.now
@@ -103,7 +131,7 @@ protected
       return
     end
     @sunday_articles = Article.find(:all,
-                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,true],
+                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
                                     :order=>"publish_date DESC",
                                     :include=>[:content_type])                                  
   end
@@ -111,7 +139,7 @@ protected
   def set_non_opinion_variables(section_id)
     per_page = 10
     @articles = Article.paginate(:all,
-                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now,true,true],
+                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now,true,false],
                                  :order=>"priority_section DESC, publish_date DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],

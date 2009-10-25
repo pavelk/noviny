@@ -1,7 +1,5 @@
 class Web::ArticlesController < Web::WebController
-
   layout "web/gallery", :except=>[:vote]
-
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
   
   def add_comment
