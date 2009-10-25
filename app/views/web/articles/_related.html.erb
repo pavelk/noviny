@@ -1,7 +1,7 @@
 <% if !@rel_articles.blank? %>
 <ul class="list item">
 		<% @rel_articles.each do |article| -%>
-			<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
+			<li><%= link_to article_name(article), articles_path(:action=>"detail",:id=>article.id) %></li>
 		<% end -%>
 </ul>
 <% else %>

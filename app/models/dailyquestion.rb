@@ -1,6 +1,6 @@
 class Dailyquestion < ActiveRecord::Base
   
-  has_many :question_votes
+  has_many :question_votes, :foreign_key=>"question_id"
   
   has_many :dailyquestion_pictures
   has_many :pictures, :through => :dailyquestion_pictures
@@ -16,6 +16,10 @@ class Dailyquestion < ActiveRecord::Base
   def self.first_by_date(date = Time.now.to_date)
     find(:first,
          :conditions=>["publish_date = ?",date])
+  end
+    
+  def can_vote?
+    return (self.publish_date >= (Time.now-7.days).to_date) && (self.publish_date <= Time.now.to_date) 
   end
     
 end

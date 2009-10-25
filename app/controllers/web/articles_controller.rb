@@ -1,5 +1,5 @@
 class Web::ArticlesController < Web::WebController
-  layout "web/gallery"
+  layout "web/gallery", :except=>[:vote]
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
   
   def add_comment
@@ -55,11 +55,54 @@ class Web::ArticlesController < Web::WebController
     render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
   end
   
+  def vote
+    if request.xhr?
+      @question = Dailyquestion.find(:first,:conditions=>["id = ? AND publish_date BETWEEN ? AND ?",params[:question_id],Time.now-7.days,Time.now])
+      render :nothing=>true and return unless @question
+      @vote_value = params[:vote_value].to_i != 0
+      qvs = QuestionVote.count(:conditions=>{:question_id=>@question.id,:ipaddr=>request.remote_ip,:created_at=>Time.now.beginning_of_day..Time.now.end_of_day})
+      if qvs >= 50
+        @message = "Již jste dnes hlasoval 50x"
+        render :update do |page|
+          page.replace_html "message-#{@question.id}", @message
+        end
+      else
+        qv = QuestionVote.new(:question_id=>@question.id,:vote_value=>@vote_value)
+        qv.ipaddr = request.remote_ip
+        qv.web_user_id = @web_user.id if @web_user
+        qv.save
+        @question.question_votes << qv
+        
+        whole_votes = QuestionVote.count(:conditions=>{:question_id=>@question.id})
+        if whole_votes > 0
+          @y_votes = (QuestionVote.count(:conditions=>{:question_id=>@question.id,:vote_value=>true}).to_f/whole_votes.to_f) * 100
+        else
+          @y_votes = 0
+        end
+        @n_votes = 100 - @y_votes
+        @message = "Hlasoval jste #{(@vote_value == true) ? 'Ano' : 'Ne'} jako #{@question.question_votes.count} hlas"
+        render :update do |page|
+          page.replace_html "question-#{@question.id}", :partial=>"web/articles/question_vote"
+        end
+      end
+    end
+    return
+  end
+  
   def question
     @question = Dailyquestion.find(params[:id])
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no
+    whole_votes = QuestionVote.count(:conditions=>{:question_id=>@question.id})
+    if whole_votes > 0
+      @y_votes = (QuestionVote.count(:conditions=>{:question_id=>@question.id,:vote_value=>true}).to_f/whole_votes.to_f) * 100
+      @n_votes = 100 - @y_votes
+    else
+      @y_votes = 0
+      @n_votes = 0
+    end
+    
     add_breadcrumb "Otázka", ""
   end
   

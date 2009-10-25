@@ -52,8 +52,9 @@
 	              <div class="box">
 	                <h2 class="h line">Referendum</h2>
 	                <ul>
-	                  <li><a href="">TODO</a></li>
-	                  <li><a href="">TODO</a></li>
+	                	<% TextPage.all.each do |tp| %>
+							 <li><%= link_to tp.name, :controller=>"/web/text_pages",:action=>"show", :id=>tp.id %></li>
+						<% end %>
 	                </ul>
 	              </div> <!-- /.box -->
 	            </div> <!-- /.bSelf -->

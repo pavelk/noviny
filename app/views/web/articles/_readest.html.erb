@@ -1,8 +1,11 @@
 <div class="item itemSmall noImg">
   <div class="self">
-    <p class="info"><%= readest.section.name if readest.section %> <%= readest.content_type.name if readest.content_type %></p>
+    <p class="info">
+    	<%= readest.section.name if readest.section %>:
+		<%= readest.content_type.name if readest.content_type %>
+	</p>
     <h3 class="head">
-    	<%= link_to(readest.name, articles_path(:action=>"detail",:id=>readest.id)) %>
+    	<%= link_to(article_name(readest), articles_path(:action=>"detail",:id=>readest.id)) %>
 	</h3>
   </div> <!-- /.self -->
 </div> <!-- /.item -->

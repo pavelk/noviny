@@ -16,7 +16,7 @@
 
      
      <div class="col2 mainImage">
-       <%= link_to(image_tag(@question_image.data.url(:hp_main)), "TODO") if @question_image %>
+       <%= image_tag(@question_image.data.url(:hp_main)) if @question_image %>
 	   <p class="info"><%= @question_image.name %></p>
      </div> <!-- /.col2 -->
 	 
@@ -29,7 +29,7 @@
        </div> <!-- /.box -->
        
 		<div class="box">
-          <h3 class="h line">Starsi referenda</h3>
+          <h3 class="h line">Starší referenda</h3>
            <div class="in">
 			 <% (1..5).each do |day| %>
 			 <div class="item itemSmall noImg">
@@ -84,20 +84,8 @@
                   <h3 class="h">
                   	<strong>Otázka:</strong> <%= @question.question_text %>
 				  </h3>
-                  <div class="in">
-                    <div class="answer">
-                      <div class="label">Ano</div>                      
-                      <div class="bar">
-                        <span class="in" style="width: 100%;"><span class="value">TODO 100%</span></span>
-                      </div> <!-- /.bar -->
-                    </div> <!-- /.answer -->
-                    <div class="answer">
-                      <div class="label">Ne</div>                      
-                      <div class="bar even">
-                        <span class="in" style="width: 36%;"><span class="value">TODO 36%</span></span>
-                      </div> <!-- /.bar -->
-                    </div> <!-- /.answer -->
-                    <p> TODO Hlasoval jste ‘Ano’ jako 1.589 hlas</p>
+                  <div class="in" id="question-<%=@question.id-%>">
+                    <%= render :partial=>"web/articles/question_vote" %>
                   </div> <!-- /.in -->
                 </div> <!-- /.box -->
                 
