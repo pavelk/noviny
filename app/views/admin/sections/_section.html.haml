@@ -2,7 +2,7 @@
   %td{ :class => "listItem l#{section.level + 1}"}
     .cropLine= link_to section.name, '#', :title => section.name, :id => "edititem1_#{section.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td= section.updated_at.strftime('%d/%m/%y') 
-  %td= section.author.full_name
+  -#%td= section.author.full_name rescue nil
   %td
     .cropLine= truncate(section.description, :length => 100, :omission => "&hellip;")
   %td{ :class => 'center' }
