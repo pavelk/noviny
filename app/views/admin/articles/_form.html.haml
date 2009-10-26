@@ -35,7 +35,8 @@
   = f.text_area :poznamka, :class => "smallText countable count-#{@content_type[3].split('/')[0]}-#{@content_type[3].split('/')[1]}"
   %br
   %br
-- if @content_type[4] == 1
+-#- if @content_type[4] == 1
+%div{ :id => "video-visible" }
   = f.label :videodata, 'Kod pro YouTube:'
   %br
   = f.text_area :videodata, :class => "smallText"

@@ -21,7 +21,10 @@ function checkBoxes()
 //onload
 $(function()
 {
-  
+	$("#video-visible").livequery(function() {
+	    $(this).hide();
+	 });
+	
 	//alert($("#TB_ajaxContent").html());
 	//$("#TB_ajaxContent").html('pokus')
 

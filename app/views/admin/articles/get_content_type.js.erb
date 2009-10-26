@@ -49,3 +49,12 @@ $("div[id='poznamka-visible']").each(function() {
             })
 	}
 });
+
+$("div[id='video-visible']").each(function() {
+  if("<%= @content_type[4] %>" == '0')
+	{
+		$(this).hide();
+	}else{
+		$(this).show();
+	}
+});
