@@ -582,8 +582,15 @@ function getVersions( article )
 function addFlashTool(path)
 {
 	var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
-	insertEditor( path, sourcePath, 440, 255 );
-	$('#flashDiv').css('width:540px;height:355px');
+	if(path == 'headliner_boxes')
+	{
+	  insertEditor( path, sourcePath, 440, 255 );
+	  $('#flashDiv').css('width:540px;height:355px');		
+	}else{
+	  insertEditor( path, sourcePath, 140, 90 );
+	  $('#flashDiv').css('width:240px;height:190px');	
+	}
+
 }
 
 function dragAndDrop()

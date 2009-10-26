@@ -3,6 +3,11 @@
   <div class="img">
   	<% if @headliner_box.article.content_type_id == ContentType::VIDEO %>
 		<%= @headliner_box.article.videodata %>
+	<% elsif (fh = FlashphotoHeadliner.find_by_headliner_box_id(@headliner_box.id)) %>	
+		<%= link_to(image_tag(fh.photo.url), articles_path(:action=>"detail",:id=>@headliner_box.article.id)) %>
+		<div class="caption">
+	      <span><%= @headliner_box.picture_title %></span>
+	    </div> <!-- /.caption -->
 	<% else %>
 		<%= link_to(main_image_tag(@headliner_box.picture.data.url(:hp_main)), articles_path(:action=>"detail",:id=>@headliner_box.article.id)) %>
 		<div class="caption">

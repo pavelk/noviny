@@ -94,7 +94,7 @@ protected
     end
     set_common_variables(@section.id)
   end
- 
+
   def set_opinions_variables
     if Web::Calendar.week? && Web::Calendar.sunday?
       tfrom_date = Time.now - 1.days

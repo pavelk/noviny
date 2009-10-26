@@ -1,3 +1,4 @@
+require "date"
 class Web::ArticlesController < Web::WebController
   layout "web/gallery", :except=>[:vote]
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
@@ -36,7 +37,8 @@ class Web::ArticlesController < Web::WebController
     @related = @article.relarticles + @article.inverse_relarticles
     @newest = Article.newest(3,@article.id)
     @section = @article.section
-    if (cookies[:section_id] && @section && @section.id != cookies[:section_id].to_i)
+    sections = @article.sections
+    if (cookies[:section_id] && sections.include?(Section.find(cookies[:section_id])))
       @section = Section.find(cookies[:section_id])
     end
     @author = @article.author
@@ -57,10 +59,24 @@ class Web::ArticlesController < Web::WebController
   
   def vote
     if request.xhr?
+      remote_ip = request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
       @question = Dailyquestion.find(:first,:conditions=>["id = ? AND publish_date BETWEEN ? AND ?",params[:question_id],Time.now-7.days,Time.now])
       render :nothing=>true and return unless @question
+      if cookies["question_id_#{Time.now.to_date}"] &&  cookies["question_id_#{Time.now.to_date}"].split(';').include?(@question.id.to_s)
+        render :nothing=>true and return
+      elsif !cookies["question_id_#{Time.now.to_date}"].blank?
+        cookies["question_id_#{Time.now.to_date}"] = {
+          :value => cookies["question_id_#{Time.now.to_date}"] + ";#{@question.id}",
+          :expires => 1.days.from_now
+        }
+      else
+        cookies["question_id_#{Time.now.to_date}"] = {
+          :value => "#{@question.id}",
+          :expires => 1.days.from_now
+        }
+      end
       @vote_value = params[:vote_value].to_i != 0
-      qvs = QuestionVote.count(:conditions=>{:question_id=>@question.id,:ipaddr=>request.remote_ip,:created_at=>Time.now.beginning_of_day..Time.now.end_of_day})
+      qvs = QuestionVote.count(:conditions=>{:question_id=>@question.id,:ipaddr=>remote_ip,:created_at=>Time.now.beginning_of_day..Time.now.end_of_day})
       if qvs >= 50
         @message = "Již jste dnes hlasoval 50x"
         render :update do |page|
@@ -68,7 +84,7 @@ class Web::ArticlesController < Web::WebController
         end
       else
         qv = QuestionVote.new(:question_id=>@question.id,:vote_value=>@vote_value)
-        qv.ipaddr = request.remote_ip
+        qv.ipaddr = remote_ip
         qv.web_user_id = @web_user.id if @web_user
         qv.save
         @question.question_votes << qv

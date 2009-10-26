@@ -205,6 +205,7 @@ class Article < ActiveRecord::Base
          :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
          :order=>"publish_date DESC, priority_section DESC",
          :include=>[:content_type],
+         :group=>"articles.id",
          :limit=>limit)
   end
   
@@ -216,6 +217,7 @@ class Article < ActiveRecord::Base
          :order=>"publish_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
+         :group=>"articles.id",
          :limit=>limit)
   end
   
@@ -326,7 +328,8 @@ class Article < ActiveRecord::Base
                        :conditions=>[op,section_id,beg_date],
                        :joins=>[:articlebanner_sections],
                        :include=>[:article,:picture],
-                       :limit=>limit_count)
+                       :limit=>limit_count,
+                       :order=>"publish_date DESC, updated_at DESC")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)

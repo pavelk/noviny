@@ -227,9 +227,9 @@ a.overlaid,
   
   
   /* Box with images captions */
-  #content .box .bImg                   { position: relative; float: left; width: 140px; margin: 0 0 3px; clear: left; overflow: hidden; height: 100%; }
-  #content .box .bImg img               { float: left; }
-  #content .box .bImg .caption          { position: absolute; width: 100%; bottom: 0; left: 0; color: #fff; font-size: .9em; background-color: #000; }
+  #content .box .bImg { float: left; width: 140px; margin-top: 3px; clear: left;overflow: hidden; height: 100%; }
+  #content .box .bImg img { float: left; }
+  #content .box .bImg .caption { clear: both; width: 100%; color: #fff; font-size: .9em; background-color: #000; }
   #content .box .bImg .caption span     { display: block; padding: 7px 10px; height: 30px; }
   #content .box .bImg .caption a        { display: block; width: 100%; padding: 7px 0; height: 30px; color: #fff; background-color: #000; }
   #content .box .bImg .caption a:hover  { text-decoration: none !important; }

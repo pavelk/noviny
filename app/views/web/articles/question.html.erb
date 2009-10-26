@@ -53,7 +53,7 @@
 
                     <div class="item itemSmallImage itemQuiz">
                       <div class="img">
-                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_yes.id)) %>
+                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_yes.id)) if @author_yes.pictures.first %>
                       </div> <!-- /.img -->
                       
                       <div class="self">
@@ -68,7 +68,7 @@
                   <div class="col2">
                     <div class="item itemSmallImage itemQuiz">
                       <div class="img">
-                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_no.id)) %>
+                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)),articles_path(:action=>:author_info,:id=>@author_no.id)) if @author_no.pictures.first %>
                       </div> <!-- /.img -->
                       
                       <div class="self">

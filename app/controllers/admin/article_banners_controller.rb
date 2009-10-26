@@ -47,7 +47,7 @@ class Admin::ArticleBannersController < Admin::AdminController
       #debugger
       if(params[:flashimage_id])
         @fi = FlashphotoBanner.find(params[:flashimage_id])
-        @article_banner.flashphoto_headliners << @fi
+        @article_banner.flashphoto_banners << @fi
       end  
     end
   

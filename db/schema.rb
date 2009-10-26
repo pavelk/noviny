@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091025182736) do
+ActiveRecord::Schema.define(:version => 20091026160604) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(:version => 20091025182736) do
     t.integer  "priority_section", :default => 1,     :null => false
     t.boolean  "visibility",       :default => false, :null => false
     t.integer  "author_id"
-    t.string   "videodata"
+    t.text     "videodata"
     t.integer  "version",          :default => 1
     t.datetime "order_date"
   end
@@ -246,15 +246,15 @@ ActiveRecord::Schema.define(:version => 20091025182736) do
 
   create_table "dailyquestions", :force => true do |t|
     t.string   "headline"
-    t.string   "question_text"
+    t.text     "question_text"
     t.text     "perex"
     t.date     "publish_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "author_yes_id"
     t.integer  "author_no_id"
-    t.string   "text_yes"
-    t.string   "text_no"
+    t.text     "text_yes"
+    t.text     "text_no"
   end
 
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"

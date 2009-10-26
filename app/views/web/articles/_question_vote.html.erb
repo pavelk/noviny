@@ -3,7 +3,10 @@
     <div class="bar">
       <span class="in" style="width: <%=@y_votes-%>%;">
       	<span class="value">
-      		<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) if @question.can_vote? %>
+      		<% if @message || cookies["question_id_#{Time.now.to_date}"] &&  cookies["question_id_#{Time.now.to_date}"].split(';').include?(@question.id.to_s)  %>
+			<% else %>
+      			<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) if @question.can_vote? %>
+			<% end %>
 		</span>
 	  </span>
     </div> <!-- /.bar -->
@@ -11,7 +14,12 @@
 <div class="answer">
     <div class="label">Ne</div>    
     <div class="bar even">
-      <span class="in" style="width: <%=@n_votes-%>%;"><span class="value"><%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) if @question.can_vote? %></span></span>
+      <span class="in" style="width: <%=@n_votes-%>%;"><span class="value">
+      	<% if @message || cookies["question_id_#{Time.now.to_date}"] && cookies["question_id_#{Time.now.to_date}"].split(';').include?(@question.id.to_s) %>
+		<% else %>
+      		<%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) if @question.can_vote? %>
+		<% end %>
+	  </span></span>
 	</div> <!-- /.bar -->
 </div> <!-- /.answer -->
 <p id="message-<%=@question.id-%>">

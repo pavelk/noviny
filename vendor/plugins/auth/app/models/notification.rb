@@ -23,7 +23,7 @@ class Notification < ActionMailer::Base
      @sent_on    = sent_on
   end
 
-	def admin_new_user (web_user, password, app, new_user = true, sent_on = Time.now)
+	def admin_newuser (web_user, password, app, new_user = true, sent_on = Time.now)
      @recipients = "#{web_user.login} <#{web_user.email}>"
      @from       = "#{app[:title]} Admin <#{app[:email]}>"
      @subject    = 'New account'
