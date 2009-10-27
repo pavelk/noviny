@@ -63,6 +63,13 @@ class Picture < ActiveRecord::Base
            :joins=>[:articles],
            :per_page=>per_page)
     end
-  
+   
+  def info
+    inf = ""
+    inf += name unless name.blank?
+    inf += ", #{type_image}" unless type_image.blank?
+    inf += ", #{author}" unless author.blank?
+    return inf
+  end
   
 end

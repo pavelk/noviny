@@ -26,7 +26,7 @@
      <div class="paging">
        <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
        <ul class="pages">
-		<%= will_paginate @articles %> TODO
+		<%= will_paginate @articles,:params=>{:date=>@date} %> TODO
        </ul>
      </div> <!-- /.paging -->
    </div> <!-- /.col2 -->

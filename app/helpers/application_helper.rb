@@ -30,7 +30,7 @@ module ApplicationHelper
   end
   
   def th(text)
-    return text.gsub("\r\n","<br>").gsub("\n","<br>")
+    return text.gsub("\r\n","<br>").gsub("\n","<br>").gsub("___","&nbsp;")
   end
   
   #Returns normalize form of string for formatting the url

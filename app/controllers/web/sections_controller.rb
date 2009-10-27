@@ -65,7 +65,7 @@ class Web::SectionsController < Web::WebController
                              :per_page=>10)
                              
     @opinions = Article.today_top_opinions(9)
-    @authors = Author.find(:all,:limit=>10)
+    @authors = Author.all_right
     @type = 1 #for partial readest menu
     @readest = Article.all_readest(Time.now-24.hours)
     add_breadcrumb @subsection.name, ""
@@ -96,6 +96,7 @@ protected
   end
 
   def set_opinions_variables
+    @article_photo_show = true
     if Web::Calendar.week? && Web::Calendar.sunday?
       tfrom_date = Time.now - 1.days
       tto_date = Time.now
@@ -160,7 +161,7 @@ protected
     arr += @news if @news
     arr += @opinions if @opinions
     arr += @right_boxes if @right_boxes
-    ign_arr = arr.map{|a| a.id}
+    ign_arr = arr.map{|a| a.id}.uniq
     @down_boxes = Article.down_boxes(section_id,ign_arr)
   end
 end

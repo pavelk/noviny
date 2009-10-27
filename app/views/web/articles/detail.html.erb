@@ -15,7 +15,7 @@
 	       <%= (@article.pictures.count > 1) ? link_to(im,:action=>"detail_gallery",:id=>@article.id) : im %>
 	       <p class="info">
 	       	<%= link_to("Galerie", :action=>"detail_gallery",:id=>@article.id) if @article.pictures.count > 1 %>
-			<%= @article_image.name %>
+			<%= @article_image.info %>
 			</p>
 		<% end %>
      </div> <!-- /.col2 -->

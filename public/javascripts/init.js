@@ -29,6 +29,7 @@ jQuery(document).ready(function() {
 	  jQuery(this).parents(".thumbs").find("li span").remove();
     jQuery(this).parents(".gallery").find(".main img").attr("src", jQuery(this).attr("href"));
     jQuery(this).parents(".gallery").find(".main .info").text(jQuery(this).attr("title"));
+	jQuery(this).parents(".gallery").find(".main img").attr("title", jQuery(this).attr("title"));
     jQuery(this).find("img").after("<span></span>");
     return false;
   });

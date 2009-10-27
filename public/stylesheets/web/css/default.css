@@ -51,7 +51,7 @@ fieldset    { border: 0 !important; }
 /* -- Basics layout -- */
 #view    { text-align: left; }
 #head    { font-size: 1.2em; position: relative; z-index: 10; }
-#content { font-size: 1.2em; position: relative; z-index: 1; }
+#content { font-size: 1.2em; position: relative; z-index: 11; }
 #foot    { font-size: 1.2em; z-index: 1; }
 
 /* -- Main classes -- */

@@ -359,7 +359,9 @@ class Article < ActiveRecord::Base
     ign_cont = [ContentType::ZPRAVA,ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
       if section_id == sec
-        ar = Article.from_section(:section_id=>Section::NAZORY,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
+        ar = []
+        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1)
+        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
         down_boxes << ["Názory",ar] unless ar.blank?
       else
         ar = Article.from_section(:section_id=>sec,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)

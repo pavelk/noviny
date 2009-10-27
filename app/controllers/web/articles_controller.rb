@@ -78,7 +78,7 @@ class Web::ArticlesController < Web::WebController
       @vote_value = params[:vote_value].to_i != 0
       qvs = QuestionVote.count(:conditions=>{:question_id=>@question.id,:ipaddr=>remote_ip,:created_at=>Time.now.beginning_of_day..Time.now.end_of_day})
       if qvs >= 50
-        @message = "Již jste dnes hlasoval 50x"
+        @message = "Tato IP adresa hlasovala již padesátkrát."
         render :update do |page|
           page.replace_html "message-#{@question.id}", @message
         end
