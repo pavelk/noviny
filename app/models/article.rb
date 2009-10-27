@@ -136,7 +136,7 @@ class Article < ActiveRecord::Base
     end
     ops = find(:all,
                :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,Time.now,arr,true,false],
-               :order=>"priority_home DESC, publish_date DESC",
+               :order=>"priority_home DESC, order_date DESC",
                :include=>[:content_type])
     return ops if ops.length >= length_limit
     return ops if options[:limit] == 0
@@ -153,7 +153,7 @@ class Article < ActiveRecord::Base
     op += "articles.id != '#{ign_id}' AND " if ign_id
     Article.find(:all,
                  :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
-                 :order=>"publish_date DESC",
+                 :order=>"order_date DESC",
                  :group=>"articles.id",
                  :joins=>[:article_sections],
                  :limit=>limit)
@@ -166,7 +166,7 @@ class Article < ActiveRecord::Base
                      :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,true,false],
                      :page=>page,
                      :per_page=>per_page,
-                     :order=>"publish_date DESC")
+                     :order=>"order_date DESC")
   end
   
   #Returns the array of readest articles from each section
@@ -203,7 +203,7 @@ class Article < ActiveRecord::Base
   def self.today_top_news(limit = 10)
     find(:all,
          :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
-         :order=>"publish_date DESC, priority_section DESC",
+         :order=>"priority_section DESC, order_date DESC",
          :include=>[:content_type],
          :group=>"articles.id",
          :limit=>limit)
@@ -214,7 +214,7 @@ class Article < ActiveRecord::Base
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     find(:all,
          :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
-         :order=>"publish_date DESC",
+         :order=>"order_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :group=>"articles.id",
@@ -240,7 +240,7 @@ class Article < ActiveRecord::Base
     end
     find(:all,
          :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op} AND articles.approved = ? AND articles.visibility = ?",options[:section_id],options[:ignore_arr],Time.now,0,true,false],
-         :order=>"publish_date DESC",
+         :order=>"priority_section DESC, order_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>options[:limit])
@@ -251,7 +251,7 @@ class Article < ActiveRecord::Base
   def self.yesterday_from_section(section_id,limit = 4)
     find(:all,
          :conditions=>["article_sections.section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0,true,false],
-         :order=>"priority_section DESC, publish_date DESC",
+         :order=>"priority_section DESC, order_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>limit)
@@ -279,7 +279,7 @@ class Article < ActiveRecord::Base
   def self.today_by_priority_home
     find(:all,
          :conditions=>["publish_date >= ? AND publish_date <= ? AND priority_home > ? AND articles.approved = ? AND articles.visibility = ?",Time.now.beginning_of_day,Time.now,0,true,false],
-         :order=>"priority_home DESC")
+         :order=>"priority_home DESC, order_date DESC")
   end
   
   def self.h_box(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date)

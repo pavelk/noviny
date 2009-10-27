@@ -60,7 +60,7 @@ class Web::SectionsController < Web::WebController
     set_default_variables
     @articles = Article.paginate(:all,
                              :conditions=>["subsection_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
-                             :order=>"publish_date DESC",
+                             :order=>"order_date DESC",
                              :page=>params[:page],
                              :per_page=>10)
                              
@@ -124,7 +124,7 @@ protected
          
     @saturday_articles = Article.find(:all,
                                       :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
-                                      :order=>"publish_date DESC",
+                                      :order=>"order_date DESC",
                                       :include=>[:content_type])
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
@@ -132,7 +132,7 @@ protected
     end
     @sunday_articles = Article.find(:all,
                                     :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
-                                    :order=>"publish_date DESC",
+                                    :order=>"order_date DESC",
                                     :include=>[:content_type])                                  
   end
   
@@ -140,7 +140,7 @@ protected
     per_page = 10
     @articles = Article.paginate(:all,
                                  :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now,true,false],
-                                 :order=>"priority_section DESC, publish_date DESC",
+                                 :order=>"priority_section DESC, order_date DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],
                                  :per_page=>per_page)
