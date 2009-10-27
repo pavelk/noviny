@@ -83,6 +83,7 @@ class Web::SectionsController < Web::WebController
   
 protected
   def set_default_variables
+    set_common_variables(@section.id)
     case @section.id
       when Section::NAZORY
         set_opinions_variables
@@ -92,7 +93,7 @@ protected
       else
         set_non_opinion_variables(@section.id)
     end
-    set_common_variables(@section.id)
+    #set_common_variables(@section.id)
   end
 
   def set_opinions_variables
@@ -139,8 +140,9 @@ protected
   
   def set_non_opinion_variables(section_id)
     per_page = 10
+    ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
     @articles = Article.paginate(:all,
-                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now,true,false],
+                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND articles.id NOT IN (?)",section_id,Time.now,true,false,ign_arr],
                                  :order=>"priority_section DESC, order_date DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],
@@ -155,6 +157,7 @@ protected
     @right_boxes = Article.right_boxes(section_id)
     @news = Article.today_top_news if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
     arr = @rel_articles
+    arr += [@headliner_box.article] if @headliner_box
     arr += @articles if @articles
     arr += @today_articles if @today_articles
     arr += @yesterday_articles if @yesterday_articles

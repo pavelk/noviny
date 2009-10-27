@@ -9,7 +9,7 @@
      
      <div class="col2 mainImage">
      	<% if @article.content_type_id == ContentType::VIDEO %>
-			<%= @article.videodata %>
+			<%= @article.new_videodata %>
 		<% else %>
 			<% im = main_image_tag(@article_image.data.url(:hp_main)) %>
 	       <%= (@article.pictures.count > 1) ? link_to(im,:action=>"detail_gallery",:id=>@article.id) : im %>

@@ -149,7 +149,8 @@ a.overlaid,
 
   /* First item in section */
   .itemBig                      { margin-bottom: 10px; }
-  .itemBig .img                 { float: none; width: auto; margin-bottom: 5px; }
+  .itemBig .img 				{ position: static; float: none; width: auto; margin-bottom: 5px; } 
+  .itemBig .img .caption  		{ position: static; clear:both; top: 0px; left: 0px; }
   .itemBig .self                { margin: 0; padding-right: 32px; }
   .itemBig .head                { font-weight: bold; font-size: 2em; margin-bottom: 5px; }
 

@@ -106,6 +106,16 @@ class Article < ActiveRecord::Base
     return header
   end
   
+  def new_videodata
+    reg = /width="(\d+)" height="(\d+)"/
+    match = videodata.match(reg)
+    width = match[1]
+    height = match[2]
+    new_width = 440
+    new_height = ((new_width.to_f / width.to_f) * height.to_f).round
+    return videodata.gsub(reg,"width='#{new_width}' height='#{new_height}'")
+  end
+  
   def section
     self.sections.first
   end
