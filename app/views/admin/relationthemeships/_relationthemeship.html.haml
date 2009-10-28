@@ -2,5 +2,5 @@
   %td
     %input{ :type => 'checkbox', :value => relationthemeship.id }
   %td= relationthemeship.name
-  %td= relationthemeship.updated_at.strftime('%d/%m/%Y')
+  %td= admin_date(relationthemeship.updated_at)
   -#%td= relationthemeship.author.full_name

@@ -4,12 +4,10 @@
     .cropLine= link_to article.name, detail_path(article), :title => article.name, :class => 'file', :target => '_blank'
   %td= article.content_type.name
   %td= version(article)
-  %td= article.publish_date.strftime('%d/%m/%y')
+  %td= admin_date(article.publish_date)
   %td= article.author.full_name
   %td
-    .cropLine= truncate(article.perex, :length => 100, :omission => "&hellip;")   
-  %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :id => "edititem2_#{article.id}", :class => "edit_article", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
-    = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat', :onclick => "deleteRecord($(this), '#{@c_name}', 'Article' ); return false"
+    .cropLine= truncate(article.perex, :length => 100, :omission => "&hellip;")
+  = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => article, :del => 'Article' })
     
     

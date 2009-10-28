@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091026160604) do
+ActiveRecord::Schema.define(:version => 20091028181831) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -46,10 +46,14 @@ ActiveRecord::Schema.define(:version => 20091026160604) do
     t.integer  "article_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "priority_home",    :default => 1, :null => false
+    t.integer  "priority_section", :default => 1, :null => false
   end
 
   add_index "article_banners", ["article_id"], :name => "article_banners_article_id_index"
   add_index "article_banners", ["picture_id"], :name => "article_banners_picture_id_index"
+  add_index "article_banners", ["priority_home"], :name => "article_banners_priority_home_index"
+  add_index "article_banners", ["priority_section"], :name => "article_banners_priority_section_index"
   add_index "article_banners", ["publish_date"], :name => "article_banners_publish_date_index"
 
   create_table "article_boxes", :force => true do |t|
@@ -248,13 +252,14 @@ ActiveRecord::Schema.define(:version => 20091026160604) do
     t.string   "headline"
     t.text     "question_text"
     t.text     "perex"
-    t.date     "publish_date"
+    t.datetime "publish_date"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "author_yes_id"
     t.integer  "author_no_id"
     t.text     "text_yes"
     t.text     "text_no"
+    t.boolean  "approved"
   end
 
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
@@ -507,6 +512,7 @@ ActiveRecord::Schema.define(:version => 20091026160604) do
     t.boolean  "approved"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "visibility"
   end
 
   add_index "text_pages", ["user_id"], :name => "text_pages_user_id_index"

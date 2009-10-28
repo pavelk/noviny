@@ -53,7 +53,6 @@ class Admin::ArticleBannersController < Admin::AdminController
   
     def set_values
       #debugger
-      #params[:article_banner][:publish_date] = params[:article_banner][:publish_date].split('/').reverse.join('-')
       @article_banner.update_attributes( :publish_date => params[:article_banner][:publish_date].split('/').reverse.join('-')) 
     end
     

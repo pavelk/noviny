@@ -233,6 +233,23 @@ function deleteRecord(obj, controller, model)
 	return false;	
 }
 
+function deleteAssets(dom, obj, controller, model)
+{
+	if(confirm('Opravdu smazat?'))
+	{
+		$.ajax({
+	        url: '/admin/'+ controller +'/' + obj + '/?class=' + model,
+	        type: 'post',
+	        dataType: 'script',
+	        data: { '_method': 'delete' },
+	        success: function() {
+				$(dom).parent().remove();
+	        }
+	    });
+	}
+	return false;	
+}
+
 //get records for all modules without assets
 function getRecords( statObj, paging )
 {

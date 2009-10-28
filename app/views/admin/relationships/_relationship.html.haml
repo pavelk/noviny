@@ -2,5 +2,5 @@
   %td
     %input{ :type => 'checkbox', :value => relationship.id }
   %td= relationship.name
-  %td= relationship.publish_date.strftime('%d/%m/%Y')
+  %td= admin_date(relationship.publish_date)
   %td= relationship.author.full_name

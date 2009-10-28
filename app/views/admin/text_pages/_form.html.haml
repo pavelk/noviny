@@ -15,3 +15,12 @@
 %br
 = f.text_area :text
 %input{ :type => 'hidden', :id => 'linkedImages', :value => '' }
+%br
+%br
+= f.label :approved, 'Schváleno:'
+= f.check_box :approved
+%br
+= f.label :visibility, 'Skrýt:'
+= f.check_box :visibility
+%br
+%br

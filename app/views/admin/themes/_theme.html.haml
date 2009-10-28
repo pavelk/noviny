@@ -1,10 +1,8 @@
 %tr{ :id => "theme_#{theme.id}" }
   %td{ :class => 'listItem l1'}
     .cropLine= link_to "#{theme.name} (#{Article.find_tagged_with(theme.name).size})", '#', :id => "edititem1_#{theme.id}", :title => theme.name, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
-  %td= theme.updated_at.strftime('%d/%m/%y') 
+  %td= admin_date(theme.updated_at)
   %td= theme.user.user_name
   %td
     .cropLine= truncate(theme.description, :length => 100, :omission => "&hellip;")
-  %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :id => "edititem2_#{theme.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
-    = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'
+  = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => theme, :del => 'Theme' })

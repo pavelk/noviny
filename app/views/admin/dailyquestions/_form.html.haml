@@ -7,10 +7,16 @@
 = f.text_area :question_text, :class => 'smallText'
 %br
 %br
-%label{ :for => "dailyquestion_publish_date" } Datum publikace:
-%input{ :id => "dailyquestion_publish_date", :name => "dailyquestion[publish_date]", :size => "30", :type => "text", :value => www_date(@dailyquestion.publish_date)}
+-#%label{ :for => "dailyquestion_publish_date" } Datum publikace:
+-#%input{ :id => "dailyquestion_publish_date", :name => "dailyquestion[publish_date]", :size => "30", :type => "text", :value => www_date(@dailyquestion.publish_date)}
+%label{ :for => "publish_date" } Datum publikace:
+%input{ :id => "publish_date", :name => "publish_date", :size => "30", :type => "text", :value => www_date(@object.publish_date)}
 %br
-%br  
+%br
+%label{ :for => "publish_time" } Cas publikace:
+%input{ :id => "publish_time", :name => "publish_time", :size => "10", :type => "text", :value => www_time(@object.publish_date)}
+%br
+%br 
 = f.label :perex, 'Perex:'
 = f.text_area :perex
 %br
@@ -40,4 +46,6 @@
 = f.select( :author_no, Author.all.collect {|u| [u.full_name, u.id]}, {:selected => @object.author_no_id} )
 %br
 %br
+= f.label :approved, 'Schváleno:'
+= f.check_box :approved
 

@@ -57,13 +57,13 @@ class Admin::ArticlesController < Admin::AdminController
   
   new_action.before do
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")['Zpráva']
-    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
   end
   
   edit.before do
     @article = Article.find(params[:id])
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
-    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
     #adjust_home_priority(params[:id][:priority_home], params[:id][:id])
   end
   
@@ -108,7 +108,7 @@ class Admin::ArticlesController < Admin::AdminController
     #debugger
     @article = Article.find(params[:id])
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
-    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
     respond_to do |format|  
       format.js
     end
@@ -120,7 +120,7 @@ class Admin::ArticlesController < Admin::AdminController
     @version = @article.versions.find(params[:version])
     #dodelat - verze i pro ruzne typy
     @article_config = YAML.load_file("#{RAILS_ROOT}/config/articles.yml")[@article.content_type.name]
-    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'] ]
+    @content_type = [ @article_config['nadpis'], @article_config['perex'], @article_config['text'], @article_config['poznamka'], @article_config['video'] ]
     respond_to do |format|  
       format.js
     end

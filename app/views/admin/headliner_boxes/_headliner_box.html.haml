@@ -3,7 +3,5 @@
     .cropLine= link_to headliner_box.headline, '#', :title => headliner_box.headline, :id => "edititem1_#{headliner_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td
     .cropLine= truncate(headliner_box.perex, :length => 100, :omission => "&hellip;")   
-  %td= headliner_box.publish_date.strftime('%d/%m/%Y')
-  %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :id => "edititem2_#{headliner_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
-    = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat' 
+  %td= admin_date(headliner_box.publish_date)
+  = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => headliner_box, :del => 'HeadlinerBox' })

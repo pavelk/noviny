@@ -2,6 +2,7 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   #create.before :set_author
   #create.after :process_adding_pictures, :set_values
+  create.after :set_values
   update.after :set_values
   update.before :set_author
 
@@ -89,8 +90,13 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   
     def set_values
-      #@dailyquestion.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-'))
-      @dailyquestion.update_attributes( :publish_date => params[:dailyquestion][:publish_date].split('/').reverse.join('-'))
+      #@dailyquestion.update_attributes( :publish_date => params[:dailyquestion][:publish_date].split('/').reverse.join('-'))
+      if(params[:publish_time].size == 0)
+        p_time = ' 04:00:00'
+      else
+        p_time = ' ' + params[:publish_time] + ':00'
+      end    
+      @dailyquestion.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time)
     end
   
 end

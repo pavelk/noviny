@@ -2,7 +2,5 @@
   %td{ :class => "listItem l1"}
     .cropLine= link_to info_box.title, '#', :title => info_box.title , :id => "edititem1_#{info_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td= info_box.name
-  %td= info_box.updated_at.strftime('%d/%m/%y')
-  %td{ :class => 'center' }
-    = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :id => "edititem2_#{info_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false", :title => 'Editovat', :class => "edit_article"
-    = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat'
+  %td= admin_date(info_box.updated_at)
+  = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => info_box, :del => 'InfoBox' })

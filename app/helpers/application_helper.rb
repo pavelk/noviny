@@ -90,6 +90,10 @@ module ApplicationHelper
     date.to_s[11..15] unless date.nil?
   end
   
+  def admin_date(date)
+    date.strftime('%d/%m/%y') rescue nil
+  end  
+  
   #icons
   def add_icon(file_type)
     if(ICON_TYPES.include?(file_type))
