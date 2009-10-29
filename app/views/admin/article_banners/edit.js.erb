@@ -3,3 +3,7 @@ $(".recordPath").remove();
 $(".recordEdit").remove();
 $("#viewRecord").append("<%= escape_javascript(render(:partial => 'edit')) %>");
 $("#viewRecord").show();
+<% flsh = @article_banner.flashphoto_banners %>
+<% if(flsh.size > 0)  %>
+$("#flashImageHidden").html("<input type='hidden' id='fid' name='fid' value='"+<%= flsh[0].id %>+"'>");
+<% end %>  

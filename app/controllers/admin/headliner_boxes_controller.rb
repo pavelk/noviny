@@ -15,12 +15,20 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
   end
   
   def add_flash_image
-    #debugger
-    @fp = FlashphotoHeadliner.new(:photo => params[:Filedata])
-    @fp.save!
-    #render :nothing => true
-    respond_to do |format|
-      format.html { render :layout => false }
+    controlNull = FlashphotoHeadliner.find_by_sql("SELECT * FROM flashphoto_headliners WHERE headliner_box_id is NULL")
+    if( controlNull.size > 0)
+      controlNull[0].update_attributes(:photo => params[:Filedata])
+      render :nothing => true
+    elsif(params[:fid])
+      exist = FlashphotoHeadliner.find(params[:fid])
+      exist.update_attributes(:photo => params[:Filedata])
+      render :nothing => true
+    else  
+      @fp = FlashphotoHeadliner.new(:photo => params[:Filedata])
+      @fp.save!
+      respond_to do |format|
+        format.html { render :layout => false }
+      end
     end
   end  
   
@@ -50,7 +58,6 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
   private
     
     def add_flash_photo
-      #debugger
       if(params[:flashimage_id])
         @fi = FlashphotoHeadliner.find(params[:flashimage_id])
         @headliner_box.flashphoto_headliners << @fi

@@ -187,12 +187,18 @@ $(function()
 
 function insertEditor( path, sourcePath, width, height )
 {
-      //alert('funkce');
+      //alert(path + ', ' + sourcePath);
 	  var flashvars = {};
       flashvars.input_image = sourcePath;
       flashvars.target_width = width;
       flashvars.target_height = height;
-      flashvars.target_url = "/admin/" + path + "/add_flash_image";
+	  if($("input[id='fid']").length == 0)
+	  {
+		flashvars.target_url = "/admin/" + path + "/add_flash_image";
+	  }else{
+		flashvars.target_url = "/admin/" + path + "/add_flash_image/?fid=" + $("input[id='fid']").val();
+	  }	
+      
       flashvars.exit_function = "closeEditor";
 	  flashvars.save_function = "saveEditor";	
       var params = {};
@@ -207,7 +213,10 @@ function insertEditor( path, sourcePath, width, height )
 function saveEditor(val)
 {
 	alert('Fotka byla ulozena');
-	$("#flashImageHidden").html("<input type='hidden' id='flashimage_id' name='flashimage_id' value='"+ val +"'>");
+	if(parseInt(val) > 0)
+	{
+		$("#flashImageHidden").html("<input type='hidden' id='flashimage_id' name='flashimage_id' value='"+val+"'>");
+	}	
 }
 
 function closeEditor()
