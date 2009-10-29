@@ -18,9 +18,9 @@ class Admin::ArticleBannersController < Admin::AdminController
   end
   
   def add_flash_image
-    controlNull = FlashphotoBanner.find_by_sql("SELECT * FROM flashphoto_banners WHERE article_banner_id is NULL")
-    if( controlNull.size > 0)
-      controlNull[0].update_attributes(:photo => params[:Filedata])
+    if( params[:fnid] )
+      nexist =  FlashphotoBanner.find(params[:fnid])
+      nexist.update_attributes(:photo => params[:Filedata]) 
       render :nothing => true
     elsif(params[:fid])
       exist = FlashphotoBanner.find(params[:fid])

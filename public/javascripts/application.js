@@ -192,11 +192,14 @@ function insertEditor( path, sourcePath, width, height )
       flashvars.input_image = sourcePath;
       flashvars.target_width = width;
       flashvars.target_height = height;
-	  if($("input[id='fid']").length == 0)
+	  if($("input[id='fid']").length > 0)
 	  {
-		flashvars.target_url = "/admin/" + path + "/add_flash_image";
-	  }else{
 		flashvars.target_url = "/admin/" + path + "/add_flash_image/?fid=" + $("input[id='fid']").val();
+		//flashvars.target_url = "/admin/" + path + "/add_flash_image";
+	  }else if($("input[id='flashimage_id']").length > 0){
+		flashvars.target_url = "/admin/" + path + "/add_flash_image/?fnid=" + $("input[id='flashimage_id']").val();
+	  }else{
+		flashvars.target_url = "/admin/" + path + "/add_flash_image";
 	  }	
       
       flashvars.exit_function = "closeEditor";

@@ -15,9 +15,9 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
   end
   
   def add_flash_image
-    controlNull = FlashphotoHeadliner.find_by_sql("SELECT * FROM flashphoto_headliners WHERE headliner_box_id is NULL")
-    if( controlNull.size > 0)
-      controlNull[0].update_attributes(:photo => params[:Filedata])
+   if( params[:fnid] )
+      nexist =  FlashphotoHeadliner.find(params[:fnid])
+      nexist.update_attributes(:photo => params[:Filedata]) 
       render :nothing => true
     elsif(params[:fid])
       exist = FlashphotoHeadliner.find(params[:fid])
