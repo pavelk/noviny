@@ -64,6 +64,30 @@ class Admin::ArticleBannersController < Admin::AdminController
     def set_values
       #debugger
       @article_banner.update_attributes( :publish_date => params[:article_banner][:publish_date].split('/').reverse.join('-')) 
+      
+       if(@article_banner.articlebanner_sections.size > 0)
+       ActiveRecord::Base.connection.execute "UPDATE article_banners SET priority_section = priority_section - 1 
+                                              WHERE priority_section <= #{@article_banner.priority_section} 
+                                              && priority_section > 1 
+                                              && publish_date LIKE '%#{@article_banner.publish_date.strftime("%Y-%m-%d").to_s}%'
+                                              && id <> #{@article_banner.id}
+                                              && id IN ( SELECT article_banner_id FROM articlebanner_sections WHERE section_id IN (#{@article_banner.articlebanner_sections.collect {|f| f.section_id }.join(',')}) )"                                      
+       ActiveRecord::Base.connection.execute "UPDATE article_banners SET priority_home = priority_home - 1 
+                                              WHERE priority_home <= #{@article_banner.priority_home} 
+                                              && priority_home > 1 
+                                              && publish_date LIKE '%#{@article_banner.publish_date.strftime("%Y-%m-%d").to_s}%'
+                                              && id <> #{@article_banner.id} 
+                                              && id IN ( SELECT article_banner_id FROM articlebanner_sections WHERE section_id = 9999 )"
+
+       ActiveRecord::Base.connection.execute "UPDATE article_banners SET priority_section = 1 
+                                              WHERE priority_section > 1
+                                              && publish_date < current_date()"
+
+      ActiveRecord::Base.connection.execute "UPDATE article_banners SET priority_home = 1 
+                                             WHERE priority_home > 1
+                                             && publish_date < current_date()"                                       
+
+       end
     end
     
     def process_sections

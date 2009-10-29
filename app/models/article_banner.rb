@@ -8,9 +8,8 @@ class ArticleBanner < ActiveRecord::Base
   
   has_many :flashphoto_banners
 =begin
-  after_save do |ab|
-    debugger
-    a = ArticleBanner.find(ab)
+  after_update do |a|
+        #debugger
     if(a.articlebanner_sections.size > 0)
     ActiveRecord::Base.connection.execute "UPDATE article_banners SET priority_section = priority_section - 1 
                                            WHERE priority_section <= #{a.priority_section} 
@@ -35,5 +34,5 @@ class ArticleBanner < ActiveRecord::Base
                                                                                   
     end                                       
   end
-=end 
+=end
 end
