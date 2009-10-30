@@ -297,8 +297,9 @@ class Article < ActiveRecord::Base
   
   def self.h_box(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date)
     op = section_id.nil? ? "headliner_sections.section_id IS ? AND headliner_boxes.publish_date = ?" : "headliner_sections.section_id = ? AND headliner_boxes.publish_date = ?"
+    op += " AND headliner_boxes.article_id IS NOT ?"
     HeadlinerBox.find(:first,
-                      :conditions=>[op,section_id,beg_date],
+                      :conditions=>[op,section_id,beg_date,nil],
                       :joins=>[:headliner_sections],
                       :include=>[:article,:picture])
   end
