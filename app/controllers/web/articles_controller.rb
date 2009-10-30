@@ -41,6 +41,7 @@ class Web::ArticlesController < Web::WebController
     if (cookies[:section_id] && sections.include?(Section.find(cookies[:section_id])))
       @section = Section.find(cookies[:section_id])
     end
+    @top_themes = @article.themes
     @author = @article.author
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @article.pictures.first
@@ -131,6 +132,12 @@ class Web::ArticlesController < Web::WebController
   end
   
   def topic
+    if cookies[:section_id]
+      @section = Section.find(cookies[:section_id])
+    else
+      @section = Section.find(Section::HOME_SECTION_ID)
+    end
+    @top_themes = @section.top_themes
     @tag = Theme.find(params[:id])
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
     @next_topics = @tag.relthemes
@@ -164,7 +171,8 @@ class Web::ArticlesController < Web::WebController
   def detail_gallery
     @page = 1
     @article = Article.find(params[:id])
-    @related = @article.relarticles
+    @related = @article.relarticles + @article.inverse_relarticles
+    @top_themes = @article.themes
     @section = @article.section
     @author = @article.author
     @pictures = Picture.paginate_from_article(@article.id,params[:page])

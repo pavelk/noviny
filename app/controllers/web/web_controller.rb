@@ -33,7 +33,6 @@ protected
    add_breadcrumb "Deník Referendum", "home_path"
 
    def set_variables
-     @tags = Article.top_taggings(6)
      @type = 1 #for partial readest menu
      @readest = Article.all_readest(Time.now-24.hours)
      @authors = Author.all_right

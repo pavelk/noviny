@@ -1,5 +1,5 @@
 <div class="bImg">
-	<% if (fb = FlashphotoBanner.find_by_article_banner_id(right_box.id)) %>	
+	<% if (fb = FlashphotoBanner.find(:all,:conditions=>{:article_banner_id=>right_box.id},:order=>"updated_at DESC").first) %>	
 		<%= link_to(image_tag(fb.photo.url), articles_path(:action=>"detail",:id=>right_box.article.id)) %>
 		<div class="caption">
 	      <span><%=th right_box.headline %></span>

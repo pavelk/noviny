@@ -137,8 +137,8 @@ class Article < ActiveRecord::Base
   #mene jak 2 doplnit starsimi
   #pokud je pondeli, tak limit nastavit na 4
   #minimalni limit pocet clanku = 6
-  def self.home_opinions(beg_date = Time.now, options={})
-    length_limit = 6
+  def self.home_opinions(beg_date = Time.now,to_date = Time.now, options={})
+    length_limit = options[:length_limit]
     options[:limit] -= 1
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
     op = ""
@@ -147,16 +147,20 @@ class Article < ActiveRecord::Base
     end
     op += " AND article_sections.section_id = '9999'"
     ops = find(:all,
-               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,Time.now,arr,true,false],
+               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,to_date,arr,true,false],
                :order=>"priority_home DESC, order_date DESC",
                :joins=>[:article_sections],
-               :include=>[:content_type])
+               :include=>[:content_type],
+               :group=>"articles.id",
+               :limit=>length_limit)
+    puts ops.length
+    length_limit ||= 5           
     return ops if ops.length >= length_limit
     return ops if options[:limit] == 0
     while ops.length < length_limit
       beg_date -= 1.days
       return Article.home_opinions(beg_date, options)
-    end     
+    end    
   end
   
   #Returns last articles limited as param
@@ -213,9 +217,13 @@ class Article < ActiveRecord::Base
   end
   
   #Returns all today news from all sections except NAZORY and HP 
-  def self.today_top_news(limit = 10)
+  def self.today_top_news(limit = 10,ign_arr = nil)
+    op = ""
+    if !ign_arr.blank?
+      op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
+    end
     find(:all,
-         :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
+         :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
          :order=>"priority_section DESC, order_date DESC",
          :include=>[:content_type],
          :group=>"articles.id",
@@ -223,10 +231,14 @@ class Article < ActiveRecord::Base
   end
   
   #Returns all today opinions not from section NAZORY and HP
-  def self.today_top_opinions(section_id,limit = 10)
+  def self.today_top_opinions(section_id,limit = 10,ign_arr = nil)
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+    op = ""
+    if !ign_arr.blank?
+      op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
+    end
     find(:all,
-         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
+         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
          :order=>"order_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],

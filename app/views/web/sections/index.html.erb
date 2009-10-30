@@ -2,15 +2,15 @@
 <%= render :partial=> "web/articles/headliner_box" %>
 <ul class="list item">
 	<% @rel_articles.each do |article| -%>
-		<li><%= link_to article.name, articles_path(:action=>"detail",:id=>article.id) %></li>
+		<li><%= link_to article_name(article), articles_path(:action=>"detail",:id=>article.id) %></li>
 	<% end if @rel_articles -%>
 </ul>
 	        
 <div class="box">
   <h2 class="h line"><% if !week? %>Názory<% end %></h2>
   <div class="in itemList">
-  	<%= "No articles" if @articles.blank? %> 
-	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true,:small_class=>true} %>   
+	<%= render :partial=>"web/articles/left_article", :collection=>@today_opinions,:locals=>{:with_date=>true,:small_class=>true} %>
+	<%= render :partial=>"web/articles/left_article", :collection=>@older_opinions,:locals=>{:with_date=>true,:small_class=>true} if @older_opinions %>   
 <!-- 
     <div class="cols cols3 next">
       <div class="col1">

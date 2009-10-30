@@ -1,25 +1,29 @@
 class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
+  def old
+      require 'rubygems'
+      require "soap/rpc/driver"
+      require 'http-access2'
+      XSD::Charset.encoding = 'UTF8'
+      
+      client = SOAP::RPC::Driver.new("https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl","http://schemas.mapi.paysec.cz/2008/02")
+      client.options[ "protocol.http.ssl_config.verify_mode" ] = OpenSSL::SSL::VERIFY_NONE
+      #client.soapaction = "http://schemas.mapi.paysec.cz/2008/02/ShoppingService/VerifyTransactionIsPaid"
+      client.add_method("VerifyTransactionIsPaid", "userName","password","merchantOrderId","amount")
+      rate =  client.VerifyTransactionIsPaid("denikreferendum","MapForYou04","asasasasdasdasd","22.0")
+      puts "Rate: #{rate}"
+   return
+  end
+  
   def test_paysec
     #Require The Library
     
     require "soap/wsdlDriver"
-    require 'rubygems'
-    require "soap/rpc/driver"
-    require 'http-access2'
-    XSD::Charset.encoding = 'UTF8'
-    
-    client = SOAP::RPC::Driver.new("https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl","http://schemas.mapi.paysec.cz/2008/02")
-    client.options[ "protocol.http.ssl_config.verify_mode" ] = OpenSSL::SSL::VERIFY_NONE
-    #client.soapaction = "http://schemas.mapi.paysec.cz/2008/02/ShoppingService/VerifyTransactionIsPaid"
-    client.add_method("VerifyTransactionIsPaid", "userName","password","merchantOrderId","amount")
-    rate =  client.VerifyTransactionIsPaid("denikreferendum","MapForYou04","asasasasdasdasd","22.0")
-    puts "Rate: #{rate}"
- return
+
     #Connections
     wsdl_url = "https://mapi.paysec.cz/?wsdl"
-    test_wsdl_url = "https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl"
+    test_wsdl_url = "https://testgateway.paysec.csob.cz/testgateway/ShoppingService.wsdl"
     driver = SOAP::WSDLDriverFactory.new(test_wsdl_url).create_rpc_driver
     #proxy.options['protocol.http.ssl_config.ca_file'] = "#{RAILS_ROOT}/public/cert.cer"
     #proxy.options["protocol.http.ssl_config.verify_mode"] = OpenSSL::SSL::VERIFY_NONE
@@ -31,6 +35,7 @@ class Web::SectionsController < Web::WebController
   
   def index
     redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
+    @section = Section.find(Section::HOME_SECTION_ID)
     set_common_variables(Section::HOME_SECTION_ID)
     ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
     #if Web::Calendar.week?
@@ -39,7 +44,10 @@ class Web::SectionsController < Web::WebController
     #                           :order=>"publish_date DESC",
     #                           :include=>[:content_type])
     #else
-      @articles = Article.home_opinions(Time.now,{:limit=>200,:ignore_arr=>ign_arr})
+      @today_opinions = Article.home_opinions(Time.now,Time.now,{:limit=>1,:ignore_arr=>ign_arr,:length_limit=>nil})
+      if @today_opinions.length < 5
+        @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>5-@today_opinions.length})
+      end
     #end
     @question = Dailyquestion.first_by_date
     @question_image = @question.pictures.first if @question
@@ -147,24 +155,24 @@ protected
                                  :joins=>[:article_sections],
                                  :page=>params[:page],
                                  :per_page=>per_page)
-    @opinions = Article.today_top_opinions(section_id,10)                                  
+    @opinions = Article.today_top_opinions(section_id,10,ign_arr)                                  
   end
   
   def set_common_variables(section_id)
+    @top_themes = @section.top_themes
     @headliner_box = Article.headliner_box(section_id)
     @rel_articles = @headliner_box ? @headliner_box.articles : []
     @themes = @headliner_box ? @headliner_box.themes : []
     @right_boxes = Article.right_boxes(section_id)
-    @news = Article.today_top_news if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
     arr = @rel_articles
     arr += [@headliner_box.article] if @headliner_box
     arr += @articles if @articles
     arr += @today_articles if @today_articles
     arr += @yesterday_articles if @yesterday_articles
-    arr += @news if @news
     arr += @opinions if @opinions
     arr += @right_boxes if @right_boxes
     ign_arr = arr.map{|a| a.id}.uniq
+    @news = Article.today_top_news(10,ign_arr) if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
     @down_boxes = Article.down_boxes(section_id,ign_arr)
   end
 end

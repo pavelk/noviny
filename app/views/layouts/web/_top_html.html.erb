@@ -60,13 +60,14 @@
 				<% end %>
 	          </ul>
 		  <% end %>
+		  <%if !@top_themes.blank? %>
 	          <span>Temata:</span>
 			  <ul>
-			  <% @tags.each do |ttag| -%>
-			  	<% tag = Tag.find(ttag.tag_id) -%>
+			  <% @top_themes.each do |tag| -%>
 			  	<li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, articles_path(:action=>"topic",:id=>tag.id)) -%></li>
-			  <% end -%>
+			  <% end %>
 	          </ul>
+		  <% end %>	  
         </div> <!-- /#subMenu -->
 
         
