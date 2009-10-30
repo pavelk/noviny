@@ -13,13 +13,16 @@ class Dailyquestion < ActiveRecord::Base
   
   #accepts_nested_attributes_for :dailyquestion_authors
    
-  def self.first_by_date(date = Time.now.to_date)
+  def self.first_by_date(date = Time.now)
+    if date.to_date < Time.now.to_date
+      date = date.end_of_day
+    end
     find(:first,
-         :conditions=>["publish_date = ?",date])
+         :conditions=>["publish_date >= ? AND publish_date <= ? AND approved = ?" ,date.beginning_of_day,date,true])
   end
     
   def can_vote?
-    return (self.publish_date >= (Time.now-7.days).to_date) && (self.publish_date <= Time.now.to_date) 
+    return (self.publish_date >= (Time.now-7.days)) && (self.publish_date <= Time.now) 
   end
     
 end

@@ -8,4 +8,8 @@ class TextPage < ActiveRecord::Base
   has_many :text_page_insets
   has_many :insets, :through => :text_page_insets
   
+  
+  def self.all_visible
+    find(:all,:conditions=>{:approved=>true,:visibility=>false})
+  end
 end

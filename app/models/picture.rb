@@ -66,9 +66,15 @@ class Picture < ActiveRecord::Base
    
   def info
     inf = ""
-    inf += name unless name.blank?
-    inf += ", #{type_image}" unless type_image.blank?
-    inf += ", #{author}" unless author.blank?
+    if !name.blank?
+      if name.last == "."
+        inf += "#{name}"
+      else
+        inf += "#{name}." 
+      end
+    end
+    inf += " #{type_image.capitalize}" unless type_image.blank?
+    inf += ": #{author}" unless author.blank?
     return inf
   end
   

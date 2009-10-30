@@ -16,10 +16,16 @@ class HeadlinerBox < ActiveRecord::Base
   
   def info
     inf = ""
-    inf += picture_title unless picture_title.blank?
+    if !picture_title.blank?
+      if picture_title.last == "."
+        inf += "#{picture_title}"
+      else
+        inf += "#{picture_title}." 
+      end
+    end
     if picture
-      inf += ", #{picture.type_image}" unless picture.type_image.blank?
-      inf += ", #{picture.author}" unless picture.author.blank?
+      inf += " #{picture.type_image.capitalize}" unless picture.type_image.blank?
+      inf += ": #{picture.author}" unless picture.author.blank?
     end
     return inf
   end

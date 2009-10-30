@@ -52,7 +52,7 @@
 	              <div class="box">
 	                <h2 class="h line">Referendum</h2>
 	                <ul>
-	                	<% TextPage.all.each do |tp| %>
+	                	<% TextPage.all_visible.each do |tp| %>
 							 <li><%= link_to tp.name, :controller=>"/web/text_pages",:action=>"show", :id=>tp.id %></li>
 						<% end %>
 	                </ul>

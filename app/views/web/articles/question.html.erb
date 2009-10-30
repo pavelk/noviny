@@ -6,9 +6,9 @@
       <div class="col1 item itemSmallImage itemSmall noImg">                
                 <div class="self">
                   <h3 class="head alt"><a href="">Redakce</a></h3> 
-                  <p class="info">20. 7. 2009</p>
+                  <p class="info"><%= @question.publish_date.to_s(:article) %></p>
                   <ul>
-                    <li><a href="">Referendum dne</a></li>
+                    <li>Referendum dne</li>
                   </ul>
                 </div> <!-- /.self -->
 
@@ -33,7 +33,7 @@
            <div class="in">
 			 <% (1..5).each do |day| %>
 			 <div class="item itemSmall noImg">
-				<% date = (Time.now - day.days).to_date -%>
+				<% date = (@question.publish_date - day.days) -%>
 				<% q = Dailyquestion.first_by_date(date) %>
 				<% if q -%>
 				<div class="self">

@@ -149,7 +149,8 @@ a.overlaid,
 
   /* First item in section */
   .itemBig                      { margin-bottom: 10px; }
-  .itemBig .img 				{ position: static; float: none; width: auto; margin-bottom: 5px; } 
+  .itemBig .img 				{ position: static; float: none; width: auto; margin-bottom: 5px; }
+  .itemBig .img object 			{ border: 0; float: left; } 
   .itemBig .img .caption  		{ position: static; clear:both; top: 0px; left: 0px; }
   .itemBig .self                { margin: 0; padding-right: 32px; }
   .itemBig .head                { font-weight: bold; font-size: 2em; margin-bottom: 5px; }
@@ -303,7 +304,7 @@ a.overlaid,
   
   
   /* page detail */
-  #content .text          { font-size: 1.2em; margin-top: -4px; }
+  #content .text 		{ font-size: 1.2em; }
   #content .text img,
   #content .text a img    { border-width: 6px; }
   #content .text img      { margin: 4px 0 5px; }

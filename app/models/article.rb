@@ -109,11 +109,12 @@ class Article < ActiveRecord::Base
   def new_videodata
     reg = /width="(\d+)" height="(\d+)"/
     match = videodata.match(reg)
+    return videodata if match.blank?
     width = match[1]
     height = match[2]
     new_width = 440
     new_height = ((new_width.to_f / width.to_f) * height.to_f).round
-    return videodata.gsub(reg,"width='#{new_width}' height='#{new_height}'")
+    return videodata.gsub(reg,"width='#{new_width}' height='#{new_height}'").gsub("border=1","border=0")
   end
   
   def section
@@ -144,9 +145,11 @@ class Article < ActiveRecord::Base
     if !options[:ignore_arr].blank?
       op += " AND articles.id NOT IN (#{options[:ignore_arr].join(",")})"
     end
+    op += " AND article_sections.section_id = '9999'"
     ops = find(:all,
                :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,Time.now,arr,true,false],
                :order=>"priority_home DESC, order_date DESC",
+               :joins=>[:article_sections],
                :include=>[:content_type])
     return ops if ops.length >= length_limit
     return ops if options[:limit] == 0
@@ -312,10 +315,10 @@ class Article < ActiveRecord::Base
      #pokud neni definovan pro sekci a danny den, 
      #zkontroluj existenci pro danny den a HP az pak teprve zobraz starsi datum
      #NULL muze byt kdekoliv
-     box = Article.h_box(Section::HOME_SECTION_ID,beg_date) if (section_id != Section::HOME_SECTION_ID)
-     return box if box
-     box = Article.h_box(nil,beg_date) unless box #section_id NULL muze byt kdekoliv
-     return box if box
+     #box = Article.h_box(Section::HOME_SECTION_ID,beg_date) if (section_id != Section::HOME_SECTION_ID)
+     #return box if box
+     #box = Article.h_box(nil,beg_date) unless box #section_id NULL muze byt kdekoliv
+     #return box if box
      
      return nil if limit == 0
      limit -= 1
@@ -334,12 +337,13 @@ class Article < ActiveRecord::Base
   #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
   def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
     op = section_id.nil? ? "articlebanner_sections.section_id IS ? AND article_banners.publish_date = ?" : "articlebanner_sections.section_id = ? AND article_banners.publish_date = ?"
+    order = (section_id.nil? || section_id == 9999) ? "priority_home DESC" : "priority_section DESC"
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date],
                        :joins=>[:articlebanner_sections],
                        :include=>[:article,:picture],
                        :limit=>limit_count,
-                       :order=>"publish_date DESC, updated_at DESC")
+                       :order=>"#{order},publish_date DESC,updated_at DESC")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
@@ -352,11 +356,11 @@ class Article < ActiveRecord::Base
      boxes += Article.r_boxes(section_id,beg_date,limit_count)
      return boxes if boxes.length >= min_limit_count
      # look at section_id 9999
-     boxes += Article.r_boxes(Section::HOME_SECTION_ID,beg_date,limit_count)
-     return boxes if boxes.length >= min_limit_count 
+     #boxes += Article.r_boxes(Section::HOME_SECTION_ID,beg_date,limit_count)
+     #return boxes if boxes.length >= min_limit_count 
      # look at section_id NULL
-     boxes += Article.r_boxes(nil,beg_date,limit_count) 
-     return boxes if boxes.length >= min_limit_count
+     #boxes += Article.r_boxes(nil,beg_date,limit_count) 
+     #return boxes if boxes.length >= min_limit_count
  
      return boxes if limit_back == 0
      limit_back -= 1
