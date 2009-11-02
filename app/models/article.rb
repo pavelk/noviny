@@ -153,13 +153,12 @@ class Article < ActiveRecord::Base
                :include=>[:content_type],
                :group=>"articles.id",
                :limit=>length_limit)
-    puts ops.length
     length_limit ||= 5           
     return ops if ops.length >= length_limit
     return ops if options[:limit] == 0
     while ops.length < length_limit
       beg_date -= 1.days
-      return Article.home_opinions(beg_date, options)
+      return Article.home_opinions(beg_date, to_date, options)
     end    
   end
   
