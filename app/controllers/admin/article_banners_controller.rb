@@ -10,9 +10,9 @@ class Admin::ArticleBannersController < Admin::AdminController
   #end
   def index
     if(params[:search_article_banners])
-      @article_banners = ArticleBanner.search params[:search_article_banners]
+      @article_banners = ArticleBanner.search params[:search_article_banners], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
-      @article_banners = ArticleBanner.all
+      @article_banners = ArticleBanner.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end 
     render 'shared/admin/index.js.erb'
   end

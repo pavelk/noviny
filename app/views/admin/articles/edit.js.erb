@@ -6,7 +6,10 @@ $("#viewRecord").show();
 $("class^='count'").each(function() {
  $(this).charCounter();
 });
-
+<% flsh = @article.flashphoto_articles %>
+<% if(flsh.size > 0)  %>
+$("#flashImageHidden").html("<input type='hidden' id='fid' name='fid' value='"+<%= flsh[0].id %>+"'>");
+<% end %>
 
 $("form[id^='edit_article']").ajaxForm(
   {

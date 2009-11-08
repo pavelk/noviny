@@ -92,7 +92,14 @@ module ApplicationHelper
   
   def admin_date(date)
     date.strftime('%d/%m/%y') rescue nil
-  end  
+  end
+  
+  def content_types_order
+    ct_first = ContentType.all( :conditions => 'id = 1' )
+    ct_alphabet = ContentType.all( :order => 'name ASC', :conditions => 'id <> 1'  )
+    ct = ct_first + ct_alphabet
+    return ct
+  end    
   
   #icons
   def add_icon(file_type)

@@ -124,7 +124,7 @@ Fotogalerie:
     poznamka: 0
     video: 0
 
-Video:
+YouTubeDnes:
     nadpis: 0/80
     perex: 80/480
     text: 0
@@ -186,3 +186,17 @@ Volný text:
     text: 100/0
     poznamka: 0/480
     video: 0
+    
+Nedělní chvilka poezie:
+    nadpis: 0/80
+    perex: 80/480
+    text: 0
+    poznamka: 0
+    video: 1
+    
+Dopis ze Slovenska:
+    nadpis: 0/80
+    perex: 80/480
+    text: 3500/6500
+    poznamka: 0/480
+    video: 0          

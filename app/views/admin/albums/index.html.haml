@@ -26,7 +26,7 @@
     .clearer
   .listGroup#info_boxes
     .listHeader
-      %h2.folder= link_to "Info Boxy (#{InfoBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no' ); return false"
+      %h2.folder= link_to "Info Boxy (#{InfoBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes' ); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -42,7 +42,7 @@
     .clearer
   .listGroup#headliner_boxes
     .listHeader
-      %h2.folder= link_to "Headlinový box (#{HeadlinerBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %h2.folder= link_to "Headlinový box (#{HeadlinerBox.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -50,7 +50,7 @@
     .clearer
   .listGroup#article_banners
     .listHeader
-      %h2.folder= link_to "Grafické upoutávky (#{ArticleBanner.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %h2.folder= link_to "Grafické upoutávky (#{ArticleBanner.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -58,7 +58,7 @@
     .clearer
   .listGroup#tag_selections
     .listHeader
-      %h2.folder= link_to "Výběr z témat (#{TagSelection.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %h2.folder= link_to "Výběr z témat (#{TagSelection.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -66,7 +66,7 @@
     .clearer            
   .listGroup#dailyquestions
     .listHeader
-      %h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %h2.folder= link_to "Otázka dne (#{Dailyquestion.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter
@@ -74,7 +74,7 @@
     .clearer
   .listGroup#text_pages
     .listHeader
-      %h2.folder= link_to "Textová stránka (#{TextPage.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %h2.folder= link_to "Textová stránka (#{TextPage.all.length})", '#', :onclick => "getRecords($(this).parent(), 'yes'); return false"
       %span Volitelny popis sekce
       .clearer
     .listFilter

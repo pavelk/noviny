@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091028181831) do
+ActiveRecord::Schema.define(:version => 20091108181339) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20091028181831) do
 
   create_table "article_banners", :force => true do |t|
     t.string   "headline"
-    t.date     "publish_date"
+    t.datetime "publish_date"
     t.integer  "picture_id"
     t.integer  "article_id"
     t.datetime "created_at"
@@ -162,22 +162,40 @@ ActiveRecord::Schema.define(:version => 20091028181831) do
     t.integer  "section_id"
     t.integer  "subsection_id"
     t.integer  "content_type_id"
-    t.integer  "priority_home",    :default => 1,     :null => false
-    t.integer  "priority_section", :default => 1,     :null => false
-    t.boolean  "visibility",       :default => false, :null => false
+    t.integer  "priority_home",       :default => 1,     :null => false
+    t.integer  "priority_section",    :default => 1,     :null => false
+    t.boolean  "visibility",          :default => false, :null => false
     t.integer  "author_id"
     t.text     "videodata"
-    t.integer  "version",          :default => 1
+    t.integer  "version",             :default => 1
     t.datetime "order_date"
+    t.integer  "author_sec_id"
+    t.integer  "picture_id"
+    t.string   "first_image_title"
+    t.datetime "first_approved_date"
+    t.datetime "major_modified_date"
   end
 
   add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
+  add_index "articles", ["author_sec_id"], :name => "articles_author_sec_id_index"
   add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"
+  add_index "articles", ["first_approved_date"], :name => "articles_first_approved_date_index"
+  add_index "articles", ["major_modified_date"], :name => "articles_major_modified_date_index"
+  add_index "articles", ["picture_id"], :name => "articles_picture_id_index"
   add_index "articles", ["priority_home"], :name => "articles_priority_home_index"
   add_index "articles", ["priority_section"], :name => "articles_priority_section_index"
   add_index "articles", ["section_id"], :name => "articles_section_id_index"
   add_index "articles", ["subsection_id"], :name => "articles_subsection_id_index"
   add_index "articles", ["user_id"], :name => "articles_user_id_index"
+
+  create_table "articles_updates_history", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "article_id"
+    t.integer  "status"
+    t.datetime "change_date"
+  end
+
+  add_index "articles_updates_history", ["article_id"], :name => "articles_updates_history_article_id_index"
 
   create_table "audios", :force => true do |t|
     t.integer  "album_id"
@@ -264,6 +282,18 @@ ActiveRecord::Schema.define(:version => 20091028181831) do
 
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
   add_index "dailyquestions", ["author_yes_id"], :name => "dailyquestions_author_yes_id_index"
+
+  create_table "flashphoto_articles", :force => true do |t|
+    t.integer  "article_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  add_index "flashphoto_articles", ["article_id"], :name => "flashphoto_articles_article_id_index"
 
   create_table "flashphoto_banners", :force => true do |t|
     t.integer  "article_banner_id"

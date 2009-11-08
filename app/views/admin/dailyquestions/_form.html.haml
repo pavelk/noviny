@@ -30,7 +30,7 @@
 %br
 = f.label :author_yes, 'Autor ano:'
 %br
-= f.select( :author_yes, Author.all.collect {|u| [u.full_name, u.id]}, {:selected => @object.author_yes_id} )
+= f.select( :author_yes, Author.all(:order => 'surname ASC').collect {|u| ["#{u.full_name} (#{u.nickname})", u.id]}, {:selected => @object.author_yes_id} )
 %br
 %br
 %strong Nazor NE
@@ -43,7 +43,7 @@
 = f.label :author_no, 'Autor ne:'
 %br
 -#%select{ :  }
-= f.select( :author_no, Author.all.collect {|u| [u.full_name, u.id]}, {:selected => @object.author_no_id} )
+= f.select( :author_no, Author.all(:order => 'surname ASC').collect {|u| ["#{u.full_name} (#{u.nickname})", u.id]}, {:selected => @object.author_no_id} )
 %br
 %br
 = f.label :approved, 'Schváleno:'

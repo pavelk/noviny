@@ -5,3 +5,5 @@
     %th{ :width => '10%'     }= link_to 'datum', '#'
     %th{ :width => '25%'    } &nbsp;    
     = render(:partial => 'daily_question', :collection => @dailyquestions)
+  %tr
+    %td{ :colspan => '4'}= will_paginate @collection, :previous_label => 'Předchozí', :next_label => 'Další'    

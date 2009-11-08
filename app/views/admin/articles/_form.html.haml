@@ -6,7 +6,11 @@
   %br
   %br
 = f.label :author_id, 'Vyberte autora clanku:'
-= f.select(:author_id, Author.all.collect {|a| [ a.full_name, a.id ] })
+= f.select(:author_id, Author.all(:order => 'surname ASC').collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] })
+%br
+%br
+= f.label :author_sec_id, 'Vyberte druheho autora clanku:'
+= f.select(:author_sec_id, Author.all(:order => 'surname ASC').collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] }, :include_blank => true )
 %br
 %br
 %label{ :for => "publish_date" } Datum publikace:
@@ -98,3 +102,4 @@
 %hr
 %br
 %input{ :type => 'hidden', :id => 'linkedImages', :value => '' }
+#flashImageHidden

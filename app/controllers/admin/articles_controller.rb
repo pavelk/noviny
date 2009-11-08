@@ -6,8 +6,8 @@ class Admin::ArticlesController < Admin::AdminController
   create.before :set_user
   create.after :process_adding_pictures, :process_adding_files, 
                :process_adding_audios, :process_adding_boxes, 
-               :process_sections, :multi_tag_create, :process_related, :set_values 
-  update.after :process_sections, :process_related, :set_values
+               :process_sections, :multi_tag_create, :process_related, :set_values, :approve_check, :add_flash_photo 
+  update.after :approve_check, :process_sections, :process_related, :set_values, :add_flash_photo
   update.before :multi_tag 
   
   def index
@@ -18,6 +18,24 @@ class Admin::ArticlesController < Admin::AdminController
       @collection = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end
     render 'shared/admin/index.js.erb'
+  end
+  
+  def add_flash_image
+   if( params[:fnid] )
+      nexist =  FlashphotoArticle.find(params[:fnid])
+      nexist.update_attributes(:photo => params[:Filedata]) 
+      render :nothing => true
+    elsif(params[:fid])
+      exist = FlashphotoArticle.find(params[:fid])
+      exist.update_attributes(:photo => params[:Filedata])
+      render :nothing => true
+    else  
+      @fp = FlashphotoArticle.new(:photo => params[:Filedata])
+      @fp.save!
+      respond_to do |format|
+        format.html { render :layout => false }
+      end
+    end
   end  
   
   def get_relarticles
@@ -324,5 +342,28 @@ private
   def set_user
     @article.user_id = current_user.id
   end
+  
+  def approve_check
+    if (params[:article][:approved] == '1' && @article.first_approved_date == nil)
+       @article.update_attributes( :first_approved_date => Time.now().strftime("%Y-%m-%d %H:%M:%S"))
+       ActiveRecord::Base.connection.execute "INSERT INTO articles_updates_history (user_id, article_id, status, change_date) 
+                                              VALUES(#{current_user.id}, #{@article.id}, 1, '#{Time.now().strftime("%Y-%m-%d %H:%M:%S")}')"
+    end
+    #debugger
+    if(params[:major_change])
+      if (params[:major_change] == 'on'  && @article.first_approved_date != nil)
+        @article.update_attributes( :major_modified_date => Time.now().strftime("%Y-%m-%d %H:%M:%S"))
+        ActiveRecord::Base.connection.execute "INSERT INTO articles_updates_history (user_id, article_id, status, change_date) 
+                                                VALUES(#{current_user.id}, #{@article.id}, 2, '#{Time.now().strftime("%Y-%m-%d %H:%M:%S")}')"
+      end  
+    end  
+  end
+  
+  def add_flash_photo
+    if(params[:flashimage_id])
+      @fi = FlashphotoArticle.find(params[:flashimage_id])
+      @article.flashphoto_articles << @fi
+    end  
+  end  
   
 end

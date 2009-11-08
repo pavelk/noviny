@@ -6,12 +6,12 @@ class Admin::InfoBoxesController < Admin::AdminController
   def index
     #debugger
     if(params[:search_boxes])
-      @info_boxes = InfoBox.search params[:search_boxes]
+      @info_boxes = InfoBox.search params[:search_boxes], :page => params[:page], :per_page => 10, :order => 'updated_at DESC'
     else
-      @info_boxes = InfoBox.all
+      @info_boxes = InfoBox.all( :order => 'updated_at DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end 
     render 'shared/admin/index.js.erb'
-  end 
+  end
   
 =begin
   def add_img

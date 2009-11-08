@@ -4,3 +4,6 @@
     %th{ :width => '10%'     }= link_to 'datum', '#'
     %th{ :width => '25%'    } &nbsp;    
     = render(:partial => 'article_banner', :collection => @article_banners)
+  %tr
+    %td{ :colspan => '3'}= will_paginate @collection, :previous_label => 'Předchozí', :next_label => 'Další'  
+    

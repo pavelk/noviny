@@ -13,10 +13,13 @@ class Article < ActiveRecord::Base
   
   has_many :article_themes
   has_many :themes, :through => :article_themes
+  
+  belongs_to :picture
   # 
       
   belongs_to :user
   belongs_to :author
+  belongs_to :author_sec, :class_name => "Author", :foreign_key => 'author_sec_id'
   
   has_many :article_selections
   
@@ -48,6 +51,8 @@ class Article < ActiveRecord::Base
   
   has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "relarticle_id"
   has_many :inverse_relarticles, :through => :inverse_relationships, :source => :article
+  
+  has_many :flashphoto_articles
   
   define_index do
     indexes text

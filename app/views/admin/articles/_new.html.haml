@@ -7,7 +7,7 @@
   - form_for @article, :url => collection_url, :html => { :multipart => true } do |f|
     %fieldset
       = label(:article, :content_type_id, "Typ článku:", :class => "bold")
-      = collection_select( :article, :content_type_id, ContentType.all, :id, :name )
+      = collection_select( :article, :content_type_id, content_types_order, :id, :name )
       %br
       %br
       = render :partial => "form", :locals => { :f => f }
@@ -16,7 +16,23 @@
       %br
       %hr
       %br
+      %strong Obrazek pro vypis
+      %hr.dotted2
+      .clearer
+      #flashImageLink
+      .dndContent
+        %div{ :class => "listFiles listImgrV", :id => "filesListaV_#{@object.id}" }
+          %div{ :class => 'addedFile forImgrV' }
+      .dndContainer
+        %div{ :class => 'dnd imgrs article' } Zde pretahnete obrazek 
+      .clearer &nbsp;
+      #flashDiv
+      %br
+      %hr
+      %br
       %strong Obrazky
+      %hr.dotted2
+      .clearer
       .dndContent
         %div{ :class => "listFiles" }
           %div{ :class => 'addedFile forImgr' }
@@ -24,28 +40,45 @@
         %div{ :class => 'dnd imgr' } Zde pretahnete obrazek    
       .clearer &nbsp;
       %br
+      %hr{ :class => 'dotted' }
+      %br
+      = f.label :first_image_title, 'Popiska prvniho obrazku:'
+      = f.text_field :first_image_title
+      %br
+      %hr
+      %br
       %strong Soubory
+      %hr.dotted2
+      .clearer
       .dndContent
         %div{ :class => "listFiles" }
           %div{ :class => 'addedFile forFilr' }
       .dndContainer
         %div{ :class => 'dnd filr' } Zde pretahnete soubor    
       .clearer &nbsp;
+      %hr
       %br
       %strong Audio
+      %hr.dotted2
+      .clearer
       .dndContent
         %div{ :class => "listFiles" }
           %div{ :class => 'addedFile forAudr' }
       .dndContainer
         %div{ :class => 'dnd audr' } Zde pretahnete audio    
       .clearer &nbsp;
+      %hr
       %br            
       %strong Info Boxy
+      %hr.dotted2
+      .clearer
       .dndContent
         %div{ :class => "listFiles" }
           %table{ :class => 'addedFile forBoxr' }
       .dndContainer
         %div{ :class => 'dnd boxr' } Zde pretahnete infobox    
-      .clearer &nbsp;            
+      .clearer &nbsp;
+      %hr
+      %br            
       %p= submit_tag "Uložit"
           

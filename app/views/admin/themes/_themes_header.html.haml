@@ -6,4 +6,5 @@
     %th{ :width => '30%'    } popis
     %th{ :width => '25%'    } &nbsp;    
     = render(:partial => 'theme', :collection => @themes)
-    = will_paginate @themes, :previous_label => 'Předchozí', :next_label => 'Další'    
+  %tr
+    %td{ :colspan => '5'}= will_paginate @themes, :previous_label => 'Předchozí', :next_label => 'Další'  

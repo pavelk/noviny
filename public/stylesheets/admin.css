@@ -80,7 +80,9 @@ form, fieldset { margin: 0px; padding: 0px; border: none; }
 .recordEdit textarea { width: 500px; height: 400px; }
 .recordEdit .smallText { height: 60px; }
 
-.recordEdit hr { border: none; color: #ffffff; background-color: #ffffff; height: 1px; border-bottom: 1px dotted #ebebeb; }
+.recordEdit hr { clear: both; margin-top: 1em; border: none; color: #ffffff; background-color: #ffffff; height: 1px; border-bottom: 1px dashed #ccc; }
+.recordEdit hr.dotted { border-bottom: 1px dotted #ebebeb; }
+.recordEdit hr.dotted2 { border-bottom: 1px dotted #ebebeb; margin-top: 0 !important; margin-bottom: 1em;}
 
 .addedFile { float:left; display: inline; margin-right: 5px; width:136px;  }
 .multipleSelect { width: 350px; height: 100px; }

@@ -1,6 +1,7 @@
 %tr{ :id => "articlebanner_#{article_banner.id}" }
   %td{ :class => "listItem l1"}
-    .cropLine= link_to article_banner.headline, '#', :title => article_banner.headline, :id => "edititem1_#{article_banner.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    .cropLine= link_to article_banner.headline, preview_banner_path(article_banner), :title => article_banner.headline, :id => "edititem1_#{article_banner.id}"
+    -#.cropLine= link_to article_banner.headline, preview_banner_path(headliner_box), :title => article_banner.headline, :id => "edititem1_#{article_banner.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"    
   -#%td= truncate(article_banner.perex, :length => 100, :omission => "&hellip;")   
   %td= admin_date(article_banner.publish_date)
   = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => article_banner, :del => 'ArticleBanner' })

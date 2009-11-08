@@ -29,3 +29,5 @@ span { color: gray;  }
 .errorForm{
   border: 2px solid #f00;
 }
+
+th.ar{ text-align: right;}

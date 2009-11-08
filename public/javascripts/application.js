@@ -245,6 +245,11 @@ function deleteRecord(obj, controller, model)
 	return false;	
 }
 
+function verify_form()
+{
+	return confirm('submitnout?');
+}
+
 function deleteAssets(dom, obj, controller, model)
 {
 	if(confirm('Opravdu smazat?'))
@@ -610,7 +615,12 @@ function getVersions( article )
 
 function addFlashTool(path)
 {
-	var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
+	if(path == 'articles')
+	{
+		var sourcePath = $("div[class='addedFile forImgrV'] img").attr('src').replace('small', 'original');
+	}else{
+		var sourcePath = $("div[class='addedFile forImgr'] img").attr('src').replace('small', 'original');
+	}
 	if(path == 'headliner_boxes')
 	{
 	  insertEditor( path, sourcePath, 440, 255 );
@@ -646,6 +656,18 @@ function dragAndDrop()
   	  $("div[class='addedFile forImgr']").append(ui.draggable.clone());
   	  $("fieldset").append("<input type='hidden' id='article_banner_picture_id' name='article_banner[picture_id]' value='"+ id +"'>");
 	  $("#flashImageLink").html("<br/><a href='#' onclick='addFlashTool(\"article_banners\"); return false'>Upravit orezani obrazku</a>");	
+	}
+  });
+
+  $(".dnd.imgrs.article").droppable({
+    accept: "div[id^='picture_']",
+  	drop: function(ev, ui) {
+  	  var id = ui.draggable.attr("id").split("_")[1];
+  	  $("div[class='addedFile forImgrV'] > *").remove();
+  	  $("div[id='article_picture_id'] > *").remove();
+  	  $("div[class='addedFile forImgrV']").append(ui.draggable.clone());
+  	  $("fieldset").append("<input type='hidden' id='article_picture_id' name='article[picture_id]' value='"+ id +"'>");
+	  $("#flashImageLink").html("<br/><a href='#' onclick='addFlashTool(\"articles\"); return false'>Upravit orezani obrazku</a>");	
 	}
   });
   

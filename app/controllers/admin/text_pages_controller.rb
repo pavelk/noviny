@@ -6,13 +6,13 @@ class Admin::TextPagesController < Admin::AdminController
   def index
     #debugger
     if(params[:search_text_pages])
-      @text_pages = TextPage.search params[:search_text_pages], :page => params[:page], :per_page => 15
+      @text_pages = TextPage.search params[:search_text_pages], :page => params[:page], :per_page => 10, :order => 'updated_at DESC'
     else
-      @text_pages = TextPage.all.paginate( :per_page => 15, :page => params[:page] )
+      @text_pages = TextPage.all( :order => 'updated_at DESC' ).paginate( :per_page => 10, :page => params[:page] )
     end 
     render 'shared/admin/index.js.erb'
   end
-
+  
   show.response do |wants|
     wants.js
   end 

@@ -5,7 +5,7 @@
   - form_for @article, :url => object_url, :html => { :method => :put } do |f|
     %fieldset
       = label(:article, :content_type_id, "Typ článku:", :class => "bold")
-      = collection_select(:article, :content_type_id, ContentType.all, :id, :name )
+      = collection_select(:article, :content_type_id, content_types_order, :id, :name )
       -#%strong Typ článku:
       -#= @article.content_type.name
       %br
@@ -34,10 +34,45 @@
             = relationship.relarticle.name
             = link_to "X", '#', :id => "relationship_#{@article.id}_#{relationship.id}", :onclick => 'removeRelationship( $(this)); return false'
         %br
-        %hr
-        %br  
+      %hr
+      %br
+      %strong Obrazek pro vypis
+      %hr.dotted2
+      .clearer
+      #flashImageLink
+      .dndContent
+        %div{ :class => "listFiles listImgrV", :id => "filesListaV_#{@object.id}" }
+          %div{ :class => 'addedFile forImgrV' }
+            - if (@object.picture != nil)
+              = image_tag(@object.picture.data.url(:small))
+              %br
+      .dndContainer
+        %div{ :class => 'dnd imgrs article' } Zde pretahnete obrazek 
+      .clearer &nbsp;
+      #flashDiv
+      %br
+      %hr
+      %br  
       = render(:partial => 'shared/admin/add_images_to_edit')
+      %hr{ :class => 'dotted' }
+      %br
+      = f.label :first_image_title, 'Popiska prvniho obrazku:'
+      = f.text_field :first_image_title
+      %br
+      %hr
+      %br
       = render(:partial => 'shared/admin/add_files_to_edit')
+      %hr
+      %br
       = render(:partial => 'shared/admin/add_audios_to_edit')
-      = render(:partial => 'shared/admin/add_boxes_to_edit')                  
+      %hr
+      %br
+      = render(:partial => 'shared/admin/add_boxes_to_edit')
+      %hr
+      %br
+      %label{ :for => 'major_change', :class => 'bold' } Zasadni aktualizace:
+      %input{ :type => 'checkbox', :id => 'major_change', :name => 'major_change' }
+      %br
+      %br                 
       %p= submit_tag "Upravit"
+      -#%input{ :type => 'button', :value => 'Upravit', :onclick => 'verify_form()' }

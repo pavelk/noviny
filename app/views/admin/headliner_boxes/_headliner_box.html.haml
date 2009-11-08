@@ -1,6 +1,7 @@
 %tr{ :id => "headlinerbox_#{headliner_box.id}" }
   %td{ :class => "listItem l1"}
-    .cropLine= link_to headliner_box.headline, '#', :title => headliner_box.headline, :id => "edititem1_#{headliner_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    .cropLine= link_to headliner_box.headline, preview_headliner_path(headliner_box), :title => headliner_box.headline, :id => "edititem1_#{headliner_box.id}"
+    -#.cropLine= link_to headliner_box.headline, preview_headliner_path(headliner_box), :title => headliner_box.headline, :id => "edititem1_#{headliner_box.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td
     .cropLine= truncate(headliner_box.perex, :length => 100, :omission => "&hellip;")   
   %td= admin_date(headliner_box.publish_date)

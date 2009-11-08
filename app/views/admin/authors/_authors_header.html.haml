@@ -4,5 +4,6 @@
     %th{ :width => '15%'    }= link_to 'zkratka', '#'
     %th{ :width => '45%'    }= link_to 'zivotopis', '#'
     %th{ :width => '10%'    } &nbsp;
-  = render(:partial => 'author', :collection => @authors)
-  = will_paginate @authors, :previous_label => 'Předchozí', :next_label => 'Další'  
+    = render(:partial => 'author', :collection => @authors)
+  %tr
+    %td{ :colspan => '4'}= will_paginate @collection, :previous_label => 'Předchozí', :next_label => 'Další'

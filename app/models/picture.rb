@@ -3,6 +3,7 @@ class Picture < ActiveRecord::Base
   #new  migrations
   has_many :headliner_boxes
   has_many :article_banners
+  has_many :pictures
   #
   
   belongs_to :user
