@@ -27,7 +27,7 @@ class Notification < ActionMailer::Base
 	def admin_newuser (web_user, password, app, new_user = true, sent_on = Time.now)
      @recipients = "#{web_user.login} <#{web_user.email}>"
      @from       = "#{app[:title]} <#{app[:email]}>"
-     @subject    = 'Nova registrace'
+     @subject    = 'Nová registrace'
      @body       = {'web_user' => web_user, 'password' => password, 'app' => app,'new_us' => new_user}
      @sent_on    = sent_on
      content_type "text/html"
@@ -52,7 +52,7 @@ class Notification < ActionMailer::Base
    end
    
    def admin_sign_info(payment, app, sent_on = Time.now)
-     @recipients = "predplatne@denikreferendum.cz"
+     @recipients = "jirka@dgu.cz" #predplatne@denikreferendum.cz
      @from       = "#{app[:title]} <#{app[:email]}>"
      @subject    = 'Nová registrace'
      @body       = {'payment' => payment,'app' => app}
