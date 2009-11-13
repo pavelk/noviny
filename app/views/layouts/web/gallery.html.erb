@@ -8,8 +8,11 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <title>Noviny</title>
-    <%= stylesheet_link_tag 'web/css/print' if @printable %>
-    <%= stylesheet_link_tag 'web/css/default' unless @printable %>
+	<% if @printable %>
+		<%= stylesheet_link_tag "web/css/print", :media => "print" %> 
+	<% else %>
+		<%= stylesheet_link_tag 'web/css/default' %>
+	<% end %>
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "calendar" %>
 	<%= stylesheet_link_tag "calendar" %>
@@ -43,24 +46,8 @@
             </div> <!-- /.in -->
           </div> <!-- /.box -->
           
-          <div class="box boxSettings">
-            <h2 class="h line">Nejnovější</h2>            
-            <div class="in">            
-              <%= render :partial=>"web/articles/readest",:collection=>@newest %>
-            </div> <!-- /.in -->
-          </div> <!-- /.box -->
-          
-          <div class="box boxSettings">
-           		<h2 class="h line">Nejčtenější</h2>            
-	            <div class="in" id="in_readest">    
-					<%= render :partial=>"web/articles/readest",:collection=>@readest %>
-	            </div> <!-- /.in -->
-	            
-	            <ul class="settings" id="readest_settings">
-	              	<%= render :partial=>"web/articles/readest_menu" %>
-	            </ul>
-				<%= spinner_tag('readest') %>
-          </div> <!-- /.box -->
+          <%= render :partial=>"layouts/web/part/newest_box" %>
+	      <%= render :partial=>"layouts/web/part/readest_box" %>
           
         </div> <!-- /.col2 -->
 		<div class="rightAdvert">
@@ -74,10 +61,5 @@
         <%= render :partial=>"layouts/web/foot" %>
       </div> <!-- /#foot -->
     </div> <!-- /#view -->
-	<% if @printable %>
-		<script>
-			window.print();
-		</script>
-		<% end %>
   </body>
 </html>

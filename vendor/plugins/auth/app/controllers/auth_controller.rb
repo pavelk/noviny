@@ -1,24 +1,108 @@
 class AuthController < Web::WebController
-  layout "web/referendum"
-  before_filter :authorize_users_only, :except=>[:index,:login,:signup,:confirm]
+  layout :set_layout
+  before_filter :authorize_users_only,
+    :only=>[:payments,:pay,:info,:logout]
  
-  def index
-    del_location
-    @title = "WebUser Interface"
-    #redirect_to :action => "login" unless web_user_logged_in?
+  def pravidla
+    @headline = "Diskuse a předplatné v Deníku Referendum"
   end
  
-  def remoteinfo
+  def create_newsletter
     if request.xhr?
-      render :layout=>false
+      @newsletter = Newsletter.new(params[:newsletter])
+      if @newsletter.save
+        render :update do |page|
+          page << "jQuery('.activeOverlay').remove()"
+          page.replace_html "flash_notice", "Email byl úspěšně zaevidován" 
+           page.delay(2) do  
+             page.replace_html "flash_notice", "" 
+           end  
+        end
+      else
+        render :update do |page|
+          page << "jQuery('.activeOverlay').remove()"
+          page.replace_html "flash_error",
+            content_tag('ul', @newsletter.errors.collect { |err| content_tag('li', err[1]) }),
+              'id' => 'errorExplanation', 'class' => 'errorExplanation'
+          page.delay(2) do  
+             page.replace_html "flash_error", "" 
+          end  
+         
+        end
+      end
     end
   end
  
+  def payments
+    @headline = "Platby"
+    @edit_web_user = @web_user
+    @payments = Payment.find(:all,:conditions=>{:web_user_id=>@web_user.id},:order=>"created_at DESC")
+  end
+ 
+  def pay
+    @headline = "Nová platba"
+    if request.get?
+      @payment = Payment.new()
+    elsif request.post?
+      @payment = Payment.new(params[:payment])
+      @payment.web_user_id = @web_user.id
+      if @payment.save
+        if @payment.pay_method == "paysec"
+          redirect_to :action=>"pay_method",:id=>@payment.id,:autocomplete=>1
+        else
+          begin
+            Notification.deliver_new_payment(@payment,@app)
+            Notification.deliver_admin_sign_info(@payment,@app)
+          rescue
+          end
+          redirect_to :action=>"new_payment_info"
+        end
+      else
+        return
+      end
+    end
+  end
+  
+  def pay_method
+    @payment = Payment.find_by_id_and_payed_at(params[:id],nil)
+    redirect_to home_path and return unless @payment
+    @autocomplete = (params[:autocomplete].to_i == 1)
+  end
+  
+  def confirm_payment
+    @headline = "Ověření platby"
+    @payment = Payment.find_by_id_and_payed_at(params[:payment_id],nil)
+    if (@payment && params[:TId].to_i > 0)
+      paysec = PaySec.new
+      paysec.VerifyTransactionIsPaid(@payment.variable_symbol,@payment.price)
+      if (paysec.success? && @payment.payed_at.nil?)
+        @payment.payed_at = Time.now
+        @payment.status = Payment::ZAPLACENO_PAYSEC
+        @payment.save
+        webuser = @payment.web_user
+        webuser.confirmed = true
+        webuser.set_expire(@payment.price)
+        webuser.save
+        begin
+          Notification.deliver_confirm_payment_info(@payment,@app)
+        rescue
+        end
+        flash.now[:notice] = paysec.customer_info
+      end
+      flash.now[:error] = paysec.customer_info
+    else
+      flash.now[:error] = "Platba nenalezena"
+    end
+  end
+  
+  def cancel_payment
+    @payment = Payment.find(params[:payment_id])
+  end
+ 
   def info
+    @headline = "Informace o uživateli"
     @newuser = @web_user
     if request.post? and !@newuser.nil?
-      if (params[:newuser][:password] == params[:password_conf])
-         @newuser.password = params[:newuser][:password] if !params[:newuser][:password].blank? && !params[:password_conf].blank?
         if @newuser.update_attributes(params[:newuser])
           flash.now[:notice] = "Údaje byly úspěšně změněny"
           redirect_to home_path
@@ -26,9 +110,6 @@ class AuthController < Web::WebController
           flash.now[:error] = "Chyba při ukládání údajů"
           return
         end
-      else
-        flash.now[:error] = "Hesla nejsou stejná"
-      end
     end
   end
  
@@ -45,11 +126,9 @@ class AuthController < Web::WebController
           else
             redirect_to home_path
           end
-          
         else
-          flash.now[:error] = "Nesprávné jméno nebo heslo"
-          @login = params[:post][:login]
-          @err = 2;
+          flash[:error] = "Nesprávné jméno nebo heslo"
+          redirect_to home_path
           return
         end
       end
@@ -60,39 +139,57 @@ class AuthController < Web::WebController
     redirect_to :action=>"index" and return unless @app[:allow_self_registration]
     if request.post?
       @newuser = WebUser.new(params[:newuser])
-      @newuser.confirmed = true
-      @newuser.confirmed = false if @app[:need_signup_confirmation]
       @newuser.domains = WebUser.default_domains
-      @password = params[:newuser][:password]
-      @passconf = params[:password_conf]
-      @newuser.password = @password
-       if @password != @passconf
-         flash.now[:error] = "Hesla nesjou stejná!"
-         return 
-       end
-      #return if !@newuser.validate
+       if @app[:need_signup_confirmation]
+          @newuser.confirmed = false
+          @newuser.generate_validkey
+        else
+          @newuser.confirmed = false
+          @newuser.validkey = nil
+        end
  
-      if @newuser.save
+      if (@newuser.valid?)
         if WebUser.count == 1
           @newuser.domains = WebUser.default_domains.merge({ "ADMIN" => 1})
-          @newuser.save!
         end
-        if @app[:need_signup_confirmation]
-          Notification.deliver_signup(@newuser, @app) 
-          flash['notice'] = "We have sent a message to #{@newuser.email}. "
-          flash['notice'] << "Please paste the validation key it includes."
-          redirect_to :action=>"confirm"
-        else
-          redirect_to :action=>"login"
-        end
-        
+        session[:new_user] = @newuser
+        redirect_to :action=>"signup2"
       else
         flash.now[:error]  = "Objevila se chyba při registraci."
       end
     else
-      @newuser = WebUser.new
-      if @web_user and @web_user.ident
-        flash.now[:notice]  = "You already have an account and are authentified. Are you sure you want to create a new account ?"
+      if session[:new_user]
+        @newuser = session[:new_user] 
+      else
+        @newuser = WebUser.new
+      end
+    end
+  end
+ 
+  def signup2
+    if request.get?
+      if (session[:new_user])
+          newuser = session[:new_user] 
+      else
+          redirect_to :action=>"signup" and return
+      end
+    end
+    if request.post?
+      newuser = session[:new_user]
+      newuser.save!
+      payment = Payment.new(params[:payment])
+      payment.web_user_id = newuser.id
+      payment.save
+      session[:new_user] = nil
+      if payment.pay_method == "paysec"
+        redirect_to :action=>"pay_method",:id=>payment.id,:autocomplete=>1
+      else
+        begin
+         Notification.deliver_sign_info(payment,@app)
+         Notification.deliver_admin_sign_info(payment,@app)
+        rescue
+        end  
+        redirect_to :action=>"signup_info"
       end
     end
   end
@@ -108,13 +205,17 @@ class AuthController < Web::WebController
   end
  
   def lostpassword
+    @headline = "Ztracené heslo"
     if @web_user and @web_user.ident
       @web_user.generate_validkey
       @web_user.save
- 
-      Notification.deliver_forgot(@web_user, @app)
-      flash['notice']  = "Poslali jsme Vám email."
-      redirect_to :action => "index" and return
+      begin
+        Notification.deliver_forgot(@web_user, @app)
+        flash[:notice]  = "Poslali jsme Vám email."
+      rescue
+        flash[:error]  = "Nastala chyba v aplikaci."
+      end   
+      redirect_to home_path and return
     end
  
     if request.post? and params[:post][:email]
@@ -122,15 +223,20 @@ class AuthController < Web::WebController
       if not @newuser.nil?
         @newuser.generate_validkey
         if @newuser.save
-          Notification.deliver_forgot(@newuser, @app)
-          flash[:notice]  = "Poslali jsme Vám email."
-          redirect_to :action => "login"
+          begin
+            Notification.deliver_forgot(@newuser, @app)
+            flash[:notice]  = "Poslali jsme Vám email."
+          rescue
+            flash[:error]  = "Nastala chyba v aplikaci."
+          end  
+          redirect_to home_path and return
         else
-          flash[:notice]  = "An error occured while saving informations."
+          flash[:error]  = "An error occured while saving informations."
+          puts @newuser.errors.inspect
           logger.info "An error occured while saving web_user informations."
         end
       else
-        flash[:notice] = "Účet s touto emailovou adresou nenalezen."
+        flash[:error] = "Účet s touto emailovou adresou nenalezen."
       end
     else
       if @web_user
@@ -138,12 +244,11 @@ class AuthController < Web::WebController
       else
         @email = ""
       end
-    end
- 
- 
+    end #if request.post?
   end
  
   def reset
+    @headline = "Ztracené heslo"
     if request.post? and not params[:post].nil?
       @login = params[:post][:login]
     elsif not params[:login].nil?
@@ -163,32 +268,37 @@ class AuthController < Web::WebController
     if not params[:id].nil?
       @login,@validkey = params[:id].split(',',2)
     end
- 
     # If validation key is wrong, we leave right now
     web_user = WebUser.find(:first,:conditions => ["login = ?",@login])
+    unless web_user
+      flash[:error] = "Uživatel nenalezen"
+      redirect_to home_path and return
+    end
     if web_user and web_user.validkey != @validkey
-      flash[:notice]  = "Your validation key is incorrect, please reask for your password."
+      flash[:error]  = "Váš validační klíč je neplatný, zkuste prosím znovu zažádat o Vaše heslo."
       redirect_to :action => "lostpassword" and return
     end
  
     if request.post?
       if params[:post][:password] != params[:post][:passwordconf]
-        flash.now[:notice] = "Your passwords don't match!"
+        flash.now[:error] = "Hesla nejsou stejná!"
+      elsif params[:post][:password].length < 6 
+        flash.now[:error] = "Heslo musí mít minimálně 6 znaků"
       else
         # Dont need this verification, but who knows... :]
         if web_user.validkey == @validkey
           web_user.password = params[:post][:password]
           web_user.confirmed = 1 # Just in case...
-          if web_user.errors.count == 0 and web_user.save
+          if (web_user.errors.count == 0 && web_user.save)
             web_user.validkey = nil
             web_user.save
             cookies[:email] = nil
             self.saveSession web_user
-            flash[:notice] = "Your password has been changed."
-            redirect_to :action => "index" and return
+            flash[:notice] = "Vaše heslo bylo změněno."
+            redirect_to home_path and return
           else
             # There is a problem, we give the view access to this informations
-            flash.now['notice'] = "There were an error while saving your new password."
+            flash.now[:error] = "Vyskytla se chyba."
             @newuser = web_user
           end
         end
@@ -252,13 +362,19 @@ class AuthController < Web::WebController
     end
   end
  
- 
- 
   def denied
-    render :layout => false
+    #render :layout => false
   end
  
   protected
+ 
+  def set_layout
+    #if action_name == "signup"
+      "web/part/auth"
+   # else
+   #   "web/referendum"
+   # end
+  end
  
   def saveSession(web_user, keepalive=nil)
     if not keepalive.nil? and keepalive > 0

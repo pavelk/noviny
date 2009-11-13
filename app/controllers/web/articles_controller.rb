@@ -55,7 +55,7 @@ class Web::ArticlesController < Web::WebController
      end
    
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
-    render :action=>"detail_noimg" if (!@article_image && @article.content_type_id != ContentType::VIDEO)
+    render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end
   
   def vote
@@ -124,14 +124,25 @@ class Web::ArticlesController < Web::WebController
   end
   
   def archiv
+    per_page = 4
     datum = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Time.now
     redirect_to home_path and return if datum > Time.now
     @date = datum.to_s(:cz_date)
-    @articles = Article.all_by_date(datum,params[:page],10)
+    @opinions = Article.all_by_date(datum,Section::NAZORY,params[:page],per_page)
+    @homes = Article.all_by_date(datum,Section::DOMOV,params[:page],per_page)
+    @worlds = Article.all_by_date(datum,Section::SVET,params[:page],per_page)
+    @arts = Article.all_by_date(datum,Section::UMENI,params[:page],per_page)
+    @next_pages = []
+    @max_entries = @opinions
+    @max_entries = @homes if @homes.total_pages > @max_entries.total_pages
+    @max_entries = @worlds if @worlds.total_pages > @max_entries.total_pages
+    @max_entries = @arts if @arts.total_pages > @max_entries.total_pages
+    @question = Dailyquestion.first_by_date(datum)
     add_breadcrumb "Vydání", ""
   end
   
   def topic
+    @article_photo_show = true
     if cookies[:section_id]
       @section = Section.find(cookies[:section_id])
     else

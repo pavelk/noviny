@@ -9,19 +9,29 @@
     <meta name="keywords" content="" />
     <title>Noviny</title>
 
-	<%= stylesheet_link_tag 'web/css/print' if @printable %>
-    <%= stylesheet_link_tag 'web/css/default' unless @printable %>
+	<% if @printable %>
+		<%= stylesheet_link_tag "web/css/print", :media => "print" %> 
+	<% else %>
+		<%= stylesheet_link_tag 'web/css/default' %>
+	<% end %>
 	<%= javascript_include_tag :defaults %>
+	<%= javascript_include_tag "jquery-1.3.2.min" %>
+	<%= javascript_include_tag "jquery.scrollTo-1.4.0-min" %>
+	<%= javascript_include_tag "jquery.serialScroll-1.2.1-min" %>
+	<%= javascript_include_tag "web/cufon-arial" %>
+	<%= javascript_include_tag "web/cufon-yui" %>
+	<%= javascript_include_tag "web/fontCharger" %>
 	<%= javascript_include_tag "init" %>
 	<%= javascript_include_tag "calendar" %>
 	<%= stylesheet_link_tag "calendar" %>
 	<!--[if IE]><link rel="stylesheet" type="text/css" href="/stylesheets/web/css/msie.css" media="screen" /><![endif]-->
     <link rel="shortcut icon" href="" />
+	<script>
+		jQuery.noConflict();
+	</script>
   </head>
-<%= render :partial=>"layouts/web/top_html" %>
-	
+	<%= render :partial=>"layouts/web/top_html" %>
 	      <hr class="hidden" />
-	
 	      <div id="content" class="cols hpCols">
 	        <div class="col1">
 	          <%= yield %>
@@ -40,25 +50,9 @@
 	        
 	          <div class="box">
 	            <div class="bSelf">
-	              <div class="box">
-	                <h2 class="h line">Autoři</h2>
-	                <ul>
-	                  <% @authors.each do |author| %>
-	                  	<li><%= link_to author.full_name, articles_path(:action=>"author_info",:id=>author.id) %></li>
-					  <% end%>
-	                </ul>
-	              </div> <!-- /.box -->
-	              
-	              <div class="box">
-	                <h2 class="h line">Referendum</h2>
-	                <ul>
-	                	<% TextPage.all_visible.each do |tp| %>
-							 <li><%= link_to tp.name, :controller=>"/web/text_pages",:action=>"show", :id=>tp.id %></li>
-						<% end %>
-	                </ul>
-	              </div> <!-- /.box -->
+	              <%= render :partial=>"layouts/web/part/authors_box" %>
+	              <%= render :partial=>"layouts/web/part/text_pages_box" %>
 	            </div> <!-- /.bSelf -->
-	            
 	            <%= render :partial=>"layouts/web/image_box" %>
 	          </div> <!-- /.box -->
 	          
@@ -68,24 +62,8 @@
 	            </div> <!-- /.in -->
 	          </div> <!-- /.box -->
 			  
-	          <div class="box boxSettings">
-	            <h2 class="h line">Nejnovější</h2>            
-	            <div class="in">            
-	              <%= render :partial=>"web/articles/readest",:collection=>@newest %>
-	            </div> <!-- /.in -->
-	          </div> <!-- /.box -->
-		  
-	          <div class="box boxSettings">
-	            <h2 class="h line">Nejčtenější</h2>            
-	            <div class="in" id="in_readest">    
-					<%= render :partial=>"web/articles/readest",:collection=>@readest %>
-	            </div> <!-- /.in -->
-	            
-	            <ul class="settings" id="readest_settings">
-	              	<%= render :partial=>"web/articles/readest_menu" %>
-	            </ul>
-				<%= spinner_tag('readest') %>
-	          </div> <!-- /.box -->
+	          <%= render :partial=>"layouts/web/part/newest_box" %>
+	          <%= render :partial=>"layouts/web/part/readest_box" %>
 	        </div> <!-- /.col3 -->
 			<div class="rightAdvert">
 	          <%= link_to(image_tag("../stylesheets/web/img/img-scyscraper.jpg"),"TODO")%>
@@ -98,10 +76,5 @@
 	        <%= render :partial=>"layouts/web/foot" %>
 	      </div> <!-- /#foot -->
 	    </div> <!-- /#view -->
-		<% if @printable %>
-		<script>
-			window.print();
-		</script>
-		<% end %>
 	</body>
 </html>

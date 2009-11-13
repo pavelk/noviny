@@ -56,8 +56,8 @@ module AuthSystem
 	def auth_intercept(interceptor_action = 'login')
 		store_location
     unless auth_app_interceptor(interceptor_action)
-		  flash[:notice] = "You lack credentials to access this page"
-		  redirect_to :controller=>"/auth",:action=>"index"
+		  flash[:error] = "Byl jste automaticky odhlášen"
+		  redirect_to auth_url(:action => 'denied')
     end
 		throw :abort
   end
@@ -76,7 +76,7 @@ module AuthSystem
   # example use :
   # a popup window might just close itself for instance
   def access_denied
-		flash[:notice] = "You don't have the right to access this page"
+		flash[:error] = "Nemáte oprávnění pro přístup do této sekce"
     redirect_to auth_url(:action => 'denied')
   end
 

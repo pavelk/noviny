@@ -1,9 +1,10 @@
 <p>
 &gt; Upravujete uživatele <b><%= @newuser.login %></b>.<br />
 &gt; <%= link_to "Všichni uživatelé", :action => '' %>.
+&gt; <%= link_to "Platby", :action => 'payments',:web_user_id=>@newuser.id %>.
 </p>
 <div style="float:left;">
-	 <% form_for(:newuser,@newuser,:url=>{:action => 'edituser'}, :html=>{:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
+	 <% form_for(:newuser,@newuser,:url=>{:action => 'edituser'}, :html=>{:class=>"boxRegistration formBox",:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
 		<%= hidden_field "newuser", "id", :value => params[:id] %>
 		
 		  <div class="Message"><%= error_messages_for 'newuser' %></div>

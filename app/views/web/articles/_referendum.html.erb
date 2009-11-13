@@ -1,0 +1,17 @@
+<% if @question %>
+	<div class="box">
+	  <h2 class="h line">Referendum dne</h2>
+	  <div class="in itemList">              
+	    <div class="item itemSmallImage">
+	      <div class="img">
+	        <%= link_to(main_image_tag("../stylesheets/web/img/img-referendum-dne.jpg"),articles_path(:action=>:question,:id=>@question.id)) %>
+	      </div> <!-- /.self -->
+	      
+	      <div class="self">
+	        <h3 class="head"><%= link_to @question.headline,articles_path(:action=>:question,:id=>@question.id) %></h3>
+	        <p class="perex"><%=th @question.perex %></p>
+	      </div> <!-- /.self -->
+	    </div> <!-- /.item -->            
+	  </div> <!-- /.in -->
+	</div> <!-- /.box -->
+<% end %>

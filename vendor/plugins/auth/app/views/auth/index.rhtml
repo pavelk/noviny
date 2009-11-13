@@ -1,8 +1,0 @@
-Welcome here!<br>
-<% if web_user_logged_in? %>
-	<b><%= link_to @web_user.login, :controller=>"auth",:action=>"info",:id=>@web_user.id %></b>
-<% else %>
-	<%= link_to 'login', login_path %>  | 
-	<%= link_to 'signup', signup_path -%> |
-	<%= link_to 'lost password', lostpassword_path -%>
-<% end %>

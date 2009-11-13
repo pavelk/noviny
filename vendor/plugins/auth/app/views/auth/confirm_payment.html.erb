@@ -1,0 +1,16 @@
+<% if @payment %>
+	<div>
+		Variabilní symbol: <%= @payment.variable_symbol %>
+		<br/>
+		Datum vytvoření: <%= @payment.created_at.to_s(:article) %>
+		<br/>
+		Cena: <%= @payment.price %>
+	</div>
+	<% if @payment.status == Payment::VYTVORENO %>
+		<%= link_to "Zaplatit znovu",:action=>"pay_method", :id=>@payment.id %>
+	<% else %>
+		Děkujeme za zaplacení, nyní se můžete přihlásit.
+		Použijte jako login Vaši emailovou adresu a heslo, které jste zadávali při registraci.
+	<% end %>
+<% end %>
+

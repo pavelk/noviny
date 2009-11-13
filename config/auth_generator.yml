@@ -3,11 +3,11 @@
 ###
 
 ### Your website title (no sensible default)
-title: Auth generator
+title: Deník Referendum
 ### Your website homepage (default: http://localhost:3000)
-url: http://localhost:3000
+url: http://referendum.glow.cz
 ### Administrator email (no sensible default)
-email: your@email.com
+email: no-reply@denikreferendum.cz
 
 ### Default icon for users (default: /images/auth/buddy.png)
 default_icon: /images/auth/buddy.png

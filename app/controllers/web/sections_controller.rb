@@ -17,20 +17,6 @@ class Web::SectionsController < Web::WebController
   end
   
   def test_paysec
-    #Require The Library
-    
-    require "soap/wsdlDriver"
-
-    #Connections
-    wsdl_url = "https://mapi.paysec.cz/?wsdl"
-    test_wsdl_url = "https://testgateway.paysec.csob.cz/testgateway/ShoppingService.wsdl"
-    driver = SOAP::WSDLDriverFactory.new(test_wsdl_url).create_rpc_driver
-    #proxy.options['protocol.http.ssl_config.ca_file'] = "#{RAILS_ROOT}/public/cert.cer"
-    #proxy.options["protocol.http.ssl_config.verify_mode"] = OpenSSL::SSL::VERIFY_NONE
-     
-    #Call API Method and Get Exchange Rate
-    result_code = driver.VerifyTransactionIsPaid("denikreferendum","MapForYou04","eur",22.0)
-    puts "Code: #{result_code}" 
   end
   
   def index
@@ -50,7 +36,7 @@ class Web::SectionsController < Web::WebController
       end
     #end
     @question = Dailyquestion.first_by_date
-    @question_image = @question.pictures.first if @question
+    #@question_image = @question.pictures.first if @question
     @article_photo_show = true
   end
   
@@ -65,9 +51,11 @@ class Web::SectionsController < Web::WebController
   def subsection
     @subsection = Section.find(params[:id])
     @section = @subsection.parent
+    @article_photo_show = true
     set_default_variables
     @articles = Article.paginate(:all,
-                             :conditions=>["subsection_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
+                             :conditions=>["article_sections.section_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
+                             :joins=>[:article_sections],
                              :order=>"order_date DESC",
                              :page=>params[:page],
                              :per_page=>10)

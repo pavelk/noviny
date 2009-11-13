@@ -1,0 +1,83 @@
+<% form_for(:payment,@payment,:url=>{:action => 'edit_payment',:web_user_id=>params[:web_user_id],:id=>params[:id]}) do |f| %>
+	<%= error_messages_for("payment") %>
+	<table cellpadding="1" cellspacing="1" border="0" class="signup">
+			<tr>
+				<td>
+			  		Uživatel:
+				</td>
+				<td>
+				  <%= @payment.web_user.full_name -%>
+				  (<%= @payment.web_user.email -%>)
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Var. symbol:
+				</td>
+				<td>
+				  <%= @payment.variable_symbol -%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Cena:
+				</td>
+				<td>
+				  <select name="payment[price]" id="price" class="button w50">
+                     <option value="50">50 Kč na měsíc</option>
+                     <option value="500">500 Kč na rok</option>
+                  </select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Dobrovolný příspěvek:
+				</td>
+				<td>
+				  <%= f.text_field "gift", :size => 10 -%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Způsob úhrady:
+				</td>
+				<% arr = [Payment::VYTVORENO,Payment::ZAPLACENO_PAYSEC,Payment::ZAPLACENO_OFFLINE] %>
+				<td>
+				  <%= select_tag "status", arr.map{|a| "<option value=#{a} #{(@payment.status == a) ? 'selected=selected' : ''}>#{@payment.status_in_words(a)}</option>"}  -%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Datum úhrady:
+				</td>
+				<td>
+				  <%= calendar({:text_field => "payed_at",
+				              :value => @payment.payed_at ? @payment.payed_at.to_s(:cz_date) : "",
+				              :update_div => nil,
+				              :class_name => "cal"}) -%>
+					<%= text_field_tag "payed_time",@payment.payed_at ? @payment.payed_at.to_s(:cz_time) : "",:size=>3 %> formát hh:mm
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Datum expirace:
+				</td>
+				<td>
+				  <%= calendar({:text_field => "expire_date",
+				              :value => @payment.web_user.expire_date ? @payment.web_user.expire_date.to_s(:cz_date) : "",
+				              :update_div => nil,
+				              :class_name => "cal"}) -%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+			  		<label for="send_email">Poslat potvrzovací email o zaplacení platby:</label>
+				</td>
+				<td>
+				  <%= check_box_tag "send_email", 1 -%>
+				</td>
+			</tr>
+			<tr><td><%= submit_tag "Save" -%></td></tr>
+		</table>
+<% end %>
+<%= link_to "Zpět na platby", :action=>"payments",:web_user_id=>@payment.web_user_id %>

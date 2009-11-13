@@ -4,20 +4,17 @@
 <% if @newuser and error_messages_for('newuser') != "" -%>
     <div class="Message"><%= error_messages_for 'newuser' %></div>
 <% end -%>
-<% if flash['notice'] -%>
-    <div class="Message"><%= flash['notice'] %></div>
-<% end -%>
-		<table cellpadding="1" cellspacing="1" border="0" class="signup">
+<table cellpadding="1" cellspacing="1" border="0" class="signup">
 
 		<tr><td>
-		Enter a password
+		Zadejte heslo
 		</td><td>
 		<%= password_field "post", "password", :size => 20, :class=>"form" %>
 		</td>
 		</tr>
 
 		<tr><td>
-		Enter a password (again)
+		Zadejte heslo (znovu)
 		</td><td>
 		<%= password_field "post", "passwordconf", :size => 20, :class=>"form" %>
 		</td>
@@ -25,7 +22,7 @@
 
 		<tr><td>&nbsp;</td>
 		<td style="text-align: right;">
-		<input type="submit" value="Change my password &#187;" class="primary" />
+		<input type="submit" value="Změnit heslo &#187;" class="primary" />
 		</td></tr>
 		</table>
 

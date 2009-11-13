@@ -1,0 +1,7 @@
+<% form_for(:payment,@payment,:url=>{:controller=>"auth",:action => "pay"}) do |f| %>
+  <div class="Message"><%= error_messages_for 'payment' %></div>
+	<fieldset>
+		<%= render :partial=>"auth/payment" %>
+	</fieldset>
+	<%= submit_tag "Uložit a zaplatit" -%>
+<% end %>

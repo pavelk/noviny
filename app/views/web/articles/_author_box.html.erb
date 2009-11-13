@@ -8,7 +8,7 @@
 	 <h3 class="head alt"><%= link_to @author.full_name, :action=>"author_info",:id=>@author.id %></h3> 
 	 <p class="info"><%= @article.publish_date.to_s(:cz_date) %></p>
 	 <% if @article.updated_at > @article.publish_date %>
-	 	<p class="info">aktualizováno: 
+	 	<p class="info">Aktualizováno: 
 	 	<% if @article.updated_at.day == @article.publish_date.day %>
 	 		<%= @article.updated_at.strftime("%H:%M") %>
 		<% else %>

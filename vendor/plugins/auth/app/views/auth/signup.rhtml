@@ -1,8 +1,19 @@
-<%= flash[:error] %>
-<%= error_messages_for 'newuser' %>
-<div style="width:500px;">
-	<% form_for(:newuser,@newuser,:url=>{:action => 'signup'}, :html=>{:multipart => true}) do |f| -%>
-		<%= render :partial => "auth/user",:locals=>{:f=>f} %>
-		<%= f.submit "Regitrovat" %>
-	<% end -%>
-</div>
+<h4>Předplatné a diskuse v Deníku Referendum</h4>
+Diskuse v Deníku Referendum se řídí souborem originálních pravidel a jsou otevřeny pouze předplatitelům.
+Proč se dozvíte <%= link_to "zde", :action=>"pravidla" %>.
+<br/><br/>
+<h4>Předplatné a jiná podpora Deníku Referendum:</h4>
+•	Pokud chcete Deníku Referendum poslat jednorázový příspěvek na vydávání, můžete jej jakoukoli metodou poukázat na číslo účtu TO-DO, aniž byste vyplňovali jakýkoli formulář.
+<br/><br/>
+•	Pokud se chcete stát předplatitelem s vlastním diskusním blogem v Deníku Referendum, vyplňte prosíme následující formulář:
+<br/><br/>
+		<%= error_messages_for 'newuser' %>
+		<% form_for(:newuser,@newuser,:url=>{:action => 'signup'}, :html=>{:class=>"boxRegistration formBox",:multipart => true}) do |f| -%>
+		<fieldset>
+			<div class="step">
+	            <h3 class="h">Krok 1: Formulář s osobními údaji</h3>
+					<%= render :partial => "auth/user",:locals=>{:f=>f} %>
+					<%= f.submit "Další krok" %>
+			</div>
+		</fieldset>	
+		<% end -%>

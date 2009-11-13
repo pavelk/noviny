@@ -1,15 +1,15 @@
 Dobrý den <%= @web_user.name %>,
-
+<br/><br/>
 administrátor <%= @new_us ? "vytvořil" : "upravil" -%> Váš účet. Přihlašovací údaje jsou:
-
-login    : <%= @web_user.login %>
+<br/><br/>
+login    : <%= @web_user.login %><br/>
 heslo : <%= @password %>
-
+<br/><br/>
 Můžete upravit své údaje pomocí:
-
-<%= @app[:url] %>/auth/info
-
+<br/><br/>
+<%= link_to "#{@app[:url]}/auth/info", "#{@app[:url]}/auth/info" %>
+<br/><br/>
 Děkujeme,
-
-<%= @app[:title] %> Administrátor
+<br/><br/>
+<%= @app[:title] %> Administrátor<br/>
 <%= @app[:url] %>

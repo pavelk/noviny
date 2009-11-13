@@ -4,6 +4,8 @@ require 'digest/sha1'
 class WebUser < ActiveRecord::Base
   belongs_to :author
   has_many :article_comments
+  has_many :payments
+  before_save :set_login
   
   has_attached_file :photo,
                     :styles => {
@@ -20,7 +22,6 @@ class WebUser < ActiveRecord::Base
                   :updated_at,
                   :confirmed,
                   :domains,
-                  :payed,
                   :author_id,
                   :expire_date,
                   :photo_file_name,
@@ -63,7 +64,7 @@ class WebUser < ActiveRecord::Base
    def can_modify?(comment)
      return true if self.is_admin?
      return true if self.author == comment.article.author
-     return true if self == comment.web_user
+     return true if (self == comment.web_user && (self.expire_date >= Time.now.to_date))
      return false
    end
  
@@ -205,7 +206,6 @@ class WebUser < ActiveRecord::Base
 #      return nil
 #    end
 #  end
- 
   def reload
     # Just to be sure we have all the fields
     u = WebUser.find(:first,:conditions => ["login = ? AND confirmed=1", self.login])
@@ -215,8 +215,19 @@ class WebUser < ActiveRecord::Base
     u.ident = true
     return u
   end
- 
   protected
+ 
+  def set_expire(price)
+    to_date = (price.to_i == 50) ? 1.months.from_now : 1.years.from_now
+    if self.expire_date.blank?
+      self.expire_date = to_date
+    elsif self.expire_date < Time.now.to_date
+      self.expire_date = to_date
+    else
+      self.expire_date += (price.to_i == 50) ? 1.month : 1.year
+    end
+    self.save
+  end
  
   # Apply SHA1 encryption to the supplied string.
   def self.sha1(chaine)
@@ -224,7 +235,7 @@ class WebUser < ActiveRecord::Base
   end
  
   before_validation_on_create :set_default_fields
-  before_create :generate_validkey
+  #before_create :generate_validkey
   before_save :hash_domains
   before_save :hash_password
   after_save :after_find
@@ -334,7 +345,7 @@ class WebUser < ActiveRecord::Base
   #                                             to allow other defaults)
   # all other fields are blank by default (except domains)
   def set_default_fields
-    self.confirmed ||= false
+    #self.confirmed ||= false
   end
  
   # Regex to validate an email
@@ -342,36 +353,45 @@ class WebUser < ActiveRecord::Base
   # Regex to validate a login
   VALID_LOGIN = /^[A-Za-z][A-Za-z0-9\-\_]{2,39}$/ unless defined? VALID_LOGIN
   # Regex to validate firstname and lastname
-  VALID_NAME  = /^[\w0-9\-\s]{0,40}$/ unless defined? VALID_NAME
+  VALID_NAME  = /^[\w0-9\-\s\.]{0,40}$/ unless defined? VALID_NAME
   # Regex to validate time string
   VALID_TIME  = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/ unless defined? VALID_TIME
   # Regex to validate a domain
   VALID_DOMAIN = /^\w+$/i unless defined? VALID_DOMAIN
   # Regex to validate a level
   VALID_LEVEL  = /^\d+$/ unless defined? VALID_LEVEL
+  VALID_PHONE = /^\+\d{2,3}\d{8,10}$|^\d{8,10}$/
  
-  validates_presence_of :login,:message=>"Login nemůže být prázdný"
+  #validates_presence_of :login,:message=>"Login nemůže být prázdný"
   validates_presence_of :email,:message=>"Email nemůže být prázdný"
  
-  validates_uniqueness_of :login, :on => :create,:message=>"Tento login již existuje"
-  validates_uniqueness_of :login, :on => :update,:message=>"Tento login již existuje"
+  #validates_uniqueness_of :login, :on => :create,:message=>"Tento login již existuje"
+  #validates_uniqueness_of :login, :on => :update,:message=>"Tento login již existuje"
   validates_uniqueness_of :email, :on => :create,:message=>"Tento email již existuje"
   validates_uniqueness_of :email, :on => :update,:message=>"Tento email již existuje"
  
-  #validates_confirmation_of :password
-  validates_format_of :login, :with => VALID_LOGIN,:message=>"Login má nesprávný formát"
+  validates_confirmation_of :password,:message=>"Hesla nesjou stejná", :if=>:password
+  #validates_format_of :login, :with => VALID_LOGIN,:message=>"Login má nesprávný formát", :if=>:login?
  
-  validates_length_of :password, :on => :create, :minimum => 6, :allow_nil => true,:message=>"Heslo musí mít minimálně 6 znaků"
+  validates_length_of :password, :on => :create,  :minimum => 6, :allow_nil => true,:message=>"Heslo musí mít minimálně 6 znaků"
  
   validates_length_of :email,    :maximum => 100
-  validates_format_of :email,    :with => VALID_EMAIL,:message=>"Email má nesprávný formát"
+  validates_format_of :email,    :with => VALID_EMAIL,:message=>"Email má nesprávný formát", :if=>:email?
  
   validates_length_of :validkey, :maximum => 40, :allow_nil => true
+  validates_acceptance_of :read_codex, :message=>"Musíte souhlasit s kodexem", :accept => true
  
-  validates_format_of :firstname, :with => VALID_NAME,:message=>"Jméno má nesprávný formát"
-  validates_format_of :lastname,  :with => VALID_NAME,:message=>"Příjmení má nesprávný formát"
+  validates_format_of :firstname, :with => VALID_NAME,:message=>"Jméno má nesprávný formát",:if=>:firstname
+  validates_format_of :lastname,  :with => VALID_NAME,:message=>"Příjmení má nesprávný formát",:if=>:lastname
+  validates_format_of :street,  :with => VALID_NAME,:message=>"Ulice má nesprávný formát",:if=>:street
+  validates_format_of :city,  :with => VALID_NAME,:message=>"Obec má nesprávný formát",:if=>:city
+  validates_format_of :number,  :with => VALID_NAME,:message=>"Číslo p. má nesprávný formát",:if=>:number
+  validates_format_of :psc,  :with => /\d{5}/, :allow_blank => true,:message=>"PSČ má nesprávný formát",:if=>:psc
+  validates_format_of :profession,  :with => VALID_NAME,:message=>"Povolání má nesprávný formát",:if=>:profession
+  validates_format_of :phone,  :with => VALID_PHONE, :allow_blank => true,:message=>"Telefon má nesprávný formát",:if=>:phone
+  validates_format_of :title,  :with => VALID_NAME,:message=>"Titul má nesprávný formát",:if=>:title
  
-  validates_inclusion_of :confirmed, :in => [true, false]
+  #validates_inclusion_of :confirmed, :in => [true, false]
  
   validates_each(:domains) do |record, attr, value|
     value.each do | key, val |
@@ -379,7 +399,9 @@ class WebUser < ActiveRecord::Base
       record.errors.add(attr, "contain invalid access level #{val.inspect} ") unless "#{val}" =~ VALID_LEVEL
     end
   end
- 
+ def set_login
+   self.login = self.email
+ end
 end
  
  

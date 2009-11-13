@@ -1,7 +1,12 @@
-<% form_for(:newuser,@newuser,:url=>{:controller=>"auth",:action => "info"}, :html=>{:multipart => true}) do |f| %>
+<%= link_to "Platby",:action=>"payments" %>
+<% form_for(:newuser,@newuser,:url=>{:controller=>"auth",:action => "info"}, :html=>{:class=>"boxRegistration formBox",:multipart => true}) do |f| %>
+	<fieldset>
+		<div class="step">
+	     <h3 class="h">Formulář s osobními údaji</h3>
+	  	<div class="Message"><%= f.error_messages %></div>
+	  </div>
+	</fieldset>	
 
-  <div class="Message"><%= error_messages_for 'newuser' %></div>
-
-<%= render :partial => "auth/user", :locals=>{:f=>f} %>
-<%= submit_tag "Save" -%>
+	<%= render :partial => "auth/user", :locals=>{:f=>f} %>
+	<%= submit_tag "Save" -%>
 <% end %>

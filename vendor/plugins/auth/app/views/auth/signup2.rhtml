@@ -1,0 +1,10 @@
+<%= error_messages_for 'newuser' %>
+<% form_for(:newuser,@newuser,:url=>{:action => 'signup2'}, :html=>{:class=>"boxRegistration formBox",:multipart => true}) do |f| -%>
+	<fieldset>
+		<div class="step">
+		    <h3 class="h">Krok 2: Způsob platby</h3>
+			<%= render :partial=>"auth/payment" %>
+			<%= f.submit "Odeslat registraci" %>
+		</div>
+	</fieldset>
+<% end -%>

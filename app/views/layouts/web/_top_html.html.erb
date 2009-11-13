@@ -31,6 +31,8 @@
 			<% end %>
 		  </h1>
         </div> <!-- /#main -->
+		<span id="flash_notice" style="color: green"><%= flash[:notice] if flash[:notice] -%></span>
+	   	<span id="flash_error" style="color: red"><%= flash[:error] if flash[:error] -%></span>
         <% form_tag({:controller=>"sections",:action=>"search"},:id=>"search") do %>
 			<fieldset>
 				<%= text_field_tag "text", @text, :class=>"button" %>
@@ -73,20 +75,75 @@
         
         <div id="user">
           <ul>
-            <li>
-            	<%if web_user_logged_in? %>
-				<% if @web_user.is_admin? %>
-					<% a_url = {:controller=>"/authadmin"} %>
+            
+            	<% if web_user_logged_in? %>
+					<% if @web_user.is_admin? %>
+						<% a_url = {:controller=>"/authadmin"} %>
+					<% else %>
+						<% a_url = {:controller=>"/auth",:action=>"info"} %>
+					<% end %>
+					<%= link_to "Zobrazit můj profil", a_url  %>
+					<%#= link_to "Logout", logout_path %>
 				<% else %>
-					<% a_url = {:controller=>"/auth",:action=>"info"} %>
+					<li class="displayOverlay">
+						<%= link_to "Přihlásit předplatitele" %>
+						<div class="overlay">
+			                <% form_tag({:controller=>"/auth",:action => 'login'},:class=>"formBox") do -%>
+			                  <fieldset>
+			                    <h4 class="t">Přihlásit</h4>
+			                    
+			                    <div class="clearfix">
+			                      <div class="lab">
+			                        <label for="">Login:</label>
+			                      </div> <!-- /.lab -->
+			                      
+			                      <div class="con">
+			                        <input type="text" name="post[login]" id="" value="" class="button w100" />
+			                      </div> <!-- /.con -->
+			                    </div> <!-- /.clearfix -->
+			                    
+			                    <div class="clearfix">
+			                      <div class="lab">
+			                        <label for="">Heslo:</label>
+			                      </div> <!-- /.lab -->
+			                      
+			                      <div class="con">
+			                        <input type="password" name="post[password]" id="" value="" class="button w100" />
+			                      </div> <!-- /.con -->
+			                    </div> <!-- /.clearfix -->
+			                    
+			                    <input type="submit" value="Přihlásit" class="submit" />
+			                    
+			                    <ul class="offsetTop">
+			                      <li><a href="/signup">Registrace</a></li>
+			                      <li><a href="/lostpassword">Ztracené heslo</a></li>
+			                    </ul>
+			                  </fieldset>
+			                <% end %>
+	              		</div> <!-- /.overlay -->
+					</li>
 				<% end %>
-					<%= link_to @web_user.login, a_url  %>
-					<%= link_to "Logout", logout_path %>
-				<% else %>
-					<%= link_to "Login", login_path %>
-				<% end %>
+            <li class="displayOverlay">
+            	<a href="">Odebrat Zpravodaj</a>
+				<div class="overlay overlayLongLabel">
+				<% form_remote_tag(:url=>{:controller=>"/auth",:action => 'create_newsletter'}, :html=>{:class=>"formBox"}) do -%>
+                  <fieldset>
+                    <h4 class="t">Odebírat zpravodaj</h4>
+                    <div class="clearfix">
+                      <div class="lab">
+                        <label for="newsletter_email">Váš e-mail:</label>
+                      </div> <!-- /.lab -->
+                      
+                      <div class="con">
+                      	<%= text_field "newsletter", "email", :class=>"button w100" -%>
+                      </div> <!-- /.con -->
+                    </div> <!-- /.clearfix -->
+					<%= submit_tag "Odebírat zpravodaj", :class=>"submit" %>
+                  </fieldset>
+				  <%= spinner_tag("news") %>
+                <% end %>
+              </div> <!-- /.overlay -->
 			</li>
-            <li><a href="">Odebrat Zpravodaj</a></li>
           </ul>
         </div> <!-- /#user -->
       </div> <!-- /#head -->

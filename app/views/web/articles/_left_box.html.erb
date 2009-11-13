@@ -1,8 +1,32 @@
 <ul>
 	<% if @article %>
-		<li><%= link_to "Vytisknout článek", {:print=>"1"} %></li>
+		<li><%= link_to "Vytisknout článek", {:print=>"1"},:target=>"_blank" %></li>
 	<% end %>
-	<li><a href="">TODO Poslat e-mailem</a></li>
-	<li><a href="" class="share">Sdílet</a></li>
+	<li class="displayOverlay">
+		<a href="">Poslat e-mailem</a>
+		<div class="overlay overlayEmail">
+           <form action="" method="post" class="formBox">
+		    <fieldset>
+		      <h4 class="t">Poslat e-mailem</h4>
+		      <div class="clearfix">
+		        <input name="" value="" class="button w100" type="text">
+		      </div> <!-- /.clearfix -->
+		      <input value="Odeslat" class="submit" type="submit">
+		    </fieldset>
+		  </form>
+         </div> <!-- /.overlay -->
+	</li>
+	<li class="displayOverlay">
+		<a href="" class="share">Sdílet</a>
+		<div class="overlay overlayEmail">
+ <h4 class="t">Sdílet</h4>
+			<ul>
+			  <li><a href="">Delicious</a></li>
+			  <li><a href="">Delicious</a></li>
+			  <li><a href="">Delicious</a></li>
+			  <li><a href="">Delicious</a></li>
+			</ul>
+        </div> <!-- /.overlay -->
+	</li>
 	<li>Velikost textu <a href="#" id="fx-fontincr">+</a> <a href="#" id="fx-fontdecr">-</a></li>
 </ul>

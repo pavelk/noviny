@@ -9,7 +9,7 @@ module ApplicationHelper
   end
   
   def article_name(article)
-    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR]
+    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::DOPISY]
     if arr.include?(article.content_type_id)
       return "#{article.author.full_name}: #{article.name}"
     else
@@ -42,19 +42,23 @@ module ApplicationHelper
   #Added by Jan Uhlar
   #Returns first picture link for article
   def article_first_photo(article)
-    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+    arr = ContentType.author_image_types
     if (article.section_id == Section::NAZORY || arr.include?(article.content_type_id))
       author = article.author
       return link_to(main_image_tag(author.pictures.first.data.url(:author_little)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
     else
-      return link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
+      return article_photo(article)
     end
   end
   
   #Added by Jan Uhlar
   #Returns first picture link for article
   def article_photo(article)
-      link_to(main_image_tag(article.pictures.first.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if article.pictures.first
+    if (fh = FlashphotoArticle.find(:all,:conditions=>{:article_id=>article.id},:order=>"updated_at DESC").first)
+      link_to(main_image_tag(fh.photo.url), :controller=>"web/articles",:action=>"detail",:id=>article.id)
+    elsif (ap = article.pictures.first)
+      link_to(main_image_tag(ap.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) 
+    end
   end
   
   #Added by Jan Uhlar

@@ -121,6 +121,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "errors/:action/:id", :controller => "logged_exceptions"
   
   
-  map.connect ':controller/:action/:id'
+  map.connect ':controller/:action/:id',:id=>/.*[\.]*.*/
   map.connect ':controller/:action/:id.:format'
 end

@@ -8,14 +8,14 @@
      </div> <!-- /.col1 -->
      
      <div class="col2 mainImage">
-     	<% if @article.content_type_id == ContentType::VIDEO %>
+     	<% if @article.content_type.video? %>
 			<%= @article.new_videodata %>
 		<% else %>
 			<% im = main_image_tag(@article_image.data.url(:hp_main)) %>
 	       <%= (@article.pictures.count > 1) ? link_to(im,:action=>"detail_gallery",:id=>@article.id) : im %>
 	       <p class="info">
 	       	<%= link_to("Galerie", :action=>"detail_gallery",:id=>@article.id) if @article.pictures.count > 1 %>
-			<%= @article_image.info %>
+			<%= @article_image.info(@article.first_image_title) %>
 			</p>
 		<% end %>
      </div> <!-- /.col2 -->

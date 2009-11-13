@@ -1,0 +1,15 @@
+Dobrý den <%= @payment.web_user.full_name %>,
+<br/><br/>
+zaregistroval jste se s předplatným na <%= (@payment.price.to_i == 50) ? "měsíc" : "rok" %>.
+<br/><br/>
+Variabilní symbol je: <%= @payment.variable_symbol %><br/>
+Číslo účtu: XXXXXX
+<br/><br/>
+Pokud se rozhodnete poslat zvlášť dobrovolný příspěvek na vydávání Deníku Referendum, napište to prosím do poznámky.
+<br/><br/>
+V den, kdy se připíše platba na účet, bude na adresu uvedenou v registračním formuláři odesláno oznámení o aktivaci účtu.
+<br/><br/>
+Děkujeme,
+<br/><br/>
+<%= @app[:title] %> - Administrátor<br/>
+<%= @app[:url] %>

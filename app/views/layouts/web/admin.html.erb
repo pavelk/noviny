@@ -18,11 +18,9 @@
     <link rel="shortcut icon" href="" />
   </head>
 <%= render :partial=>"layouts/web/top_html" %>
-	
 	      <hr class="hidden" />
-			<div style="color:green;"><%= flash[:notice] if flash[:notice] %></div>
-			<div style="color:red;"><%= flash[:error] if flash[:error] %></div>
 	      <div id="content" class="cols hpCols">
+	      	<%= link_to "logout", logout_path if web_user_logged_in? %>
 	        <div class="col1">
 	          <%= yield %>
 	        </div> <!-- /.col1 -->

@@ -1,0 +1,8 @@
+<div class="box">
+	<h2 class="h line">Autoři</h2>
+	<ul>
+	  <% @authors.each do |author| %>
+	  	<li><%= link_to author.full_name, articles_path(:action=>"author_info",:id=>author.id) %></li>
+					  <% end%>
+	</ul>
+</div> <!-- /.box -->

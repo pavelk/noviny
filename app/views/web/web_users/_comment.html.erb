@@ -1,5 +1,5 @@
 <tr>
-	<td><%= comment.text.slice(0..50) %></td>
+	<td><%= comment.text.slice(0..55) %></td>
 	<td>
 		<%= link_to comment.article.author.full_name, articles_path(:action=>"author_info",:id=>comment.article.author_id) %>
 		<br/>

@@ -65,17 +65,17 @@ class Picture < ActiveRecord::Base
            :per_page=>per_page)
     end
    
-  def info
+  def info(title = nil)
     inf = ""
-    if !name.blank?
-      if name.last == "."
-        inf += "#{name}"
-      else
-        inf += "#{name}." 
-      end
+    if !title.blank?
+        if title.last == "."
+          inf += "#{title}"
+        else
+          inf += "#{title}." 
+        end
     end
     inf += " #{type_image.capitalize}" unless type_image.blank?
-    inf += ": #{author}" unless author.blank?
+    inf += " #{author}" unless author.blank?
     return inf
   end
   

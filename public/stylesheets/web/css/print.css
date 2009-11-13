@@ -1,22 +1,135 @@
 /* ----------------------------------------------------------------------------------------------------------
 
+
+
     LT WebDevelopment (www.lukastomek.cz)
 
+
+
     VĂ˝stupnĂ­ zaĹ™Ă­zenĂ­: print
+
     Autor:             LukĂˇĹˇ Tomek (info@lukastomek.cz)
+
     VytvoĹ™eno:         28/12/2008
+
+
 
 ---------------------------------------------------------------------------------------------------------- */
 
+
+
 /* -- Basics -- */
+
 body                    { margin: 0; padding: 0; border: 0; font-size: 12pt; }
 
+
+
 h1, h2, h3, h4, h5, h6  { page-break-before: avoid; page-break-after: avoid; page-break-inside: avoid; }
+
 table                   { width: 100%; border-collapse: collapse; border-spacing: 0; border-top: 0.5pt solid #000; }
+
 th, td                  { display: table-cell; border-bottom: 0.5pt solid #000; }
+
 blockquote              { page-break-inside: avoid; }
+
 ul, ol, dl              { page-break-before: avoid; }
+
 img                     { border: 0; }
 
+
+
 /* -- Hidden fields -- */
+
 .noscreen, .noprint { display: none !important; }
+
+
+
+.topAdvert,
+
+#search,
+
+#mainMenu,
+
+#subMenu,
+
+#user,
+
+.boxAdvert,
+
+.boxSettings .settings,
+
+#foot,
+
+.paging,
+
+.gallery .thumbs,
+
+.detailContent .col1,
+
+.formBox,
+
+.headForm
+
+{ display: none; }
+
+
+
+  /* Standart item */
+
+  .item                         { margin-bottom: 15px; overflow: hidden; height: 100%; }
+
+  .item .self                   { margin-left: 150px; }
+
+  .item .img                    { float: left; width: 140px; margin-top: 3px; overflow: hidden; height: 100%; }
+
+  .item .img img                { float: left; }
+
+  .item .head                   { line-height: 1.2em; margin: 0 0 5px; font-weight: normal; }
+
+  .item .head a                 { display: block; }
+
+  .item .info                   { font-weight: bold; margin: 0; }
+
+  .item .info span              { font-weight: normal; }
+
+
+
+  /* Standart item with smaller image */
+
+  .itemSmallImage .self         { margin-left: 75px; }
+
+  .itemSmallImage .img          { float: left; width: 65px; }
+
+
+
+  /* Smaller item */
+
+  .itemSmall                    { margin-bottom: 5px; }
+
+  .itemSmall .head              { font-size: 1em; }
+
+
+
+  /* First item in section */
+
+  .itemBig                      { margin-bottom: 10px; }
+
+  .itemBig .img                 { float: none; width: auto; margin-bottom: 5px; }
+
+  .itemBig .self                { margin: 0; padding-right: 32px; }
+
+  .itemBig .head                { font-size: 2em; margin-bottom: 5px; }
+
+
+
+  /* Quiz item */
+
+  .itemQuiz { margin-top: -3px; }
+
+  .itemQuiz .text { font-size: 1.5em !important; margin-top: -5px; }
+
+
+
+  /* Item without image */
+
+  .noImg .self { margin-left: 0; }

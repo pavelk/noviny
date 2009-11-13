@@ -34,6 +34,7 @@ jQuery(document).ready(function() {
     return false;
   });
   
+  /*
   // share box
   jQuery(".share").click(function() {
     var position = jQuery(this).offset();
@@ -48,7 +49,7 @@ jQuery(document).ready(function() {
     // close
     jQuery(".shareBox .close").click(function() { jQuery(".shareBox").remove(); return false; });
     return false;
-  });
+  });*/
   
    // font resize
   setUserOptions();
@@ -63,5 +64,27 @@ jQuery(document).ready(function() {
   
   // Cufon
   Cufon.replace("#logo")(".h")("h2.head"); 
+  
+  // overlays
+  jQuery(".displayOverlay a").click(function() {
+    var offset = jQuery(this).offset();    
+    var clone = jQuery(this).parents(".displayOverlay").find(".overlay").clone();
+    jQuery(".activeOverlay").remove();
+    jQuery(clone).appendTo("#view").css({ top: offset.top, left: offset.left }).addClass("activeOverlay").show();
+    return false;
+  });
+  
+  // zruseni overlay
+  jQuery("body").click(function(e) {
+    var remove = true;
+    if(document.all) e = event;
+    if(e.target) source = e.target;
+    else if(e.srcElement) source = e.srcElement;
+    if(source.nodeType == 3) source = source.parentNode;
+    
+    if(jQuery(source).parents("div").hasClass("overlay")) remove = false;
+    if(jQuery(source).hasClass("overlay")) remove = false;
+    if(remove) jQuery(".activeOverlay").remove();
+  });
   
 });

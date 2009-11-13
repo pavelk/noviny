@@ -182,12 +182,13 @@ class Article < ActiveRecord::Base
   
   #Returns all articles paginated by current date as param
   #Conditions is publish_date <= Time.now!
-  def self.all_by_date(date, page = 1, per_page = 10)
+  def self.all_by_date(date, section_id, page = 1, per_page = 10)
     Article.paginate(:all,
-                     :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,true,false],
+                     :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND article_sections.section_id = ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,section_id,true,false],
                      :page=>page,
                      :per_page=>per_page,
-                     :order=>"order_date DESC")
+                     :order=>"order_date DESC",
+                     :joins=>[:article_sections])
   end
   
   #Returns the array of readest articles from each section
@@ -298,9 +299,9 @@ class Article < ActiveRecord::Base
   #Returns paginated articles from tag given by 'tag_id'
   def self.paginate_from_tag(tag_id, page = 1, per_page = 10)
     paginate(:all,
-             :conditions=>["taggings.tag_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
+             :conditions=>["article_themes.theme_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
              :order=>"publish_date DESC",
-             :joins=>"INNER JOIN taggings ON taggings.taggable_id = articles.id",
+             :joins=>[:article_themes],
              :page=>page,
              :per_page=>per_page)
   end
@@ -387,7 +388,7 @@ class Article < ActiveRecord::Base
   
   def self.down_boxes(section_id,ign_arr)
     down_boxes = []
-    ign_cont = [ContentType::ZPRAVA,ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+    ign_cont = ContentType.ignore_down_boxes
     [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
       if section_id == sec
         ar = []
