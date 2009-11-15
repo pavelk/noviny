@@ -72,7 +72,7 @@ class Article < ActiveRecord::Base
  
   #named_scope :by_publish_date, lambda { {:conditions => ["publish_date <= ?", Time.now.utc]} }
   named_scope :by_publish_date,  :conditions => ["publish_date <= ?", Time.now.utc]
-  
+  attr_accessor :ignore_set_order_date #Jan Uhlar
   
   
   
@@ -103,6 +103,8 @@ class Article < ActiveRecord::Base
   end
   
   #Added by Jan Uhlar
+  before_save :set_order_date
+  
   #Returns header of the article
   def head
     header = ""
@@ -153,7 +155,7 @@ class Article < ActiveRecord::Base
     op += " AND article_sections.section_id = '9999'"
     ops = find(:all,
                :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,to_date,arr,true,false],
-               :order=>"priority_home DESC, order_date DESC",
+               :order=>"order_date DESC, priority_home DESC, order_time DESC",
                :joins=>[:article_sections],
                :include=>[:content_type],
                :group=>"articles.id",
@@ -174,7 +176,7 @@ class Article < ActiveRecord::Base
     op += "articles.id != '#{ign_id}' AND " if ign_id
     Article.find(:all,
                  :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
-                 :order=>"order_date DESC",
+                 :order=>"order_date DESC, order_time DESC",
                  :group=>"articles.id",
                  :joins=>[:article_sections],
                  :limit=>limit)
@@ -195,7 +197,7 @@ class Article < ActiveRecord::Base
     end
     Article.find(:all,
                  :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",date.beginning_of_day,date.end_of_day,Time.now,true,false],
-                 :order=>"content_type_id, order_date DESC",
+                 :order=>"content_type_id, order_date DESC, order_time DESC",
                  :joins=>[:article_sections],
                  :group=>"articles.id")
   end
@@ -231,20 +233,31 @@ class Article < ActiveRecord::Base
   end
   
   #Returns all news from all sections except NAZORY and HP 
-  def self.middle_news(limit = 12,ign_arr = nil)
+  def self.middle_news(section_id = nil, limit = 12,ign_arr = nil)
     op = ""
+    ord = ""
     if !ign_arr.blank?
       op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
     end
+    if (section_id == Section::HOME_SECTION_ID)
+      ord += ", priority_home DESC"
+    else
+      ord += ", priority_section DESC"
+    end
     find(:all,
          :conditions=>["content_type_id = ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",ContentType::ZPRAVA,Time.now,true,false],
-         :order=>"priority_section DESC, order_date DESC",
+         :order=>"order_date DESC#{ord}, order_time DESC",
          :include=>[:content_type],
          :group=>"articles.id",
          :limit=>limit)
   end
   
   #Returns all opinions from section section_id, limit=>12
+  #Výpis pravého sloupečku v rubrikách Domov, Svět a Umění: zásadní změna.
+  #Název Názory se změní v Názory a rozbory. Bude obsahovat pouze k rubrice příslušné
+  #Sloupky, Komentáře, Glosy, Eseje, Analýzy, Recenze, Kritiky, Fejetony, Vzpomínky, 
+  #Vyprávění, Portréty, Povídky, Štěstí z šesti, Dopisy ze Slovenska.
+  #Vše ostatní zůstane ve výpisu levého sloupečku
   def self.middle_opinions(section_id,limit = 12,ign_arr = nil)
     arr = ContentType.author_types
     op = ""
@@ -253,7 +266,7 @@ class Article < ActiveRecord::Base
     end
     find(:all,
          :conditions=>["content_type_id IN (?) AND article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",arr,section_id,Time.now,true,false],
-         :order=>"order_date DESC",
+         :order=>"order_date DESC, priority_section DESC, order_time DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :group=>"articles.id",
@@ -279,7 +292,7 @@ class Article < ActiveRecord::Base
     end
     find(:all,
          :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op} AND articles.approved = ? AND articles.visibility = ?",options[:section_id],options[:ignore_arr],Time.now,0,true,false],
-         :order=>"priority_section DESC, order_date DESC",
+         :order=>"order_date DESC, priority_section DESC, order_time DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>options[:limit])
@@ -290,7 +303,7 @@ class Article < ActiveRecord::Base
   def self.yesterday_from_section(section_id,limit = 4)
     find(:all,
          :conditions=>["article_sections.section_id = ? AND publish_date >= ? AND publish_date <= ? AND priority_section > ? AND articles.approved = ? AND articles.visibility = ?",section_id,Time.now.yesterday.beginning_of_day,Time.now.yesterday.end_of_day,0,true,false],
-         :order=>"priority_section DESC, order_date DESC",
+         :order=>"order_date DESC, priority_section DESC, order_time DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
          :limit=>limit)
@@ -300,7 +313,7 @@ class Article < ActiveRecord::Base
   def self.paginate_from_author(author_id, page = 1, per_page = 10)
     paginate(:all,
              :conditions=>["author_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",author_id,Time.now,true,false],
-             :order=>"publish_date DESC",
+             :order=>"order_date DESC, priority_section DESC, order_time DESC",
              :page=>page,
              :per_page=>per_page)
   end
@@ -309,7 +322,7 @@ class Article < ActiveRecord::Base
   def self.paginate_from_tag(tag_id, page = 1, per_page = 10)
     paginate(:all,
              :conditions=>["article_themes.theme_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
-             :order=>"publish_date DESC",
+             :order=>"order_date DESC, priority_section DESC, order_time DESC",
              :joins=>[:article_themes],
              :page=>page,
              :per_page=>per_page)
@@ -318,7 +331,7 @@ class Article < ActiveRecord::Base
   def self.today_by_priority_home
     find(:all,
          :conditions=>["publish_date >= ? AND publish_date <= ? AND priority_home > ? AND articles.approved = ? AND articles.visibility = ?",Time.now.beginning_of_day,Time.now,0,true,false],
-         :order=>"priority_home DESC, order_date DESC")
+         :order=>"order_date DESC, priority_home DESC, order_time DESC")
   end
   
   def self.h_box(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date)
@@ -364,13 +377,13 @@ class Article < ActiveRecord::Base
   #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
   def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
     op = section_id.nil? ? "articlebanner_sections.section_id IS ? AND article_banners.publish_date = ?" : "articlebanner_sections.section_id = ? AND article_banners.publish_date = ?"
-    order = (section_id.nil? || section_id == 9999) ? "priority_home DESC" : "priority_section DESC"
+    order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? ", priority_home DESC" : ", priority_section DESC"
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date],
                        :joins=>[:articlebanner_sections],
                        :include=>[:article,:picture],
                        :limit=>limit_count,
-                       :order=>"#{order},publish_date DESC,updated_at DESC")
+                       :order=>"order_date DESC#{order}, order_time DESC")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
@@ -423,4 +436,16 @@ class Article < ActiveRecord::Base
     return down_boxes, down_arr
   end
   ########################## end added by Jan Uhlar
+  
+protected
+  def set_order_date
+    if (self.ignore_set_order_date.to_i != 1)
+      max_date = self.publish_date
+      max_date = self.first_approved_date if (self.first_approved_date && self.first_approved_date > max_date)
+      max_date = self.major_modified_date if (self.major_modified_date && self.major_modified_date > max_date)
+      
+      self.order_date = max_date.to_date
+      self.order_time = max_date.to_time
+    end
+  end
 end

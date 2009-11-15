@@ -324,11 +324,11 @@ private
     end    
     @article.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time)
     
-    if(@article.publish_date < @article.updated_at )
-      @article.update_attributes( :order_date => @article.updated_at)
-    else
-      @article.update_attributes( :order_date => @article.publish_date)
-    end   
+    #if(@article.publish_date < @article.updated_at )
+    #  @article.update_attributes( :order_date => @article.updated_at)
+    #else
+    #  @article.update_attributes( :order_date => @article.publish_date)
+    #end   
   end  
 
   def adjust_home_priority( p, id )

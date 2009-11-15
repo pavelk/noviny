@@ -31,7 +31,7 @@ class Web::SectionsController < Web::WebController
     @articles = Article.paginate(:all,
                              :conditions=>["article_sections.section_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
                              :joins=>[:article_sections],
-                             :order=>"order_date DESC",
+                             :order=>"order_date DESC, priority_section DESC, order_time DESC",
                              :page=>params[:page],
                              :per_page=>10)
     ign_arr = @articles.map{|a| a.id}.uniq                         
@@ -45,6 +45,7 @@ class Web::SectionsController < Web::WebController
     @text = params[:text]
     @articles = Article.paginate(:all,
                                  :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
+                                 :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                  :page=>params[:page],
                                  :per_page=>25)
     add_breadcrumb "Vyhledávání", ""
@@ -96,7 +97,7 @@ protected
          
     @saturday_articles = Article.find(:all,
                                       :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
-                                      :order=>"order_date DESC",
+                                      :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                       :include=>[:content_type])
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
@@ -104,7 +105,7 @@ protected
     end
     @sunday_articles = Article.find(:all,
                                     :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
-                                    :order=>"order_date DESC",
+                                    :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                     :include=>[:content_type])                                  
   end
   
@@ -113,7 +114,7 @@ protected
     ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
     @articles = Article.paginate(:all,
                                  :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND articles.id NOT IN (?) AND articles.content_type_id NOT IN (?)",section_id,Time.now,true,false,ign_arr,ContentType.author_types],
-                                 :order=>"priority_section DESC, order_date DESC",
+                                 :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],
                                  :per_page=>per_page)
@@ -136,7 +137,7 @@ protected
     @down_boxes, down_arr = Article.down_boxes(section_id,ign_arr)
     ign_arr += down_arr.map{|a| a.id}
     if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
-      @news = Article.middle_news(12,ign_arr)
+      @news = Article.middle_news(section_id,12,ign_arr)
     else
       @opinions = Article.middle_opinions(section_id,12,ign_arr)           
     end
