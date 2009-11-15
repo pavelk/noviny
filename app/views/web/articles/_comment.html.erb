@@ -11,7 +11,7 @@
 	  <p><%= comment.comment_date %></p>
 	  <p>
 	  	<a href="">TODO Zavadny link</a>
-		<%= link_to "Smazat", {:controller=>"articles", :action=>"delete_comment", :id=>comment.id}, :confirm=>"Opravdu?" if (@web_user && @web_user.can_modify?(comment)) %>
+		<%= link_to "Smazat", delete_comment_path(:id=>comment.id), :confirm=>"Opravdu?" if (@web_user && @web_user.can_modify?(comment)) %>
 	  </p>
 	  <p class="comment"><%= h(comment.text) %></p>
 	</div> <!-- /.self -->

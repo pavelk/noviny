@@ -4,6 +4,24 @@ ActionController::Routing::Routes.draw do |map|
   map.home "home", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
   
+  map.archiv "/clanky/archiv/:date",:controller => 'web/articles',:action=>"archiv",
+            :date => nil,
+            :conditions => { :method => [:get,:post] } 
+  map.archiv_get "/clanky/archiv/:date",:controller => 'web/articles',:action=>"archiv",
+            :date => /\d{2}\.\d{2}\.\d{4}/,
+            :conditions => { :method => :get }
+            
+  map.detail_article "/clanek/:id",:controller => 'web/articles',:action=>"detail"
+  map.gallery_article "/clanek-galerie/:id",:controller => 'web/articles',:action=>"detail_gallery"
+  map.delete_comment "/clanek/smazat_komentar/:id",:controller => 'web/articles',:action=>"delete_comment"
+  map.section "/rubrika/:name",:controller => 'web/sections',:action=>"detail"
+  map.subsection "/podrubrika/:name",:controller => 'web/sections',:action=>"subsection"
+  map.topic "/tema/:name",:controller => 'web/articles',:action=>"topic"
+  map.author_info "/autor/:name",:controller => 'web/articles',:action=>"author_info"
+  map.print_article "/clanek/tisk/:id",:controller => 'web/articles',:action=>"detail",:print=>1
+  map.text_page "/stranka/:name",:controller => 'web/text_pages',:action=>"show"
+  map.search "/hledani",:controller => 'web/sections',:action=>"search"
+            
   map.with_options :controller => 'web/articles' do |article|
     article.articles   'articles/:action/:id', :action  => 'index', :id=>nil
   end
@@ -123,4 +141,5 @@ ActionController::Routing::Routes.draw do |map|
   
   map.connect ':controller/:action/:id',:id=>/.*[\.]*.*/
   map.connect ':controller/:action/:id.:format'
+  map.connect '*path', :controller => 'web/text_pages', :action => 'error'
 end

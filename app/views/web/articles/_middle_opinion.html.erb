@@ -1,7 +1,7 @@
 <div class="item noImg">
     <div class="self">
       <p class="info"><%= middle_opinion.content_type.name %></p>
-      <h3 class="head"><%= link_to article_name(middle_opinion), articles_path(:action=>"detail",:id=>middle_opinion.id) %></h3>
+      <h3 class="head"><%= link_to article_name(middle_opinion), detail_article_path(pretty_id(middle_opinion)) %></h3>
       <p class="perex"><%=th middle_opinion.perex %></p>
     </div> <!-- /.self -->
 </div> <!-- /.item -->

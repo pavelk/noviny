@@ -1,55 +1,30 @@
 class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
-  def old
-      require 'rubygems'
-      require "soap/rpc/driver"
-      require 'http-access2'
-      XSD::Charset.encoding = 'UTF8'
-      
-      client = SOAP::RPC::Driver.new("https://testgateway.paysec.csob.cz/testgateway/shoppingservice.svc?wsdl","http://schemas.mapi.paysec.cz/2008/02")
-      client.options[ "protocol.http.ssl_config.verify_mode" ] = OpenSSL::SSL::VERIFY_NONE
-      #client.soapaction = "http://schemas.mapi.paysec.cz/2008/02/ShoppingService/VerifyTransactionIsPaid"
-      client.add_method("VerifyTransactionIsPaid", "userName","password","merchantOrderId","amount")
-      rate =  client.VerifyTransactionIsPaid("denikreferendum","MapForYou04","asasasasdasdasd","22.0")
-      puts "Rate: #{rate}"
-   return
-  end
-  
-  def test_paysec
-  end
-  
   def index
-    redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
+   # redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
     @section = Section.find(Section::HOME_SECTION_ID)
     set_common_variables(Section::HOME_SECTION_ID)
     ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
-    #if Web::Calendar.week?
-    #  @articles = Article.find(:all,
-    #                           :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,Time.now.beginning_of_day,Time.now,true,true],
-    #                           :order=>"publish_date DESC",
-    #                           :include=>[:content_type])
-    #else
+    ign_arr += @rel_articles.map{|a| a.id}.uniq
       @today_opinions = Article.home_opinions(Time.now,Time.now,{:limit=>1,:ignore_arr=>ign_arr,:length_limit=>nil})
       if @today_opinions.length < 5
         @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>5-@today_opinions.length})
       end
-    #end
     @question = Dailyquestion.first_by_date
-    #@question_image = @question.pictures.first if @question
     @article_photo_show = true
   end
   
   def detail
-    cookies[:section_id] = params[:id]
-    @section = Section.find(params[:id])
+    @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
+    cookies[:section_id] = @section.id
     set_default_variables
-    add_breadcrumb @section.name, sections_path(:action=>"detail",:id=>@section.id)
+    add_breadcrumb @section.name, section_path(pretty_name(@section))
     render :action=>"#{@section.id}"
   end
   
   def subsection
-    @subsection = Section.find(params[:id])
+    @subsection = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
     @section = @subsection.parent
     @article_photo_show = true
     set_default_variables
@@ -59,9 +34,8 @@ class Web::SectionsController < Web::WebController
                              :order=>"order_date DESC",
                              :page=>params[:page],
                              :per_page=>10)
-                             
-    @opinions = Article.today_top_opinions(9)
-    @authors = Author.all_right
+    ign_arr = @articles.map{|a| a.id}.uniq                         
+    @opinions = Article.middle_opinions(@section.id,12,ign_arr)
     @type = 1 #for partial readest menu
     @readest = Article.all_readest(Time.now-24.hours)
     add_breadcrumb @subsection.name, ""
@@ -70,7 +44,7 @@ class Web::SectionsController < Web::WebController
   def search
     @text = params[:text]
     @articles = Article.paginate(:all,
-                                 :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,true,"%#{@text}%","%#{@text}%","%#{@text}%"],
+                                 :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :page=>params[:page],
                                  :per_page=>25)
     add_breadcrumb "Vyhledávání", ""
@@ -138,12 +112,11 @@ protected
     per_page = 10
     ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
     @articles = Article.paginate(:all,
-                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND articles.id NOT IN (?)",section_id,Time.now,true,false,ign_arr],
+                                 :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND articles.id NOT IN (?) AND articles.content_type_id NOT IN (?)",section_id,Time.now,true,false,ign_arr,ContentType.author_types],
                                  :order=>"priority_section DESC, order_date DESC",
                                  :joins=>[:article_sections],
                                  :page=>params[:page],
                                  :per_page=>per_page)
-    @opinions = Article.today_top_opinions(section_id,10,ign_arr)                                  
   end
   
   def set_common_variables(section_id)
@@ -160,7 +133,12 @@ protected
     arr += @opinions if @opinions
     arr += @right_boxes if @right_boxes
     ign_arr = arr.map{|a| a.id}.uniq
-    @news = Article.today_top_news(10,ign_arr) if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
-    @down_boxes = Article.down_boxes(section_id,ign_arr)
+    @down_boxes, down_arr = Article.down_boxes(section_id,ign_arr)
+    ign_arr += down_arr.map{|a| a.id}
+    if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
+      @news = Article.middle_news(12,ign_arr)
+    else
+      @opinions = Article.middle_opinions(section_id,12,ign_arr)           
+    end
   end
 end

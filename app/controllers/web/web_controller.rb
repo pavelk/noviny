@@ -42,6 +42,18 @@ protected
     def set_printable
       @printable = params[:print] ? true : false
     end
+    
+    def pretty_name(object)
+      if (object.class.name == "Author")
+        return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
+      else
+        return "#{object.name.parameterize}" 
+      end
+    end
+    
+    def unpretty_name(name)
+      return name.gsub("-"," ")
+    end
 private  
   def check_authentication
     

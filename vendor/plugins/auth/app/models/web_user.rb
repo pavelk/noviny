@@ -394,9 +394,11 @@ class WebUser < ActiveRecord::Base
   #validates_inclusion_of :confirmed, :in => [true, false]
  
   validates_each(:domains) do |record, attr, value|
-    value.each do | key, val |
-      record.errors.add(attr, "contain invalid domain #{key.inspect}") unless key =~ VALID_DOMAIN
-      record.errors.add(attr, "contain invalid access level #{val.inspect} ") unless "#{val}" =~ VALID_LEVEL
+    if value.is_a?(Hash)
+      value.each do | key, val |
+        record.errors.add(attr, "contain invalid domain #{key.inspect}") unless key =~ VALID_DOMAIN
+        record.errors.add(attr, "contain invalid access level #{val.inspect} ") unless "#{val}" =~ VALID_LEVEL
+      end
     end
   end
  def set_login

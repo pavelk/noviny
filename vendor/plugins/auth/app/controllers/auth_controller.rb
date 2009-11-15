@@ -48,14 +48,15 @@ class AuthController < Web::WebController
       @payment.web_user_id = @web_user.id
       if @payment.save
         if @payment.pay_method == "paysec"
-          redirect_to :action=>"pay_method",:id=>@payment.id,:autocomplete=>1
+          redirect_to signup_paysec_path(:id=>@payment.id,:autocomplete=>1)
         else
           begin
             Notification.deliver_new_payment(@payment,@app)
             Notification.deliver_admin_sign_info(@payment,@app)
           rescue
           end
-          redirect_to :action=>"new_payment_info"
+          flash[:notice] = "Vaše platba byla zaevidována, poslali jsme Vám email s informacemi o platbě. Jakmile se připíše platba na náš účet, pošleme Vám potvrzující email."
+          redirect_to home_path
         end
       else
         return
@@ -153,7 +154,7 @@ class AuthController < Web::WebController
           @newuser.domains = WebUser.default_domains.merge({ "ADMIN" => 1})
         end
         session[:new_user] = @newuser
-        redirect_to :action=>"signup2"
+        redirect_to signup2_path
       else
         flash.now[:error]  = "Objevila se chyba při registraci."
       end
@@ -171,25 +172,30 @@ class AuthController < Web::WebController
       if (session[:new_user])
           newuser = session[:new_user] 
       else
-          redirect_to :action=>"signup" and return
+          redirect_to signup_path and return
       end
     end
     if request.post?
       newuser = session[:new_user]
-      newuser.save!
-      payment = Payment.new(params[:payment])
-      payment.web_user_id = newuser.id
-      payment.save
-      session[:new_user] = nil
-      if payment.pay_method == "paysec"
-        redirect_to :action=>"pay_method",:id=>payment.id,:autocomplete=>1
+      if newuser.save
+        payment = Payment.new(params[:payment])
+        payment.web_user_id = newuser.id
+        payment.save
+        session[:new_user] = nil
+        if payment.pay_method == "paysec"
+          redirect_to signup_paysec_path(:id=>payment.id,:autocomplete=>1)
+        else
+          begin
+           Notification.deliver_sign_info(payment,@app)
+           Notification.deliver_admin_sign_info(payment,@app)
+          rescue
+          end
+          flash[:notice] = "Byl jste úspěšně zaregistrován, poslali jsme Vám email s informacemi o platbě. Jakmile se připíše platba na náš účet, pošleme Vám potvrzující email."
+          redirect_to home_path
+        end
       else
-        begin
-         Notification.deliver_sign_info(payment,@app)
-         Notification.deliver_admin_sign_info(payment,@app)
-        rescue
-        end  
-        redirect_to :action=>"signup_info"
+        flash[:error] = "Chyba v registraci"
+        redirect_to signup_path and return
       end
     end
   end
@@ -276,7 +282,7 @@ class AuthController < Web::WebController
     end
     if web_user and web_user.validkey != @validkey
       flash[:error]  = "Váš validační klíč je neplatný, zkuste prosím znovu zažádat o Vaše heslo."
-      redirect_to :action => "lostpassword" and return
+      redirect_to lostpassword_path and return
     end
  
     if request.post?

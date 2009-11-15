@@ -8,6 +8,18 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def pretty_id(object)
+    return "#{object.id}-#{object.name.parameterize}"    
+  end
+  
+  def pretty_name(object)
+    if (object.class.name == "Author")
+      return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
+    else
+      return "#{object.name.parameterize}" 
+    end
+  end
+  
   def article_name(article)
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::DOPISY]
     if arr.include?(article.content_type_id)

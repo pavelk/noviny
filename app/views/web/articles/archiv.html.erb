@@ -1,6 +1,6 @@
 <div class="box boxDetail">
    <h2 class="head">Přehled dne</h2>
-   <% form_tag({:action=>"archiv"},:class=>"headForm") do %>
+   <% form_tag(archiv_path,:class=>"headForm") do %>
      <fieldset>
        <%= calendar({:text_field => "date",
               :value => @date || "1.10.2008",
@@ -62,6 +62,5 @@
 		<% if !@question.blank? %>	
 			<%= render :partial=>"web/articles/referendum" %>
 		<% end %>
-		<%= render :partial=>"web/articles/paging",:object=>@max_entries,:locals=>{:p_params=>{:date=>@date}}%>
    </div> <!-- /.col2 -->
  </div> <!-- /.box -->

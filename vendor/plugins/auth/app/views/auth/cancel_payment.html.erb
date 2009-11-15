@@ -1,2 +1,2 @@
 Platba <%= @payment.variable_symbol %> zrušena.
-<%= link_to "Zaplatit znovu",:action=>"pay_method", :id=>@payment.id %>
+<%= link_to "Zaplatit znovu", pay_paysec_path(:id=>@payment.id,:autocomplete=>1) %>

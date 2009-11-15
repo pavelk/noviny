@@ -1,4 +1,4 @@
-<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", articles_path(:action=>"archiv") %></p>
+<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", archiv_path %></p>
 <%= render :partial=> "web/articles/headliner_box" %>
 <ul class="list item">
 	<% @rel_articles.each do |article| -%>

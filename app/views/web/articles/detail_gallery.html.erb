@@ -44,7 +44,7 @@
 	<div class="col2">
 	       <div class="text">
 				<p><%=th @article.short_text %>...</p>
-				<%= link_to "Celý článek", articles_path(:action=>"detail",:id=>@article.id) %>
+				<%= link_to "Celý článek", detail_article_path(pretty_id(@article)) %>
 	       </div> <!-- /.text -->       
 	</div> <!-- /.col2 -->
 	

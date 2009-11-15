@@ -3,6 +3,10 @@ class Web::ArticlesController < Web::WebController
   layout "web/gallery", :except=>[:vote]
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
   
+  def authors
+    @authors = Author.all(:order=>"surname")
+  end
+  
   def add_comment
     @article = Article.find(params[:id])
     if request.get?
@@ -49,7 +53,7 @@ class Web::ArticlesController < Web::WebController
     @info_box = @article.info_boxes.first
     
      if @section
-       add_breadcrumb @section.name, sections_path(:action=>"detail",:id=>@section.id)
+       add_breadcrumb @section.name, section_path(pretty_name(@section))
      else
        add_breadcrumb "Detail", ""
      end
@@ -124,19 +128,20 @@ class Web::ArticlesController < Web::WebController
   end
   
   def archiv
-    per_page = 4
+    @article_photo_show = true
     datum = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Time.now
+    puts params[:date]
     redirect_to home_path and return if datum > Time.now
     @date = datum.to_s(:cz_date)
-    @opinions = Article.all_by_date(datum,Section::NAZORY,params[:page],per_page)
-    @homes = Article.all_by_date(datum,Section::DOMOV,params[:page],per_page)
-    @worlds = Article.all_by_date(datum,Section::SVET,params[:page],per_page)
-    @arts = Article.all_by_date(datum,Section::UMENI,params[:page],per_page)
-    @next_pages = []
-    @max_entries = @opinions
-    @max_entries = @homes if @homes.total_pages > @max_entries.total_pages
-    @max_entries = @worlds if @worlds.total_pages > @max_entries.total_pages
-    @max_entries = @arts if @arts.total_pages > @max_entries.total_pages
+    @opinions = Article.all_by_date(datum,nil,ContentType.opinion_types)
+    ign_arr = @opinions.map{|a| a.id}
+    @homes = Article.all_by_date(datum,Section::DOMOV,ContentType.message_types,ign_arr)
+    ign_arr += @homes.map{|a| a.id}
+    @worlds = Article.all_by_date(datum,Section::SVET,ContentType.message_types,ign_arr)
+    ign_arr += @worlds.map{|a| a.id}
+    @arts = Article.all_by_date(datum,Section::UMENI,ContentType.message_types,ign_arr)
+    ign_arr += @arts.map{|a| a.id}
+    @next_pages = Article.all_by_date(datum,nil,ContentType.other_types,ign_arr)
     @question = Dailyquestion.first_by_date(datum)
     add_breadcrumb "Vydání", ""
   end
@@ -149,14 +154,16 @@ class Web::ArticlesController < Web::WebController
       @section = Section.find(Section::HOME_SECTION_ID)
     end
     @top_themes = @section.top_themes
-    @tag = Theme.find(params[:id])
+    @tag = Theme.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
     @next_topics = @tag.relthemes
     add_breadcrumb "Témata", ""                                 
   end
   
   def author_info
-    @author = Author.find(params[:id])
+    name = params[:name]
+    first,last = name.split("-",2)
+    @author = Author.find(:first,:conditions=>["firstname LIKE ? AND surname LIKE ?","#{first}%","#{last}%"])
     @articles = Article.paginate_from_author(@author.id,params[:page])
     @author_image = @author.pictures.first
     add_breadcrumb "Autor", ""
@@ -193,7 +200,11 @@ class Web::ArticlesController < Web::WebController
     @info_box = @article.info_boxes.first
     @newest = Article.newest(3,@article.id)
     
-    add_breadcrumb @section.name, "" if @section
+    if @section
+       add_breadcrumb @section.name, section_path(pretty_name(@section))
+     else
+       add_breadcrumb "Detail", ""
+     end
     #render :layout=>"web/gallery"
   end
 protected

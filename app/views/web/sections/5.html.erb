@@ -36,9 +36,9 @@
    <ul>
    	<% (1..5).each do |day| %>
 		<% date = (Web::Calendar.sunday_date - day.weeks).to_s(:cz_date) %>
-		<li><%= link_to "Víkend ke dni #{date}", sections_path(:action=>"detail",:date=>date) -%></li>
+		<li><%= link_to "Víkend ke dni #{date}", archiv_get_path(:date=>date) -%></li>
 	<% end %>
-     <li><%= link_to "Archiv vydání", articles_path(:action=>"archiv") %></li>
+     <li><%= link_to "Archiv vydání", archiv_path %></li>
    </ul>
 </div> <!-- /.box -->
 

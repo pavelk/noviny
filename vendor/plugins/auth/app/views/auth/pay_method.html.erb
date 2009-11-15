@@ -13,8 +13,8 @@
 	<input type="hidden" name="Amount" value="<%= @payment.price + @payment.gift.to_f -%>" />
 	<input type="hidden" name="MerchantOrderId" value="<%= @payment.variable_symbol -%>" />
 	<input type="hidden" name="MessageForTarget" value="<%= @payment.web_user.full_name -%>" />
-	<input type="hidden" name="BackURL" value="<%= @app[:url] -%>/auth/confirm_payment?TId={0}&payment_id=<%=@payment.id-%>" />
-	<input type="hidden" name="CancelURL" value="<%= @app[:url] -%>/auth/cancel_payment?payment_id=<%=@payment.id-%>" />
+	<input type="hidden" name="BackURL" value="<%= @app[:url] -%>/potvrzeni-platby?TId={0}&payment_id=<%=@payment.id-%>" />
+	<input type="hidden" name="CancelURL" value="<%= @app[:url] -%>/zruseni-platby?payment_id=<%=@payment.id-%>" />
 </form>
 <%  if @autocomplete %>
 	Přesměrovávám na platební bránu PaySec.....

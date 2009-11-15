@@ -2,7 +2,7 @@
 	<h2 class="h line">Deník Referendum</h2>
 	<ul>
 		<% TextPage.all_visible.each do |tp| %>
-			<li><%= link_to tp.name, :controller=>"/web/text_pages",:action=>"show", :id=>tp.id %></li>
+			<li><%= link_to tp.name, text_page_path(pretty_name(tp)) %></li>
 		<% end %>
 	</ul>
 </div> <!-- /.box -->

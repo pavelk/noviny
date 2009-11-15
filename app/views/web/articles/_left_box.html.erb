@@ -1,6 +1,6 @@
 <ul>
 	<% if @article %>
-		<li><%= link_to "Vytisknout článek", {:print=>"1"},:target=>"_blank" %></li>
+		<li><%= link_to "Vytisknout článek", print_article_path, :target=>"_blank" %></li>
 	<% end %>
 	<li class="displayOverlay">
 		<a href="">Poslat e-mailem</a>

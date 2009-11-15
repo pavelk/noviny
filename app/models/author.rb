@@ -38,13 +38,14 @@ class Author < ActiveRecord::Base
   end
   
   def self.all_right
-    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+    arr = ContentType.author_types
     find(:all,
          :select=>"authors.*",
          :joins=>[:articles],
-         :conditions=>["articles.publish_date >= ? AND articles.publish_date <= ? AND articles.content_type_id IN (?)",Time.now-2.days,Time.now,arr],
-         :order=>"authors.surname ASC",
-         :group=>"authors.id")
+         :conditions=>["articles.publish_date <= ? AND articles.content_type_id IN (?)",Time.now,arr],
+         :order=>"articles.publish_date DESC",
+         :limit=>25,
+         :group=>"authors.id").sort { |x,y| x.surname.parameterize <=> y.surname.parameterize }
   end
   
 end

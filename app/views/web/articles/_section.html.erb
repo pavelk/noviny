@@ -4,13 +4,13 @@
 		<%= article_photo(section) %>
 		<p class="info"><%= section.content_type.name %></p>
 		<h3 class="head">
-			<%= link_to article_name(section), articles_path(:action=>"detail",:id=>section.id) %>
+			<%= link_to article_name(section), detail_article_path(pretty_id(section)) %>
 		</h3>
 		<p class="perex"><%=th section.perex %></p>
 	</div><!-- /.item -->
 <% else %>
 	<div class="item itemSmall">
 	  <p class="info"><%= section.content_type.name %></p>
-	  <h3 class="head"><%= link_to article_name(section), articles_path(:action=>"detail",:id=>section.id) %></h3>
+	  <h3 class="head"><%= link_to article_name(section), detail_article_path(pretty_id(section)) %></h3>
 	</div> <!-- /.item -->
 <% end %>

@@ -20,7 +20,7 @@
 	  <h3 class="head">
 	  	<% name = article_name(left_article) %>
 		<% name = left_article.name if controller.action_name == "author_info" %>
-	  	<%= link_to name, articles_path(:action=>"detail",:id=>left_article.id) -%>
+	  	<%= link_to name, detail_article_path(pretty_id(left_article)) -%>
 	  </h3>
 	  <p class="perex">
 	  	<%=th left_article.perex -%>

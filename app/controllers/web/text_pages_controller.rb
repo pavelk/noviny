@@ -2,7 +2,7 @@ class Web::TextPagesController < Web::WebController
   layout "web/part/text_page"
   
   def show
-    @text_page = TextPage.find(params[:id])
+    @text_page = TextPage.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
     add_breadcrumb @text_page.name, ""
   end
   
@@ -16,6 +16,10 @@ class Web::TextPagesController < Web::WebController
   def gp_box
     @gp = ArticleBanner.find(params[:id])
     render :layout=>"web/part/gp"
+  end
+  
+  def error
+    
   end
   
 end

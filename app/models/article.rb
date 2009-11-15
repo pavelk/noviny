@@ -182,13 +182,22 @@ class Article < ActiveRecord::Base
   
   #Returns all articles paginated by current date as param
   #Conditions is publish_date <= Time.now!
-  def self.all_by_date(date, section_id, page = 1, per_page = 10)
-    Article.paginate(:all,
-                     :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND article_sections.section_id = ? AND approved = ? AND visibility = ?",date.beginning_of_day,date.end_of_day,Time.now,section_id,true,false],
-                     :page=>page,
-                     :per_page=>per_page,
-                     :order=>"order_date DESC",
-                     :joins=>[:article_sections])
+  def self.all_by_date(date, section_id, cont_arr, ign_arr = nil)
+    op = ""
+    if !ign_arr.blank?
+      op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
+    end
+    if !section_id.blank?
+      op += " AND article_sections.section_id = #{section_id}"
+    end
+    if !cont_arr.blank?
+      op += " AND articles.content_type_id IN (#{cont_arr.join(",")})"
+    end
+    Article.find(:all,
+                 :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",date.beginning_of_day,date.end_of_day,Time.now,true,false],
+                 :order=>"content_type_id, order_date DESC",
+                 :joins=>[:article_sections],
+                 :group=>"articles.id")
   end
   
   #Returns the array of readest articles from each section
@@ -221,29 +230,29 @@ class Article < ActiveRecord::Base
                  :limit=>limit)
   end
   
-  #Returns all today news from all sections except NAZORY and HP 
-  def self.today_top_news(limit = 10,ign_arr = nil)
+  #Returns all news from all sections except NAZORY and HP 
+  def self.middle_news(limit = 12,ign_arr = nil)
     op = ""
     if !ign_arr.blank?
       op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
     end
     find(:all,
-         :conditions=>["content_type_id = ? AND publish_date >= ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",ContentType::ZPRAVA,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
+         :conditions=>["content_type_id = ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",ContentType::ZPRAVA,Time.now,true,false],
          :order=>"priority_section DESC, order_date DESC",
          :include=>[:content_type],
          :group=>"articles.id",
          :limit=>limit)
   end
   
-  #Returns all today opinions not from section NAZORY and HP
-  def self.today_top_opinions(section_id,limit = 10,ign_arr = nil)
-    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::GLOSA]
+  #Returns all opinions from section section_id, limit=>12
+  def self.middle_opinions(section_id,limit = 12,ign_arr = nil)
+    arr = ContentType.author_types
     op = ""
     if !ign_arr.blank?
       op += " AND articles.id NOT IN (#{ign_arr.join(",")})"
     end
     find(:all,
-         :conditions=>["content_type_id IN (?) AND article_sections.section_id != ? AND publish_date >= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",arr,section_id,(Time.now - 2.days).beginning_of_day,Time.now,true,false],
+         :conditions=>["content_type_id IN (?) AND article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",arr,section_id,Time.now,true,false],
          :order=>"order_date DESC",
          :joins=>[:article_sections],
          :include=>[:content_type],
@@ -368,7 +377,7 @@ class Article < ActiveRecord::Base
      return Article.right_boxes_rec([], section_id, beg_date).uniq
   end
   
-  def self.right_boxes_rec(boxes = [], section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_back = 5, limit_count = 8)
+  def self.right_boxes_rec(boxes = [], section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_back = 35, limit_count = 7)
      min_limit_count = 5
      # look at actual section_id
      boxes += Article.r_boxes(section_id,beg_date,limit_count)
@@ -388,19 +397,30 @@ class Article < ActiveRecord::Base
   
   def self.down_boxes(section_id,ign_arr)
     down_boxes = []
+    down_arr = []
     ign_cont = ContentType.ignore_down_boxes
     [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
+      ar = []
       if section_id == sec
-        ar = []
         ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1)
+        ign_arr += ar.map{|a| a.id}
         ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
-        down_boxes << ["Názory",ar] unless ar.blank?
+        unless ar.blank?
+          down_boxes << ["Názory",ar]
+          ign_arr += ar.map{|a| a.id}
+        end
       else
-        ar = Article.from_section(:section_id=>sec,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
-        down_boxes << [Section.find(sec).name,ar] unless ar.blank?
+        ar += Article.from_section(:section_id=>sec,:limit=>1)
+        ign_arr += ar.map{|a| a.id}
+        ar += Article.from_section(:section_id=>sec,:limit=>1,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
+        unless ar.blank?
+          down_boxes << [Section.find(sec).name,ar] unless ar.blank?
+          ign_arr += ar.map{|a| a.id}
+        end
       end
+      down_arr += ar
     end
-    down_boxes
+    return down_boxes, down_arr
   end
   ########################## end added by Jan Uhlar
 end

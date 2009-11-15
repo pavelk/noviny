@@ -22,7 +22,7 @@ Datum expirace:
 				<% if @web_user.is_admin? %>
 					<%= link_to "Edit",:action=>"edit_payment", :id=>payment.id %>
 				<% else %>
-					<%= link_to "Zaplatit PaySec",:action=>"pay_method", :id=>payment.id,:autocomplete=>1 unless payment.payed_at %>
+					<%= link_to "Zaplatit PaySec", pay_paysec_path(:id=>payment.id,:autocomplete=>1) unless payment.payed_at %>
 					<%#= link_to "Ověřit zaplacení",:action=>"confirm_payment", :payment_id=>payment.id unless payment.payed_at %>
 				<% end %>
 			</td>
@@ -34,5 +34,5 @@ Datum expirace:
 	<br/>
 	<%= link_to "Zpět na uživatele", :action=>"edituser",:id=>@edit_web_user.id %>
 <% else %>
-	<%= link_to "Nová platba", :action=>"pay" %>
+	<%= link_to "Nová platba", user_new_payment_path %>
 <% end %>

@@ -33,7 +33,7 @@
         </div> <!-- /#main -->
 		<span id="flash_notice" style="color: green"><%= flash[:notice] if flash[:notice] -%></span>
 	   	<span id="flash_error" style="color: red"><%= flash[:error] if flash[:error] -%></span>
-        <% form_tag({:controller=>"sections",:action=>"search"},:id=>"search") do %>
+        <% form_tag(search_path,:id=>"search") do %>
 			<fieldset>
 				<%= text_field_tag "text", @text, :class=>"button" %>
 				<%= submit_tag "Hledej", :class=>"submit" %>
@@ -45,9 +45,9 @@
           	<% Section.all_root.each do |root| %>
 				<% next if root.id == 9999 %>
 				<% if (@section && @section.id == root.id) %>
-	            	<li><%= link_to(root.name, sections_path(:action=>"detail",:id=>root.id),:style=>"color:black;") %></li>
+	            	<li><%= link_to(root.name, section_path(pretty_name(root)),:style=>"color:black;") %></li>
 				<% else %>
-					<li><%= link_to(root.name, sections_path(:action=>"detail",:id=>root.id)) %></li>
+					<li><%= link_to(root.name, section_path(pretty_name(root))) %></li>
 				<% end %>
 			<% end %>
 	      </ul>
@@ -58,7 +58,7 @@
 	          <span>Podrubriky:</span>
 	          <ul>
 	            <% @section.children.each do |sub| %>
-					<li><%= (@subsection && @subsection.id == sub.id) ? sub.name : link_to(sub.name, sections_path(:action=>"subsection",:id=>sub.id)) -%></li>
+					<li><%= (@subsection && @subsection.id == sub.id) ? sub.name : link_to(sub.name, subsection_path(pretty_name(sub))) -%></li>
 				<% end %>
 	          </ul>
 		  <% end %>
@@ -66,7 +66,7 @@
 	          <span>Temata:</span>
 			  <ul>
 			  <% @top_themes.each do |tag| -%>
-			  	<li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, articles_path(:action=>"topic",:id=>tag.id)) -%></li>
+			  	<li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, topic_path(pretty_name(tag))) -%></li>
 			  <% end %>
 	          </ul>
 		  <% end %>	  
@@ -80,13 +80,13 @@
 					<% if @web_user.is_admin? %>
 						<% a_url = {:controller=>"/authadmin"} %>
 					<% else %>
-						<% a_url = {:controller=>"/auth",:action=>"info"} %>
+						<% a_url = user_info_path %>
 					<% end %>
 					<%= link_to "Zobrazit můj profil", a_url  %>
 					<%#= link_to "Logout", logout_path %>
 				<% else %>
 					<li class="displayOverlay">
-						<%= link_to "Přihlásit předplatitele" %>
+						<%= link_to "Přihlásit předplatitele","" %>
 						<div class="overlay">
 			                <% form_tag({:controller=>"/auth",:action => 'login'},:class=>"formBox") do -%>
 			                  <fieldset>
@@ -115,8 +115,8 @@
 			                    <input type="submit" value="Přihlásit" class="submit" />
 			                    
 			                    <ul class="offsetTop">
-			                      <li><a href="/signup">Registrace</a></li>
-			                      <li><a href="/lostpassword">Ztracené heslo</a></li>
+			                      <li><%= link_to "Registrace", signup_path%></li>
+			                      <li><%= link_to "Ztracené heslo", lostpassword_path %></li>
 			                    </ul>
 			                  </fieldset>
 			                <% end %>

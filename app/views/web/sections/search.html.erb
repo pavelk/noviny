@@ -10,7 +10,7 @@
      <div class="paging">
        <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
        <ul class="pages">
-		<%= will_paginate @articles,:params=>{:text=>@text} %> TODO
+		<%= will_paginate @articles,:params=>{:text=>@text} %>
        </ul>
      </div> <!-- /.paging -->
    </div> <!-- /.col2 -->

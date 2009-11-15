@@ -2,7 +2,9 @@
 	<h2 class="h line">Autoři</h2>
 	<ul>
 	  <% @authors.each do |author| %>
-	  	<li><%= link_to author.full_name, articles_path(:action=>"author_info",:id=>author.id) %></li>
-					  <% end%>
+	  	<li><%= link_to author.full_name, author_info_path(pretty_name(author)) %></li>
+	  <% end%>
+	  <li>&nbsp;</li>
+	  <li><%= link_to "Všichni autoři",articles_path(:action=>"authors") %></li>
 	</ul>
 </div> <!-- /.box -->
