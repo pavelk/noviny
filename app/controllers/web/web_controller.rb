@@ -4,6 +4,7 @@ class Web::WebController < ApplicationController
   before_filter :set_variables
   before_filter :set_printable
   before_filter :app_config, :ident
+  before_filter :check_authentication
 
   # Used to be able to leave out the action
   def process(request, response)
@@ -56,6 +57,7 @@ protected
     end
 private  
   def check_authentication
-    
+    flash[:error] = "" if flash[:error] == "Musíte se přihlásit pro přístup na tuto stránku."
+    return false
   end
 end

@@ -377,13 +377,13 @@ class Article < ActiveRecord::Base
   #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
   def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
     op = section_id.nil? ? "articlebanner_sections.section_id IS ? AND article_banners.publish_date = ?" : "articlebanner_sections.section_id = ? AND article_banners.publish_date = ?"
-    order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? ", priority_home DESC" : ", priority_section DESC"
+    order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? "priority_home DESC" : "priority_section DESC"
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date],
                        :joins=>[:articlebanner_sections],
                        :include=>[:article,:picture],
                        :limit=>limit_count,
-                       :order=>"order_date DESC#{order}, order_time DESC")
+                       :order=>"#{order},publish_date DESC,updated_at DESC")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)

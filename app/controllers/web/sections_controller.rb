@@ -2,14 +2,15 @@ class Web::SectionsController < Web::WebController
   layout "web/referendum"
   
   def index
-   # redirect_to :controller=>"sections",:action=>"detail",:id=>Section::VIKEND and return if Web::Calendar.week?
+    length_limit = 5
+    redirect_to section_path(:name=>"vikend") and return if Web::Calendar.week?
     @section = Section.find(Section::HOME_SECTION_ID)
     set_common_variables(Section::HOME_SECTION_ID)
     ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
     ign_arr += @rel_articles.map{|a| a.id}.uniq
       @today_opinions = Article.home_opinions(Time.now,Time.now,{:limit=>1,:ignore_arr=>ign_arr,:length_limit=>nil})
-      if @today_opinions.length < 5
-        @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>5-@today_opinions.length})
+      if @today_opinions.length < length_limit
+        @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>length_limit-@today_opinions.length})
       end
     @question = Dailyquestion.first_by_date
     @article_photo_show = true

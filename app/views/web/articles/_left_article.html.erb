@@ -14,7 +14,7 @@
 	  <p class="info">
 	  	<%=th left_article.head -%>
 		<% if with_date %>
-			<span><%= left_article.publish_date.to_s(:cz_date) if (left_article.publish_date && left_article.publish_date < Time.now.beginning_of_day) %></span>
+			<span><%#= left_article.publish_date.to_s(:cz_date) if (left_article.publish_date && left_article.publish_date < Time.now.beginning_of_day) %></span>
 		<% end %>
 	  </p>
 	  <h3 class="head">
