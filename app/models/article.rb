@@ -103,7 +103,7 @@ class Article < ActiveRecord::Base
   end
   
   #Added by Jan Uhlar
-  before_save :set_order_date
+  #after_save :set_order_date
   
   #Returns header of the article
   def head
@@ -446,6 +446,8 @@ protected
       
       self.order_date = max_date.to_date
       self.order_time = max_date.to_time
+      self.ignore_set_order_date = 1
+      self.save
     end
   end
 end

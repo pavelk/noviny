@@ -323,7 +323,13 @@ private
       p_time = ' ' + params[:publish_time] + ':00'
     end    
     @article.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time)
-    
+     max_date = @article.publish_date
+     max_date = @article.first_approved_date if (@article.first_approved_date && @article.first_approved_date > max_date)
+     max_date = @article.major_modified_date if (@article.major_modified_date && @article.major_modified_date > max_date)
+     
+     @article.order_date = max_date.to_date
+     @article.order_time = max_date.to_time
+     @article.save
     #if(@article.publish_date < @article.updated_at )
     #  @article.update_attributes( :order_date => @article.updated_at)
     #else
