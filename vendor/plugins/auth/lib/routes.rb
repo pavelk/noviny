@@ -4,8 +4,8 @@ module Routes
   end
   
   ActionController::Routing::Routes.draw do |map|
-    map.login "prihlaseni",:controller=>"auth",:action=>"login"
-    map.logout "odhlaseni",:controller=>"auth",:action=>"logout"
+    map.login "prihlaseni-uzivatele",:controller=>"auth",:action=>"login"
+    map.logout "odhlaseni-uzivatele",:controller=>"auth",:action=>"logout"
     map.signup "registrace-uzivatele",:controller=>"auth",:action=>"signup"
     map.signup2 "registrace-uzivatele-platba",:controller=>"auth",:action=>"signup2"
     map.signup_paysec "registrace-uzivatele-paysec",:controller=>"auth",:action=>"pay_method"
