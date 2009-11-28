@@ -40,10 +40,14 @@ protected
      @newest = Article.newest
    end
  
-    def set_printable
-      @printable = params[:print] ? true : false
-    end
-    
+   def set_printable
+     @printable = params[:print].to_i > 0
+   end
+ 
+  def pretty_id(object)
+    return "#{object.id}-#{object.name.parameterize}"    
+  end
+ 
     def pretty_name(object)
       if (object.class.name == "Author")
         return "#{object.firstname.parameterize}-#{object.surname.parameterize}"

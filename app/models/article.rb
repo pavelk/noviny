@@ -1,4 +1,5 @@
 class Article < ActiveRecord::Base
+  
   acts_as_taggable
   version_fu do
     belongs_to :author, :class_name=>'::Author'
@@ -273,6 +274,14 @@ class Article < ActiveRecord::Base
          :limit=>limit)
   end
   
+  def self.opinions(date,page = 1)
+    paginate(:all,
+             :conditions=>["publish_date BETWEEN ? AND ? AND content_type_id IN (?)",date.beginning_of_day,date.end_of_day,ContentType.opinion_types],
+             :order=>"order_date DESC, priority_section DESC, order_time DESC",
+             :page=>page,
+             :per_page=>12)
+  end
+  
   #Returns all today articles belonging to the section as params 'section_id'
   #limited by param 'limit'
   #neni v opinions na HP
@@ -377,7 +386,7 @@ class Article < ActiveRecord::Base
   #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
   def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
     op = section_id.nil? ? "articlebanner_sections.section_id IS ? AND article_banners.publish_date = ?" : "articlebanner_sections.section_id = ? AND article_banners.publish_date = ?"
-    order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? "priority_home DESC" : "priority_section DESC"
+    order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? "article_banners.priority_home DESC" : "article_banners.priority_section DESC"
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date],
                        :joins=>[:articlebanner_sections],
@@ -415,17 +424,17 @@ class Article < ActiveRecord::Base
     [Section::DOMOV,Section::SVET,Section::UMENI].each do |sec|
       ar = []
       if section_id == sec
-        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1)
+        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>2,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
         ign_arr += ar.map{|a| a.id}
-        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
+        ar += Article.from_section(:section_id=>Section::NAZORY,:limit=>1,:ignore_arr=>ign_arr) if ar.blank?
         unless ar.blank?
           down_boxes << ["Názory",ar]
           ign_arr += ar.map{|a| a.id}
         end
       else
-        ar += Article.from_section(:section_id=>sec,:limit=>1)
+        ar += Article.from_section(:section_id=>sec,:limit=>2,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
         ign_arr += ar.map{|a| a.id}
-        ar += Article.from_section(:section_id=>sec,:limit=>1,:ignore_arr=>ign_arr, :ignore_content_type=>ign_cont)
+        ar += Article.from_section(:section_id=>sec,:limit=>1,:ignore_arr=>ign_arr) if ar.blank?
         unless ar.blank?
           down_boxes << [Section.find(sec).name,ar] unless ar.blank?
           ign_arr += ar.map{|a| a.id}

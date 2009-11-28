@@ -13,7 +13,7 @@ class ContentType < ActiveRecord::Base
   DOKUMENT = 10
   ROZHOVOR = 11
   FEJETON = 12
-  YIVE = 13
+  ZIVE = 13
   TIP = 14
   VZPOMINKA = 15
   VYPRAVENI = 16
@@ -44,12 +44,16 @@ class ContentType < ActiveRecord::Base
     [ZPRAVA]
   end
   
+  def self.author_nick_types
+    [ZPRAVA,GLOSA,VIDEO,TIP]
+  end
+  
   def self.author_types
     [SLOUPEK,KOMENTAR,ESEJ,ANALYZA,RECENZE,KRITIKA,FEJETON,VZPOMINKA,VYPRAVENI,PORTRET,POVIDKA,STESTI,DOPISY]
   end
   
   def self.ignore_down_boxes
-    [ZPRAVA,SLOUPEK,KOMENTAR,GLOSA,DOPISY,TIP]
+    [ZPRAVA,SLOUPEK,KOMENTAR,GLOSA,DOPISY,TIP,POEZIE]
   end
   
   def self.other_types

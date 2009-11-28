@@ -86,5 +86,4 @@ jQuery(document).ready(function() {
     if(jQuery(source).hasClass("overlay")) remove = false;
     if(remove) jQuery(".activeOverlay").remove();
   });
-  
 });

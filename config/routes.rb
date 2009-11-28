@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   #Added by Jan Uhlar
-  map.home "home", :controller=>"web/sections"
+  map.home "", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
   
   map.archiv "/clanky/archiv/:date",:controller => 'web/articles',:action=>"archiv",
@@ -14,24 +14,35 @@ ActionController::Routing::Routes.draw do |map|
   map.detail_article "/clanek/:id",:controller => 'web/articles',:action=>"detail"
   map.gallery_article "/clanek-galerie/:id",:controller => 'web/articles',:action=>"detail_gallery"
   map.delete_comment "/clanek/smazat_komentar/:id",:controller => 'web/articles',:action=>"delete_comment"
+  map.section_succ "/rubrika/:name/zobrazit-dalsi/:succ_date",:controller => 'web/sections',:action=>"detail"
+  map.section_prev "/rubrika/:name/zobrazit-predchozi/:prev_date",:controller => 'web/sections',:action=>"detail"
+
   map.section "/rubrika/:name",:controller => 'web/sections',:action=>"detail"
+ 
   map.subsection "/podrubrika/:name",:controller => 'web/sections',:action=>"subsection"
+  map.topics "/temata",:controller => 'web/sections',:action=>"topics"
   map.topic "/tema/:name",:controller => 'web/articles',:action=>"topic"
   map.author_info "/autor/:name",:controller => 'web/articles',:action=>"author_info"
   map.print_article "/clanek/tisk/:id",:controller => 'web/articles',:action=>"detail",:print=>1
   map.text_page "/stranka/:name",:controller => 'web/text_pages',:action=>"show"
   map.search "/hledani",:controller => 'web/sections',:action=>"search"
+  map.download_audio "/download/audio/:id",:controller => 'web/articles',:action=>"download_audio"
+  map.download_inset "/download/inset/:id",:controller => 'web/articles',:action=>"inset"
+  map.user_info "/uzivatel/info/:id",:controller => 'web/web_users',:action=>"info"
+  
+  map.hp "/preview/headliner/:id",:controller => 'web/text_pages',:action=>"hp_box"
+  map.gp "/preview/banner/:id",:controller => 'web/text_pages',:action=>"gp_box"
             
   map.with_options :controller => 'web/articles' do |article|
-    article.articles   'articles/:action/:id', :action  => 'index', :id=>nil
+    article.articles   'clanek/:action/:id', :action  => 'index', :id=>nil
   end
   
   map.with_options :controller => 'web/sections' do |section|
-    section.sections  'sections/:action/:id', :action  => 'index', :id=>nil
+    section.sections  'sekce/:action/:id', :action  => 'index', :id=>nil
   end
   
   map.with_options :controller => 'web/text_pages' do |text_page|
-    text_page.show  'text_pages/:action/:id', :action  => 'show', :id=>nil
+    text_page.show  'stranka/:action/:id', :action  => 'show', :id=>nil
   end
   #Added by Jan Uhlar
   

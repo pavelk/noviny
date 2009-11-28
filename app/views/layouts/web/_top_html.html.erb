@@ -14,7 +14,13 @@
 
     <div id="view">
       <div class="topAdvert">
-        <a href=""><%= image_tag "web/banner-top.jpg" %></a>
+        <script type="text/javascript"><!--<![CDATA[
+			/* (c)AdOcean 2003-2009 */
+			/* SLAVE: imp_cz.Vydavatelstv_ Referendum
+			s.r.o..Denikreferendum.cz.Leader board */
+			if(typeof adoceanimpczofeplksldm=='function') adoceanimpczofeplksldm();
+			//]]>-->
+		</script>
       </div> <!-- /.topAdvert -->
 
     
@@ -26,6 +32,8 @@
 			<% end %>  
 			<% if (@section && @breadcrumbs.last.first == @section.name) %>
 				<%= link_to(h(@breadcrumbs.last.first),@breadcrumbs.last.last,:style=>"color:black;") %>
+			<% elsif (@breadcrumbs.last.last == home_path) %>	
+				<%= link_to(h(@breadcrumbs.last.first),home_path,:style=>"color:black;") %>
 			<% else %>
 				<%= h(@breadcrumbs.last.first) %>
 			<% end %>
@@ -63,11 +71,12 @@
 	          </ul>
 		  <% end %>
 		  <%if !@top_themes.blank? %>
-	          <span>Temata:</span>
+	          <span>Témata:</span>
 			  <ul>
 			  <% @top_themes.each do |tag| -%>
 			  	<li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, topic_path(pretty_name(tag))) -%></li>
 			  <% end %>
+			  <li><%= link_to "všechna témata", topics_path %></li>
 	          </ul>
 		  <% end %>	  
         </div> <!-- /#subMenu -->
@@ -90,7 +99,9 @@
 						<div class="overlay">
 			                <% form_tag({:controller=>"/auth",:action => 'login'},:class=>"formBox") do -%>
 			                  <fieldset>
+			                  	<%= exit_span %>
 			                    <h4 class="t">Přihlásit</h4>
+								
 			                    
 			                    <div class="clearfix">
 			                      <div class="lab">
@@ -126,6 +137,7 @@
             <li class="displayOverlay">
             	<a href="">Odebrat Zpravodaj</a>
 				<div class="overlay overlayLongLabel">
+					<%= exit_span %>
 				<% form_remote_tag(:url=>{:controller=>"/auth",:action => 'create_newsletter'}, :html=>{:class=>"formBox"}) do -%>
                   <fieldset>
                     <h4 class="t">Odebírat zpravodaj</h4>
@@ -138,7 +150,7 @@
                       	<%= text_field "newsletter", "email", :class=>"button w100" -%>
                       </div> <!-- /.con -->
                     </div> <!-- /.clearfix -->
-					<%= submit_tag "Odebírat zpravodaj", :class=>"submit" %>
+					<%= submit_tag "Potvrdit", :class=>"submit" %>
                   </fieldset>
 				  <%= spinner_tag("news") %>
                 <% end %>

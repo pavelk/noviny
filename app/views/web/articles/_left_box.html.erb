@@ -1,10 +1,12 @@
+<% if !@printable %>
 <ul>
 	<% if @article %>
-		<li><%= link_to "Vytisknout článek", print_article_path, :target=>"_blank" %></li>
+		<li><%= link_to "Vytisknout článek", print_article_path(pretty_id(@article)), :target=>"_blank" %></li>
 	<% end %>
 	<li class="displayOverlay">
-		<a href="">Poslat e-mailem</a>
+		<!--<a href="">Poslat e-mailem</a>-->
 		<div class="overlay overlayEmail">
+			<%= exit_span %>
            <form action="" method="post" class="formBox">
 		    <fieldset>
 		      <h4 class="t">Poslat e-mailem</h4>
@@ -16,17 +18,32 @@
 		  </form>
          </div> <!-- /.overlay -->
 	</li>
+	<% if @article %>
+		<% a_url = detail_article_url(pretty_id(@article)) %>
+		<% a_title = (@article.name) %>
+	<% elsif @tag %>	
+		<% a_url = topic_url(pretty_name(@tag)) %>
+		<% a_title = (@tag.name) %>
+	<% else %>
+		<% a_url = nil %>
+	<% end %>	
+	<% if a_url %>
 	<li class="displayOverlay">
 		<a href="" class="share">Sdílet</a>
 		<div class="overlay overlayEmail">
- <h4 class="t">Sdílet</h4>
+			<%= exit_span %>
+ 			<h4 class="t">Sdílet</h4>
 			<ul>
-			  <li><a href="">Delicious</a></li>
-			  <li><a href="">Delicious</a></li>
-			  <li><a href="">Delicious</a></li>
-			  <li><a href="">Delicious</a></li>
+			  <li><%= link_to "Facebook", "http://www.facebook.com/share.php?u=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Twitter", "http://cnntweet.appspot.com/articles/#{a_url}/#{a_title}/tweet/",:target=>"_blank" %></li>
+			  <li><%= link_to "Digg", "http://digg.com/submit?phase=2&amp;url=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Delicious", "http://del.icio.us/post?v=4&amp;partner=cnn&amp;noui&amp;jump=close&amp;url=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Myspace", "http://www.myspace.com/Modules/PostTo/Pages/?t=#{a_title}&u=#{a_url}",:target=>"_blank" %></li>
 			</ul>
         </div> <!-- /.overlay -->
 	</li>
+	<% end %>
+	
 	<li>Velikost textu <a href="#" id="fx-fontincr">+</a> <a href="#" id="fx-fontdecr">-</a></li>
 </ul>
+<% end %>

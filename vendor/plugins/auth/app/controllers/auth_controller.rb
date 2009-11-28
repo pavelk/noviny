@@ -115,6 +115,7 @@ class AuthController < Web::WebController
   end
  
   def login
+    @headline = "Přihlášení uživatele"
     case request.method
     when :post
       if not params[:post].nil?

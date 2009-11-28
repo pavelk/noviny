@@ -1,0 +1,6 @@
+<% if @article.audios.count > 0 %>
+	<h2>Audio soubory</h2>
+	<% @article.audios.each do |audio| %>
+		<%= link_to audio.name, download_audio_path(audio.id) %> (<%= audio.data_file_name.split(".").last %>, <%= number_to_human_size audio.data.size %>)<br>
+	<% end %>
+<% end %>

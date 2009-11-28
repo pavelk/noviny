@@ -2,32 +2,35 @@
 <%= render :partial=> "web/articles/related" %>
 	        
 <div class="box">
-  <% if !@today_articles.blank? %>	
-	  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>">
-	  	<% if Web::Calendar.week? && Web::Calendar.sunday? %>
-	  		Víkend <%= Time.now.to_s(:cz_date) %>
-		<% else %>
-			Dnes <%= Time.now.to_s(:cz_date) %>
-		<% end %>
-	  </h2>
-	  <div class="in">
-		<%= render :partial=>"web/articles/left_article", :collection=>@today_articles,:locals=>{:with_date=>false,:small_class=>true} %>
-	   </div> <!-- /.in -->
-	<% end %>   
-</div> <!-- /.box -->
-
-<div class="box">
-  <% if !@yesterday_articles.blank? %>	
-	  <h2 class="h line">
-	  	<% if Web::Calendar.week? && Web::Calendar.sunday? %>
-	  		Pátek <%= (Time.now - 2.days).to_s(:cz_date) %>
-		<% else %>
-			Včera <%= (Time.now.yesterday).to_s(:cz_date) %>
-		<% end %>
-	  </h2>
-	  <div class="in">
-		<%= render :partial=>"web/articles/left_article", :collection=>@yesterday_articles,:locals=>{:with_date=>false,:small_class=>true} %>
-	   </div> <!-- /.in -->
+  <% if !@all_opinions.blank? %>
+  		<% all_ops = 0 %>
+		<% prev = nil %>
+		<% succ = nil %>
+  		<% @all_opinions.each_with_index do |opinion,index| %>
+	  		<% date = opinion.pub_date.to_date %>
+			<% prev ||= date%>
+			<% today_opinions = Article.opinions(date)%>
+			<% all_ops += today_opinions.length %>
+		  <h2 class="h <%= index == 0 ? '' : 'line'%>">
+		  	<% if date == Time.now.to_date %>
+				Dnes <%= date.to_s(:cz_date) %>
+			<% elsif date == (Time.now-1.days).to_date %>
+				Včera <%= date.to_s(:cz_date) %>
+			<% else %>
+		  		<%= date.to_s(:cz_date) %>
+			<% end %>
+		  </h2>
+		  <div class="in">
+			<%= render :partial=>"web/articles/left_article", :collection=>today_opinions,:locals=>{:with_date=>false,:small_class=>true} %>
+		   </div> <!-- /.in -->
+		    <% if all_ops >= 12 %>
+		   		<% succ = @all_opinions[index+1] if (index < (@all_opinions.length - 1)) %>
+				<% break %>
+		   <% end %>
+	   <% end %>
+	   <% art = Article.first(:conditions=>["publish_date > ? AND content_type_id IN (?)",prev.end_of_day,ContentType.opinion_types]) %>
+	   <%= link_to "Předchozí", section_prev_path({:name=>pretty_name(@section),:prev_date=>prev}) if prev && art %>
+	   <%= link_to "Další", section_succ_path(pretty_name(@section),succ.pub_date.to_date) if succ %>
    <% end %>
 </div> <!-- /.box -->
 <div class="box">

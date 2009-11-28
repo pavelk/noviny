@@ -2,10 +2,7 @@
    <h2 class="head">Přehled dne</h2>
    <% form_tag(archiv_path,:class=>"headForm") do %>
      <fieldset>
-       <%= calendar({:text_field => "date",
-              :value => @date || "1.10.2008",
-              :update_div => nil,
-              :class_name => "cal"}) -%>
+       <%= date_select(:range, :publish_date, {:start_year=>2008, :end_year=>Time.now.year})%>
        <%= submit_tag "Změnit", :class=>"submit" %>
      </fieldset>
    <% end %>

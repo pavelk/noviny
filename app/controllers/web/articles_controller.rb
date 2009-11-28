@@ -1,7 +1,17 @@
 require "date"
 class Web::ArticlesController < Web::WebController
-  layout "web/gallery", :except=>[:vote]
+  layout :set_layout, :except=>[:vote]
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
+  
+  def download_audio
+    audio = Audio.find(params[:id])
+    send_file("#{RAILS_ROOT}/public#{audio.data.url}",:filename=>audio.name,:disposition=>"attachment",:type=>audio.data.type)
+  end
+  
+  def download_inset
+    inset = Inset.find(params[:id])
+    send_file("#{RAILS_ROOT}/public#{inset.data.url}",:filename=>inset.name,:disposition=>"attachment",:type=>inset.data.type)
+  end
   
   def authors
     @authors = Author.all(:order=>"surname")
@@ -22,7 +32,7 @@ class Web::ArticlesController < Web::WebController
     if request.post?
       @comment = ArticleComment.new(params[:comment])
       if @comment.save
-        redirect_to :action=>"detail", :id=>@article.id
+        redirect_to detail_article_path(pretty_id(@article))
       else
         render :action=>"detail_noimg" and return unless @article_image
         render :action=>"detail"
@@ -32,8 +42,9 @@ class Web::ArticlesController < Web::WebController
   
   def delete_comment
     com = ArticleComment.find(params[:id])
+    redirect_to home_path and return if !(@web_user && @web_user.can_modify?(com))
     com.destroy
-    redirect_to :action=>"detail", :id=>com.article_id
+    redirect_to detail_article_path(pretty_id(com.article))
   end
   
   def detail
@@ -129,8 +140,11 @@ class Web::ArticlesController < Web::WebController
   
   def archiv
     @article_photo_show = true
-    datum = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Time.now
-    puts params[:date]
+    if params[:range]
+      datum = Date.civil(params[:range][:"publish_date(1i)"].to_i,params[:range][:"publish_date(2i)"].to_i,params[:range][:"publish_date(3i)"].to_i).to_time rescue Time.now
+    else
+      datum = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Time.now
+    end
     redirect_to home_path and return if datum > Time.now
     @date = datum.to_s(:cz_date)
     @opinions = Article.all_by_date(datum,nil,ContentType.opinion_types)
@@ -143,6 +157,8 @@ class Web::ArticlesController < Web::WebController
     ign_arr += @arts.map{|a| a.id}
     @next_pages = Article.all_by_date(datum,nil,ContentType.other_types,ign_arr)
     @question = Dailyquestion.first_by_date(datum)
+    @range = Article.new(:publish_date=>datum)
+    
     add_breadcrumb "Vydání", ""
   end
   
@@ -156,7 +172,7 @@ class Web::ArticlesController < Web::WebController
     @top_themes = @section.top_themes
     @tag = Theme.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
-    @next_topics = @tag.relthemes
+    @next_topics = @tag.relthemes + @tag.inverse_relthemes
     add_breadcrumb "Témata", ""                                 
   end
   
@@ -208,6 +224,10 @@ class Web::ArticlesController < Web::WebController
     #render :layout=>"web/gallery"
   end
 protected
+  def set_layout
+    @printable ? "web/print" : "web/gallery"
+  end
+
   def authorize_users_only
     require_auth 'USERS'
   end

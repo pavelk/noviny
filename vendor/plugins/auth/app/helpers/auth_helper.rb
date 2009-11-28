@@ -7,9 +7,14 @@ module AuthHelper
     options = options.symbolize_keys
     object = instance_variable_get("@#{object_name}")
     if object && !object.errors.empty?
+      errs = []
+      object.errors.each do |er|
+        errs << [er[0],er[1]]
+      end
+      errs = errs.sort{|x,y| WebUser::FIELDS[x[0].to_sym] <=> WebUser::FIELDS[y[0].to_sym] }
       return content_tag('div',
         content_tag(options[:header_tag] || 'h3', "There are following errors in the form:"[:error_header]) +
-          content_tag('ul', object.errors.collect { |err| content_tag('li', err[1]) }),
+          content_tag('ul', errs.collect { |err| content_tag('li', err[1]) }),
             'id' => options[:id] || 'errorExplanation', 'class' => options[:class] || 'errorExplanation'
           )
     else

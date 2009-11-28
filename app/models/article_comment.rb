@@ -6,6 +6,14 @@ class ArticleComment < ActiveRecord::Base
   
   validates_presence_of :text, :message=>"Musíte vyplnit text"
   
+ def article
+   Article.find(self.article_id)
+ end
+ 
+ def web_user
+   WebUser.find(self.web_user_id)
+ end
+ 
   #Returns created_at at format: Úterý, 2.Srpna 2009, 11:34:24
   def comment_date
     date = self.created_at

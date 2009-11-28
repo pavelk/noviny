@@ -9,7 +9,7 @@
 		<%= link_to(main_image_tag(@headliner_box.picture.data.url(:hp_main)), detail_article_path(pretty_id(@headliner_box.article))) %>
 	<% end %>
 	<div class="caption">
-	    <span><%= @headliner_box.info %></span>
+	    <span><%= link_to @headliner_box.info, detail_article_path(pretty_id(@headliner_box.article)) %></span>
 	</div> <!-- /.caption -->
   </div> <!-- /.img -->
   

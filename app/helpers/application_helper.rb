@@ -8,6 +8,10 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def exit_span
+    "<span class=\"exits\" style=\"float:right;cursor:pointer;\" onclick=\"jQuery('.activeOverlay').remove();\">X</span>"
+  end
+    
   def pretty_id(object)
     return "#{object.id}-#{object.name.parameterize}"    
   end
@@ -42,6 +46,13 @@ module ApplicationHelper
   end
   
   def th(text)
+    #<img style="width: 144px; height: 96px;" id="img_35" src="/assets/pictures/35/small/Die_Welle.jpg?1256560529">
+    match = text.match(/<img .*?src=".*?(\/small\/).*?">/)
+    if match
+      text = text.gsub(match[1],"/hp_main/")
+    end
+    match_two = text.match(/<img .*?(style=".*?").*?>/)
+    text = text.sub(match_two[1],"") if match_two
     return text.gsub("\r\n","<br>").gsub("\n","<br>").gsub("___","&nbsp;")
   end
   
@@ -57,7 +68,7 @@ module ApplicationHelper
     arr = ContentType.author_image_types
     if (article.section_id == Section::NAZORY || arr.include?(article.content_type_id))
       author = article.author
-      return link_to(main_image_tag(author.pictures.first.data.url(:author_little)), :controller=>"web/articles",:action=>"detail",:id=>article.id) if author && author.pictures.first
+      return link_to(main_image_tag(author.pictures.first.data.url(:author_little)), detail_article_path(pretty_id(article))) if author && author.pictures.first
     else
       return article_photo(article)
     end
@@ -67,9 +78,9 @@ module ApplicationHelper
   #Returns first picture link for article
   def article_photo(article)
     if (fh = FlashphotoArticle.find(:all,:conditions=>{:article_id=>article.id},:order=>"updated_at DESC").first)
-      link_to(main_image_tag(fh.photo.url), :controller=>"web/articles",:action=>"detail",:id=>article.id)
+      link_to(main_image_tag(fh.photo.url), detail_article_path(pretty_id(article)))
     elsif (ap = article.pictures.first)
-      link_to(main_image_tag(ap.data.url(:preview_bottom)), :controller=>"web/articles",:action=>"detail",:id=>article.id) 
+      link_to(main_image_tag(ap.data.url(:preview_bottom)), detail_article_path(pretty_id(article))) 
     end
   end
   

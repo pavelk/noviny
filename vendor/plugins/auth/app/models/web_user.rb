@@ -348,6 +348,22 @@ class WebUser < ActiveRecord::Base
     #self.confirmed ||= false
   end
  
+  FIELDS = {:firstname =>1,
+            :lastname => 2,
+            :email => 3,
+            :password => 4,
+            :street => 5,
+            :number => 6,
+            :city => 7,
+            :psc =>8,
+            :profession => 9,
+            :phone => 10,
+            :title => 11,
+            :read_codex => 12,
+            :show_berth => 13,
+            :show_city => 14
+            }
+ 
   # Regex to validate an email
   VALID_EMAIL = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/ unless defined? VALID_EMAIL
   # Regex to validate a login
@@ -363,7 +379,24 @@ class WebUser < ActiveRecord::Base
   VALID_PHONE = /^\+\d{2,3}\d{8,10}$|^\d{8,10}$/
  
   #validates_presence_of :login,:message=>"Login nemůže být prázdný"
+  validates_presence_of :firstname,:message=>"Musíte vyplnit jméno"
+  validates_presence_of :lastname,:message=>"Musíte vyplnit příjmení"
+  validates_presence_of :street,:message=>"Ulice musí být vyplněna"
+  validates_presence_of :city,:message=>"Obec musí být vyplněna"
+  validates_presence_of :number,:message=>"Číslo p. musí být vyplněné"
+  validates_presence_of :psc,:message=>"Směrovací číslo musí být vyplněné"
   validates_presence_of :email,:message=>"Email nemůže být prázdný"
+  validates_presence_of :profession,:message=>"Povolání nemůže být prázdné když má být zobrazeno",:if=>:show_berth?
+ # validates_presence_of :show_city,:message=>"Musíte zveřejnit alespoň jednu kategorii", :if=>Proc.new{|p| p.}
+ # validates_presence_of :show_berth,:message=>"Musíte zveřejnit alespoň jednu kategorii", :if=>Proc.new{|p| p.show_city.blank?}
+  
+  def validate
+    if self.show_berth.blank? && self.show_city.blank?
+      errors.add(:show_berth, "Musíte zveřejnit alespoň jednu kategorii")
+    end
+  end
+
+ 
  
   #validates_uniqueness_of :login, :on => :create,:message=>"Tento login již existuje"
   #validates_uniqueness_of :login, :on => :update,:message=>"Tento login již existuje"

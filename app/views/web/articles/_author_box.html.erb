@@ -1,18 +1,31 @@
-	<% if @author_image %>
-	<div class="img">
-			<%= link_to(main_image_tag(@author_image), author_info_path(pretty_name(@author))) %>
-	</div> <!-- /.img -->
+	<% if (!@author_image.blank? && !ContentType.author_nick_types.include?(@article.content_type_id)) %>
+		<div class="img">
+				<%= link_to(main_image_tag(@author_image), author_info_path(pretty_name(@author))) %>
+		</div> <!-- /.img -->
 	<% end %>
 
 	<div class="self">
-	 <h3 class="head alt"><%= link_to @author.full_name, author_info_path(pretty_name(@author)) %></h3> 
-	 <p class="info"><%= @article.publish_date.to_s(:cz_date) %></p>
-	 <% if @article.updated_at > @article.publish_date %>
-	 	<p class="info">Aktualizováno: 
-	 	<% if @article.updated_at.day == @article.publish_date.day %>
-	 		<%= @article.updated_at.strftime("%H:%M") %>
+	 <h3 class="head alt">
+	 	<% if ContentType.author_nick_types.include?(@article.content_type_id) && !@author.nickname.blank? %>
+			<%= link_to "(#{@author.nickname})", author_info_path(pretty_name(@author)) %>
 		<% else %>
-			<%= @article.updated_at.strftime("%d.%m.%Y %H:%M") %>
+	 		<%= link_to @author.full_name, author_info_path(pretty_name(@author)) %>
+		<% end %>
+	 </h3> 
+	 <p>
+	 	<% if @article.first_approved_date && @article.first_approved_date > @article.publish_date %>
+			<% major_date = @article.first_approved_date%>
+		<% else %>
+			<% major_date = @article.publish_date%>
+		<% end %>
+	 	<%= major_date.to_s(:cz_date) %>
+	</p>
+	 <% if (@article.major_modified_date && @article.major_modified_date > major_date) %>
+	 	<p>Aktualizováno: 
+	 	<% if @article.major_modified_date.day == major_date.day %>
+	 		<%= @article.major_modified_date.strftime("%H:%M") %>
+		<% else %>
+			<%= @article.major_modified_date.strftime("%d.%m.%Y %H:%M") %>
 		<% end %>
 		</p>
 	 <% end %>
@@ -20,4 +33,8 @@
 	   <li><%= link_to @section.name, section_path(pretty_name(@section)) if @section %></li>
 	   <li><%= @article.content_type.name %></li>
 	 </ul>
+	 <% if @article.author_sec %>
+	 	<br>
+	 	<h3 class="head">Spoluautor: <%= link_to @article.author_sec.full_name, author_info_path(pretty_name(@article.author_sec)) %></h3>
+	 <% end %> 
 	</div> <!-- /.self -->

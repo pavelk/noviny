@@ -90,7 +90,7 @@
 <div class="clearfix">                        
     <div class="con">
        <%= f.check_box "read_codex" %>
-       <label for="newuser_read_codex">Četl jsem <a href="">etický kodex</a> a souhlasím s ním</label>
+       <label for="newuser_read_codex">Četl jsem <a href="/stranka/eticky-kodex-diskusi">etický kodex</a> a souhlasím s ním</label>
     </div> <!-- /.con -->
 </div> <!-- /.clearfix -->
 
@@ -127,6 +127,7 @@
     	<%= f.check_box "send_reports" %>
     </div> <!-- /.con -->
 </div> <!-- /.clearfix -->
+<% if false %>	
 <div class="clearfix">
     <div class="lab">
       <label for="newuser_web">Web:</label>
@@ -151,6 +152,22 @@
     	<%= f.text_field "twitter" %>
     </div> <!-- /.con -->
 </div> <!-- /.clearfix -->
+<% end %>
+
+<h4 class="sub">
+	Povinně volitelné údaje:<br>
+	<span style="font-weight:normal !important;">
+		(alespoň jednu kategorii musíte zaškrtnout)
+	</span>
+</h4>
+<div class="clearfix">
+	<%= f.check_box "show_city" -%>
+	<label for="newuser_show_city">Zveřejnit obec?</label>
+</div> <!-- /.clearfix -->				  
+<div class="clearfix">
+	<%= f.check_box "show_berth" -%>
+	<label for="newuser_show_berth">Zveřejnit povolání?</label>
+</div> <!-- /.clearfix -->	
 
 <h4 class="sub">Volitelné Údaje:</h4>
 <div class="clearfix">
@@ -161,10 +178,12 @@
 	<%= f.check_box "show_phone" -%>
 	<label for="newuser_show_phone">Zveřejnit telefon?</label>
 </div> <!-- /.clearfix -->	
+
+<% if false %>
 <div class="clearfix">
 	<%= f.check_box "show_address" -%>
 	<label for="newuser_show_address">Zveřejnit adresu?</label>
-</div> <!-- /.clearfix -->					 
+</div> <!-- /.clearfix -->
 <div class="clearfix">
 	<%= f.check_box "show_web" -%>
 	<label for="newuser_show_web">Zveřejnit web?</label>
@@ -177,6 +196,8 @@
 	<%= f.check_box "show_twitter" -%>
 	<label for="newuser_show_twitter">Zveřejnit twitter?</label>
 </div> <!-- /.clearfix -->
+<% end %>
+
 <% if web_user_logged_in? %>
 	<div class="clearfix">
 		<%= f.file_field(:photo) %>

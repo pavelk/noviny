@@ -7,6 +7,10 @@ padding:5px 20px 5px;
 margin-bottom: 15px ;
 }
 
+span.disabled {
+	display:none;
+}
+
 div.flash_error, div.errorExplanation {
 background-color:#ffddd1;
 border:2px solid #b73204;
@@ -31,26 +35,6 @@ color:#571802;
 #content div.errorExplanation h2 { 
 color:#571802;
 }
-/* ----------------------------------------------------------------------------------------------------------
-
-
-
-    LT WebDevelopment (www.lukastomek.cz)
-
-
-
-    VĂ˝stupnĂ­ zaĹ™Ă­zenĂ­: screen, projection
-
-    Autor:             LukĂˇĹˇ Tomek (info@lukastomek.cz)
-
-    VytvoĹ™eno:         20/07/2008
-
-
-
----------------------------------------------------------------------------------------------------------- */
-
-
-
 /* -- Basics -- */
 
 html, body, div, p, ul, ol, li, form, fieldset, h1, h2, h3, h4, h5, h6, address   { margin: 0; padding: 0; list-style: none; }
@@ -225,7 +209,8 @@ a.overlaid,
 
 /* -- Basic content constructs -- */
 
-.offsetTop    { margin-top: 1em; }
+.offsetTop    { margin-top: 1em;}
+.offsetTop ul,.offsetTop li {list-style:none;}
 
 .offsetBottom { margin-bottom: 1em; }
 
@@ -423,9 +408,9 @@ a.overlaid,
 
   /* Footer layout */
 
-  #foot p     { float: left; }
+  #foot p     { float: right; }
 
-  #foot ul    { float: right; }
+  #foot ul    { float: left; }
 
   #foot ul li { display: inline; margin-left: 6px; }
 
@@ -475,7 +460,7 @@ a.overlaid,
 
   /* Adverts boxes */
 
-  #view .topAdvert         { width: 728px; height: 90px; margin: 0 auto 10px; }
+  #view .topAdvert         { width: 745px; margin: 0 auto 10px; }
 
   #view .rightAdvert       { position: absolute; width: 120px; height: 600px; top: 5px; right: -140px; }
 
@@ -487,9 +472,9 @@ a.overlaid,
 
   
 
-  #content .boxAdvert300      { position: relative; height: 250px; }
+  #content .boxAdvert300      { position: relative;}
 
-  #content .boxAdvert300 .in  { position: absolute; width: 300px; height: 250px; top: 3px; left: 0; }
+  #content .boxAdvert300 .in  { position: absolute; width: 300px; top: 3px; left: 0; }
 
   
 
@@ -547,7 +532,7 @@ a.overlaid,
 
   #content .boxDetail .gallery .thumbs li       { position: relative; float: left; height: 60px; margin-right: 10px; }
 
-  #content .boxDetail .gallery .thumbs li span  { position: absolute; width: 55px; height: 50px; left: 0; top: 0; border: 5px #0000ff solid; }
+  #content .boxDetail .gallery .thumbs li span  { position: absolute; width: 55px; height: 50px; left: 0; top: 0; border: 5px #efefef solid; }
 
   
 

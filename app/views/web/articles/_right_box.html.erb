@@ -1,13 +1,10 @@
 <div class="bImg">
 	<% if (fb = FlashphotoBanner.find(:all,:conditions=>{:article_banner_id=>right_box.id},:order=>"updated_at DESC").first) %>	
 		<%= link_to(image_tag(fb.photo.url), detail_article_path(pretty_id(right_box.article))) %>
-		<div class="caption">
-	      <span><%=th right_box.headline %></span>
-	    </div> <!-- /.caption -->
 	<% else %>	
 		<%= link_to(main_image_tag(right_box.picture.data.url(:hp_sidebar)), detail_article_path(pretty_id(right_box.article))) if right_box.picture %>
-		<div class="caption">
-		  <span><%=th right_box.headline %></span>
-		</div> <!-- /.caption -->
 	<% end %>
+	<div class="caption">
+		  <span><%=link_to th(right_box.headline), detail_article_path(pretty_id(right_box.article)) %></span>
+	</div> <!-- /.caption -->
 </div> <!-- /.bImg -->

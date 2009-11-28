@@ -52,7 +52,7 @@ class Notification < ActionMailer::Base
    end
    
    def admin_sign_info(payment, app, sent_on = Time.now)
-     @recipients = "jirka@dgu.cz" #predplatne@denikreferendum.cz
+     @recipients = "predplatne@denikreferendum.cz" #predplatne@denikreferendum.cz
      @from       = "#{app[:title]} <#{app[:email]}>"
      @subject    = 'Nová registrace'
      @body       = {'payment' => payment,'app' => app}

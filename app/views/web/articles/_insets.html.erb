@@ -1,0 +1,6 @@
+<% if @article.insets.count > 0 %>
+	<h2>Související soubory</h2>
+	<% @article.insets.each do |inset| %>
+		<%= link_to inset.name, download_inset_path(inset.id) %> (<%= inset.data.content_type %>, <%= number_to_human_size inset.data.size %>)<br>
+	<% end %>
+<% end %>

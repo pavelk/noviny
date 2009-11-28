@@ -1,25 +1,31 @@
-<h1><%= @web_user.full_name %></h1>
+<h1><%= @info_user.full_name %></h1>
 <hr/>
 <h2>Kontakty</h2>
-<% if @web_user.show_mail? %>
-Email: <%= @web_user.email %><br/>
+<% if @info_user.show_mail? %>
+Email: <%= @info_user.email %><br/>
 <% end %>
-<% if @web_user.show_phone? %>
-Telefon: <%= @web_user.phone %><br/>
+<% if @info_user.show_phone? %>
+Telefon: <%= @info_user.phone %><br/>
 <% end %>
-<% if @web_user.show_address?  %>
-Adresa: <%= @web_user.address %><br/>
+<% if @info_user.show_address?  %>
+Adresa: <%= @info_user.address %><br/>
 <% end %>
-<% if @web_user.show_web? %>
-Web: <%= @web_user.web %><br/>
+<% if @info_user.show_web? %>
+Web: <%= @info_user.web %><br/>
 <% end %>
-<% if @web_user.show_skype? %>
-Skype: <%= @web_user.skype %><br/>
+<% if @info_user.show_skype? %>
+Skype: <%= @info_user.skype %><br/>
 <% end %>
-<% if @web_user.show_twitter? %>
-Twitter: <%= @web_user.twitter %><br/>
+<% if @info_user.show_twitter? %>
+Twitter: <%= @info_user.twitter %><br/>
 <% end %>
-<%= "Autor si nepřál zveřejnit žádné kontakty."  if @web_user.no_info? %>
+<% if @info_user.show_berth? %>
+Povolání: <%= @info_user.profession %><br/>
+<% end %>
+<% if @info_user.show_city? %>
+Obec: <%= @info_user.city %><br/>
+<% end %>
+<%= "Autor si nepřál zveřejnit žádné kontakty."  if @info_user.no_info? %>
 <hr/>
 <h3>Příspěvky: <%= @comments.total_entries %></h3>
 <table border="1">

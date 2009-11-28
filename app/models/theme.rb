@@ -6,6 +6,8 @@ class Theme < Tag
   
   has_many :theme_selections
   has_many :tag_selections, :through => :theme_selections
+  
+  has_many :themeselection_themes
   #
   
   has_many :article_themes

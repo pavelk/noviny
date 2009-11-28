@@ -36,6 +36,7 @@ class Section < ActiveRecord::Base
   end
   
   def top_themes(limit = 7)
+    limit = 5 if self.id == UMENI
     first_tag_selection = self.tag_selections.first
     if first_tag_selection
       first_tag_selection.themes.first(limit)

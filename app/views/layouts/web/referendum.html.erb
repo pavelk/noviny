@@ -3,17 +3,13 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="content-language" content="cs" />
-    <meta name="author" content="Lukas Tomek (info@lukastomek.cz)" />
-    <meta name="copyright" content="2008 Lukas Tomek - www.lukastomek.cz" />
+    <meta name="author" content="Sortof" />
+    <meta name="copyright" content="2009 Sortof - www.sortof.info" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <title>Noviny</title>
 
-	<% if @printable %>
-		<%= stylesheet_link_tag "web/css/print", :media => "print" %> 
-	<% else %>
-		<%= stylesheet_link_tag 'web/css/default' %>
-	<% end %>
+	<%= stylesheet_link_tag 'web/css/default' %>
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "jquery-1.3.2.min" %>
 	<%= javascript_include_tag "jquery.scrollTo-1.4.0-min" %>
@@ -28,6 +24,18 @@
     <link rel="shortcut icon" href="" />
 	<script>
 		jQuery.noConflict();
+	</script>
+	<script type="text/javascript"><!--<![CDATA[
+		/* (c)AdOcean 2003-2009 */
+		/* MASTER: imp_cz.Vydavatelstv_ Referendum s.r.o..Denikreferendum.cz */
+		if(location.protocol.substr(0,4)=='http')document.write(unescape('%3C')
+		+'script id="imp_cz.Vydavatelstv_ Referendum
+		s.r.o..Denikreferendum.cz" src="'+location.protocol+'//
+		impcz.adocean.pl/_'+(new Date()).getTime()+'/ad.js?
+		id=TA9cHeAnnZuQxO4BETxMHIoD7GeLAVCz4v1cMqsJq43.A7/x='+screen.width+'/
+		y='+screen.height+'" type="text/javascript"'+unescape('%3E%3C')+'/
+		script'+unescape('%3E'));
+		//]]>-->
 	</script>
   </head>
 	<%= render :partial=>"layouts/web/top_html" %>
@@ -44,7 +52,7 @@
 	        <div class="col3">
 	          <div class="box boxAdvert">
 	            <div class="in">
-	              <%= link_to image_tag("web/banner-dr.jpg"), "TODO" %>
+	              <%= link_to image_tag("web/banner-dr.jpg"), "/diskuse-a-predplatne" %>
 	            </div> <!-- /.in -->
 	          </div> <!-- /.box -->
 	        
@@ -58,7 +66,13 @@
 	          
 	          <div class="box boxAdvert boxAdvertLine boxAdvert300">
 	            <div class="in">
-	              <a href=""><%= image_tag "web/banner-300.jpg" %></a>
+					<script type="text/javascript"><!--<![CDATA[
+						/* (c)AdOcean 2003-2009 */
+						/* SLAVE: imp_cz.Vydavatelstv_ Referendum
+						s.r.o..Denikreferendum.cz.Square 300 */
+						if(typeof adoceanimpczygcmcvffsg=='function') adoceanimpczygcmcvffsg();
+						//]]>--
+					</script>
 	            </div> <!-- /.in -->
 	          </div> <!-- /.box -->
 			  
@@ -66,7 +80,13 @@
 	          <%= render :partial=>"layouts/web/part/readest_box" %>
 	        </div> <!-- /.col3 -->
 			<div class="rightAdvert">
-	          <%= link_to(image_tag("../stylesheets/web/img/img-scyscraper.jpg"),"TODO")%>
+	          <script type="text/javascript"><!--<![CDATA[
+				/* (c)AdOcean 2003-2009 */
+				/* SLAVE: imp_cz.Vydavatelstv_ Referendum
+				s.r.o..Denikreferendum.cz.Skyscraper */
+				if(typeof adoceanimpczlglfpxlqnh=='function') adoceanimpczlglfpxlqnh();
+				//]]>-->
+			  </script>
 	        </div> <!-- /.rightAdvert -->
 	      </div> <!-- /#content -->
 	

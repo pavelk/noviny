@@ -3,7 +3,8 @@ class Web::TextPagesController < Web::WebController
   
   def show
     @text_page = TextPage.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
-    add_breadcrumb @text_page.name, ""
+    render :action=>"error" and return unless @text_page
+    #add_breadcrumb @text_page.name, ""
   end
   
   def hp_box

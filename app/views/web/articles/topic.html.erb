@@ -13,7 +13,7 @@
        <h3 class="h line">Další témata</h3>
        <ul>
        		<% @next_topics.each do |topic| %>
-			<li><%= link_to topic.name %></li>
+			<li><%= link_to topic.name, topic_path(pretty_name(topic)) %></li>
 			<% end %>
        </ul>
      </div> <!-- /.box -->
