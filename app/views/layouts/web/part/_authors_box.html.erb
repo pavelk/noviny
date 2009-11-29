@@ -5,6 +5,9 @@
 	  	<li><%= link_to author.full_name, author_info_path(pretty_name(author)) %></li>
 	  <% end%>
 	  <li>&nbsp;</li>
-	  <li><%= link_to "Všichni autoři",articles_path(:action=>"authors") %></li>
+	  <li>
+	  <%= link_to "Všichni autoři", authors_info_path %>
+	  <%#= link_to "Všichni autoři",articles_path(:action=>"authors") %>
+	  </li>
 	</ul>
 </div> <!-- /.box -->

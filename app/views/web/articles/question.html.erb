@@ -17,7 +17,7 @@
      
      <div class="col2 mainImage">
        <%= image_tag(@question_image.data.url(:hp_main)) if @question_image %>
-	   <p class="info"><%= @question_image.name %></p>
+	   <p class="info"><%= @question_image.name rescue nil %></p>
      </div> <!-- /.col2 -->
 	 
    </div> <!-- /.cols -->
