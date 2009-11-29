@@ -474,7 +474,7 @@ a.overlaid,
 
   #content .boxAdvert300      { position: relative;}
 
-  #content .boxAdvert300 .in  { position: absolute; width: 300px; top: 3px; left: 0; }
+  #content .boxAdvert300 .in  { position: absolute; width: 300px; height: 300px; top: 3px; left: 0; }
 
   
 
