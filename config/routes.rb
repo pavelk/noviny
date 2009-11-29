@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   #Added by Jan Uhlar
+  map.mailings "/hromadne-emaily", :controller=>"mailings"
   map.home "", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
   

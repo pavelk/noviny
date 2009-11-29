@@ -1,0 +1,20 @@
+
+<table>
+  <tr>
+    <th>Předmět</th>
+    <th>Vytvořeno</th>
+	<th>Upraveno</th>
+  </tr>
+  <% for mailing in @mailings %>
+    <tr>
+      <td><%=h mailing.subject %></td>
+      <td><%=h mailing.created_at.to_s(:article) %></td>
+	  <td><%=h mailing.updated_at.to_s(:article) %></td>
+      <td><%= link_to "Zobrazit", :action=>"show", :id=>mailing.id %></td>
+      <td><%= link_to "Editovat", :action=>"edit", :id=>mailing.id %></td>
+      <td><%= link_to "Smazat", {:action=>"destroy", :id=>mailing.id }, :confirm => 'Opravdu?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "Nový Zpravodaj", :action=>"new" %></p>

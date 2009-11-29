@@ -1,8 +1,9 @@
-<%= link_to 'Nový uživatel', authadmin_url(:action=>"newuser") %>
+<%= link_to 'Nový uživatel', authadmin_url(:action=>"newuser") %> |
+<%= link_to 'Hromadné emaily', mailings_path %>
 <% if params[:id] %>
 <p>
-&gt; You are listing web_users included in the <%= params[:id] %> domain.<br />
-&gt; <%= link_to 'View all web_users', authadmin_url %>.
+&gt; Prohlížíte uživatele patřící do skupiny <%= params[:id] %>.<br />
+&gt; <%= link_to 'Všichni uživatelé', authadmin_url %>.
 </p>
 <% end %>
 

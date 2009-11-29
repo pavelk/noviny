@@ -67,5 +67,14 @@ class Notification < ActionMailer::Base
        @body       = {'payment' => payment,'app' => app}
        @sent_on    = sent_on
        content_type "text/html"
-    end
+   end
+   
+   def mailing(mailing, email, sent_on = Time.now)
+     @recipients = "#{email}"
+     @from       = "redakce@denikreferendum.cz"
+     @subject    = mailing.subject
+     @body       = {'mailing' => mailing}
+     @sent_on    = mailing.sent_on
+     content_type "text/html"
+   end
 end

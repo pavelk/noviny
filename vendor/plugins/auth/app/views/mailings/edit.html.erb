@@ -1,0 +1,7 @@
+<% form_for(:mailing,@mailing,:url=>{:controller=>"mailings",:action=>"update",:id=>@mailing.id}) do |f| %>
+	<%= render :partial => 'form',:locals=>{:f=>f} %>
+<% end %>
+<p>
+  <%= link_to "Zobrazit", :action=>"show",:id=>@mailing.id %> |
+  <%= link_to "Všechny zpravodaje", mailings_path %>
+</p>

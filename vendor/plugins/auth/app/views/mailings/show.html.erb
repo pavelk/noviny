@@ -1,0 +1,43 @@
+<p>
+  <strong>Text:</strong><br>
+  <%= @mailing.text %>
+</p>
+<p>
+  <strong>Předmět:</strong>
+  <%=h @mailing.subject %>
+</p>
+<p>
+  <strong>Vytvořeno:</strong>
+  <%=h @mailing.created_at.to_s(:article) %>
+</p>
+<p>
+  <strong>Upraveno:</strong>
+  <%=h @mailing.updated_at.to_s(:article) %>
+</p>
+<p>
+  <strong>Posláno na tyto emaily:</strong>
+  <br>
+  <% @mailing.newsletters.each do |nl| %>
+  	<%= nl.email -%><br>
+  <% end %>
+</p>
+<p>
+  <strong>Neposláno na tyto emaily:</strong>
+  <br>
+  <% (Newsletter.all_active - @mailing.newsletters).each do |nle| %>
+  	<%= nle.email -%><br>
+  <% end %>
+</p>
+
+
+<p>
+  <strong>
+  	<%= link_to "Poslat všem",{:action=>"send_by_email",:id=>@mailing.id}, :confirm => 'Opravdu?' %>
+  </strong>
+</p>
+<br><br>
+<p>
+  <%= link_to "Edituj", :action=>"edit",:id=>@mailing.id %> |
+  <%= link_to "Smaž", {:action=>"destroy",:id=>@mailing.id}, :confirm => 'Opravdu?', :method => :delete %> |
+  <%= link_to "Všechny zpravodaje", mailings_path %>
+</p>

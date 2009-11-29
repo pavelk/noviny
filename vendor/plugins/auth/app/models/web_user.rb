@@ -34,6 +34,8 @@ class WebUser < ActiveRecord::Base
   cattr_accessor :salt
   attr_accessor :ident, :expire_at, :password, :passwordbis
  
+  after_save :set_newsletter
+ 
   # To the hardcoded USERS,1 you can add a default set of domains for new web_users
   # in the config/auth_generator.yml file.
   def self.default_domains
@@ -436,6 +438,19 @@ class WebUser < ActiveRecord::Base
   end
  def set_login
    self.login = self.email
+ end
+ def set_newsletter
+   if self.send_reports?
+    nl = Newsletter.find_by_email(self.email)
+    nl = Newsletter.new(:email=>self.email) unless nl
+    nl.save
+   else
+     nl = Newsletter.find_by_email(self.email)
+     if nl
+       nl.update_attributes(:active=>false)
+     end
+   end
+   
  end
 end
  
