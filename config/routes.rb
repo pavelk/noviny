@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.administrace 'administrace', :controller => 'admin/albums', :action => 'index'
+  
   #Added by Jan Uhlar
   map.mailings "/hromadne-emaily", :controller=>"mailings"
   map.home "", :controller=>"web/sections"

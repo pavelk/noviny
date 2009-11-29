@@ -10,7 +10,7 @@ class UserSessionsController < ApplicationController
    @user_session = UserSession.new(params[:user_session])
    if @user_session.save
      flash[:notice] = "Úspěšné přihlášení!"
-     redirect_back_or_default root_url
+     redirect_back_or_default administrace_path
    else
      render :action => :new
    end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091108181339) do
+ActiveRecord::Schema.define(:version => 20091128181521) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -168,12 +168,13 @@ ActiveRecord::Schema.define(:version => 20091108181339) do
     t.integer  "author_id"
     t.text     "videodata"
     t.integer  "version",             :default => 1
-    t.datetime "order_date"
+    t.date     "order_date"
     t.integer  "author_sec_id"
     t.integer  "picture_id"
     t.string   "first_image_title"
     t.datetime "first_approved_date"
     t.datetime "major_modified_date"
+    t.time     "order_time"
   end
 
   add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
@@ -404,6 +405,40 @@ ActiveRecord::Schema.define(:version => 20091108181339) do
     t.datetime "created_at"
   end
 
+  create_table "mailings", :force => true do |t|
+    t.text     "text"
+    t.string   "subject"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "sent_on"
+  end
+
+  create_table "newsletters", :force => true do |t|
+    t.string  "email",  :limit => 100,                   :null => false
+    t.boolean "active",                :default => true
+  end
+
+  create_table "newsletters_mailings", :force => true do |t|
+    t.integer "newsletter_id"
+    t.integer "mailing_id"
+  end
+
+  add_index "newsletters_mailings", ["newsletter_id", "mailing_id"], :name => "index_newsletters_mailings_on_newsletter_id_and_mailing_id"
+
+  create_table "payments", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "payed_at"
+    t.integer  "web_user_id"
+    t.integer  "status",                                                       :default => 0
+    t.decimal  "price",                         :precision => 10, :scale => 2
+    t.string   "variable_symbol", :limit => 10
+    t.string   "pay_method"
+    t.decimal  "gift",                          :precision => 10, :scale => 2
+  end
+
+  add_index "payments", ["web_user_id", "payed_at"], :name => "index_payments_on_web_user_id_and_payed_at"
+
   create_table "pictures", :force => true do |t|
     t.integer  "album_id"
     t.integer  "user_id"
@@ -589,13 +624,6 @@ ActiveRecord::Schema.define(:version => 20091108181339) do
   add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token"
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
-  create_table "web_user_payments", :force => true do |t|
-    t.datetime "created_at"
-    t.date     "payed_at"
-    t.integer  "web_user_id"
-    t.decimal  "price",       :precision => 10, :scale => 2
-  end
-
   create_table "web_users", :force => true do |t|
     t.string   "login",              :limit => 40,                     :null => false
     t.string   "cryptpassword",      :limit => 40,                     :null => false
@@ -615,7 +643,6 @@ ActiveRecord::Schema.define(:version => 20091108181339) do
     t.string   "phone"
     t.string   "title"
     t.boolean  "send_reports",                      :default => false
-    t.boolean  "payed",                             :default => false
     t.integer  "author_id"
     t.date     "expire_date"
     t.date     "born_date"
@@ -631,6 +658,9 @@ ActiveRecord::Schema.define(:version => 20091108181339) do
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
+    t.boolean  "read_codex",                        :default => false
+    t.boolean  "show_city",                         :default => false
+    t.boolean  "show_berth",                        :default => false
   end
 
 end
