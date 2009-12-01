@@ -287,6 +287,8 @@ a.overlaid,
   .item .img .caption span      { display: block; padding: 7px 10px; height: 30px; }
 
   .item .img .caption a         { display: block; width: 100%; padding: 7px 0; height: 30px; color: #fff; background-color: #000; }
+  
+  .item .img .caption span a    { margin-top: -7px; }
 
   .item .img .caption a:hover   { text-decoration: none !important; }
 
@@ -489,6 +491,8 @@ a.overlaid,
   #content .box .bImg .caption { clear: both; width: 100%; color: #fff; font-size: .9em; background-color: #000; }
 
   #content .box .bImg .caption span     { display: block; padding: 7px 10px; height: 30px; }
+  
+  #content .box .bImg .caption span a    { margin-top: -7px; }
 
   #content .box .bImg .caption a        { display: block; width: 100%; padding: 7px 0; height: 30px; color: #fff; background-color: #000; }
 

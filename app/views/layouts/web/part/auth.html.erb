@@ -17,7 +17,8 @@
 	<%= javascript_include_tag "web/cufon-arial" %>
 	<%= javascript_include_tag "web/fontCharger" %>
 	<%= javascript_include_tag "init" %>
-    <link rel="shortcut icon" href="" />
+    <link rel="icon" href="favicon-dr.ico" type="image/x-icon" /> 
+	<link rel="shortcut icon" href="/images/web/favicon-dr.ico" type="image/x-icon" />
 	<script>
 		jQuery.noConflict();
 	</script>
@@ -37,8 +38,8 @@
           <div class="box boxDetail">
           	<h2 class="head offsetBottom"><%= @headline || "Registrace předplatitele" %></h2>
 			<div class="cols detailContent line offsetTop">
-				<%= link_to "logout", logout_path if web_user_logged_in? %>
-				<div class="col2">
+				<%= link_to "Odhlásit", logout_path if web_user_logged_in? %>
+				<div class="col2" style="padding-right:50px;">
 	             	<%= yield %>
 				</div>
 			</div>

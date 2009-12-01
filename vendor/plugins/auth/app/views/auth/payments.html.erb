@@ -6,6 +6,7 @@ Datum expirace:
 		<td>Variabilní symbol</td>
 		<td>Cena</td>
 		<td>Dobrovolný příspěvek</td>
+		<td>Způsob platby</td>
 		<td>Status</td>
 		<td>Datum zaplacení</td>
 		<td>Akce</td>
@@ -16,12 +17,13 @@ Datum expirace:
 			<td><%= payment.variable_symbol %></td>
 			<td><%= payment.price %></td>
 			<td><%= payment.gift %></td>
+			<td><%= payment.pay_method %></td>
 			<td><%= payment.status_in_words %></td>
 			<td><%= payment.payed_at.to_s(:article) if payment.payed_at %></td>
 			<td>
 				<% if @web_user.is_admin? %>
 					<%= link_to "Edit",:action=>"edit_payment", :id=>payment.id %>
-				<% else %>
+				<% elsif payment.pay_method == "paysec" %>
 					<%= link_to "Zaplatit PaySec", pay_paysec_path(:id=>payment.id,:autocomplete=>1) unless payment.payed_at %>
 					<%#= link_to "Ověřit zaplacení",:action=>"confirm_payment", :payment_id=>payment.id unless payment.payed_at %>
 				<% end %>

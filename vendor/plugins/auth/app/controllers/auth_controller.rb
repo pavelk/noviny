@@ -2,6 +2,10 @@ class AuthController < Web::WebController
   layout :set_layout
   before_filter :authorize_users_only,
     :only=>[:payments,:pay,:info,:logout]
+  
+ def to_s
+   return "auth"
+ end
  
   def pravidla
     @headline = "Diskuse a předplatné v Deníku Referendum"
@@ -47,14 +51,13 @@ class AuthController < Web::WebController
       @payment = Payment.new(params[:payment])
       @payment.web_user_id = @web_user.id
       if @payment.save
+         begin
+            Notification.deliver_new_payment(@payment,@app)
+         rescue
+         end
         if @payment.pay_method == "paysec"
           redirect_to signup_paysec_path(:id=>@payment.id,:autocomplete=>1)
         else
-          begin
-            Notification.deliver_new_payment(@payment,@app)
-            Notification.deliver_admin_sign_info(@payment,@app)
-          rescue
-          end
           flash[:notice] = "Vaše platba byla zaevidována, poslali jsme Vám email s informacemi o platbě. Jakmile se připíše platba na náš účet, pošleme Vám potvrzující email."
           redirect_to home_path
         end
@@ -90,7 +93,6 @@ class AuthController < Web::WebController
         end
         flash.now[:notice] = paysec.customer_info
       end
-      flash.now[:error] = paysec.customer_info
     else
       flash.now[:error] = "Platba nenalezena"
     end
@@ -125,6 +127,13 @@ class AuthController < Web::WebController
           flash[:notice] = "Úspěšně přihlášen"
           if web_user.is_admin?
             redirect_to authadmin_path
+          elsif !cookies[:last_article_id].blank?
+            art = Article.find_by_id(cookies[:last_article_id])
+            if art
+              redirect_to detail_article_path(pretty_id(art))
+            else
+              redirect_to home_path
+            end
           else
             redirect_to home_path
           end
@@ -154,6 +163,12 @@ class AuthController < Web::WebController
         if WebUser.count == 1
           @newuser.domains = WebUser.default_domains.merge({ "ADMIN" => 1})
         end
+        @newuser.confirmed = true
+        @newuser.save
+        begin
+           Notification.deliver_sign1_info(@newuser,@app)
+        rescue
+        end
         session[:new_user] = @newuser
         redirect_to signup2_path
       else
@@ -178,19 +193,18 @@ class AuthController < Web::WebController
     end
     if request.post?
       newuser = session[:new_user]
-      if newuser.save
+      if newuser
         payment = Payment.new(params[:payment])
         payment.web_user_id = newuser.id
         payment.save
         session[:new_user] = nil
+        begin
+           Notification.deliver_sign2_info(payment,@app)
+        rescue
+        end
         if payment.pay_method == "paysec"
           redirect_to signup_paysec_path(:id=>payment.id,:autocomplete=>1)
         else
-          begin
-           Notification.deliver_sign_info(payment,@app)
-           Notification.deliver_admin_sign_info(payment,@app)
-          rescue
-          end
           flash[:notice] = "Byl jste úspěšně zaregistrován, poslali jsme Vám email s informacemi o platbě. Jakmile se připíše platba na náš účet, pošleme Vám potvrzující email."
           redirect_to home_path
         end
@@ -202,6 +216,7 @@ class AuthController < Web::WebController
   end
  
   def logout
+    cookies[:last_article_id] = nil
     if not @web_user
       redirect_to :action => "index"
       return false

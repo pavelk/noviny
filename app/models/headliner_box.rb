@@ -16,8 +16,10 @@ class HeadlinerBox < ActiveRecord::Base
   
   def info
     inf = ""
+    arr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZěščřžýáíéúůóďťňöäëĚŠČŘŽÝÁÍÉÚŮÓĎŤŇÖÄËľĽüÜßß1234567890".split("")
+    #arr = [".","!","?",":",";","\"","'","“","”","‚","‛","„","′","˝"]
     if !picture_title.blank?
-      if picture_title.last == "."
+      if !arr.include?(picture_title.last)
         inf += "#{picture_title}"
       else
         inf += "#{picture_title}." 

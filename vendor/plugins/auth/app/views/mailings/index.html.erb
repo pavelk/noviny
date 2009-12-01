@@ -2,12 +2,16 @@
 <table>
   <tr>
     <th>Předmět</th>
+  	<th>Datum</th>
+	<th>Nadpis</th>
     <th>Vytvořeno</th>
 	<th>Upraveno</th>
   </tr>
   <% for mailing in @mailings %>
     <tr>
       <td><%=h mailing.subject %></td>
+	  <td><%= mailing.sent_on.to_s(:cz_date) if mailing.sent_on %></td>
+	  <td><%=h mailing.name %></td>
       <td><%=h mailing.created_at.to_s(:article) %></td>
 	  <td><%=h mailing.updated_at.to_s(:article) %></td>
       <td><%= link_to "Zobrazit", :action=>"show", :id=>mailing.id %></td>

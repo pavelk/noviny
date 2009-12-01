@@ -13,14 +13,16 @@ module ApplicationHelper
   end
     
   def pretty_id(object)
-    return "#{object.id}-#{object.name.parameterize}"    
+    return "#{object.id}-#{object.name.parameterize}" if object  
   end
   
   def pretty_name(object)
-    if (object.class.name == "Author")
-      return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
-    else
-      return "#{object.name.parameterize}" 
+    if object  
+      if (object.class.name == "Author")
+        return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
+      else
+        return "#{object.name.parameterize}" 
+      end
     end
   end
   

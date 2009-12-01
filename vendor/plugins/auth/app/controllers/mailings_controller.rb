@@ -8,19 +8,31 @@ class MailingsController < AuthadminController
   end
   
   def send_by_email
-    @mailing = Mailing.find(params[:id])
-    recepients = Newsletter.all_active - @mailing.newsletters
-    recepients.each do |rec|
-      begin
-        Notification.deliver_mailing(@mailing,rec.email)
-        @mailing.newsletters << rec
-      rescue
-        
+    if request.post?
+      @mailing = Mailing.find(params[:id])
+      recep = params[:recepients]
+      if recep == "temp"
+        recepients = TempNewsletter.all
+      elsif recep == "news"
+        #recepients = Newsletter.all_active - @mailing.newsletters
+        recepients = []
       end
-      sleep(1)
+      recepients.each do |rec|
+        begin
+          Notification.deliver_mailing(@mailing,rec.email)
+          if recep == "temp"
+            rec.delete
+          elsif recep == "news"
+            @mailing.newsletters << rec
+          end
+        rescue
+          
+        end
+        sleep(2)
+      end
+      flash[:notice] = "Zpravodaj úspěšně odeslán"
+      redirect_to :action=>"show",:id=>@mailing.id
     end
-    flash[:notice] = "Zpravodaj úspěšně odeslán"
-    redirect_to :action=>"show",:id=>@mailing.id
   end
   
   def remote_preview

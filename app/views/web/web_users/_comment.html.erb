@@ -1,10 +1,10 @@
 <tr>
-	<td><%= comment.text.slice(0..55) %></td>
+	<td><%=th h(comment.text.slice(0..55)) %></td>
 	<td>
 		<%= link_to comment.article.author.full_name, author_info_path(pretty_name(comment.article.author)) %>
 		<br/>
 		<%= link_to comment.article.name, detail_article_path(pretty_id(comment.article)) %>
 		<br/>
-		<%= comment.article.perex %>
+		<%=th comment.article.perex %>
 	</td>
 </tr>

@@ -1,5 +1,6 @@
 class Web::SectionsController < Web::WebController
   layout "web/referendum"
+  before_filter :set_last_id
   
   def topics
     @section = Section.find(params[:id]) if params[:id]
@@ -76,6 +77,7 @@ protected
 
   def set_opinions_variables
     @article_photo_show = true
+=begin    
     if Web::Calendar.week? && Web::Calendar.sunday?
       tfrom_date = Time.now - 1.days
       tto_date = Time.now
@@ -98,6 +100,7 @@ protected
                                                :to_date => yto_date,
                                                :limit=>nil)
     if (@today_articles + @yesterday_articles).length < 12
+=end
       succ_date = DateTime.parse(params[:succ_date]) rescue nil
       prev_date = DateTime.parse(params[:prev_date]) rescue nil
       op = ""
@@ -105,10 +108,10 @@ protected
       op += "publish_date > '#{prev_date.beginning_of_day.to_s(:db)}' AND " if prev_date
       @all_opinions = Article.find(:all,
                                    :conditions=>["#{op}content_type_id IN (?)",ContentType.opinion_types],
-                                   :group=>"date(publish_date)",
+                                   :group=>"pub_date",
                                    :select=>"date(publish_date) as pub_date",
                                    :order=>"pub_date DESC, order_date DESC, priority_section DESC, order_time DESC")
-    end
+    #end
   end
   
   def set_weekend_variables

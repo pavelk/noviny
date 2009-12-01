@@ -23,10 +23,7 @@
 			  		Cena:
 				</td>
 				<td>
-				  <select name="payment[price]" id="price" class="button w50">
-                     <option value="50">50 Kč na měsíc</option>
-                     <option value="500">500 Kč na rok</option>
-                  </select>
+					<%= f.select "price", [["50 Kč na měsíc",50.00],["500 Kč na rok",500.00]], :class=>"button w50" %>
 				</td>
 			</tr>
 			<tr>
@@ -36,6 +33,25 @@
 				<td>
 				  <%= f.text_field "gift", :size => 10 -%>
 				</td>
+			</tr>
+			<tr>
+				<td>
+			  		Způsob platby:
+				</td>
+			   <td>
+			   		<tr>
+			   			<td>
+			   				<%= f.radio_button "pay_method", "paysec" %>
+							<label for="payment_pay_method_paysec">Rychlý: PaySec</label>
+						</td>
+			   		</tr>
+					<tr>
+						<td>
+							<%= f.radio_button "pay_method", "posta" %>
+			   				<label for="payment_pay_method_posta">Běžný: Bankovním převodem</label>
+						</td>
+					</tr>
+			   </td>
 			</tr>
 			<tr>
 				<td>

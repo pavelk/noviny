@@ -1,11 +1,4 @@
-<%
-	dom = ""
-	user.domains.each { |key, value|
-		dom << link_to(key, :action => 'list', :id => key)
-		dom << ": #{value}<br />"
-	}
-
-%>
+	<% pays = user.payments %>
 	 <tr id="user-<%= user.id %>">
 		<td><%= user.id %></td>
 	   <td><%= link_to user.login, authadmin_url(:action => 'edituser', :id => user) %></td>
@@ -13,7 +6,7 @@
 		<td>&nbsp;<%= user.firstname %></td>
 		<td>&nbsp;<%= user.lastname %></td>
 		<td><%= user.updated_at.strftime("%d.%m.%Y %H:%M:%S") %> </td>
-		<td><%= dom %></td>
+		<td><%= pays.map {|p| p.pretty_variable_symbol }.join(", ") %></td>
 		<td><% if user.confirmed?; %>Ano<% else; %>Ne<% end %></td>
 
 		<td>&nbsp;

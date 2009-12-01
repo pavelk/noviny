@@ -67,8 +67,9 @@ class Picture < ActiveRecord::Base
    
   def info(title = nil)
     inf = ""
+    arr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZěščřžýáíéúůóďťňöäëĚŠČŘŽÝÁÍÉÚŮÓĎŤŇÖÄËľĽüÜßß1234567890".split("")
     if !title.blank?
-        if title.last == "."
+        if !arr.include?(title.last)
           inf += "#{title}"
         else
           inf += "#{title}." 

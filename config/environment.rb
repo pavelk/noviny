@@ -23,7 +23,7 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.default_charset = "utf-8"
 ActionMailer::Base.raise_delivery_errors = true
 ActionMailer::Base.smtp_settings = {
- :address => "smtp.glow.cz",
+ :address => "localhost",
  :port => 25,
  :domain => "localhost"
 }

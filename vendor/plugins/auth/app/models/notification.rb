@@ -42,8 +42,29 @@ class Notification < ActionMailer::Base
      content_type "text/html"
    end
    
+   def sign1_info(newuser, app, sent_on = Time.now)
+     @recipients = "#{newuser.full_name} <#{newuser.email}>"
+     @bcc        = "predplatne@denikreferendum.cz"
+     @from       = "#{app[:title]} <#{app[:email]}>"
+     @subject    = 'Registrace uživatele'
+     @body       = {'newuser' => newuser,'app' => app}
+     @sent_on    = sent_on
+     content_type "text/html"
+   end
+   
+   def sign2_info(payment, app, sent_on = Time.now)
+     @recipients = "#{payment.web_user.full_name} <#{payment.web_user.email}>"
+     @bcc        = "predplatne@denikreferendum.cz"
+     @from       = "#{app[:title]} <#{app[:email]}>"
+     @subject    = 'Informace o přijetí požadavku na uhrazení předplatného'
+     @body       = {'payment' => payment,'app' => app}
+     @sent_on    = sent_on
+     content_type "text/html"
+   end
+   
    def new_payment(payment, app, sent_on = Time.now)
      @recipients = "#{payment.web_user.full_name} <#{payment.web_user.email}>"
+     @bcc        = "predplatne@denikreferendum.cz"
      @from       = "#{app[:title]} <#{app[:email]}>"
      @subject    = 'Nová platba'
      @body       = {'payment' => payment,'app' => app}
@@ -62,6 +83,7 @@ class Notification < ActionMailer::Base
    
    def confirm_payment_info(payment, app, sent_on = Time.now)
        @recipients = "#{payment.web_user.full_name} <#{payment.web_user.email}>"
+       @bcc        = "predplatne@denikreferendum.cz"
        @from       = "#{app[:title]} <#{app[:email]}>"
        @subject    = 'Potvrzení platby'
        @body       = {'payment' => payment,'app' => app}

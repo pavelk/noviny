@@ -2,6 +2,7 @@ require "date"
 class Web::ArticlesController < Web::WebController
   layout :set_layout, :except=>[:vote]
   before_filter :authorize_users_only, :only=>[:add_comment,:delete_comment]
+  before_filter :set_last_id, :except=>:detail
   
   def download_audio
     audio = Audio.find(params[:id])
@@ -48,7 +49,9 @@ class Web::ArticlesController < Web::WebController
   end
   
   def detail
-    @article = Article.find(params[:id])
+    @article = Article.find_by_id(params[:id])
+    redirect_to home_path and return unless @article
+    cookies[:last_article_id] = @article.id
     @related = @article.relarticles + @article.inverse_relarticles
     @newest = Article.newest(3,@article.id)
     @section = @article.section
@@ -68,7 +71,6 @@ class Web::ArticlesController < Web::WebController
      else
        add_breadcrumb "Detail", ""
      end
-   
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
     render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end

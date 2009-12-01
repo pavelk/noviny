@@ -177,7 +177,7 @@ class Article < ActiveRecord::Base
     op += "articles.id != '#{ign_id}' AND " if ign_id
     Article.find(:all,
                  :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
-                 :order=>"order_date DESC, order_time DESC",
+                 :order=>"publish_date DESC",
                  :group=>"articles.id",
                  :joins=>[:article_sections],
                  :limit=>limit)
@@ -323,6 +323,7 @@ class Article < ActiveRecord::Base
     paginate(:all,
              :conditions=>["author_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",author_id,Time.now,true,false],
              :order=>"order_date DESC, priority_section DESC, order_time DESC",
+             :group=>"articles.id",
              :page=>page,
              :per_page=>per_page)
   end
@@ -333,6 +334,7 @@ class Article < ActiveRecord::Base
              :conditions=>["article_themes.theme_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
              :order=>"order_date DESC, priority_section DESC, order_time DESC",
              :joins=>[:article_themes],
+             :group=>"articles.id",
              :page=>page,
              :per_page=>per_page)
   end

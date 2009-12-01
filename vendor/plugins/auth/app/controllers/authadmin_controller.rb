@@ -96,6 +96,7 @@ class AuthadminController < Web::WebController
     @author = @newuser.author
     if request.post? and !@newuser.nil?
       @newuser.attributes = params[:newuser]
+      @newuser.confirmed = params[:newuser][:confirmed]
       if !params[:author_id].blank?
         @author = Author.find(params[:author_id])
         @newuser.author = @author

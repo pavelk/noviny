@@ -3,6 +3,7 @@ require 'digest/sha1'
 # this model expects a certain database layout and its based on the name/login pattern.
 class WebUser < ActiveRecord::Base
   belongs_to :author
+  belongs_to :country
   has_many :article_comments
   has_many :payments
   before_save :set_login
@@ -409,6 +410,7 @@ class WebUser < ActiveRecord::Base
   #validates_format_of :login, :with => VALID_LOGIN,:message=>"Login má nesprávný formát", :if=>:login?
  
   validates_length_of :password, :on => :create,  :minimum => 6, :allow_nil => true,:message=>"Heslo musí mít minimálně 6 znaků"
+  validates_length_of :psc,  :minimum => 3, :allow_blank => true, :message=>"PSČ musí mít minimálně 3 znaky",:if=>:psc
  
   validates_length_of :email,    :maximum => 100
   validates_format_of :email,    :with => VALID_EMAIL,:message=>"Email má nesprávný formát", :if=>:email?
@@ -421,7 +423,7 @@ class WebUser < ActiveRecord::Base
   validates_format_of :street,  :with => VALID_NAME,:message=>"Ulice má nesprávný formát",:if=>:street
   validates_format_of :city,  :with => VALID_NAME,:message=>"Obec má nesprávný formát",:if=>:city
   validates_format_of :number,  :with => VALID_NAME,:message=>"Číslo p. má nesprávný formát",:if=>:number
-  validates_format_of :psc,  :with => /\d{5}/, :allow_blank => true,:message=>"PSČ má nesprávný formát",:if=>:psc
+  validates_format_of :psc,  :with => VALID_NAME, :allow_blank => true,:message=>"PSČ má nesprávný formát",:if=>:psc
   validates_format_of :profession,  :with => VALID_NAME,:message=>"Povolání má nesprávný formát",:if=>:profession
   validates_format_of :phone,  :with => VALID_PHONE, :allow_blank => true,:message=>"Telefon má nesprávný formát",:if=>:phone
   validates_format_of :title,  :with => VALID_NAME,:message=>"Titul má nesprávný formát",:if=>:title

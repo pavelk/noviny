@@ -1,13 +1,29 @@
-Dobrý den <%= @payment.web_user.full_name %>,
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="cs" />
+    <title>Deník Referendum</title>
+  </head>
+<body>
+	<table width="680" cellspacing="0">
+		<tr>
+			<td valign="top" style="border-top: 5px solid #000;">
+				<font face="Arial" size="5"><b>Potvrzení platby</b><br>
+				<%= Time.now.to_s(:cz_date) %></font>
+			</td>
+			<td width="90"  style="border-top: 5px solid #000;">
+				<a href="http://www.denikreferendum.cz"><img src="http://www.denikreferendum.cz/images/logo-newsletter.gif" width="90" height="114" alt="Deník Referendum"></a>
+			</td>
+		</tr>
+	</table>
+<table width="680" cellspacing="0">
+		<tr>
+			<td valign="top" style="border-top: 1px solid #000; padding: 5px 0 2em 0;">
+				<font face="Arial" size="3">
+					Vážený/vážená <%= @payment.web_user.full_name %><br>
+					Děkujeme, že jste si předplatil vstup do diskusí v Deníku Referendum a pomohl tak k jeho dalšímu vydávání.
 <br/><br/>
-Děkujeme, že jste si předplatil vstup do diskusí v Deníku Referendum a pomohl tak k jeho dalšímu vydávání.
-<br/><br/>
-Vaše uživatelské jméno je shodné s Vaší emailovou adresou.<br/>
-Vaše heslo pro registraci je shodné s tím, které jste použili při registraci.
-<br/><br/>
-Možnost upravit svůj profil se zobrazí vždy po registraci.
-<br/><br/>
-Vaše předplatné potrvá <%= (@payment.price.to_i == 50) ? "měsíc" : "rok" %> od první registrace.
+Vaše předplatné potrvá do <%= @payment.web_user.expire_date.to_s(:cz_date) %>.
 <br/><br/>
 Jistě jen z nadměrné opatrnosti Vás upozorňujeme na povinnost dodržovat etický kodex a těšíme se na Váš přínos našim stránkám. 
 <br/><br/>
@@ -15,4 +31,15 @@ Děkujeme a přejeme Vám radost z diskusí v Deníku Referendum.
 <br/><br/>
 <br/>
 Marta Čapková<br/>
-předplatné DR
+předplatné DR					
+				</font>
+			</td>
+		</tr>
+		<tr>
+			<td width="90"  style="border-top: 1px solid #000; padding-top: 5px;">
+				<font face="Arial" size="3">(c) Vydavatelství Referendum s.r.o. 2009</font>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

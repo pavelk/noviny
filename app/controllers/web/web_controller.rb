@@ -43,23 +43,30 @@ protected
    def set_printable
      @printable = params[:print].to_i > 0
    end
- 
+   
   def pretty_id(object)
-    return "#{object.id}-#{object.name.parameterize}"    
+    return "#{object.id}-#{object.name.parameterize}" if object
   end
  
     def pretty_name(object)
-      if (object.class.name == "Author")
-        return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
-      else
-        return "#{object.name.parameterize}" 
+      if object
+        if (object.class.name == "Author")
+          return "#{object.firstname.parameterize}-#{object.surname.parameterize}"
+        else
+          return "#{object.name.parameterize}" 
+        end
       end
     end
     
     def unpretty_name(name)
-      return name.gsub("-"," ")
+      return name.gsub("-"," ") if name
+    end
+  
+    def set_last_id
+       cookies[:last_article_id] = nil
     end
 private  
+
   def check_authentication
     flash[:error] = "" if flash[:error] == "Musíte se přihlásit pro přístup na tuto stránku."
     return false

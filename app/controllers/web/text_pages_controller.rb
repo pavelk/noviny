@@ -1,5 +1,6 @@
 class Web::TextPagesController < Web::WebController
   layout "web/part/text_page"
+  before_filter :set_last_id, :except=>:error
   
   def show
     @text_page = TextPage.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])

@@ -8,9 +8,8 @@
 	</div>
 	<% if @payment.status == Payment::VYTVORENO %>
 		<%= link_to "Zaplatit znovu",:action=>"pay_method", :id=>@payment.id %>
-	<% else %>
-		Děkujeme za zaplacení, nyní se můžete přihlásit.
-		Použijte jako login Vaši emailovou adresu a heslo, které jste zadávali při registraci.
+	<% elsif @payment.web_user.expire_date %>
+		Děkujeme za zaplacení, Váš účet vyprší <%= @payment.web_user.expire_date.to_s(:cz_date) %>
 	<% end %>
 <% end %>
 

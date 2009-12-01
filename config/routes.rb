@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
   map.administrace 'administrace', :controller => 'admin/albums', :action => 'index'
-  
+  map.preview_article 'preview/articles/:id', :controller => 'web/articles', :action => 'detail'
   #Added by Jan Uhlar
   map.mailings "/hromadne-emaily", :controller=>"mailings"
   map.home "", :controller=>"web/sections"
@@ -80,7 +80,6 @@ ActionController::Routing::Routes.draw do |map|
   
   #navrh na preview z admina
   map.detail 'articles/detail/:id', :controller => 'articles', :action => 'detail'
-  map.preview_article 'preview/articles/:id', :controller => 'articles', :action => 'detail'
   map.preview_headliner 'preview/headliner/:id', :controller => 'headliner_boxes', :action => 'detail'
   map.preview_banner 'preview/banner/:id', :controller => 'article_banners', :action => 'detail'
   #konec navrhu

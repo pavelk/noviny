@@ -1,10 +1,18 @@
 <p>
-  <strong>Text:</strong><br>
-  <%= @mailing.text %>
-</p>
-<p>
   <strong>Předmět:</strong>
   <%=h @mailing.subject %>
+</p>
+<p>
+  <strong>Datum:</strong>
+  <%= @mailing.sent_on.to_s(:cz_date) %>
+</p>
+<p>
+  <strong>Nadpis:</strong>
+  <%= @mailing.name %>
+</p>
+<p>
+  <strong>Text:</strong><br>
+  <%= @mailing.text %>
 </p>
 <p>
   <strong>Vytvořeno:</strong>
@@ -32,7 +40,14 @@
 
 <p>
   <strong>
-  	<%= link_to "Poslat všem",{:action=>"send_by_email",:id=>@mailing.id}, :confirm => 'Opravdu?' %>
+  	<% form_tag(:action=>"send_by_email",:id=>@mailing.id) do %>
+		<%= radio_button_tag "recepients", "temp" %>
+		<label for="recepients_temp">Dočasné emaily</label><br>
+		<%= radio_button_tag "recepients", "news" %>
+		<label for="recepients_news">Trvalé emaily</label>
+		<br>
+  		<%= submit_tag "Poslat", :confirm => 'Opravdu?' %>
+	<% end %>
   </strong>
 </p>
 <br><br>

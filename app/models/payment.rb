@@ -34,6 +34,23 @@ class Payment < ActiveRecord::Base
         "Zaplaceno offline"
     end 
   end
+  
+  def pretty_variable_symbol
+    ret = ""
+    if self.status == VYTVORENO
+      ret += "<span style='color:red;'>"
+    else
+      ret += "<span style='color:black;'>"
+    end
+    if self.pay_method == "paysec"
+      ret += "ps: #{self.variable_symbol}"
+    else
+      ret +=  "bp: #{self.variable_symbol}"
+    end
+    ret += "</span>"
+    return ret
+  end
+  
 protected
    def set_variable_symbol
      if self.variable_symbol.blank?
