@@ -155,7 +155,7 @@ class Article < ActiveRecord::Base
     end
     op += " AND article_sections.section_id = '9999'"
     ops = find(:all,
-               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,to_date,arr,true,false],
+               :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,to_date.end_of_day,Time.now,arr,true,false],
                :order=>"order_date DESC, priority_home DESC, order_time DESC",
                :joins=>[:article_sections],
                :include=>[:content_type],
