@@ -28,7 +28,7 @@ class MailingsController < AuthadminController
         rescue
           
         end
-        sleep(2)
+        sleep(0.25)
       end
       flash[:notice] = "Zpravodaj úspěšně odeslán"
       redirect_to :action=>"show",:id=>@mailing.id
