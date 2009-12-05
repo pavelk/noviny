@@ -29,6 +29,8 @@ class Web::Calendar
   def self.sunday_date(t = Time.now)
     if self.sunday?
       t.beginning_of_day
+    elsif self.saturday?
+      (t.beginning_of_day+1.days).beginning_of_day
     else
       (t.beginning_of_week-1.days).beginning_of_day
     end
@@ -61,6 +63,8 @@ class Web::Calendar
   def self.sunday?(t = Time.now)
     t.wday == 0
   end
+  
+
   
   def self.set_opinion_limit(t = Time.now)
     return 4 if t.wday == 1 || t.wday == 2

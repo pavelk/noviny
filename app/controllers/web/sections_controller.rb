@@ -120,7 +120,7 @@ protected
     @saturday_articles = Article.find(:all,
                                       :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
                                       :order=>"order_date DESC, priority_section DESC, order_time DESC",
-                                      :include=>[:content_type])
+                                      :include=>[:content_type])                                
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
       return
