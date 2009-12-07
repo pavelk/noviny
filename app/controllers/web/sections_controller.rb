@@ -2,6 +2,12 @@ class Web::SectionsController < Web::WebController
   layout "web/referendum"
   before_filter :set_last_id
   
+  def test_proxy
+    t = params[:sleep].to_i
+    sleep(t)
+    render :nothing=>true
+  end
+  
   def topics
     @section = Section.find(params[:id]) if params[:id]
     add_breadcrumb "Témata", topics_path
@@ -118,16 +124,18 @@ protected
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
          
     @saturday_articles = Article.find(:all,
-                                      :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
+                                      :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
                                       :order=>"order_date DESC, priority_section DESC, order_time DESC",
+                                      :joins=>[:article_sections],
                                       :include=>[:content_type])                                
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
       return
     end
     @sunday_articles = Article.find(:all,
-                                    :conditions=>["content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
+                                    :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
                                     :order=>"order_date DESC, priority_section DESC, order_time DESC",
+                                    :joins=>[:article_sections],
                                     :include=>[:content_type])                                  
   end
   

@@ -27,7 +27,7 @@ Obec: <%= @info_user.city %><br/>
 <% end %>
 <%= "Autor si nepřál zveřejnit žádné kontakty."  if @info_user.no_info? %>
 <hr/>
-<h3>Příspěvky: <%= @comments.total_entries %></h3>
+<h3><%= comments_info(@comments.total_entries) %></h3>
 <table border="1">
 <%= render :partial=>"web/web_users/comment", :collection=>@comments %>
 </table>

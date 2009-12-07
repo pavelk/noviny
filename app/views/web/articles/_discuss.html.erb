@@ -1,5 +1,5 @@
 <% if !(@printable && @comments.length == 0) %>
-<h3 class="h line">Diskuze (<%= @comments.length -%> příspěvků)</h3>
+<h3 class="h line">Diskuse (<%= comments_info(@comments.length) -%>)</h3>
 <div class="in">
 	
   <% if (!web_user_logged_in? && @comments.length > 8 && !@printable) %>

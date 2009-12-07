@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.administrace 'administrace', :controller => 'admin/albums', :action => 'index'
   map.preview_article 'preview/articles/:id', :controller => 'web/articles', :action => 'detail'
   #Added by Jan Uhlar
+  map.test_proxy "proxy/test/:sleep", :controller=>"web/sections", :action => 'test_proxy'
   map.mailings "/hromadne-emaily", :controller=>"mailings"
   map.home "", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"

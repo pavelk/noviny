@@ -26,7 +26,7 @@
 		<% end %>
 		<% if !@homes.blank? %>
 		<div class="box">
-	        <h2 class="h <%=!@opinions.blank? ? 'line' : ''%>">Domov</h2>
+	        <h2 class="h <%=@opinions.blank? ? '' : 'line'%>">Domov</h2>
 	        <div class="in">
 	        	<%= render :partial=>"web/articles/left_article",:collection=>@homes,:locals=>{:with_date=>true,:small_class=>false} %>
 	        </div>
@@ -34,7 +34,7 @@
 		<% end %>
 		<% if !@worlds.blank? %>
 		<div class="box">
-	        <h2 class="h <%=!@homes.blank? ? 'line' : ''%>">Svět</h2>
+	        <h2 class="h <%=(@homes.blank? && @opinions.blank?) ? '' : 'line'%>">Svět</h2>
 	        <div class="in">
 	        	<%= render :partial=>"web/articles/left_article",:collection=>@worlds,:locals=>{:with_date=>true,:small_class=>false} %>
 	        </div>
@@ -42,7 +42,7 @@
 		<% end %>
 		<% if !@arts.blank? %>
 		<div class="box">
-	        <h2 class="h <%=!@worlds.blank? ? 'line' : ''%>">Umění</h2>
+	        <h2 class="h <%=(@homes.blank? && @opinions.blank? && @worlds.blank?) ? '' : 'line'%>">Umění</h2>
 	        <div class="in">
 	        	<%= render :partial=>"web/articles/left_article",:collection=>@arts,:locals=>{:with_date=>true,:small_class=>false} %>
 	        </div>
@@ -50,7 +50,7 @@
 		<% end %>
 		<% if !@next_pages.blank? %>	
 		<div class="box">
-	        <h2 class="h <%=!@arts.blank? ? 'line' : ''%>">Další texty</h2>
+	        <h2 class="h <%=(@homes.blank? && @opinions.blank? && @worlds.blank? && @arts.blank?) ? '' : 'line'%>">Další texty</h2>
 	        <div class="in">
 	        	<%= render :partial=>"web/articles/left_article",:collection=>@next_pages,:locals=>{:with_date=>true,:small_class=>false} %>
 	        </div>

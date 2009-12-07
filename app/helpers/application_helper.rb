@@ -8,6 +8,20 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def comments_info(number)
+    str = "#{number} "
+    if number == 0
+      str += "příspěvků"
+    elsif number == 1
+      str += "příspěvek"
+    elsif number < 5
+      str += "příspěvky"
+    else
+      str += "příspěvků"
+    end
+    str
+  end
+  
   def exit_span
     "<span class=\"exits\" style=\"float:right;cursor:pointer;\" onclick=\"jQuery('.activeOverlay').remove();\">X</span>"
   end

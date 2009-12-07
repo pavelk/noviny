@@ -2,7 +2,7 @@
 <div class="box">
 	<h3 class="h line"><%= @info_box.title %></h3>
 	<div class="in">
-	   <%= main_image_tag(@info_box.pictures.first.data.url(:article_profile )) %>
+	   <%= main_image_tag(@info_box.pictures.first.data.url(:article_profile )) if @info_box.pictures.first %>
 	   <h4><%= @info_box.name %></h4>
 	   <p><%=th @info_box.text %></p>
 	</div> <!-- /.in -->
