@@ -14,7 +14,8 @@ class MailingsController < AuthadminController
       if recep == "temp"
         recepients = TempNewsletter.all
       elsif recep == "news"
-        #recepients = Newsletter.all_active - @mailing.newsletters
+        recepients = Newsletter.all_active - @mailing.newsletters
+      else
         recepients = []
       end
       recepients.each do |rec|

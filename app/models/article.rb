@@ -332,7 +332,7 @@ class Article < ActiveRecord::Base
   def self.paginate_from_tag(tag_id, page = 1, per_page = 10)
     paginate(:all,
              :conditions=>["article_themes.theme_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
-             :order=>"order_date DESC, priority_section DESC, order_time DESC",
+             :order=>"publish_date DESC",
              :joins=>[:article_themes],
              :group=>"articles.id",
              :page=>page,
