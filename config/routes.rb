@@ -77,6 +77,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :article_banners
     admin.resources :headliner_boxes
     admin.resources :text_pages
+    admin.resources :holiday_definitions
   end
   
   #navrh na preview z admina

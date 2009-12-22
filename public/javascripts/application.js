@@ -122,7 +122,7 @@ $(function()
   });  
   
   //date input field
-  $("input[id$='publish_date']").livequery(function() {
+  $("input[id$='publish_date'], input[id$='date_start'], input[id$='date_end']").livequery(function() {
      $.datepick.setDefaults({dateFormat: 'dd/mm/yy'});
      $(this).datepick({defaultDate: null});
   });
@@ -139,7 +139,7 @@ $(function()
         css: "/css/simpleEditor.View.css"
       });
   });
-  
+
   $("#text_page_text").livequery(function() {
    $(this).simpleditor({
     imageButton: "linkedImages",

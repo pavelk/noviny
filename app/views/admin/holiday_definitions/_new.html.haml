@@ -1,0 +1,12 @@
+.recordHeader
+  %h2= link_to 'Nova definice víkendu', '#'
+.recordPath
+.recordEdit
+
+  = error_messages_for :holiday_definition
+
+  - form_for @holiday_definition, :url => collection_url, :html => { :multipart => true } do |f|
+    %fieldset
+      = render :partial => "form", :locals => { :f => f }
+      %br
+      %p= submit_tag "Uložit"

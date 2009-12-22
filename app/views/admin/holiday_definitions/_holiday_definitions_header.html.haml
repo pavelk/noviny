@@ -1,0 +1,9 @@
+%table
+  %tr
+    %th{ :width => '45%', :class => 'l1' }= link_to 'nazev', '#'
+    %th{ :width => '20%', :class => 'l1' }= link_to 'datum od', '#'
+    %th{ :width => '10%'     }= link_to 'datum do', '#'
+    %th{ :width => '25%'    } &nbsp;    
+    = render(:partial => 'holiday_definition', :collection => @holiday_definitions)
+  %tr
+    %td{ :colspan => '4'}= will_paginate @collection, :previous_label => 'Předchozí', :next_label => 'Další'    

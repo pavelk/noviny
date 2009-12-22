@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091128181521) do
+ActiveRecord::Schema.define(:version => 20091221173557) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
 
   create_table "article_banners", :force => true do |t|
     t.string   "headline"
-    t.datetime "publish_date"
+    t.date     "publish_date"
     t.integer  "picture_id"
     t.integer  "article_id"
     t.datetime "created_at"
@@ -249,6 +249,11 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
     t.string "name"
   end
 
+  create_table "countries", :force => true do |t|
+    t.string "name"
+    t.string "c_code", :limit => 5
+  end
+
   create_table "dailyquestion_authors", :force => true do |t|
     t.integer "dailyquestion_id"
     t.integer "author_id"
@@ -359,6 +364,17 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
   add_index "headliner_themes", ["headliner_box_id"], :name => "headliner_themes_headliner_box_id_index"
   add_index "headliner_themes", ["theme_id"], :name => "headliner_themes_theme_id_index"
 
+  create_table "holiday_definitions", :force => true do |t|
+    t.string   "name"
+    t.date     "date_start"
+    t.date     "date_end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "holiday_definitions", ["date_end"], :name => "holiday_definitions_date_end_index"
+  add_index "holiday_definitions", ["date_start"], :name => "holiday_definitions_date_start_index"
+
   create_table "info_box_pictures", :force => true do |t|
     t.integer "picture_id"
     t.integer "info_box_id"
@@ -411,6 +427,7 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "sent_on"
+    t.string   "name",       :default => "Zpravodaj Sedm dní Deníku Referendum"
   end
 
   create_table "newsletters", :force => true do |t|
@@ -552,6 +569,10 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
 
   add_index "tags", ["user_id"], :name => "tags_user_id_index"
 
+  create_table "temp_newsletters", :force => true do |t|
+    t.string "email", :limit => 100, :null => false
+  end
+
   create_table "text_page_insets", :force => true do |t|
     t.integer "inset_id"
     t.integer "text_page_id"
@@ -661,6 +682,7 @@ ActiveRecord::Schema.define(:version => 20091128181521) do
     t.boolean  "read_codex",                        :default => false
     t.boolean  "show_city",                         :default => false
     t.boolean  "show_berth",                        :default => false
+    t.integer  "country_id",                        :default => 201
   end
 
 end

@@ -1,0 +1,6 @@
+%tr{ :id => "holidaydefinition_#{holiday_definition.id}" }
+  %td{ :class => "listItem l1"}
+    .cropLine= link_to holiday_definition.name, '#', :title => holiday_definition.name, :id => "edititem1_#{holiday_definition.id}", :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+  %td= admin_date(holiday_definition.date_start)
+  %td= admin_date(holiday_definition.date_end)
+  = render(:partial => 'shared/admin/edit_delete', :locals => { :obj => holiday_definition, :del => 'HolidayDefinition' })

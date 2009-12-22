@@ -103,5 +103,13 @@
       .clearer
     .listFilter
     .listContent   
-    .clearer            
+    .clearer
+  .listGroup#holiday_definitions
+    .listHeader
+      %h2.folder= link_to "Definice víkend (#{HolidayDefinition.all.length})", '#', :onclick => "getRecords($(this).parent(), 'no'); return false"
+      %span Volitelny popis sekce
+      .clearer
+    .listFilter
+    .listContent   
+    .clearer               
 .clearer

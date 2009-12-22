@@ -1,0 +1,12 @@
+= f.label :name, 'Název:'
+= f.text_field :name
+%br
+%br
+%label{ :for => "date_start" } Datum od:
+%input{ :id => "date_start", :name => "date_start", :size => "30", :type => "text", :value => www_date(@object.date_start)}
+%br
+%br
+%label{ :for => "date_end" } Datum do:
+%input{ :id => "date_end", :name => "date_end", :size => "30", :type => "text", :value => www_date(@object.date_end)}
+%br
+%br
