@@ -1,0 +1,31 @@
+<p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", archiv_path %></p>
+<%= render :partial=>"web/articles/headliner_box" %>
+<%= render :partial=> "web/articles/related" %>
+
+<% if !@holiday_articles.blank? %>
+	<% @holiday_articles.each_with_index do |holy,i| %>
+		<% next if holy.blank? %>
+		<% curr_date = Time.now - i.days %>
+		<div class="box">
+			  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>"><%= Web::Calendar::DAYS[curr_date.wday - 1] + " " + curr_date.to_s(:cz_date) %></h2>
+			  <div class="in">
+				<%= render :partial=>"web/articles/left_article", :collection=>holy,:locals=>{:with_date=>false,:small_class=>false} %>
+			   </div> <!-- /.in -->
+		</div> <!-- /.box -->
+	<% end %>
+<% end %>
+
+<div class="box">
+   <h2 class="h line">Přehledy vydání</h2>
+   <ul>
+   	<% (1..5).each do |day| %>
+		<% date = (Web::Calendar.sunday_date - day.weeks).to_s(:cz_date) %>
+		<li><%= link_to "Víkend ke dni #{date}", archiv_get_path(:date=>date) -%></li>
+	<% end %>
+     <li><%= link_to "Archiv vydání", archiv_path %></li>
+   </ul>
+</div> <!-- /.box -->
+
+<div class="box cols cols3">
+  <%= render :partial=>"web/sections/box" %>
+</div> <!-- /.cols -->

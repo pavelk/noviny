@@ -54,9 +54,15 @@ class Web::Calendar
   
   def self.week?(t = Time.now)
     week = t.wday == 6 || t.wday == 0
-    hd = HolidayDefinition.find(:first,:conditions=>["date_start <= ? AND date_end >= ?",Time.now.to_date,Time.now.to_date])
+    hd = HolidayDefinition.find(:first,:conditions=>["date_start <= ? AND date_end >= ?",t.to_date,t.to_date])
     week = true if hd
     return week
+  end
+  
+  def self.holidays?(t = Time.now)
+    hd = HolidayDefinition.find(:first,:conditions=>["date_start <= ? AND date_end >= ?",t.to_date,t.to_date])
+    return true if hd
+    return false
   end
   
   def self.saturday?(t = Time.now)

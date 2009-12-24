@@ -34,7 +34,8 @@ class Web::SectionsController < Web::WebController
     cookies[:section_id] = @section.id
     set_default_variables
     add_breadcrumb @section.name, section_path(pretty_name(@section))
-    render :action=>"#{@section.id}"
+    render :action=>"holidays" and return if Web::Calendar.holidays?
+    render :action=>"#{@section.id}" and return
   end
   
   def subsection
@@ -122,6 +123,20 @@ protected
   
   def set_weekend_variables
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
+    
+    if Web::Calendar.holidays?
+      @holiday_articles = []
+      curr_date = Time.now 
+      while Web::Calendar.holidays?(curr_date)
+        @holiday_articles << Article.find(:all,
+                                        :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,curr_date.beginning_of_day,curr_date.end_of_day,Time.now,true,false],
+                                        :order=>"order_date DESC, priority_section DESC, order_time DESC",
+                                        :joins=>[:article_sections],
+                                        :include=>[:content_type])
+        curr_date -= 1.days                             
+      end
+      return
+    end
          
     @saturday_articles = Article.find(:all,
                                       :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
