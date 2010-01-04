@@ -22,7 +22,7 @@ class Dailyquestion < ActiveRecord::Base
   end
     
   def can_vote?
-    return (self.publish_date >= (Time.now-7.days)) && (self.publish_date <= Time.now) 
+    return (self.publish_date >= (Time.now-7.days)) && (self.publish_date.to_date <= Time.now.to_date) 
   end
     
 end
