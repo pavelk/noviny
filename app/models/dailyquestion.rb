@@ -18,7 +18,8 @@ class Dailyquestion < ActiveRecord::Base
       date = date.end_of_day
     end
     find(:first,
-         :conditions=>["publish_date >= ? AND publish_date <= ? AND approved = ?" ,date.beginning_of_day,date,true])
+         :conditions=>["publish_date >= ? AND publish_date <= ? AND approved = ?" ,date.beginning_of_day,date,true],
+         :select=>"id, headline, perex")
   end
     
   def can_vote?

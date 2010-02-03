@@ -157,10 +157,11 @@ class Article < ActiveRecord::Base
     ops = find(:all,
                :conditions=>["priority_home > ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND content_type_id IN (?) AND approved = ? AND visibility = ?#{op}",0,beg_date.beginning_of_day,to_date.end_of_day,Time.now,arr,true,false],
                :order=>"order_date DESC, priority_home DESC, order_time DESC",
-               :joins=>[:article_sections],
-               :include=>[:content_type],
+               :joins=>[:sections],
+               :include=>[:content_type, :author, :pictures],
                :group=>"articles.id",
-               :limit=>length_limit)
+               :limit=>length_limit,
+               :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
     length_limit ||= 5           
     return ops if ops.length >= length_limit
     return ops if options[:limit] == 0
@@ -179,8 +180,9 @@ class Article < ActiveRecord::Base
                  :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
                  :order=>"publish_date DESC",
                  :group=>"articles.id",
-                 :joins=>[:article_sections],
-                 :limit=>limit)
+                 :include=>[:sections, :content_type, :author],
+                 :limit=>limit,
+                 :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id")
   end
   
   #Returns all articles paginated by current date as param
@@ -199,8 +201,10 @@ class Article < ActiveRecord::Base
     Article.find(:all,
                  :conditions=>["publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",date.beginning_of_day,date.end_of_day,Time.now,true,false],
                  :order=>"content_type_id, order_date DESC, order_time DESC",
-                 :joins=>[:article_sections],
-                 :group=>"articles.id")
+                 :joins=>[:sections],
+                 :include=>[:content_type, :author, :pictures],
+                 :group=>"articles.id",
+                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   #Returns the array of readest articles from each section
@@ -211,10 +215,11 @@ class Article < ActiveRecord::Base
     arr.each do |a|
       article = Article.find(:first,
                                  :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,false],
-                                 :select=>"articles.*,COUNT(article_views.article_id) as c",
+                                 :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, COUNT(article_views.article_id) as c",
                                  :group=>"articles.id",
                                  :order=>"c DESC",
-                                 :joins=>[:article_views,:article_sections])
+                                 :joins=>[:article_views,:sections],
+                                 :include=>[:author,:content_type])
       if article
         ids << article.id
         readest << article 
@@ -248,9 +253,10 @@ class Article < ActiveRecord::Base
     find(:all,
          :conditions=>["content_type_id = ? AND publish_date <= ? AND approved = ? AND visibility = ?#{op}",ContentType::ZPRAVA,Time.now,true,false],
          :order=>"order_date DESC#{ord}, order_time DESC",
-         :include=>[:content_type],
+         :include=>[:content_type, :sections, :author],
          :group=>"articles.id",
-         :limit=>limit)
+         :limit=>limit,
+         :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   #Returns all opinions from section section_id, limit=>12
@@ -269,9 +275,10 @@ class Article < ActiveRecord::Base
          :conditions=>["content_type_id IN (?) AND article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",arr,section_id,Time.now,true,false],
          :order=>"order_date DESC, priority_section DESC, order_time DESC",
          :joins=>[:article_sections],
-         :include=>[:content_type],
+         :include=>[:content_type, :sections, :author],
          :group=>"articles.id",
-         :limit=>limit)
+         :limit=>limit,
+         :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   def self.opinions(date,page = 1)
@@ -279,7 +286,9 @@ class Article < ActiveRecord::Base
              :conditions=>["publish_date BETWEEN ? AND ? AND content_type_id IN (?)",date.beginning_of_day,date.end_of_day,ContentType.opinion_types],
              :order=>"order_date DESC, priority_section DESC, order_time DESC",
              :page=>page,
-             :per_page=>12)
+             :per_page=>12,
+             :include=>[:content_type, :author, :pictures],
+             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   #Returns all today articles belonging to the section as params 'section_id'
@@ -303,8 +312,9 @@ class Article < ActiveRecord::Base
          :conditions=>["article_sections.section_id = ? AND articles.id NOT IN (?) AND publish_date <= ? AND priority_section > ?#{op} AND articles.approved = ? AND articles.visibility = ?",options[:section_id],options[:ignore_arr],Time.now,0,true,false],
          :order=>"order_date DESC, priority_section DESC, order_time DESC",
          :joins=>[:article_sections],
-         :include=>[:content_type],
-         :limit=>options[:limit])
+         :include=>[:content_type, :author],
+         :limit=>options[:limit],
+         :select=>"articles.id, articles.author_id, articles.name, articles.perex, articles.content_type_id")
   end
   
   #Returns all yesterday articles belonging to the section as params 'section_id'
@@ -325,7 +335,9 @@ class Article < ActiveRecord::Base
              :order=>"order_date DESC, priority_section DESC, order_time DESC",
              :group=>"articles.id",
              :page=>page,
-             :per_page=>per_page)
+             :per_page=>per_page,
+             :include=>[:content_type, :author, :pictures],
+             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   #Returns paginated articles from tag given by 'tag_id'
@@ -336,7 +348,9 @@ class Article < ActiveRecord::Base
              :joins=>[:article_themes],
              :group=>"articles.id",
              :page=>page,
-             :per_page=>per_page)
+             :per_page=>per_page,
+             :include=>[:content_type, :author, :pictures],
+             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   def self.today_by_priority_home
@@ -351,7 +365,8 @@ class Article < ActiveRecord::Base
     HeadlinerBox.find(:first,
                       :conditions=>[op,section_id,beg_date,nil],
                       :joins=>[:headliner_sections],
-                      :include=>[:article,:picture])
+                      :include=>[:article,:picture, :themes],
+                      :select=>"headliner_boxes.id, headliner_boxes.article_id, headliner_boxes.picture_id, headliner_boxes.picture_title, headliner_boxes.headline, headliner_boxes.perex")
   end
   
   #výstup z modulu Headlinový box, bude definován pro danný den a konkretní 
@@ -394,7 +409,8 @@ class Article < ActiveRecord::Base
                        :joins=>[:articlebanner_sections],
                        :include=>[:article,:picture],
                        :limit=>limit_count,
-                       :order=>"#{order},publish_date DESC,updated_at DESC")
+                       :order=>"#{order},publish_date DESC,updated_at DESC",
+                       :select=>"article_banners.id, article_banners.headline, article_banners.article_id, article_banners.picture_id")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)

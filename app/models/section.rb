@@ -32,7 +32,7 @@ class Section < ActiveRecord::Base
   has_many :tag_selections, :through => :themeselection_sections
   
   def self.all_root
-    find(:all,:conditions=>{:parent_id=>nil},:order=>"position")
+    find(:all,:conditions=>{:parent_id=>nil},:order=>"position",:select=>"id, name")
   end
   
   def top_themes(limit = 7)

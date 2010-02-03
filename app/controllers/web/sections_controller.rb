@@ -30,7 +30,7 @@ class Web::SectionsController < Web::WebController
   end
   
   def detail
-    @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
+    @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])],:select=>"id,name")
     cookies[:section_id] = @section.id
     set_default_variables
     add_breadcrumb @section.name, section_path(pretty_name(@section))
@@ -45,10 +45,12 @@ class Web::SectionsController < Web::WebController
     set_default_variables
     @articles = Article.paginate(:all,
                              :conditions=>["article_sections.section_id = ? AND articles.approved = ? AND articles.visibility = ?",@subsection.id,true,false],
-                             :joins=>[:article_sections],
+                             :joins=>[:sections],
                              :order=>"order_date DESC, priority_section DESC, order_time DESC",
                              :page=>params[:page],
-                             :per_page=>10)
+                             :per_page=>10,
+                             :include=>[:content_type, :author, :pictures],
+                             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
     ign_arr = @articles.map{|a| a.id}.uniq                         
     @opinions = Article.middle_opinions(@section.id,12,ign_arr)
     @type = 1 #for partial readest menu
@@ -62,7 +64,9 @@ class Web::SectionsController < Web::WebController
                                  :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                  :page=>params[:page],
-                                 :per_page=>25)
+                                 :per_page=>25,
+                                 :include=>[:content_type, :author, :pictures],
+                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
     add_breadcrumb "Vyhledávání", ""
     render :layout=>"web/gallery"
   end
@@ -131,8 +135,9 @@ protected
         @holiday_articles << Article.find(:all,
                                         :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,curr_date.beginning_of_day,curr_date.end_of_day,Time.now,true,false],
                                         :order=>"order_date DESC, priority_section DESC, order_time DESC",
-                                        :joins=>[:article_sections],
-                                        :include=>[:content_type])
+                                        :joins=>[:sections],
+                                        :include=>[:content_type, :author, :pictures],
+                                        :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
         curr_date -= 1.days                             
       end
       return
@@ -141,8 +146,9 @@ protected
     @saturday_articles = Article.find(:all,
                                       :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,(@sunday-1.days).beginning_of_day,(@sunday-1.days).end_of_day,Time.now,true,false],
                                       :order=>"order_date DESC, priority_section DESC, order_time DESC",
-                                      :joins=>[:article_sections],
-                                      :include=>[:content_type])                                
+                                      :joins=>[:sections],
+                                      :include=>[:content_type, :author, :pictures],
+                                      :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")                                
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
       return
@@ -150,8 +156,9 @@ protected
     @sunday_articles = Article.find(:all,
                                     :conditions=>["article_sections.section_id = ? AND content_type_id != ? AND publish_date >= ? AND publish_date <= ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Section::VIKEND,ContentType::ZPRAVA,@sunday.beginning_of_day,@sunday.end_of_day,Time.now,true,false],
                                     :order=>"order_date DESC, priority_section DESC, order_time DESC",
-                                    :joins=>[:article_sections],
-                                    :include=>[:content_type])                                  
+                                    :joins=>[:sections],
+                                    :include=>[:content_type, :author, :pictures],
+                                    :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")                                  
   end
   
   def set_non_opinion_variables(section_id)
@@ -160,9 +167,11 @@ protected
     @articles = Article.paginate(:all,
                                  :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND articles.id NOT IN (?) AND articles.content_type_id NOT IN (?)",section_id,Time.now,true,false,ign_arr,ContentType.author_types],
                                  :order=>"order_date DESC, priority_section DESC, order_time DESC",
-                                 :joins=>[:article_sections],
+                                 :joins=>[:sections],
                                  :page=>params[:page],
-                                 :per_page=>per_page)
+                                 :per_page=>per_page,
+                                 :include=>[:content_type, :author, :pictures],
+                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
   end
   
   def set_common_variables(section_id)

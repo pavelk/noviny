@@ -82,7 +82,7 @@ module ApplicationHelper
   #Returns first picture link for article
   def article_first_photo(article)
     arr = ContentType.author_image_types
-    if (article.section_id == Section::NAZORY || arr.include?(article.content_type_id))
+    if (article.section_ids.include?(Section::NAZORY) || arr.include?(article.content_type_id))
       author = article.author
       return link_to(main_image_tag(author.pictures.first.data.url(:author_little)), detail_article_path(pretty_id(article))) if author && author.pictures.first
     else

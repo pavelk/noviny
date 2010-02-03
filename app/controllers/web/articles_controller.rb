@@ -15,11 +15,11 @@ class Web::ArticlesController < Web::WebController
   end
   
   def authors
-    @authors = Author.all(:order=>"surname")
+    @authors = Author.all(:order=>"surname",:select=>"authors.id,authors.surname,authors.firstname")
   end
   
   def add_comment
-    @article = Article.find(params[:id])
+    @article = Article.find(params[:id], :include=>[:sections, :author, :article_comments])
     if request.get?
       redirect_to :action=>"detail", :id=>@article.id  and return
     end
@@ -49,7 +49,7 @@ class Web::ArticlesController < Web::WebController
   end
   
   def detail
-    @article = Article.find_by_id(params[:id])
+    @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
     redirect_to home_path and return unless @article
     cookies[:last_article_id] = @article.id
     @related = @article.relarticles + @article.inverse_relarticles
@@ -206,7 +206,7 @@ class Web::ArticlesController < Web::WebController
   
   def detail_gallery
     @page = 1
-    @article = Article.find(params[:id])
+    @article = Article.find(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
     @related = @article.relarticles + @article.inverse_relarticles
     @top_themes = @article.themes
     @section = @article.section

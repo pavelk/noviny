@@ -10,6 +10,8 @@ class TextPage < ActiveRecord::Base
   
   
   def self.all_visible
-    find(:all,:conditions=>{:approved=>true,:visibility=>false})
+    find(:all,
+         :conditions=>{:approved=>true,:visibility=>false},
+         :select=>"id, name")
   end
 end
