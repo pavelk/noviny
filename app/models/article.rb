@@ -173,16 +173,18 @@ class Article < ActiveRecord::Base
   
   #Returns last articles limited as param
   def self.newest(limit=3,ign_id = nil, section_id = nil)
-    op = ""
-    op += "article_sections.section_id = '#{section_id}' AND " if section_id
-    op += "articles.id != '#{ign_id}' AND " if ign_id
-    Article.find(:all,
-                 :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
-                 :order=>"publish_date DESC",
-                 :group=>"articles.id",
-                 :include=>[:sections, :content_type, :author],
-                 :limit=>limit,
-                 :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id")
+    Rails.cache.fetch('Article.newest') do
+      op = ""
+      op += "article_sections.section_id = '#{section_id}' AND " if section_id
+      op += "articles.id != '#{ign_id}' AND " if ign_id
+      Article.find(:all,
+                   :conditions=>["#{op}publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",Time.now,true,false],
+                   :order=>"publish_date DESC",
+                   :group=>"articles.id",
+                   :include=>[:sections, :content_type, :author],
+                   :limit=>limit,
+                   :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id")
+    end                 
   end
   
   #Returns all articles paginated by current date as param
@@ -209,23 +211,25 @@ class Article < ActiveRecord::Base
   
   #Returns the array of readest articles from each section
   def self.all_readest(begin_date)
-    readest = []
-    ids = [0]
-    arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
-    arr.each do |a|
-      article = Article.find(:first,
-                                 :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,false],
-                                 :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, COUNT(article_views.article_id) as c",
-                                 :group=>"articles.id",
-                                 :order=>"c DESC",
-                                 :joins=>[:article_views,:sections],
-                                 :include=>[:author,:content_type])
-      if article
-        ids << article.id
-        readest << article 
-      end  
+    Rails.cache.fetch('Article.all_readest') do
+      readest = []
+      ids = [0]
+      arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
+      arr.each do |a|
+        article = Article.find(:first,
+                                   :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,false],
+                                   :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, COUNT(article_views.article_id) as c",
+                                   :group=>"articles.id",
+                                   :order=>"c DESC",
+                                   :joins=>[:article_views,:sections],
+                                   :include=>[:author,:content_type])
+        if article
+          ids << article.id
+          readest << article 
+        end  
+      end
+      return readest
     end
-    return readest
   end
    
   #Returns top tags according to number of articles in each group

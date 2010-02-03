@@ -38,14 +38,16 @@ class Author < ActiveRecord::Base
   end
   
   def self.all_right
-    arr = ContentType.author_types
-    find(:all,
-         :select=>"max(publish_date) as m_pub,authors.id,authors.surname,authors.firstname",
-         :joins=>[:articles],
-         :conditions=>["articles.publish_date <= ? AND articles.content_type_id IN (?) AND articles.approved = ? AND articles.visibility = ?",Time.now,arr,true,false],
-         :order=>"m_pub DESC",
-         :limit=>25,
-         :group=>"authors.id").sort { |x,y| x.surname.parameterize <=> y.surname.parameterize }
+    Rails.cache.fetch('Author.all_right') do
+      arr = ContentType.author_types
+      find(:all,
+           :select=>"max(publish_date) as m_pub,authors.id,authors.surname,authors.firstname",
+           :joins=>[:articles],
+           :conditions=>["articles.publish_date <= ? AND articles.content_type_id IN (?) AND articles.approved = ? AND articles.visibility = ?",Time.now,arr,true,false],
+           :order=>"m_pub DESC",
+           :limit=>25,
+           :group=>"authors.id").sort { |x,y| x.surname.parameterize <=> y.surname.parameterize }
+    end     
   end
   
 end
