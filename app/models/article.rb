@@ -211,6 +211,7 @@ class Article < ActiveRecord::Base
   
   #Returns the array of readest articles from each section
   def self.all_readest(begin_date)
+    return []
     Rails.cache.fetch('Article.all_readest') do
       readest = []
       ids = [0]
