@@ -38,7 +38,8 @@ class Author < ActiveRecord::Base
   end
   
   def self.all_right
-    Rails.cache.fetch('Author.all_right') do
+    cache = ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
+    cache.fetch('Author.all_right') do
       arr = ContentType.author_types
       find(:all,
            :select=>"max(publish_date) as m_pub,authors.id,authors.surname,authors.firstname",

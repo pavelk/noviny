@@ -173,7 +173,8 @@ class Article < ActiveRecord::Base
   
   #Returns last articles limited as param
   def self.newest(limit=3,ign_id = nil, section_id = nil)
-    Rails.cache.fetch('Article.newest') do
+    cache = ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
+    cache.fetch('Article.newest') do
       op = ""
       op += "article_sections.section_id = '#{section_id}' AND " if section_id
       op += "articles.id != '#{ign_id}' AND " if ign_id
@@ -210,9 +211,9 @@ class Article < ActiveRecord::Base
   end
   
   #Returns the array of readest articles from each section
-  def self.all_readest(begin_date)
-    return []
-    Rails.cache.fetch('Article.all_readest') do
+  def self.all_readest(begin_date, type = 1)
+    cache = ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
+    cache.fetch("Article.all_readest.#{type}") do
       readest = []
       ids = [0]
       arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
@@ -229,7 +230,7 @@ class Article < ActiveRecord::Base
           readest << article 
         end  
       end
-      return readest
+      readest
     end
   end
    

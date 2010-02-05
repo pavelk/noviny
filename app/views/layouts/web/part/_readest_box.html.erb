@@ -1,13 +1,11 @@
-<% if false  %>
-<div class="box boxSettings">
-	<h2 class="h line">Nejčtenější</h2>
-	<div class="in" id="in_readest">    
-					<%= render :partial=>"web/articles/readest",:collection=>@readest %>
-	</div> <!-- /.in -->
-	
-	<ul class="settings" id="readest_settings">
-	  	<%= render :partial=>"web/articles/readest_menu" %>
-	</ul>
-	<%= spinner_tag('readest') %>
-</div> <!-- /.box -->
-<% end  %>
+	<div class="box boxSettings">
+		<h2 class="h line">Nejčtenější</h2>
+		<div class="in" id="in_readest">    
+						<%= render :partial=>"web/articles/readest",:collection=>@readest %>
+		</div> <!-- /.in -->
+		
+		<ul class="settings" id="readest_settings">
+		  	<%= render :partial=>"web/articles/readest_menu" %>
+		</ul>
+		<%= spinner_tag('readest') %>
+	</div> <!-- /.box -->
