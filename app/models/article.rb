@@ -59,7 +59,10 @@ class Article < ActiveRecord::Base
     indexes text
     indexes perex
     indexes poznamka
-    indexes publish_date, :sortable => true
+    has publish_date, :sortable => true
+    indexes order_date, :sortable => true
+    indexes order_time, :sortable => true
+    indexes priority_section, :sortable => true
     indexes created_at
     indexes updated_at, :sortable => true
     indexes :name, :sortable => true
@@ -67,6 +70,7 @@ class Article < ActiveRecord::Base
     indexes [tags.name, tags.description], :as => :tags
     indexes [sections.name, sections.description], :as => :sections
     indexes content_type.name, :as => :content_type_name
+    
     set_property :enable_star => true
     set_property :min_prefix_len => 3
   end
@@ -219,7 +223,7 @@ class Article < ActiveRecord::Base
       arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
       arr.each do |a|
         article = Article.find(:first,
-                                   :conditions=>["article_sections.section_id = ? AND article_views.shown_date >= ? AND article_views.shown_date <= ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",a,begin_date,Time.now,ids,true,false],
+                                   :conditions=>["article_views.shown_date >= ? AND article_views.shown_date <= ? AND article_sections.section_id = ? AND articles.id NOT IN (?) AND articles.approved = ? AND articles.visibility = ?",begin_date,Time.now,a,ids,true,false],
                                    :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, COUNT(article_views.article_id) as c",
                                    :group=>"articles.id",
                                    :order=>"c DESC",

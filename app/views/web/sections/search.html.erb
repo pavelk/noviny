@@ -1,3 +1,6 @@
+<% if (@text.length < 3) %>
+     <%= "Musíte zadat minimálně 3 znaky" %>
+<% else %>	  
  <div class="box cols">
    <div class="col1">
      <div class="box">
@@ -8,10 +11,15 @@
    <div class="col2">
      <%= render :partial=>"web/articles/left_article",:collection=>@articles,:locals=>{:with_date=>true,:small_class=>false} %>
      <div class="paging">
+     	<% begin %>
        <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>
        <ul class="pages">
 		<%= will_paginate @articles,:params=>{:text=>@text} %>
        </ul>
+	   <% rescue %>
+ 		<% end %>
      </div> <!-- /.paging -->
    </div> <!-- /.col2 -->
  </div> <!-- /.box -->
+ <% end %>
+

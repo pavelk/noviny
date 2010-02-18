@@ -59,9 +59,23 @@ class Web::SectionsController < Web::WebController
   end
   
   def search
-    @text = params[:text]
+    time = Time.parse("2009-08-01")
+    @text = params[:text].to_s
+    if (@text.length < 3)
+      render :layout=>"web/gallery" and return
+    end
+    @articles = Article.search @text,
+                                 :page=>params[:page],
+                                 :per_page=>25,
+                                 :order=>"order_date DESC, priority_section DESC, order_time DESC",
+                                 :conditions=>{:approved=>true,:visibility=>false,:publish_date=>(time).to_i..Time.now.to_i},
+                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex",
+                                 :include=>[:content_type, :author, :pictures]
+    add_breadcrumb "Vyhledávání", ""
+    render :layout=>"web/gallery" and return
+    
     @articles = Article.paginate(:all,
-                                 :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND name LIKE ? OR perex LIKE ? OR text LIKE ?",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
+                                 :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND (name LIKE ? OR perex LIKE ? OR text LIKE ?)",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                  :page=>params[:page],
                                  :per_page=>25,

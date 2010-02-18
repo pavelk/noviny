@@ -56,17 +56,17 @@ class AuthadminController < Web::WebController
   def list
  
     if params[:post] and params[:post][:s]
-      @web_users = WebUser.paginate :all, :per_page => 20,:page =>params[:page], :order =>'id desc',
+      @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc',
       :conditions => ['login like ? or email like ? or firstname like ? or lastname like ?',
         '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
         '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
         '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
         '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%']
     elsif params[:id]
-      @web_users = WebUser.paginate :all, :per_page => 20,:page =>params[:page], :order =>'id desc',
+      @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc',
       :conditions => ['domains like ?', '%' + params[:id].gsub(/[']/) { '\\'+$& } + ',%']
     else
-      @web_users = WebUser.paginate :all, :per_page => 20,:page =>params[:page], :order =>'id desc'
+      @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc'
     end
   end
  
