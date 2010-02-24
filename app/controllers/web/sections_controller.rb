@@ -64,6 +64,7 @@ class Web::SectionsController < Web::WebController
     if (@text.length < 3)
       render :layout=>"web/gallery" and return
     end
+=begin    
     @articles = Article.search @text,
                                  :page=>params[:page],
                                  :per_page=>25,
@@ -73,7 +74,7 @@ class Web::SectionsController < Web::WebController
                                  :include=>[:content_type, :author, :pictures]
     add_breadcrumb "Vyhledávání", ""
     render :layout=>"web/gallery" and return
-    
+=end    
     @articles = Article.paginate(:all,
                                  :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ? AND (name LIKE ? OR perex LIKE ? OR text LIKE ?)",Time.now,true,false,"%#{@text}%","%#{@text}%","%#{@text}%"],
                                  :order=>"order_date DESC, priority_section DESC, order_time DESC",
