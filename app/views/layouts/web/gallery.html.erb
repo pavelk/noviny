@@ -17,11 +17,7 @@
 	<script>
 		jQuery.noConflict();
 	</script>
-	<script type="text/javascript"><!--<![CDATA[
-  /* (c)AdOcean 2003-2009 */
-  /* MASTER: imp_cz.Vydavatelstv_ Referendum s.r.o..Denikreferendum.cz */
-  if(location.protocol.substr(0,4)=='http')document.write(unescape('%3C')+'script id="imp_cz.Vydavatelstv_ Referendum s.r.o..Denikreferendum.cz" src="'+location.protocol+'//impcz.adocean.pl/_'+(new Date()).getTime()+'/ad.js?id=TA9cHeAnnZuQxO4BETxMHIoD7GeLAVCz4v1cMqsJq43.A7/x='+screen.width+'/y='+screen.height+'" type="text/javascript"'+unescape('%3E%3C')+'/script'+unescape('%3E'));
-  //]]>--></script>
+	<%= render :partial=>"layouts/web/adverts/head_script" %>
   </head>
 	<%= render :partial=>"layouts/web/top_html" %>
 
@@ -36,13 +32,7 @@
         
           <div class="box boxAdvert boxAdvert300">
             <div class="in">
-              <script type="text/javascript"><!--<![CDATA[
-						/* (c)AdOcean 2003-2009 */
-						/* SLAVE: imp_cz.Vydavatelstv_ Referendum
-						s.r.o..Denikreferendum.cz.Square 300 */
-						if(typeof adoceanimpczygcmcvffsg=='function') adoceanimpczygcmcvffsg();
-						//]]>-->
-					</script>
+              <%= render :partial=>"layouts/web/adverts/box_advert_300" %>
             </div> <!-- /.in -->
           </div> <!-- /.box -->
           
@@ -51,13 +41,7 @@
           
         </div> <!-- /.col2 -->
 		<div class="rightAdvert">
-	          <script type="text/javascript"><!--<![CDATA[
-				/* (c)AdOcean 2003-2009 */
-				/* SLAVE: imp_cz.Vydavatelstv_ Referendum
-				s.r.o..Denikreferendum.cz.Skyscraper */
-				if(typeof adoceanimpczlglfpxlqnh=='function') adoceanimpczlglfpxlqnh();
-				//]]>-->
-			  </script>
+	          <%= render :partial=>"layouts/web/adverts/right_advert" %>
 	    </div> <!-- /.rightAdvert -->
       </div> <!-- /#content -->
 
