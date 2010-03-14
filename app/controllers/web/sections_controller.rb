@@ -32,6 +32,7 @@ class Web::SectionsController < Web::WebController
   def detail
     @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])],:select=>"id,name")
     cookies[:section_id] = @section.id
+    @html_title = @section.name
     set_default_variables
     add_breadcrumb @section.name, section_path(pretty_name(@section))
     render :action=>"holidays" and return if Web::Calendar.holidays?
@@ -40,6 +41,7 @@ class Web::SectionsController < Web::WebController
   
   def subsection
     @subsection = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
+    @html_title = @subsection.name
     @section = @subsection.parent
     @article_photo_show = true
     set_default_variables
@@ -50,7 +52,7 @@ class Web::SectionsController < Web::WebController
                              :page=>params[:page],
                              :per_page=>10,
                              :include=>[:content_type, :author, :pictures],
-                             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
+                             :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")
     ign_arr = @articles.map{|a| a.id}.uniq                         
     @opinions = Article.middle_opinions(@section.id,12,ign_arr)
     @type = 1 #for partial readest menu
@@ -81,7 +83,7 @@ class Web::SectionsController < Web::WebController
                                  :page=>params[:page],
                                  :per_page=>25,
                                  :include=>[:content_type, :author, :pictures],
-                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
+                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")
     add_breadcrumb "Vyhledávání", ""
     render :layout=>"web/gallery"
   end
@@ -102,45 +104,23 @@ protected
   end
 
   def set_opinions_variables
+    @only_time = true
     @article_photo_show = true
-=begin    
-    if Web::Calendar.week? && Web::Calendar.sunday?
-      tfrom_date = Time.now - 1.days
-      tto_date = Time.now
-      yfrom_date = Time.now.yesterday - 2.days
-      yto_date = Time.now.yesterday - 2.days
-    else
-      tfrom_date = Time.now
-      tto_date = Time.now
-      yfrom_date = Time.now.yesterday
-      yto_date = Time.now.yesterday
-    end
-    
-    @today_articles = Article.from_section(:section_id=>Section::NAZORY,
-                                           :from_date=>tfrom_date,
-                                           :to_date => tto_date,
-                                           :limit=>nil)
-                                          
-    @yesterday_articles = Article.from_section(:section_id=>Section::NAZORY,
-                                               :from_date=>yfrom_date,
-                                               :to_date => yto_date,
-                                               :limit=>nil)
-    if (@today_articles + @yesterday_articles).length < 12
-=end
+
       succ_date = DateTime.parse(params[:succ_date]) rescue nil
       prev_date = DateTime.parse(params[:prev_date]) rescue nil
       op = ""
       op += "publish_date < '#{succ_date.end_of_day.to_s(:db)}' AND " if succ_date
       op += "publish_date > '#{prev_date.beginning_of_day.to_s(:db)}' AND " if prev_date
       @all_opinions = Article.find(:all,
-                                   :conditions=>["#{op}content_type_id IN (?)",ContentType.opinion_types],
+                                   :conditions=>["#{op}content_type_id IN (?) AND articles.approved = ? AND articles.visibility = ?",ContentType.opinion_types,true,false],
                                    :group=>"pub_date",
                                    :select=>"date(publish_date) as pub_date",
                                    :order=>"pub_date DESC, order_date DESC, priority_section DESC, order_time DESC")
-    #end
   end
   
   def set_weekend_variables
+    @only_time = true
     @sunday = DateTime.strptime(params[:date],"%d.%m.%Y") rescue Web::Calendar.sunday_date
     
     if Web::Calendar.holidays?
@@ -152,7 +132,7 @@ protected
                                         :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                         :joins=>[:sections],
                                         :include=>[:content_type, :author, :pictures],
-                                        :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
+                                        :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")
         curr_date -= 1.days                             
       end
       return
@@ -163,7 +143,7 @@ protected
                                       :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                       :joins=>[:sections],
                                       :include=>[:content_type, :author, :pictures],
-                                      :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")                                
+                                      :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")                                
     if Web::Calendar.saturday? && @sunday > Time.now
       @only_saturday = true
       return
@@ -173,7 +153,7 @@ protected
                                     :order=>"order_date DESC, priority_section DESC, order_time DESC",
                                     :joins=>[:sections],
                                     :include=>[:content_type, :author, :pictures],
-                                    :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")                                  
+                                    :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")                                  
   end
   
   def set_non_opinion_variables(section_id)
@@ -186,7 +166,7 @@ protected
                                  :page=>params[:page],
                                  :per_page=>per_page,
                                  :include=>[:content_type, :author, :pictures],
-                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex")
+                                 :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, articles.perex, articles.order_date, articles.order_time, articles.publish_date")
   end
   
   def set_common_variables(section_id)

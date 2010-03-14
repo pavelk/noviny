@@ -1,3 +1,4 @@
+<%= auto_discovery_link_tag(:rss, :controller=>"web/rss",:action => 'section',:section_id=>4) %>
 <%= render :partial=>"web/articles/headliner_box" %>
 <%= render :partial=> "web/articles/related" %>
 	        
@@ -21,7 +22,7 @@
 			<% end %>
 		  </h2>
 		  <div class="in">
-			<%= render :partial=>"web/articles/left_article", :collection=>today_opinions,:locals=>{:with_date=>false,:small_class=>true} %>
+			<%= render :partial=>"web/articles/left_article", :collection=>today_opinions,:locals=>{:with_date=>true,:small_class=>true} %>
 		   </div> <!-- /.in -->
 		    <% if all_ops >= 12 %>
 		   		<% succ = @all_opinions[index+1] if (index < (@all_opinions.length - 1)) %>

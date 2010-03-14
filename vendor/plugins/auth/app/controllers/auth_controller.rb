@@ -11,6 +11,36 @@ class AuthController < Web::WebController
     @headline = "Diskuse a předplatné v Deníku Referendum"
   end
  
+  def delete_newsletter
+    @headline = "Zrušit posílání zpravodaje"
+    if request.post?
+      newsletter = Newsletter.find_by_email(params[:email])
+      if newsletter
+        crypted = Digest::SHA1.hexdigest("#{Time.now.to_s}d#{newsletter.email}")
+        newsletter.crypted = crypted
+        newsletter.save
+        Notification.deliver_delete_newsletter(newsletter)
+        flash[:notice] = "Byl Vám poslán email s informacemi o dalším postupu"
+        redirect_to home_url
+      else
+        flash[:error] = "Email nenalezen"
+        redirect_to home_url
+      end
+    end
+  end
+  
+  def confirm_delete_newsletter
+      newsletter = Newsletter.find_by_email_and_crypted(params[:email],params[:crypted])
+      if newsletter
+        newsletter.delete
+        flash[:notice] = "Email byl úspěšně odstraněn z odebírání zpravodaje"
+        redirect_to home_url
+      else
+        flash[:error] = "Email nenalezen"
+        redirect_to home_url
+      end
+  end
+ 
   def create_newsletter
     if request.xhr?
       @newsletter = Newsletter.new(params[:newsletter])

@@ -1,3 +1,4 @@
+<%= auto_discovery_link_tag(:rss, :controller=>"web/rss",:action => 'section',:section_id=>5) %>
 <p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", archiv_path %></p>
 <%= render :partial=>"web/articles/headliner_box" %>
 <%= render :partial=> "web/articles/related" %>
@@ -6,7 +7,7 @@
 	<div class="box">
 		  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>"></h2>
 		  <div class="in">
-			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>true,:small_class=>false} %>
 		   </div> <!-- /.in -->
 	</div> <!-- /.box -->
 <% else %>
@@ -14,7 +15,7 @@
 		<div class="box">
 		  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>">Neděle <%= @sunday.to_s(:cz_date) %></h2>
 		  <div class="in">
-			<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+			<%= render :partial=>"web/articles/left_article", :collection=>@sunday_articles,:locals=>{:with_date=>true,:small_class=>false} %>
 		   </div> <!-- /.in -->
 		</div> <!-- /.box -->
 	<% end %>
@@ -23,7 +24,7 @@
 		<div class="box">
 		  <h2 class="h line">Sobota <%= (@sunday - 1.days).to_s(:cz_date) %></h2>
 		  <div class="in">
-			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>false,:small_class=>false} %>
+			<%= render :partial=>"web/articles/left_article", :collection=>@saturday_articles,:locals=>{:with_date=>true,:small_class=>false} %>
 		   </div> <!-- /.in -->
 		</div> <!-- /.box -->
 	<% end %>
@@ -34,9 +35,11 @@
 <div class="box">
    <h2 class="h line">Přehledy vydání</h2>
    <ul>
-   	<% (1..5).each do |day| %>
-		<% date = (Web::Calendar.sunday_date - day.weeks).to_s(:cz_date) %>
-		<li><%= link_to "Víkend ke dni #{date}", archiv_get_path(:date=>date) -%></li>
+   	<% (Time.now - 1.days).to_date.downto((Time.now - 31.days).to_date) do |day| %>
+		<% if Web::Calendar.week?(day) %>
+			<% next if day == @sunday.to_date || day == (@sunday - 1.days).to_date %>
+			<li><%= link_to "Víkend ke dni #{day.to_s(:cz_date)}", archiv_get_path(:date=>day.to_s(:cz_date)) -%></li>
+		<% end %>
 	<% end %>
      <li><%= link_to "Archiv vydání", archiv_path %></li>
    </ul>

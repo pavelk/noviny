@@ -14,8 +14,22 @@ class Web::ArticlesController < Web::WebController
     send_file("#{RAILS_ROOT}/public#{inset.data.url}",:filename=>inset.name,:disposition=>"attachment",:type=>inset.data.type)
   end
   
+  def send_by_email
+    if request.post?
+      email = params[:email]
+      article = Article.find(params[:id])
+      begin
+        Notification.deliver_article(article, email)
+        flash[:notice] = "Článek byl úspěšně poslán na #{email}"
+      rescue
+        
+      end
+      redirect_to detail_article_path(pretty_id(article))
+    end
+  end
+  
   def authors
-    @authors = Author.all(:order=>"surname",:select=>"authors.id,authors.surname,authors.firstname")
+    @authors = Author.all(:order=>"surname",:select=>"authors.id,authors.surname,authors.firstname", :joins=>[:articles], :group=>"authors.id")
   end
   
   def add_comment
@@ -50,10 +64,11 @@ class Web::ArticlesController < Web::WebController
   
   def detail
     @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
+    @html_title = @article.name
     redirect_to home_path and return unless @article
     cookies[:last_article_id] = @article.id
     @related = @article.relarticles + @article.inverse_relarticles
-    @newest = Article.newest(3,@article.id)
+    @newest = Article.discussed(10,@article.id)
     @section = @article.section
     sections = @article.sections
     if (cookies[:section_id] && sections.include?(Section.find(cookies[:section_id])))
@@ -141,6 +156,7 @@ class Web::ArticlesController < Web::WebController
   end
   
   def archiv
+    @only_time = true
     @article_photo_show = true
     if params[:range]
       datum = Date.civil(params[:range][:"publish_date(1i)"].to_i,params[:range][:"publish_date(2i)"].to_i,params[:range][:"publish_date(3i)"].to_i).to_time rescue Time.now
@@ -173,6 +189,7 @@ class Web::ArticlesController < Web::WebController
     end
     @top_themes = @section.top_themes
     @tag = Theme.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])])
+    @html_title = @tag.name
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
     @next_topics = @tag.relthemes + @tag.inverse_relthemes
     add_breadcrumb "Témata", ""                                 
@@ -207,6 +224,7 @@ class Web::ArticlesController < Web::WebController
   def detail_gallery
     @page = 1
     @article = Article.find(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
+    @html_title = @article.name
     @related = @article.relarticles + @article.inverse_relarticles
     @top_themes = @article.themes
     @section = @article.section
@@ -216,7 +234,7 @@ class Web::ArticlesController < Web::WebController
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @pictures.first
     @info_box = @article.info_boxes.first
-    @newest = Article.newest(3,@article.id)
+    @newest = Article.discussed(10,@article.id)
     
     if @section
        add_breadcrumb @section.name, section_path(pretty_name(@section))

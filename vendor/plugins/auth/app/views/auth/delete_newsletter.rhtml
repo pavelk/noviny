@@ -1,0 +1,9 @@
+<% form_tag(:action=>"delete_newsletter") do %>
+<p>
+Zadejte Vaši emailovou adresu:
+</p>
+<%= text_field_tag "email", "", :size => 20, :class=>"form" %><br /><br />
+
+<input type="submit" value="Zrušit posílání zpravodaje &#187;" class="primary" />
+
+<% end %>

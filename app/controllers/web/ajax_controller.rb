@@ -10,8 +10,10 @@ class Web::AjaxController < Web::WebController
   
   def update_readest
     begin_date = DateTime.parse(params[:begin_date])
-    @type = params[:type]
-    @readest = Article.all_readest(begin_date, @type.to_i)
+    @type = params[:type].to_i
+    section_id = params[:section_id] ? params[:section_id].to_i : nil
+    @readest = Article.all_readest(begin_date, @type, section_id)
+    @section = Section.find(section_id) if section_id
     
     render :update do |page|
       page.replace_html "in_readest",:partial=>"web/articles/readest",:collection=>@readest

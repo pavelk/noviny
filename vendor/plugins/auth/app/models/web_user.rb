@@ -72,11 +72,12 @@ class WebUser < ActiveRecord::Base
    end
  
   def comment_info
-    str = ""
-    str += self.firstname if self.firstname
-    str += " #{self.lastname}" if self.lastname
-    str += ", #{self.city}" if self.city && self.show_address?
-    return str
+    str = []
+    #str += self.firstname if self.firstname
+    #str += " #{self.lastname}" if self.lastname
+    str << self.profession if !self.profession.blank? && self.show_berth?
+    str << self.city if !self.city.blank? && self.show_city?
+    return " - " + str.join(', ')
   end
  
   def full_name

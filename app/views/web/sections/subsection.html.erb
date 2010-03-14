@@ -1,6 +1,6 @@
 <div class="box">
    <div class="in">
-   	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>false,:small_class=>false} %>
+   	<%= render :partial=>"web/articles/left_article", :collection=>@articles,:locals=>{:with_date=>true,:small_class=>false} %>
    </div> <!-- /.in -->
     <div class="paging">
               <p class="count">Zobrazeno <%= @articles.length %> / <%= @articles.total_entries %></p>

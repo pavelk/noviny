@@ -99,4 +99,22 @@ class Notification < ActionMailer::Base
      @sent_on    = mailing.sent_on
      content_type "text/html"
    end
+   
+   def delete_newsletter(newsletter, sent_on = Time.now)
+     @recipients = "#{newsletter.email}"
+     @from       = "redakce@denikreferendum.cz"
+     @subject    = "Zrušení odebírání zpravodaje"
+     @body       = {'newsletter' => newsletter}
+     @sent_on    = sent_on
+     content_type "text/html"
+   end
+   
+   def article(article, email, sent_on = Time.now)
+     @recipients = "#{email}"
+     @from       = "redakce@denikreferendum.cz"
+     @subject    = article.name
+     @body       = {'article' => article}
+     @sent_on    = sent_on
+     content_type "text/html"
+   end
 end

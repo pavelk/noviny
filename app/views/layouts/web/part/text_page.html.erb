@@ -7,7 +7,7 @@
     <meta name="copyright" content="2009 Sortof - www.sortof.info" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
-    <title>Deník Referendum</title>
+    <title><%= "#{@html_title} - " if @html_title -%>Deník Referendum</title>
     <% if @printable %>
 		<%= stylesheet_link_tag "web/css/print", :media => "print" %> 
 	<% else %>

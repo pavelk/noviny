@@ -18,7 +18,7 @@
 		<% else %>
 			<% major_date = @article.publish_date%>
 		<% end %>
-	 	<%= major_date.to_s(:cz_date) %>
+	 	<%= major_date.to_s(:article) %>
 	</p>
 	 <% if (@article.major_modified_date && @article.major_modified_date > major_date) %>
 	 	<p>Aktualizováno: 

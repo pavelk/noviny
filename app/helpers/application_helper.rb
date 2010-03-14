@@ -42,7 +42,7 @@ module ApplicationHelper
   
   def article_name(article)
     arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::DOPISY]
-    if arr.include?(article.content_type_id)
+    if arr.include?(article.content_type_id) && article.author
       return "#{article.author.full_name}: #{article.name}"
     else
       return article.name
@@ -102,8 +102,8 @@ module ApplicationHelper
   
   #Added by Jan Uhlar
   #Ajax link on home page (readest articles)
-  def remote_readest_link(name,begin_date,type)
-    link_to_remote name || "24 hodin",:url=>{:controller=>"web/ajax",:action=>"update_readest",:begin_date=>begin_date || (Time.now-24.hours),:type=>type || 1},:loading=>"Element.show('readest_spinner');",:complete=>"Element.hide('readest_spinner');"
+  def remote_readest_link(name,begin_date,type, section_id = nil)
+    link_to_remote name || "24 hodin",:url=>{:controller=>"web/ajax",:action=>"update_readest",:begin_date=>begin_date || (Time.now-24.hours),:type=>type || 1, :section_id=>section_id},:loading=>"Element.show('readest_spinner');",:complete=>"Element.hide('readest_spinner');"
   end
   
   #return id for form object

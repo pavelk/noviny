@@ -34,10 +34,11 @@ protected
    add_breadcrumb "Deník Referendum", "home_path"
 
    def set_variables
+     @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])],:select=>"id,name")
      @type = 1 #for partial readest menu
-     @readest = Article.all_readest(Time.now-24.hours)
+     @readest = Article.all_readest(Time.now-24.hours, 1, @section ? @section.id : 9999)
      @authors = Author.all_right
-     @newest = Article.newest
+     @newest = Article.discussed
    end
  
    def set_printable

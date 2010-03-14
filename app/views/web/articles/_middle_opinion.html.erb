@@ -1,6 +1,6 @@
 <div class="item noImg">
     <div class="self">
-      <p class="info"><%= middle_opinion.content_type.name %></p>
+      <p class="info"><%= middle_opinion.content_type.name %>  <span><%= middle_opinion.final_web_date %></span></p>
       <h3 class="head"><%= link_to article_name(middle_opinion), detail_article_path(pretty_id(middle_opinion)) %></h3>
       <p class="perex"><%=th middle_opinion.perex %></p>
     </div> <!-- /.self -->

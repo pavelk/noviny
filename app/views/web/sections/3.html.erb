@@ -1,3 +1,4 @@
+<%= auto_discovery_link_tag(:rss, :controller=>"web/rss",:action => 'section',:section_id=>3) %>
 <p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", "TODO" %></p>
 <%= render :partial=>"web/articles/headliner_box" %>
 <%= render :partial=> "web/articles/related" %>

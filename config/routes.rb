@@ -5,6 +5,9 @@ ActionController::Routing::Routes.draw do |map|
   #Added by Jan Uhlar
   map.test_proxy "proxy/test/:sleep", :controller=>"web/sections", :action => 'test_proxy'
   map.mailings "/hromadne-emaily", :controller=>"mailings"
+  map.confirm_delete_newsletter "/confirm_delete_newsletter/:email/:crypted", :controller=>"auth", :action=>"confirm_delete_newsletter", :email=>/.*.*/
+  map.delete_newsletter "/zrusit_zpravodaj", :controller=>"auth", :action=>"delete_newsletter"
+  
   map.home "", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
   

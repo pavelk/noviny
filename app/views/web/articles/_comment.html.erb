@@ -5,10 +5,11 @@
 	
 	<div class="self">
 	  <h4>
-	  	<%= link_to comment.web_user.comment_info, user_info_path("#{comment.web_user.id}-#{comment.web_user.full_name.parameterize}") %>
+	  	<%= link_to comment.web_user.full_name, user_info_path("#{comment.web_user.id}-#{comment.web_user.full_name.parameterize}") %>
+		<%= comment.web_user.comment_info %>
 		<%= "- Autor" if comment.web_user.author == comment.article.author %>
 	  </h4>
-	  <p><%= comment.comment_date %></p>
+	  <p><b><%= comment.name %></b> <%= comment.comment_date %></p>
 	  <p>
 	  	<!--<a href="">TODO Zavadny link</a>-->
 		<%= link_to "Smazat", delete_comment_path(:id=>comment.id), :confirm=>"Opravdu?" if (@web_user && @web_user.can_modify?(comment)) %>

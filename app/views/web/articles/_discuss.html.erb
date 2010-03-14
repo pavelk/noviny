@@ -26,8 +26,10 @@
 		    
 		    <div class="self">
 		        <h4><%= @web_user.comment_info %></h4>
-		        <%= link_to "Odhlásit se", logout_path %>
+		        <%= link_to "Odhlásit se", logout_path %><br />
 		        <!--<p>TODO Zbyva 1000 znaku</p>-->
+				Název příspěvku: <%= f.text_field :name, :class=>"button w100" %><br />
+				Text:
 		        <%= f.text_area :text, :size=>"30x7", :class=>"button w100"%>
 				<%= f.hidden_field :article_id, :value=> @article.id %>
 				<%= f.hidden_field :web_user_id, :value=> @web_user.id %>

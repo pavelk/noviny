@@ -8,8 +8,7 @@
 	<table width="680" cellspacing="0">
 		<tr>
 			<td valign="top" style="border-top: 5px solid #000;">
-				<font face="Arial" size="5"><b>Potvrzení platby</b><br>
-				<%= Time.now.to_s(:cz_date) %></font>
+				<font face="Arial" size="5"><b><%= "Zrušení odebírání zpravodaje" -%></b></font>
 			</td>
 			<td width="90"  style="border-top: 5px solid #000;">
 				<a href="http://www.denikreferendum.cz"><img src="http://www.denikreferendum.cz/images/logo-newsletter.gif" width="90" height="114" alt="Deník Referendum"></a>
@@ -20,20 +19,12 @@
 		<tr>
 			<td valign="top" style="border-top: 1px solid #000; padding: 5px 0 2em 0;">
 				<font face="Arial" size="3">
-					Vážený/vážená <%= @payment.web_user.full_name %><br>
-					Děkujeme, že jste si předplatil vstup do diskusí v Deníku Referendum a pomohl tak k jeho dalšímu vydávání.
-					Do diskusí můžete přispívat po vašem přihlášení na adrese <a href="http://www.denikreferendum.cz"><font color="#0000FF">www.denikreferendum.cz</font></a>
-					Jako login použijte email, pod nímž jste se registrovali.
-<br/><br/>
-Vaše předplatné potrvá do <%= @payment.web_user.expire_date.to_s(:cz_date) %>.
-<br/><br/>
-Jistě jen z nadměrné opatrnosti Vás upozorňujeme na povinnost dodržovat etický kodex a těšíme se na Váš přínos našim stránkám. 
-<br/><br/>
-Děkujeme a přejeme Vám radost z diskusí v Deníku Referendum.
-<br/><br/>
-<br/>
-Marta Čapková<br/>
-předplatné DR					
+					Dobrý den,<br /><br />
+					
+					pro zrušení odebírání zpravodaje klikněte, prosím, na následující odkaz.<br />
+					<a href="http://www.denikreferendum.cz/confirm_delete_newsletter/<%=@newsletter.email-%>/<%=@newsletter.crypted-%>">
+						http://www.denikreferendum.cz/confirm_delete_newsletter/<%=@newsletter.email-%>/<%=@newsletter.crypted-%>
+					</a>	
 				</font>
 			</td>
 		</tr>

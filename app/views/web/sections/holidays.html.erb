@@ -1,15 +1,20 @@
+<%= auto_discovery_link_tag(:rss, :controller=>"web/rss",:action => 'section',:section_id=>5) %>
 <p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", archiv_path %></p>
 <%= render :partial=>"web/articles/headliner_box" %>
 <%= render :partial=> "web/articles/related" %>
-
+<% holys = nil %>
 <% if !@holiday_articles.blank? %>
 	<% @holiday_articles.each_with_index do |holy,i| %>
-		<% next if holy.blank? %>
+		<% if holy.blank? %>
+			<% next %>
+		<% else %>
+			<% holys = holy %>	
+		<% end %>
 		<% curr_date = Time.now - i.days %>
 		<div class="box">
 			  <h2 class="h <%= @headliner_box ? ' boxLine' : '' -%>"><%= Web::Calendar::DAYS[curr_date.wday - 1] + " " + curr_date.to_s(:cz_date) %></h2>
 			  <div class="in">
-				<%= render :partial=>"web/articles/left_article", :collection=>holy,:locals=>{:with_date=>false,:small_class=>false} %>
+				<%= render :partial=>"web/articles/left_article", :collection=>holy,:locals=>{:with_date=>true,:small_class=>false} %>
 			   </div> <!-- /.in -->
 		</div> <!-- /.box -->
 	<% end %>
@@ -18,9 +23,11 @@
 <div class="box">
    <h2 class="h line">Přehledy vydání</h2>
    <ul>
-   	<% (1..5).each do |day| %>
-		<% date = (Web::Calendar.sunday_date - day.weeks).to_s(:cz_date) %>
-		<li><%= link_to "Víkend ke dni #{date}", archiv_get_path(:date=>date) -%></li>
+   	<% (Time.now - 1.days).to_date.downto((Time.now - 31.days).to_date) do |day| %>
+		<% if Web::Calendar.week?(day) %>
+			<% next if holys && holys.detect{|h| h.publish_date.to_date == day} %>
+			<li><%= link_to "Víkend ke dni #{day.to_s(:cz_date)}", archiv_get_path(:date=>day.to_s(:cz_date)) -%></li>
+		<% end %>
 	<% end %>
      <li><%= link_to "Archiv vydání", archiv_path %></li>
    </ul>
