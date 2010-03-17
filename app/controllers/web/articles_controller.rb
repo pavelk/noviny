@@ -6,12 +6,12 @@ class Web::ArticlesController < Web::WebController
   
   def download_audio
     audio = Audio.find(params[:id])
-    send_file("#{RAILS_ROOT}/public#{audio.data.url}",:filename=>audio.name,:disposition=>"attachment",:type=>audio.data.type)
+    send_file("#{RAILS_ROOT}/public#{audio.data.url}",:filename=>audio.data_file_name,:disposition=>"attachment",:type=>audio.data.type)
   end
   
   def download_inset
     inset = Inset.find(params[:id])
-    send_file("#{RAILS_ROOT}/public#{inset.data.url}",:filename=>inset.name,:disposition=>"attachment",:type=>inset.data.type)
+    send_file("#{RAILS_ROOT}/public#{inset.data.url}",:filename=>inset.data_file_name,:disposition=>"attachment",:type=>inset.data.type)
   end
   
   def send_by_email
@@ -19,10 +19,10 @@ class Web::ArticlesController < Web::WebController
       email = params[:email]
       article = Article.find(params[:id])
       begin
-        Notification.deliver_article(article, email)
+        Notification.deliver_article(article, email, detail_article_url(pretty_id(article)))
         flash[:notice] = "Článek byl úspěšně poslán na #{email}"
       rescue
-        
+        flash[:error] = "Článek nebyl poslán kvůli chybě."
       end
       redirect_to detail_article_path(pretty_id(article))
     end
@@ -64,11 +64,10 @@ class Web::ArticlesController < Web::WebController
   
   def detail
     @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
-    @html_title = @article.name
+    @html_title = @article.opinion_name
     redirect_to home_path and return unless @article
     cookies[:last_article_id] = @article.id
     @related = @article.relarticles + @article.inverse_relarticles
-    @newest = Article.discussed(10,@article.id)
     @section = @article.section
     sections = @article.sections
     if (cookies[:section_id] && sections.include?(Section.find(cookies[:section_id])))
@@ -224,7 +223,7 @@ class Web::ArticlesController < Web::WebController
   def detail_gallery
     @page = 1
     @article = Article.find(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
-    @html_title = @article.name
+    @html_title = @article.opinion_name
     @related = @article.relarticles + @article.inverse_relarticles
     @top_themes = @article.themes
     @section = @article.section
@@ -234,7 +233,6 @@ class Web::ArticlesController < Web::WebController
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     @article_image = @pictures.first
     @info_box = @article.info_boxes.first
-    @newest = Article.discussed(10,@article.id)
     
     if @section
        add_breadcrumb @section.name, section_path(pretty_name(@section))

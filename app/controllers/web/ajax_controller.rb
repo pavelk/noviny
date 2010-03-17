@@ -20,4 +20,17 @@ class Web::AjaxController < Web::WebController
       page.replace_html "readest_settings",:partial=>"web/articles/readest_menu"
     end
   end
+  
+  def update_discuss
+    begin_date = DateTime.parse(params[:begin_date])
+    @dtype = params[:dtype].to_i
+    section_id = params[:section_id] ? params[:section_id].to_i : nil
+    @discussed = Article.discussed(begin_date, @dtype)
+    @section = Section.find(section_id) if section_id
+    
+    render :update do |page|
+      page.replace_html "in_discuss",:partial=>"web/articles/readest",:collection=>@discussed
+      page.replace_html "discuss_settings",:partial=>"web/articles/discuss_menu"
+    end
+  end
 end

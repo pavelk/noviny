@@ -1,0 +1,3 @@
+<li><%= @dtype.to_i == 1 ? "24 hodin" : remote_discuss_link("24 hodin",Time.now-24.hours,1,@section ? @section.id : nil) %></li>
+<li><%= @dtype.to_i == 2 ? "týden" : remote_discuss_link("týden",Time.now-1.weeks,2,@section ? @section.id : nil) %></li>
+<li><%= @dtype.to_i == 3 ? "měsíc" : remote_discuss_link("měsíc",Time.now-1.months,3,@section ? @section.id : nil) %></li>

@@ -109,11 +109,11 @@ class Notification < ActionMailer::Base
      content_type "text/html"
    end
    
-   def article(article, email, sent_on = Time.now)
+   def article(article, email, pretty_url, sent_on = Time.now)
      @recipients = "#{email}"
      @from       = "redakce@denikreferendum.cz"
      @subject    = article.name
-     @body       = {'article' => article}
+     @body       = {'article' => article, 'pretty_url' => pretty_url}
      @sent_on    = sent_on
      content_type "text/html"
    end

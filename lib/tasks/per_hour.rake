@@ -7,8 +7,9 @@ namespace :per_hour do
         puts cache.delete("Article.all_readest.#{typ}.#{sec}")
       end
     end
-    puts cache.delete('Article.newest')
-    puts cache.delete('Article.discussed')
+    [1,2,3].each do |typ|
+       puts cache.delete("Article.discussed.#{typ}")
+    end
     puts 'cache cleared'
   end 
 end

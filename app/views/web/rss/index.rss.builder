@@ -9,7 +9,7 @@ xml.rss :version => "2.0" do
     for article in @articles
       pub_date = DateTime.strptime(article.order_date.to_s(:cz_date) + " " + article.order_time.to_s(:cz_time),"%d.%m.%Y %H:%M")
       xml.item do
-        xml.title article.name
+        xml.title article.opinion_name
         xml.description article.perex
         xml.pubDate pub_date.to_s(:rfc822)
         xml.author article.author.full_name 

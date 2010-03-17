@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.mailings "/hromadne-emaily", :controller=>"mailings"
   map.confirm_delete_newsletter "/confirm_delete_newsletter/:email/:crypted", :controller=>"auth", :action=>"confirm_delete_newsletter", :email=>/.*.*/
   map.delete_newsletter "/zrusit_zpravodaj", :controller=>"auth", :action=>"delete_newsletter"
+  map.rss "web/rss/:action/:section_id", :controller=>"web/rss",:action=>nil,:section_id=>nil
   
   map.home "", :controller=>"web/sections"
   map.ajax_request "web/ajax/:action",:controller=>"web/ajax"
@@ -35,7 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.text_page "/stranka/:name",:controller => 'web/text_pages',:action=>"show"
   map.search "/hledani",:controller => 'web/sections',:action=>"search"
   map.download_audio "/download/audio/:id",:controller => 'web/articles',:action=>"download_audio"
-  map.download_inset "/download/inset/:id",:controller => 'web/articles',:action=>"inset"
+  map.download_inset "/download/inset/:id",:controller => 'web/articles',:action=>"download_inset"
   map.user_info "/uzivatel/info/:id",:controller => 'web/web_users',:action=>"info"
   
   map.hp "/preview/headliner/:id",:controller => 'web/text_pages',:action=>"hp_box"

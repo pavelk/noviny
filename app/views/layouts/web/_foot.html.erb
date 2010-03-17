@@ -1,4 +1,9 @@
-<p>&copy; Vydavatelství Referendum s.r.o. <%= Time.now.year %></p>
+<p>
+	&copy; Vydavatelství Referendum s.r.o. <%= Time.now.year -%>
+<%- if @show_rss -%>
+, <%= yield(:rss) -%>
+<% end -%>
+</p>
 <ul>
   <li><%= link_to "Dnes", home_path %></li>
   <% Section.all_root.each do |root| %>

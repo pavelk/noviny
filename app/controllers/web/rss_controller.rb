@@ -5,7 +5,7 @@ class Web::RssController < ApplicationController
  def index
    @articles = Article.find(:all,
                            :conditions=>["publish_date <= ? AND approved = ? AND visibility = ?",Time.now,true,false],
-                           :select=>"order_date, order_time, id, name, perex, author_id",
+                           :select=>"order_date, order_time, id, name, perex, author_id, articles.content_type_id",
                            :order =>"order_date DESC, order_time DESC",
                            :include=>[:author],
                            :limit=>@@limit)
@@ -18,7 +18,7 @@ class Web::RssController < ApplicationController
     section_id = params[:section_id]
     @articles = Article.find(:all,
                            :conditions=>["article_sections.section_id = ? AND publish_date <= ? AND approved = ? AND visibility = ?",section_id,Time.now,true,false],
-                           :select=>"order_date, order_time, articles.id, articles.name, perex, articles.author_id",
+                           :select=>"order_date, order_time, articles.id, articles.name, perex, articles.author_id, articles.content_type_id",
                            :order =>"order_date DESC, order_time DESC",
                            :group=>"articles.id",
                            :joins=>[:article_sections],
@@ -39,7 +39,7 @@ class Web::RssController < ApplicationController
     op += "article_sections.section_id = #{section_id} AND " unless section_id.blank?
     @articles = Article.find(:all,
                            :conditions=>["#{op}articles.content_type_id = ? AND publish_date <= ? AND approved = ? AND visibility = ?",ContentType::ZPRAVA,Time.now,true,false],
-                           :select=>"order_date, order_time, articles.id, articles.name, perex, articles.author_id",
+                           :select=>"order_date, order_time, articles.id, articles.name, perex, articles.author_id, articles.content_type_id",
                            :order =>"order_date DESC, order_time DESC",
                            :group=>"articles.id",
                            :joins=>[:article_sections],

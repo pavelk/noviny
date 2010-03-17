@@ -1,6 +1,11 @@
  <div class="box boxSettings">
 	<h2 class="h line">Nejdiskutovanější</h2>
-	<div class="in">
-	  <%= render :partial=>"web/articles/readest",:collection=>@newest %>
+	<div class="in" id="in_discuss">
+	  <%= render :partial=>"web/articles/readest",:collection=>@discussed %>
 	</div> <!-- /.in -->
+	
+	<ul class="settings" id="discuss_settings">
+		  	<%= render :partial=>"web/articles/discuss_menu" %>
+	</ul>
+	<%= spinner_tag('discuss') %>
 </div> <!-- /.box -->

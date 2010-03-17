@@ -2,7 +2,7 @@
 <% if ind != 1 %>
 	<div class="item">
 		<%= article_first_photo(section) %>
-		<p class="info"><%= section.content_type.name %>  <span><%= section.final_web_date %></span></p>
+		<p class="info"><%= section.content_type.name %>  <span><%#= section.final_web_date %></span></p>
 		<h3 class="head">
 			<%= link_to article_name(section), detail_article_path(pretty_id(section)) %>
 		</h3>
@@ -10,7 +10,7 @@
 	</div><!-- /.item -->
 <% else %>
 	<div class="item itemSmall">
-	  <p class="info"><%= section.content_type.name %>  <span><%= section.final_web_date %></span></p>
+	  <p class="info"><%= section.content_type.name %>  <span><%#= section.final_web_date %></span></p>
 	  <h3 class="head"><%= link_to article_name(section), detail_article_path(pretty_id(section)) %></h3>
 	</div> <!-- /.item -->
 <% end %>

@@ -38,7 +38,8 @@ protected
      @type = 1 #for partial readest menu
      @readest = Article.all_readest(Time.now-24.hours, 1, @section ? @section.id : 9999)
      @authors = Author.all_right
-     @newest = Article.discussed
+     @dtype = 1 #for partial discusses menu
+     @discussed = Article.discussed(Time.now-24.hours,1)
    end
  
    def set_printable

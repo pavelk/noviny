@@ -27,7 +27,8 @@ class MailingsController < AuthadminController
             @mailing.newsletters << rec
           end
         rescue
-          
+          logger = Logger.new("#{RAILS_ROOT}/log/mailings.log")
+          logger.info rec.email + " " + $!
         end
         sleep(0.25)
       end

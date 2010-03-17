@@ -152,6 +152,14 @@ class Article < ActiveRecord::Base
     return sh
   end
   
+  def opinion_name
+    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::DOPISY]
+    if arr.include?(self.content_type_id) && self.author
+      return "#{self.author.full_name}: #{self.name}"
+    else
+      return self.name
+    end
+  end
   #pouze nazory, definovane typem clanku (Glosa, Komentr, Sloupek), 
   #razene podle priority a data vzestupne, na HP pouze aktualni­ den, v pripade ze bude
   #mene jak 2 doplnit starsimi
@@ -200,18 +208,19 @@ class Article < ActiveRecord::Base
     end                 
   end
   
-  def self.discussed(limit=10, ign_id = nil)
+  def self.discussed(begin_date, type = 1, limit=10, ign_id = nil)
     cache = ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
-    cache.fetch('Article.discussed') do
+    cache.fetch("Article.discussed.#{type}") do
       op = ""
       op += " AND articles.id != '#{ign_id}'" if ign_id
       Article.find(:all,
-                   :conditions=>["publish_date <= ? AND articles.approved = ? AND articles.visibility = ?#{op}",Time.now,true,false],
+                   :conditions=>["article_comments.created_at >= ? AND articles.approved = ? AND articles.visibility = ?#{op}",begin_date,true,false],
                    :order=>"c DESC",
                    :group=>"articles.id",
                    :joins=>[:article_comments],
-                   :limit=>limit,
-                   :select=>"articles.id, articles.name, COUNT(articles.id) as c, articles.content_type_id")
+                   :include=>[:author,:content_type],
+                   :limit=>10,
+                   :select=>"articles.id, articles.author_id, articles.content_type_id, articles.name, COUNT(articles.id) as c")
     end                 
   end
   
@@ -437,9 +446,10 @@ class Article < ActiveRecord::Base
   #      můžu doplnit 3x GP ze včerejška = celkem 7.
   #default section_id = 9999 ; pokud neni section_id, tak muze byt cokoliv , kde section_id je NULL
   #max pocet starsiho data je 3, pokud neni celkem 5, tak muzu jit o den(vic) zpet..
-  def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
+  def self.r_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8, ign_arr = [0])
     op = section_id.nil? ? "articlebanner_sections.section_id IS ?" : "articlebanner_sections.section_id = ?"
     op += " AND article_banners.publish_date >= ? AND article_banners.publish_date <= ?"
+    op += " AND article_banners.id NOT IN (#{ign_arr.join(",")})"
     order = (section_id.nil? || section_id == Section::HOME_SECTION_ID) ? "article_banners.priority_home DESC" : "article_banners.priority_section DESC"
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date, Time.now.to_date],
@@ -455,9 +465,14 @@ class Article < ActiveRecord::Base
   end
   
   def self.right_boxes_rec(boxes = [], section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_back = 35, limit_count = 7)
+     if boxes.blank?
+       ign_arr = [0]
+     else
+       ign_arr = boxes.map{|b| b.id} 
+     end
      min_limit_count = 5
      # look at actual section_id
-     boxes += Article.r_boxes(section_id,beg_date,limit_count)
+     boxes += Article.r_boxes(section_id,beg_date,limit_count,ign_arr)
      return boxes if boxes.length >= min_limit_count
      # look at section_id 9999
      #boxes += Article.r_boxes(Section::HOME_SECTION_ID,beg_date,limit_count)

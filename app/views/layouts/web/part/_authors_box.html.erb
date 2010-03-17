@@ -2,6 +2,7 @@
 	<h2 class="h">Autoři</h2>
 	<ul>
 	  <% @authors.each do |author| %>
+	  	<% next unless Article.find(:first,:conditions=>{:author_id=>author.id,:visibility=>false,:approved=>true}) %>
 	  	<li><%= link_to author.full_name, author_info_path(pretty_name(author)) %></li>
 	  <% end%>
 	  <li>&nbsp;</li>

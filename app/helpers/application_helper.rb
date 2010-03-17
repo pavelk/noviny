@@ -8,6 +8,11 @@ module ApplicationHelper
     image_tag('web/spinner.gif', :id=>"#{id}_spinner", :align => 'absmiddle', :style=> 'display:none;border:none;', :alt => 'loading...' )
   end
   
+  def foot_rss(rss)
+    @show_rss = true
+    content_for(:rss) { link_to "RSS","feed://#{home_url.sub('http://','').gsub('/','')}#{rss}"}
+  end
+  
   def comments_info(number)
     str = "#{number} "
     if number == 0
@@ -104,6 +109,10 @@ module ApplicationHelper
   #Ajax link on home page (readest articles)
   def remote_readest_link(name,begin_date,type, section_id = nil)
     link_to_remote name || "24 hodin",:url=>{:controller=>"web/ajax",:action=>"update_readest",:begin_date=>begin_date || (Time.now-24.hours),:type=>type || 1, :section_id=>section_id},:loading=>"Element.show('readest_spinner');",:complete=>"Element.hide('readest_spinner');"
+  end
+  
+  def remote_discuss_link(name,begin_date,type, section_id = nil)
+    link_to_remote name || "24 hodin",:url=>{:controller=>"web/ajax",:action=>"update_discuss",:begin_date=>begin_date || (Time.now-24.hours),:dtype=>type || 1, :section_id=>section_id},:loading=>"Element.show('discuss_spinner');",:complete=>"Element.hide('discuss_spinner');"
   end
   
   #return id for form object
