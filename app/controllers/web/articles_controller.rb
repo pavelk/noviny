@@ -18,8 +18,10 @@ class Web::ArticlesController < Web::WebController
     if request.post?
       email = params[:email]
       article = Article.find(params[:id])
+      firstname = params[:firstname]
+      lastname = params[:lastname]
       begin
-        Notification.deliver_article(article, email, detail_article_url(pretty_id(article)))
+        Notification.deliver_article(article, email, detail_article_url(pretty_id(article)), firstname, lastname)
         flash[:notice] = "Článek byl úspěšně poslán na #{email}"
       rescue
         flash[:error] = "Článek nebyl poslán kvůli chybě."

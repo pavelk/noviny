@@ -35,9 +35,16 @@
 		<tr>
 			<td valign="top" style="border-top: 1px solid #000; padding: 5px 0 2em 0;">
 				<font face="Arial" size="3">
-					Dobrý den,<br />
-					zasíláme Vám doporučení na článek na webu <a href="http://www.denikreferendum.cz">www.denikreferendum.cz</a>.<br />
-					Článek <b><%= @article.name %></b> si můžete přečíst zde:<br />
+					Dobrý den,<br /><br />
+					<% if @firstname.blank? && @lastname.blank? %>
+						někdo
+					<% else %>
+						<%= @firstname %> <%= @lastname %>
+					<% end %>
+					si v <a href="http://www.denikreferendum.cz">Deníku Referendum</a> všiml článku, o kterém si myslí, že by Vás mohl zajímat.
+					<br /><br />
+					Pokud si jej chcete přečíst na stránkách <a href="http://www.denikreferendum.cz">Deníku Referendum</a>, klikněte na tento link:
+					<br /><br />
 					<%= link_to @pretty_url, @pretty_url %>
 				</font>
 			</td>
