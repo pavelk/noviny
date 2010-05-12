@@ -5,8 +5,8 @@
     <meta http-equiv="content-language" content="cs" />
     <meta name="author" content="Sortof" />
     <meta name="copyright" content="2009 Sortof - www.sortof.info" />
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <meta name="description" content="<%= @meta_description.gsub("\"","'") rescue "" -%>" />
+    <meta name="keywords" content="<%= @meta_keywords -%>" />
     <title><%= "#{@html_title} - " if @html_title -%>Deník Referendum</title>
 	  <%#= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", "jquery-1.3.2.min", "jquery.scrollTo-1.4.0-min", "jquery.serialScroll-1.2.1-min", "web/cufon-yui", "web/cufon-arial", "web/fontCharger", "init", :cache => 'js_gal_files'   %>

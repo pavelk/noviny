@@ -66,27 +66,19 @@ class Web::ArticlesController < Web::WebController
   
   def detail
     @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
-    @html_title = @article.opinion_name
     redirect_to home_path and return unless @article
     cookies[:last_article_id] = @article.id
-    @related = @article.relarticles + @article.inverse_relarticles
-    @section = @article.section
+    
+    set_detail_variables
+    @article_image = @article.pictures.first
+
     sections = @article.sections
     if (cookies[:section_id] && sections.include?(Section.find(cookies[:section_id])))
       @section = Section.find(cookies[:section_id])
     end
-    @top_themes = @article.themes
-    @author = @article.author
-    @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
-    @article_image = @article.pictures.first
-    @comments = @article.article_comments
-    @info_box = @article.info_boxes.first
     
-     if @section
-       add_breadcrumb @section.name, section_path(pretty_name(@section))
-     else
-       add_breadcrumb "Detail", ""
-     end
+    @comments = @article.article_comments
+     
     ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
     render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end
@@ -224,26 +216,30 @@ class Web::ArticlesController < Web::WebController
   
   def detail_gallery
     @page = 1
-    @article = Article.find(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
+    @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
+    set_detail_variables
+    @pictures = Picture.paginate_from_article(@article.id,params[:page])
+    @article_image = @pictures.first
+    redirect_to :action=>"detail",:id=>params[:id] and return if @pictures.blank?
+  end
+  
+protected
+  def set_detail_variables
+    @section = @article.section
+    @meta_description = @article.perex
     @html_title = @article.opinion_name
     @related = @article.relarticles + @article.inverse_relarticles
-    @top_themes = @article.themes
-    @section = @article.section
     @author = @article.author
-    @pictures = Picture.paginate_from_article(@article.id,params[:page])
-    redirect_to :action=>"detail",:id=>params[:id] and return if @pictures.blank?
-    @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
-    @article_image = @pictures.first
+    @top_themes = @article.themes
     @info_box = @article.info_boxes.first
-    
+    @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     if @section
        add_breadcrumb @section.name, section_path(pretty_name(@section))
      else
        add_breadcrumb "Detail", ""
-     end
-    #render :layout=>"web/gallery"
+    end
   end
-protected
+
   def set_layout
     @printable ? "web/print" : "web/gallery"
   end

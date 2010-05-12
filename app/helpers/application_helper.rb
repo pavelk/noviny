@@ -46,7 +46,7 @@ module ApplicationHelper
   end
   
   def article_name(article)
-    arr = [ContentType::SLOUPEK,ContentType::KOMENTAR,ContentType::DOPISY]
+    arr = ContentType.article_full_name 
     if arr.include?(article.content_type_id) && article.author
       return "#{article.author.full_name}: #{article.name}"
     else

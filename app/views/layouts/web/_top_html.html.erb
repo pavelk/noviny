@@ -144,7 +144,7 @@
                       	<%= text_field "newsletter", "email", :class=>"button w100" -%>
                       </div> <!-- /.con -->
                     </div> <!-- /.clearfix -->
-					<%= submit_tag "Potvrdit", :class=>"submit" %>
+					<%= submit_tag "Potvrdit", :class=>"submit" %> <%= link_to "Zrušit odebírání zpravodaje", delete_newsletter_path -%>
                   </fieldset>
 				  <%= spinner_tag("news") %>
                 <% end %>
