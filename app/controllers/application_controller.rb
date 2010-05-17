@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation
 
   before_filter :check_authentication
+  before_filter :mailer_set_url_options
+
 
   def current_user
     return @current_user if defined?(@current_user)
@@ -41,6 +43,9 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
     
+    def mailer_set_url_options
+      ActionMailer::Base.default_url_options[:host] = request.host_with_port
+    end
 end
 
 

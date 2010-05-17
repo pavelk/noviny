@@ -17,3 +17,23 @@
 	  <p class="comment"><%=th h(comment.text) %></p>
 	</div> <!-- /.self -->
 </div> <!-- /.item -->
+<% if false %>
+<% a_url = detail_article_url(pretty_id(@article)) %>
+<% a_title = (comment.name) %>
+<ul>
+	<li class="displayOverlay">
+		<a href="" class="share">Sdílet</a>
+		<div class="overlay overlayEmail">
+			<%= exit_span %>
+ 			<h4 class="t">Sdílet</h4>
+			<ul>
+			  <li><%= link_to "Facebook", "http://www.facebook.com/share.php?u=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Twitter", "http://cnntweet.appspot.com/articles/#{a_url}/#{a_title}/tweet/",:target=>"_blank" %></li>
+			  <li><%= link_to "Digg", "http://digg.com/submit?phase=2&amp;url=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Delicious", "http://del.icio.us/post?v=4&amp;partner=cnn&amp;noui&amp;jump=close&amp;url=#{a_url}&title=#{a_title}",:target=>"_blank" %></li>
+			  <li><%= link_to "Myspace", "http://www.myspace.com/Modules/PostTo/Pages/?t=#{a_title}&u=#{a_url}",:target=>"_blank" %></li>
+			</ul>
+        </div> <!-- /.overlay -->
+	</li>
+</ul>
+<% end %>

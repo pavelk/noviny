@@ -135,6 +135,24 @@
     	<%= f.check_box "send_reports" %>
     </div> <!-- /.con -->
 </div> <!-- /.clearfix -->
+<% if !@newuser.author.blank? %>
+<div class="clearfix">
+    <div class="lab">
+      <label for="newuser_send_my_discuss_notification">Posílat oznámení o nové diskuzi k mému článku:</label>
+    </div> <!-- /.lab -->
+    <div class="con">
+    	<%= f.check_box "send_my_discuss_notification" %>
+    </div> <!-- /.con -->
+</div> <!-- /.clearfix -->
+<% end %>
+<div class="clearfix">
+    <div class="lab">
+      <label for="newuser_send_discuss_notification">Posílat oznámení o nové diskuzi k článku, o kterém jsem diskutoval:</label>
+    </div> <!-- /.lab -->
+    <div class="con">
+    	<%= f.check_box "send_discuss_notification" %>
+    </div> <!-- /.con -->
+</div> <!-- /.clearfix -->
 <% if false %>	
 <div class="clearfix">
     <div class="lab">

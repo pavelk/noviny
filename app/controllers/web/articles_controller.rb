@@ -122,7 +122,7 @@ class Web::ArticlesController < Web::WebController
           @y_votes = 0
         end
         @n_votes = 100 - @y_votes
-        @message = "Hlasoval jste #{(@vote_value == true) ? 'Ano' : 'Ne'} jako #{@question.question_votes.count} hlas"
+        @message = "Hlasoval jste #{(@vote_value == true) ? 'Ano' : 'Ne'}, celkem #{(@vote_value == true) ? @y_votes.to_i : @n_votes.to_i}%"
         render :update do |page|
           page.replace_html "question-#{@question.id}", :partial=>"web/articles/question_vote"
         end
@@ -132,7 +132,8 @@ class Web::ArticlesController < Web::WebController
   end
   
   def question
-    @question = Dailyquestion.find(params[:id])
+    @question = Dailyquestion.find_by_id_and_approved(params[:id],true)
+    redirect_to home_path and return unless @question
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no
@@ -233,6 +234,11 @@ protected
     @top_themes = @article.themes
     @info_box = @article.info_boxes.first
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
+    
+    if @article.content_type_id == ContentType::VIDEO
+      @older_videos = Article.all(:conditions=>["content_type_id = ? AND order_date >= ? AND order_date <= ?",ContentType::VIDEO,@article.order_date - 14.days,@article.order_date - 1.days],:order=>"order_date DESC")
+    end
+    
     if @section
        add_breadcrumb @section.name, section_path(pretty_name(@section))
      else

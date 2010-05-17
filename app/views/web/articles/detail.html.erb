@@ -40,12 +40,23 @@
        <div class="text">
 		<p><%=th @article.text %></p>
        </div> <!-- /.text -->
+	   <% if @article.audios.count > 0 %>
 	   <div class="box">
 		<%= render :partial=>"web/articles/audio" %>
        </div> <!-- /.box -->
+	   <% end %>
+	   <% if @article.insets.count > 0 %>
 	   <div class="box">
 		<%= render :partial=>"web/articles/insets" %>
        </div> <!-- /.box -->
+	   <% end %>
+	   <% if @older_videos %>
+	   <div class="box">
+	   		<% @older_videos.each do |ov| %>
+				<%= ov.order_date.to_s(:cz_date) %> - <%= link_to article_name(ov), detail_article_path(pretty_id(ov)) -%><br />
+			<% end %>
+	   </div>
+	   <% end %>	
        <div class="box boxComments">
 		<%= render :partial=>"web/articles/discuss" %>
        </div> <!-- /.box -->

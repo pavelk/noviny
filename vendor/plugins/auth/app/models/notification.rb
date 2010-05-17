@@ -1,4 +1,5 @@
 class Notification < ActionMailer::Base
+  helper :application
   def forgot(web_user, app, sent_on = Time.now)
     @recipients = "#{web_user.login} <#{web_user.email}>"
     @from       = "#{app[:title]} <#{app[:email]}>"
@@ -114,6 +115,15 @@ class Notification < ActionMailer::Base
      @from       = "redakce@denikreferendum.cz"
      @subject    = article.name
      @body       = {'article' => article, 'pretty_url' => pretty_url, 'firstname' => firstname, 'lastname' => lastname}
+     @sent_on    = sent_on
+     content_type "text/html"
+   end
+   
+   def discuss(article, email, sent_on = Time.now)
+     @recipients = "#{email}"
+     @from       = "redakce@denikreferendum.cz"
+     @subject    = "Upozornění z Deníku Referendum"
+     @body       = {'article' => article}
      @sent_on    = sent_on
      content_type "text/html"
    end
