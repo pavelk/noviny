@@ -13,7 +13,7 @@ class ArticleComment < ActiveRecord::Base
  end
  
  def web_user
-   WebUser.find(self.web_user_id)
+   WebUser.find_by_id(self.web_user_id)
  end
  
   #Returns created_at at format: Úterý, 2.Srpna 2009, 11:34:24

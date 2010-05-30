@@ -1,12 +1,15 @@
-<% cond = @message || cookies["question_id_#{Time.now.to_date}"] &&  cookies["question_id_#{Time.now.to_date}"].split(';').include?(@question.id.to_s)  %>
+<% voted = (@message || cookies["question_id_#{Time.now.to_date}"] &&  cookies["question_id_#{Time.now.to_date}"].split(';').include?(@question.id.to_s))  %>
+<% show_results = (voted || !@question.can_vote?)%>
+<% yes_results = @question.yes_title_results %>
+<% no_results = @question.no_title_results %>
 <div class="answer">
     <div class="label">Ano</div>    
     <div class="bar">
-      <span class="in" style="width: <%= cond ? @y_votes : 0 -%>%;">
+      <span class="in" style="width: <%= show_results ? @y_votes : 0 -%>%;" title="<%= show_results ? yes_results : ''%>">
       	<span class="value">
-      		<% if cond  %>
-			<% else %>
-      			<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) if @question.can_vote? %>
+      		<% if voted %>
+			<% elsif @question.can_vote? %>
+      			<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) %>
 			<% end %>
 		</span>
 	  </span>
@@ -15,12 +18,14 @@
 <div class="answer">
     <div class="label">Ne</div>    
     <div class="bar even">
-      <span class="in" style="width: <%= cond ? @n_votes : 0-%>%;"><span class="value">
-      	<% if cond %>
-		<% else %>
-      		<%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) if @question.can_vote? %>
-		<% end %>
-	  </span></span>
+      <span class="in" style="width: <%= show_results ? @n_votes : 0-%>%;" title="<%= show_results ? no_results : ''%>">
+      	<span class="value">
+	      	<% if voted %>
+			<% elsif @question.can_vote? %>
+	      		<%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) %>
+			<% end %>
+	  	</span>
+	  </span>
 	</div> <!-- /.bar -->
 </div> <!-- /.answer -->
 <p id="message-<%=@question.id-%>">

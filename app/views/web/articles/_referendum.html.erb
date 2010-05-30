@@ -4,11 +4,11 @@
 	  <div class="in itemList">              
 	    <div class="item itemSmallImage">
 	      <div class="img">
-	        <%= link_to(main_image_tag("../stylesheets/web/img/img-referendum-dne.jpg"),articles_path(:action=>:question,:id=>@question.id)) %>
+	        <%= link_to(main_image_tag("../stylesheets/web/img/img-referendum-dne.jpg"),question_vote_path(:question_id=>"#{@question.id}-#{@question.headline.parameterize}")) %>
 	      </div> <!-- /.self -->
 	      
 	      <div class="self">
-	        <h3 class="head"><%= link_to @question.headline,articles_path(:action=>:question,:id=>@question.id) %></h3>
+	        <h3 class="head"><%= link_to @question.headline,question_vote_path(:question_id=>"#{@question.id}-#{@question.headline.parameterize}") %></h3>
 	        <p class="perex"><%=th @question.perex %></p>
 	      </div> <!-- /.self -->
 	    </div> <!-- /.item -->            

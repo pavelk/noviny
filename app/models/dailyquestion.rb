@@ -22,8 +22,67 @@ class Dailyquestion < ActiveRecord::Base
          :select=>"id, headline, perex")
   end
     
+  def self.last_active
+    find(:last,
+         :conditions=>["publish_date <= ? AND approved = ?" ,Time.now.to_date,true])
+  end
+  
+  def self.opened(not_id = nil)
+    str = ""
+    str += " AND id != #{not_id}" if not_id
+    find(:all,
+         :conditions=>["publish_date >= ? AND publish_date <= ? AND approved = ?#{str}" ,Time.now-7.days,Time.now.to_date,true],
+         :order=>"publish_date DESC")
+  end
+  
+  def self.closed(not_id = nil)
+    str = ""
+    str += " AND id != #{not_id}" if not_id
+    find(:all,
+         :conditions=>["publish_date <= ? AND approved = ?#{str}" ,Time.now-7.days,true],
+         :order=>"publish_date DESC",
+         :limit=>10)
+  end
+    
+  def yes_votes_in_perc
+    if self.whole_votes > 0
+      return round_two((self.yes_votes.to_f/self.whole_votes.to_f) * 100)
+    else
+      return 0
+    end
+  end
+  
+  def no_votes_in_perc
+    return (100 - self.yes_votes_in_perc) if self.whole_votes > 0
+    return 0
+  end
+  
+  def whole_votes
+    QuestionVote.count(:conditions=>{:question_id=>self.id})
+  end  
+    
+  def yes_votes
+     return QuestionVote.count(:conditions=>{:question_id=>self.id,:vote_value=>true})
+  end
+  
+  def no_votes
+    return QuestionVote.count(:conditions=>{:question_id=>self.id,:vote_value=>false})
+  end
+    
   def can_vote?
     return (self.publish_date >= (Time.now-7.days)) && (self.publish_date.to_date <= Time.now.to_date) 
   end
-    
+  
+  def yes_title_results
+    "#{yes_votes} hlasů/#{yes_votes_in_perc}%"
+  end
+  
+  def no_title_results
+    "#{no_votes} hlasů/#{no_votes_in_perc}%"
+  end
+  
+  protected
+  def round_two(number)
+   ("%.2f" % number).to_f
+  end
 end

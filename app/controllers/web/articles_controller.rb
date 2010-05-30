@@ -115,14 +115,9 @@ class Web::ArticlesController < Web::WebController
         qv.save
         @question.question_votes << qv
         
-        whole_votes = QuestionVote.count(:conditions=>{:question_id=>@question.id})
-        if whole_votes > 0
-          @y_votes = (QuestionVote.count(:conditions=>{:question_id=>@question.id,:vote_value=>true}).to_f/whole_votes.to_f) * 100
-        else
-          @y_votes = 0
-        end
-        @n_votes = 100 - @y_votes
-        @message = "Hlasoval jste #{(@vote_value == true) ? 'Ano' : 'Ne'}, celkem #{(@vote_value == true) ? @y_votes.to_i : @n_votes.to_i}%"
+        @y_votes = @question.yes_votes_in_perc
+        @n_votes = @question.no_votes_in_perc
+        @message = "Hlasoval jste #{(@vote_value == true) ? 'Ano' : 'Ne'}, celkem #{(@vote_value == true) ? @y_votes : @n_votes}%"
         render :update do |page|
           page.replace_html "question-#{@question.id}", :partial=>"web/articles/question_vote"
         end
@@ -137,14 +132,8 @@ class Web::ArticlesController < Web::WebController
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no
-    whole_votes = QuestionVote.count(:conditions=>{:question_id=>@question.id})
-    if whole_votes > 0
-      @y_votes = (QuestionVote.count(:conditions=>{:question_id=>@question.id,:vote_value=>true}).to_f/whole_votes.to_f) * 100
-      @n_votes = 100 - @y_votes
-    else
-      @y_votes = 0
-      @n_votes = 0
-    end
+    @y_votes = @question.yes_votes_in_perc
+    @n_votes = @question.no_votes_in_perc
     
     add_breadcrumb "Otázka", ""
   end

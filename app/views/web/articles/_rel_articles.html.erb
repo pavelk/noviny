@@ -2,6 +2,7 @@
 <h3 class="h line">Související</h3>
 <div class="in">
 <% @related.each do |rel| %>
+	<% next unless rel -%>
 	 <div class="item itemSmall noImg">
 		<div class="self">
 		  <p class="info"><%= rel.head %></p>

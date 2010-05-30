@@ -1,0 +1,4 @@
+<% if @sel_section && !@sel_section.children.blank? %>
+	<p class="info">Podsekce</p>
+	<%= select_tag "subsection_id", options_for_select(@sel_section.children.map{|ch| [ch.name,ch.id]}.insert(0, '-- Vše --'), :selected => @subsection_id),  {:style=>'width: 150px;'} %>
+<% end %>

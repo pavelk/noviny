@@ -1,0 +1,49 @@
+<div class="box boxDetail">
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box">
+       	<h3 class="t">Filtrovat dle</h3>
+		<br />
+		 <div class="self">
+		  <% form_tag(section_path(:name=>"forum")) do %>
+		  	<% sections = [] %>
+			  <% (1..5).map do |s| %>
+			  	<% sections << Section.find(s) %>
+			  <% end %>
+			   <p class="info">Sekce</p>
+			  	<div>
+			  		<%= select_tag "section_id", options_for_select(sections.map{|se| [se.name,se.id]}.insert(0, '-- Vše --'), :selected => @section_id) %>
+					<%= spinner_tag('select') %>
+				</div>
+				<%= observe_field :section_id,
+	              :url => { :controller => 'web/ajax', :action => 'update_subsections' },
+	              :update => 'sebsections', 
+	              :with => "'section_id=' +value",
+				  :loading=>"Element.show('select_spinner');",
+				  :complete=>"Element.hide('select_spinner');" -%>
+				<div id="subsections">
+					<%= render :partial=>"web/sections/select" %>
+				</div> 
+				<p class="info">Tema</p>
+				<%= select_tag "tag_id", options_for_select(Tag.all(:order=>"name").map{|t| [t.name,t.id]}.insert(0, '-- Vše --'), :selected => @tag_id),  {:style=>'width: 150px;'} %>
+				<p class="info">Autor</p>
+				<%= select_tag "author_id", options_for_select(Author.all(:order=>"surname").map{|t| [t.full_name,t.id]}.insert(0, '-- Vše --'), :selected => @author_id),  {:style=>'width: 150px;'} %>
+				<br /><br />
+				<%= submit_tag "Hledej" %>
+		  <% end %>
+		</div>
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+     
+     <div class="col2">
+        <div class="box boxCommentsForum">
+        	<div class="in">
+				<%= render :partial=>"web/articles/comment", :collection=>@comments %>
+				<%= will_paginate @comments, :params =>{:controller=>"/rubrika/forum",:action=>nil,:name=>nil} %>
+			</div>
+        </div> <!-- /.box -->
+				
+     </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+        

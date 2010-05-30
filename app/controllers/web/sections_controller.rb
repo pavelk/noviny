@@ -36,7 +36,16 @@ class Web::SectionsController < Web::WebController
     set_default_variables
     add_breadcrumb @section.name, section_path(pretty_name(@section))
     render :action=>"holidays" and return if Web::Calendar.holidays?
-    render :action=>"#{@section.id}" and return
+    if @section.name == "Váš Hlas"
+      set_question_variables
+      render :action=>"vas-hlas", :layout=>"web/gallery" and return
+    elsif @section.name == "Fórum"
+      set_forum_variables
+      render :action=>"forum", :layout=>"web/gallery" and return
+    else
+      render :action=>"#{@section.id}" and return
+      render :action=>"detail" and return
+    end
   end
   
   def subsection
@@ -190,5 +199,42 @@ protected
     else
       @opinions = Article.middle_opinions(section_id,12,ign_arr)           
     end
+  end
+  
+  def set_question_variables
+    @question = params[:question_id] ? Dailyquestion.find_by_id_and_approved(params[:question_id],true) : Dailyquestion.last_active
+    @question_image = @question.pictures.first
+    @author_yes = @question.author_yes
+    @author_no = @question.author_no
+    @y_votes = @question.yes_votes_in_perc
+    @n_votes = @question.no_votes_in_perc
+    
+    @opened_questions = Dailyquestion.opened(@question.id)
+    @closed_questions = Dailyquestion.closed(@question.id)
+  end
+  
+  def set_forum_variables
+    @section_id = params[:section_id].to_i
+    @sel_section = Section.find_by_id(@section_id)
+    @subsection_id = params[:subsection_id].to_i
+    @tag_id = params[:tag_id].to_i
+    @author_id = params[:author_id].to_i
+    joins = {:article=>[]}
+    conds = []
+    conds << "article_sections.section_id = #{@section_id}" if @section_id > 0
+    conds = ["article_sections.section_id = #{@subsection_id}"] if @subsection_id > 0
+    conds << "articles.author_id = #{@author_id}" if @author_id > 0
+    conds << "article_themes.theme_id = #{@tag_id}" if @tag_id > 0
+    conds = conds.join(" AND ")
+    joins[:article] << [:article_themes] if @tag_id > 0
+    joins[:article] << [:article_sections] if @section_id > 0
+    joins[:article] << [:author] if @subsection_id > 0
+    @comments = ArticleComment.paginate(:all,:select=>"article_comments.*",
+                :conditions=>[conds],
+                :joins=>joins,
+                :order=>"article_comments.created_at DESC",
+                :group=>"article_comments.id",
+                :per_page=>30,
+                :page=>params[:page])
   end
 end

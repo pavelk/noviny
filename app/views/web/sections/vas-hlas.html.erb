@@ -1,0 +1,115 @@
+<div class="box boxDetail">
+   <h2 class="head"><%= @question.headline %></h2>
+   <p class="perex"><%=th @question.question_text %></p>
+   
+   <div class="cols detailImage line">
+      <div class="col1 item itemSmallImage itemSmall noImg">                
+                <div class="self">
+                  <h3 class="head alt"><%= link_to "Redakce", section_path("vas-hlas")%></h3> 
+                  <p class="info"><%= @question.publish_date.to_s(:cz_date) %></p>
+                  <ul>
+                    <li><%= link_to "Váš hlas", section_path("vas-hlas")%></li>
+                  </ul>
+                </div> <!-- /.self -->
+
+      </div> <!-- /.col1 -->
+
+     
+     <div class="col2 mainImage">
+       <%= image_tag(@question_image.data.url(:hp_main)) if @question_image %>
+	   <p class="info"><%= @question_image.name rescue nil %></p>
+     </div> <!-- /.col2 -->
+	 
+   </div> <!-- /.cols -->
+   
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box boxLine">
+		<%= render :partial=>"web/articles/left_box" %>
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+     
+     <div class="col2">
+                <div class="box cols cols50">
+                  <div class="col1">
+
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)),author_info_path(pretty_name(@author_yes))) if @author_yes.pictures.first %>
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><%= link_to(@author_yes.full_name,author_info_path(pretty_name(@author_yes))) %></h4>
+                        <p class="text alt">Ano</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    
+                    <p class="text"><%=th @question.text_yes %></p>
+                  </div> <!-- /.col1 -->
+                  
+                  <div class="col2">
+                    <div class="item itemSmallImage itemQuiz">
+                      <div class="img">
+                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)),author_info_path(pretty_name(@author_no))) if @author_no.pictures.first %>
+                      </div> <!-- /.img -->
+                      
+                      <div class="self">
+                        <h4 class="head alt"><%= link_to(@author_no.full_name,author_info_path(pretty_name(@author_no))) %></h4>
+                        <p class="text alt">Ne</p>
+                      </div> <!-- /.self -->
+                    </div> <!-- /.item -->
+                    <p class="text"><%=th @question.text_no %></p>
+                  </div> <!-- /.col2 -->
+                </div> <!-- /.cols -->
+                
+                <div class="box boxQuiz">
+                  <h3 class="h">
+                  	<strong>Otázka:</strong> <%= @question.question_text %>
+				  </h3>
+                  <div class="in" id="question-<%=@question.id-%>">
+                    <%= render :partial=>"web/articles/question_vote" %>
+                  </div> <!-- /.in -->
+                </div> <!-- /.box -->
+                <% if false %>
+                <div class="box boxComments">
+                	<!--TODO -->
+                  <h3 class="h line">Diskuze (13 prispevku)</h3>
+                </div> <!-- /.box -->
+				<% end %>
+				
+				<div class="box line">
+                  <h3 class="h">
+                  	<strong>Otevřená referenda</strong>
+				  </h3>
+				  <% for op_q in @opened_questions %>
+	                 <div class="item">
+						<%= op_q.publish_date.to_s(:cz_date) %>
+						<div>
+						  <span style="font-size:16pt;">
+						  	<%= link_to op_q.headline, question_vote_path(:question_id=>"#{op_q.id}-#{op_q.headline.parameterize}") %>
+						  </span>
+						  <p class="text"><%= h(op_q.perex) %></p>
+						</div> <!-- /.self -->
+					</div> <!-- /.item -->
+				  <% end %>
+                </div> <!-- /.box -->
+				
+				<div class="box line">
+                  <h3 class="h">
+                  	<strong>Uzavřená referenda</strong>
+				  </h3>
+				  <% for op_q in @closed_questions %>
+	                 <div class="item">
+						<%= op_q.publish_date.to_s(:cz_date) %>
+						<div>
+						  <span style="font-size:16pt;">
+						  	<%= link_to op_q.headline, question_vote_path(:question_id=>"#{op_q.id}-#{op_q.headline.parameterize}") %>
+						  </span>
+						</div> <!-- /.self -->
+					</div> <!-- /.item -->
+				  <% end %>
+                </div> <!-- /.box -->
+       </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+        
