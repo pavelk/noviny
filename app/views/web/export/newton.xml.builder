@@ -3,7 +3,7 @@ xml.instruct!
     @articles.each do |article|
       xml.Article do
         xml.ArtID article.id
-        xml.date article.publish_date.to_formatted_s(:cz_date)
+        xml.date article.created_at.to_formatted_s(:cz_date)
         xml.title article.name
         xml.perex article.perex
         xml.body
