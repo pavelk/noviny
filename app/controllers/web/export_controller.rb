@@ -7,8 +7,8 @@ class Web::ExportController < ApplicationController
     if params[:FromDate].nil? or params[:ToDate].nil?
       render :text => "Wrong format."
     else
-      from_date = DateTime.strptime( params[:FromDate], "%Y-%m-%d-%H%M%S" )
-      to_date = DateTime.strptime( params[:ToDate], "%Y-%m-%d-%H%M%S" )
+      from_date = DateTime.strptime( params[:FromDate], "%Y-%m-%d-%H%M%S" ).to_s
+      to_date = DateTime.strptime( params[:ToDate], "%Y-%m-%d-%H%M%S" ).to_s
 
       @articles = Article.find(:all,
        :conditions => "'#{from_date}' <= created_at AND '#{to_date}' >= created_at",
