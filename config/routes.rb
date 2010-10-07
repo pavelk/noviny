@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.confirm_delete_newsletter "/confirm_delete_newsletter/:email/:crypted", :controller=>"auth", :action=>"confirm_delete_newsletter", :email=>/.*.*/
   map.delete_newsletter "/zrusit_zpravodaj", :controller=>"auth", :action=>"delete_newsletter"
   map.rss "web/rss/:action/:section_id", :controller=>"web/rss",:action=>nil,:section_id=>nil
+  map.export 'export/:action', :controller => 'web/export', :action => nil
   map.question_vote "rubrika/:name/:question_id",:controller => 'web/sections',:action=>"detail",:name=>"vas-hlas",:question_id=>nil
   
   map.home "", :controller=>"web/sections"

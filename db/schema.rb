@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091221173557) do
+ActiveRecord::Schema.define(:version => 20100518171732) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -69,10 +69,12 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.datetime "created_at"
     t.text     "text"
     t.integer  "web_user_id"
+    t.string   "name"
   end
 
   add_index "article_comments", ["article_id"], :name => "article_comments_article_id_index"
   add_index "article_comments", ["article_id"], :name => "index_article_comments_on_article_id"
+  add_index "article_comments", ["created_at"], :name => "index_article_comments_on_created_at"
   add_index "article_comments", ["web_user_id"], :name => "index_article_comments_on_web_user_id"
 
   create_table "article_insets", :force => true do |t|
@@ -108,6 +110,8 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.datetime "updated_at"
   end
 
+  add_index "article_selections", ["article_id"], :name => "index_article_selections_on_article_id"
+  add_index "article_selections", ["publish_date"], :name => "index_article_selections_on_publish_date"
   add_index "article_selections", ["section_id"], :name => "article_selections_section_id_index"
 
   create_table "article_themes", :force => true do |t|
@@ -140,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
   end
 
   add_index "article_views", ["article_id"], :name => "article_views_article_id_index"
+  add_index "article_views", ["shown_date"], :name => "index_article_views_on_shown_date"
 
   create_table "articlebanner_sections", :force => true do |t|
     t.integer "article_banner_id"
@@ -177,17 +182,22 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.time     "order_time"
   end
 
+  add_index "articles", ["approved"], :name => "index_articles_on_approved"
   add_index "articles", ["author_id"], :name => "articles_author_id_on_index"
   add_index "articles", ["author_sec_id"], :name => "articles_author_sec_id_index"
   add_index "articles", ["content_type_id"], :name => "articles_content_type_id_index"
   add_index "articles", ["first_approved_date"], :name => "articles_first_approved_date_index"
   add_index "articles", ["major_modified_date"], :name => "articles_major_modified_date_index"
+  add_index "articles", ["order_date"], :name => "index_articles_on_order_date"
+  add_index "articles", ["order_time"], :name => "index_articles_on_order_time"
   add_index "articles", ["picture_id"], :name => "articles_picture_id_index"
   add_index "articles", ["priority_home"], :name => "articles_priority_home_index"
   add_index "articles", ["priority_section"], :name => "articles_priority_section_index"
+  add_index "articles", ["publish_date"], :name => "index_articles_on_publish_date"
   add_index "articles", ["section_id"], :name => "articles_section_id_index"
   add_index "articles", ["subsection_id"], :name => "articles_subsection_id_index"
   add_index "articles", ["user_id"], :name => "articles_user_id_index"
+  add_index "articles", ["visibility"], :name => "index_articles_on_visibility"
 
   create_table "articles_updates_history", :force => true do |t|
     t.integer  "user_id"
@@ -243,6 +253,8 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.string   "phone"
   end
 
+  add_index "authors", ["firstname"], :name => "index_authors_on_firstname"
+  add_index "authors", ["surname"], :name => "index_authors_on_surname"
   add_index "authors", ["user_id"], :name => "authors_user_id_index"
 
   create_table "content_types", :force => true do |t|
@@ -286,8 +298,10 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.boolean  "approved"
   end
 
+  add_index "dailyquestions", ["approved"], :name => "index_dailyquestions_on_approved"
   add_index "dailyquestions", ["author_no_id"], :name => "dailyquestions_author_no_id_index"
   add_index "dailyquestions", ["author_yes_id"], :name => "dailyquestions_author_yes_id_index"
+  add_index "dailyquestions", ["publish_date"], :name => "index_dailyquestions_on_publish_date"
 
   create_table "flashphoto_articles", :force => true do |t|
     t.integer  "article_id"
@@ -431,9 +445,13 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
   end
 
   create_table "newsletters", :force => true do |t|
-    t.string  "email",  :limit => 100,                   :null => false
-    t.boolean "active",                :default => true
+    t.string  "email",   :limit => 100,                   :null => false
+    t.boolean "active",                 :default => true
+    t.string  "crypted"
   end
+
+  add_index "newsletters", ["active"], :name => "index_newsletters_on_active"
+  add_index "newsletters", ["email"], :name => "index_newsletters_on_email"
 
   create_table "newsletters_mailings", :force => true do |t|
     t.integer "newsletter_id"
@@ -454,6 +472,9 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.decimal  "gift",                          :precision => 10, :scale => 2
   end
 
+  add_index "payments", ["payed_at"], :name => "index_payments_on_payed_at"
+  add_index "payments", ["status"], :name => "index_payments_on_status"
+  add_index "payments", ["variable_symbol"], :name => "index_payments_on_variable_symbol"
   add_index "payments", ["web_user_id", "payed_at"], :name => "index_payments_on_web_user_id_and_payed_at"
 
   create_table "pictures", :force => true do |t|
@@ -523,7 +544,9 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
 
   add_index "sections", ["author_id"], :name => "sections_author_id_index"
   add_index "sections", ["lft", "rgt"], :name => "sections_lft_rgt_index"
+  add_index "sections", ["name"], :name => "index_sections_on_name"
   add_index "sections", ["parent_id"], :name => "sections_parent_id_index"
+  add_index "sections", ["position"], :name => "index_sections_on_position"
   add_index "sections", ["user_id"], :name => "sections_user_id_index"
 
   create_table "sessions", :force => true do |t|
@@ -541,6 +564,8 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "subsections", ["name"], :name => "index_subsections_on_name"
 
   create_table "tag_selections", :force => true do |t|
     t.datetime "created_at"
@@ -567,6 +592,7 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.datetime "updated_at"
   end
 
+  add_index "tags", ["name"], :name => "index_tags_on_name"
   add_index "tags", ["user_id"], :name => "tags_user_id_index"
 
   create_table "temp_newsletters", :force => true do |t|
@@ -601,7 +627,10 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.boolean  "visibility"
   end
 
+  add_index "text_pages", ["approved"], :name => "index_text_pages_on_approved"
+  add_index "text_pages", ["name"], :name => "index_text_pages_on_name"
   add_index "text_pages", ["user_id"], :name => "text_pages_user_id_index"
+  add_index "text_pages", ["visibility"], :name => "index_text_pages_on_visibility"
 
   create_table "themeselection_sections", :force => true do |t|
     t.integer "tag_selection_id"
@@ -646,14 +675,14 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
   add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
   create_table "web_users", :force => true do |t|
-    t.string   "login",              :limit => 40,                     :null => false
-    t.string   "cryptpassword",      :limit => 40,                     :null => false
-    t.string   "validkey",           :limit => 40
-    t.string   "email",              :limit => 100,                    :null => false
+    t.string   "login",                        :limit => 40,                     :null => false
+    t.string   "cryptpassword",                :limit => 40,                     :null => false
+    t.string   "validkey",                     :limit => 40
+    t.string   "email",                        :limit => 100,                    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "confirmed",                         :default => false
-    t.text     "domains",                                              :null => false
+    t.boolean  "confirmed",                                   :default => false
+    t.text     "domains",                                                        :null => false
     t.string   "firstname"
     t.string   "lastname"
     t.string   "street"
@@ -663,26 +692,37 @@ ActiveRecord::Schema.define(:version => 20091221173557) do
     t.string   "profession"
     t.string   "phone"
     t.string   "title"
-    t.boolean  "send_reports",                      :default => false
+    t.boolean  "send_reports",                                :default => false
     t.integer  "author_id"
     t.date     "expire_date"
     t.date     "born_date"
     t.string   "web"
     t.string   "skype"
     t.string   "twitter"
-    t.boolean  "show_mail",                         :default => false
-    t.boolean  "show_phone",                        :default => false
-    t.boolean  "show_address",                      :default => false
-    t.boolean  "show_web",                          :default => false
-    t.boolean  "show_skype",                        :default => false
-    t.boolean  "show_twitter",                      :default => false
+    t.boolean  "show_mail",                                   :default => false
+    t.boolean  "show_phone",                                  :default => false
+    t.boolean  "show_address",                                :default => false
+    t.boolean  "show_web",                                    :default => false
+    t.boolean  "show_skype",                                  :default => false
+    t.boolean  "show_twitter",                                :default => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
-    t.boolean  "read_codex",                        :default => false
-    t.boolean  "show_city",                         :default => false
-    t.boolean  "show_berth",                        :default => false
-    t.integer  "country_id",                        :default => 201
+    t.boolean  "read_codex",                                  :default => false
+    t.boolean  "show_city",                                   :default => false
+    t.boolean  "show_berth",                                  :default => false
+    t.integer  "country_id",                                  :default => 201
+    t.boolean  "send_discuss_notification",                   :default => false
+    t.boolean  "send_my_discuss_notification",                :default => false
   end
+
+  add_index "web_users", ["author_id"], :name => "index_web_users_on_author_id"
+  add_index "web_users", ["confirmed"], :name => "index_web_users_on_confirmed"
+  add_index "web_users", ["country_id"], :name => "index_web_users_on_country_id"
+  add_index "web_users", ["expire_date"], :name => "index_web_users_on_expire_date"
+  add_index "web_users", ["login"], :name => "index_web_users_on_login"
+  add_index "web_users", ["send_discuss_notification"], :name => "index_web_users_on_send_discuss_notification"
+  add_index "web_users", ["send_my_discuss_notification"], :name => "index_web_users_on_send_my_discuss_notification"
+  add_index "web_users", ["send_reports"], :name => "index_web_users_on_send_reports"
 
 end
