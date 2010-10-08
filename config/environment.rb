@@ -28,4 +28,4 @@ ActionMailer::Base.smtp_settings = {
  :domain => "localhost"
 }
 
-ActiveRecord::Base.logger.level = 0
+ActiveRecord::Base.logger.level = 1 # 0=debug, 1=info
