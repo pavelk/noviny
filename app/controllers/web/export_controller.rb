@@ -11,8 +11,8 @@ class Web::ExportController < ApplicationController
       to_date = DateTime.strptime( params[:ToDate], "%Y-%m-%d-%H%M%S" ).to_s(:db)
 
       @articles = Article.find(:all,
-       :conditions => "'#{from_date}' <= created_at AND '#{to_date}' >= created_at",
-       :select => "articles.text, articles.perex, articles.created_at, articles.name, articles.author_id, articles.section_id, articles.id",
+       :conditions => "'#{from_date}' <= publish_date AND '#{to_date}' >= publish_date",
+       :select => "articles.text, articles.perex, articles.publish_date, articles.name, articles.author_id, articles.section_id, articles.id",
        :include => [:author, { :article_sections => :section }])
       render :action => "newton.xml.builder"
     end
