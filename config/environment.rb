@@ -18,6 +18,8 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :cz
   
   config.action_controller.session_store = :active_record_store
+
+  config.log_level = Logger::DEBUG
 end
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.default_charset = "utf-8"
