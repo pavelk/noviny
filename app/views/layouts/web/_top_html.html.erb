@@ -45,7 +45,9 @@
         <div id="mainMenu">
           <ul>
           	<% Section.all_root.each do |root| %>
-				<% next if root.id == 9999 %>
+              <% next if root.id == 9999 %>
+              <% next if root.id == 10000 %>
+              <% next if root.id == 10001 %>
 				<% if (@section && @section.id == root.id) %>
 	            	<li><%= link_to(root.name, section_path(pretty_name(root)),:style=>"color:black;") %></li>
 				<% else %>
