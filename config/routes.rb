@@ -77,6 +77,7 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :sections
     admin.resources :relationships
     admin.resources :relationthemeships
+    admin.resources :relationquestionships
     admin.resources :info_boxes
     admin.resources :article_selections
     admin.resources :dailyquestions
@@ -97,6 +98,9 @@ ActionController::Routing::Routes.draw do |map|
   map.remove_relationthemeship 'admin/relationthemeships/remove_rel/:id/:rel', :controller => 'admin/relationthemeships', :action => 'delete', :method => 'post'
   map.remove_tagselection 'admin/tag_selections/remove_rel/:id/:rel', :controller => 'admin/tag_selections', :action => 'delete', :method => 'post'
   map.remove_headliner_article 'admin/headliner_boxes/remove_rel/:id/:rel', :controller => 'admin/headliner_boxes', :action => 'delete', :method => 'post'
+  map.remove_headliner_theme 'admin/headliner_boxes/remove_reltheme/:id/:rel', :controller => 'admin/headliner_boxes', :action => 'delete_theme', :method => 'post'
+  map.remove_headliner_dailyquestion 'admin/headliner_boxes/remove_relquestion/:id/:rel', :controller => 'admin/headliner_boxes', :action => 'delete_quest', :method => 'post'
+
     
   ###
   #realtime assets to articles
@@ -152,6 +156,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.get_relarticles 'admin/articles/get_relarticles', :controller => 'admin/articles', :action => 'get_relarticles'
   map.get_relthemes 'admin/themes/get_relthemes', :controller => 'admin/themes', :action => 'get_relthemes'
+  map.get_reldailyquestions 'admin/dailyquestions/get_reldailyquestions', :controller => 'admin/dailyquestions', :action => 'get_reldailyquestions'
+
   
   map.get_linked_imgs 'admin/pictures/get_linked_imgs', :controller => 'admin/pictures', :action => 'get_linked_imgs'
   

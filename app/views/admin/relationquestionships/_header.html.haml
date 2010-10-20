@@ -1,0 +1,8 @@
+- form_tag admin_relationquestionships_path, :method => :get, :id => 'search_relationquestionships' do
+  %fieldset
+    %strong filtr:
+    = text_field_tag :search_relationquestionships, params[:search_relationquestionships]
+    = submit_tag "Hledej", :name => nil
+    %input{ :id => 'cancelSearchRelationquestionships', :name => 'cancel', :value => 'Zrusit vyhledavani', :type => 'button' } 
+.clearer
+%br

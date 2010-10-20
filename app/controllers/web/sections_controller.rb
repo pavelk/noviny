@@ -183,6 +183,7 @@ protected
     @headliner_box = Article.headliner_box(section_id)
     @rel_articles = @headliner_box ? @headliner_box.articles : []
     @themes = @headliner_box ? @headliner_box.themes : []
+    @dailyquestions = @headliner_box ? @headliner_box.dailyquestions : []
     @right_boxes = Article.right_boxes(section_id)
     arr = @rel_articles
     arr += [@headliner_box.article] if @headliner_box

@@ -59,7 +59,7 @@
 - @object.article_themes.each do |ts|
   %div
     = ts.theme.name
-    = link_to "X", '#', :id => "articles#{@object.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
+    = link_to "X", '#', :id => "relationthemeship_#{@object.id}_#{ts.id}", :onclick => 'removeRelationthemeship( $(this)); return false'
 %br
 %br
 

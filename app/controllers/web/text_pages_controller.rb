@@ -12,6 +12,7 @@ class Web::TextPagesController < Web::WebController
     @headliner_box = HeadlinerBox.find(params[:id])
     @rel_articles = @headliner_box ? @headliner_box.articles : []
     @themes = @headliner_box ? @headliner_box.themes : []
+    @dailyquestions = @headliner_box ? @headliner_box.dailyquestions : []
     render :layout=>"web/part/hp_box"
   end
   

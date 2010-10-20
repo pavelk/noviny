@@ -84,7 +84,11 @@ $(function()
   $("a[class='thickbox_themes']").livequery(function() {
     tb_init('a.thickbox_themes');
   });
-  
+ 
+  $("a[class='thickbox_question']").livequery(function() {
+    tb_init('a.thickbox_question');
+  });
+ 
   
   $("div[id='TB_ajaxContent'] input[type='checkbox']").livequery(function() {
     $(this).change(function() {
@@ -483,6 +487,20 @@ function getRelatedAfterSave(){
         });
 
         break;
+      case 'question':
+      	$.ajax({
+          type: 'POST',
+          dataType: 'script',
+          url: '/admin/dailyquestions/get_reldailyquestions', 
+          data: $("input[id^='related_"+ thickbox_id +"']").serialize(),
+          error: function(msg) { alert("Chyba v přenosu dat."); },
+          success: function(data, status) {
+            //$("div[id^='related_sidebar']").append(data);
+            //alert('ahoj');
+            	thickbox_id = "";
+          }
+        });
+        break;
       case 'themes':
         //alert('todo fill related themes');
         $.ajax({
@@ -541,6 +559,27 @@ function removeRelationthemeship( obj )
   return false;
 }
 
+function getRelationquestionship(tb_id)
+{
+  if (tb_id != null) thickbox_id = tb_id;
+  if (relarticles.length > 0) relarticles.splice(0,relarticles.length);
+  $('#TB_window').live("unload",getRelatedAfterSave);
+  $.ajax({
+    type: 'GET',
+    dataType: 'script',
+    url: '/admin/relationquestionships/',   
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      $("div[id='TB_ajaxContent'] .pagination a").live("click", function() {
+      $("#TB_ajaxContent > *").remove();
+      $.get(this.href, null, function ( data ){ 
+	  }, "script");
+    return false;
+  });
+    }
+  });
+  return false;
+}
 function removeTagSelection( obj )
 {
   $.ajax({
@@ -570,6 +609,33 @@ function removeHeadlinerArticle( obj )
   return false;
 }
 
+function removeHeadlinerTheme( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/headliner_boxes/remove_reltheme/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
+
+function removeHeadlinerDailyquestion( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/headliner_boxes/remove_relquestion/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
 function revertVersion( version, article )
 {
   $.ajax({

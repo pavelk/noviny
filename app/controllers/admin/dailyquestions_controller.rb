@@ -2,8 +2,8 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   #create.before :set_author
   #create.after :process_adding_pictures, :set_values
-  create.after :set_values
-  update.after :set_values
+  create.after :set_values, :process_related
+  update.after :set_values, :process_related
   update.before :set_author
 
     
@@ -71,6 +71,15 @@ class Admin::DailyquestionsController < Admin::AdminController
     end
   end
   
+  def get_reldailyquestions
+    #debugger
+    @dailyquestions = Dailyquestion.all(:conditions => "id in (#{params[:related_question].values.join(',')})") 
+    
+    respond_to do |format|  
+      format.js
+    end
+  end
+
   private
   
     def set_author
@@ -99,4 +108,14 @@ class Admin::DailyquestionsController < Admin::AdminController
       @dailyquestion.update_attributes( :publish_date => params[:publish_date].split('/').reverse.join('-') + p_time)
     end
   
+    def process_related
+      puts "!!!!!!!!!!!!!!!!!!!!!!!!"
+      if(params[:related_question])
+        params[:related_question].each_value do |r|
+          relationquestionship = @dailyquestion.relationquestionships.build(:relquestion_id => r)
+          relationquestionship.save
+        end
+      end  
+    end
+
 end

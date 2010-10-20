@@ -13,7 +13,10 @@ class HeadlinerBox < ActiveRecord::Base
   has_many :themes, :through => :headliner_themes
   
   has_many :flashphoto_headliners
-  
+ 
+  has_many :headliner_dailyquestions
+  has_many :dailyquestions, :through => :headliner_dailyquestions
+ 
   def info
     inf = ""
     arr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZěščřžýáíéúůóďťňöäëĚŠČŘŽÝÁÍÉÚŮÓĎŤŇÖÄËľĽüÜßß1234567890".split("")

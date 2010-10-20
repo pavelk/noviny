@@ -1,9 +1,12 @@
 class Admin::RelationthemeshipsController < Admin::AdminController
   
   def delete
-    theme = Theme.find(params[:id])
-    @relationthemeship = theme.relationthemeships.find(params[:rel])
-    @relationthemeship.destroy
+    #theme = Theme.find(params[:id])
+    #@relationthemeship = theme.relationthemeships.find(params[:rel])
+    #@relationthemeship.destroy
+
+    article_theme = ArticleTheme.find(params[:rel])
+    article_theme.destroy
     render :nothing => true
   end
   

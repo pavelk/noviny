@@ -54,7 +54,21 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     
     render :nothing => true
   end
-  
+ 
+  def delete_quest
+    headliner_dailyquestion = HeadlinerDailyquestion.find(params[:rel])
+    headliner_dailyquestion.destroy
+    
+    render :nothing => true
+  end
+ 
+  def delete_theme
+    headliner_theme = HeadlinerTheme.find(params[:rel])
+    headliner_theme.destroy
+    
+    render :nothing => true
+  end
+
   private
     
     def add_flash_photo
@@ -75,6 +89,12 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
         params[:related_themes].each_value do |r|
           theme = Theme.find(r)
           @headliner_box.themes << theme
+        end
+      end
+      if(params[:related_question])
+        params[:related_question].each_value do |r|
+          quest = Dailyquestion.find(r)
+          @headliner_box.dailyquestions << quest
         end
       end
       if(params[:related_main])

@@ -8,6 +8,15 @@
 		<li><%= link_to article_name(article), detail_article_path(pretty_id(article)) %></li>
 	<% end if @rel_articles -%>
 </ul>
+
+<% if !@dailyquestions.blank? %>
+<ul class="list item">
+  <% @dailyquestions.each do |q| %>
+    <li><%= link_to q.headline, question_vote_path(:question_id=>"#{q.id}-#{q.headline.parameterize}")%></li>
+	<% end %>
+</ul>
+<% end %>
+
 	        
 <div class="box">
   <h2 class="h <%= @headliner_box ? 'line' : '' -%>"><% if !week? %>Názory<% end %></h2>

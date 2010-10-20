@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100518171732) do
+ActiveRecord::Schema.define(:version => 20101020084750) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -361,6 +361,14 @@ ActiveRecord::Schema.define(:version => 20100518171732) do
   add_index "headliner_boxes", ["article_id"], :name => "headliner_boxes_article_id_index"
   add_index "headliner_boxes", ["picture_id"], :name => "headliner_boxes_picture_id_index"
   add_index "headliner_boxes", ["publish_date"], :name => "headliner_boxes_publish_date_index"
+
+  create_table "headliner_dailyquestions", :force => true do |t|
+    t.integer "headliner_box_id"
+    t.integer "dailyquestion_id"
+  end
+
+  add_index "headliner_dailyquestions", ["dailyquestion_id"], :name => "headliner_dailyquestions_dailyquestion_id_index"
+  add_index "headliner_dailyquestions", ["headliner_box_id"], :name => "headliner_dailyquestions_headliner_box_id_index"
 
   create_table "headliner_sections", :force => true do |t|
     t.integer "headliner_box_id"

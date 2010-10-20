@@ -1,0 +1,14 @@
+<% if(params[:search_relationquestionships]) %>
+$("#TB_ajaxContent").empty();
+var cl1 = 'hideSearch';
+var cl2 = 'showSearch';
+<% else %>
+var cl1 = 'showSearch';
+var cl2 = 'hideSearch';
+<% end %>
+$("#TB_ajaxContent").append("<%= escape_javascript(render(:partial => 'header')) %>");
+$("#TB_ajaxContent").append("<%= escape_javascript(render(:partial => 'relationquestionships_header')) %>");
+$("input[id='cancelSearchRelationquestionships']").removeClass( cl1 );
+$("input[id='cancelSearchRelationquestionships']").addClass( cl2 );
+$("input[id='cancelSearchRelationquestionships'], input[class='showSearch']").bind("click", function() { $("#TB_ajaxContent").empty(); return getRelationquestionship(); }); 
+checkBoxes();

@@ -42,6 +42,19 @@
 %br
 %br
 %hr
+%strong Souvisejici otázky
+%br
+= link_to "+ Vyber otázky", "#?width=700&height=500", :class => 'thickbox_question', :onclick => 'getRelationquestionship(\'question\'); return false'
+#related_question
+%br
+%strong Prilozene otázky
+- @object.headliner_dailyquestions.each do |hd|
+  %div
+    = hd.dailyquestion.headline
+    = link_to "X", '#', :id => "headlinerdailyquestions_#{@object.id}_#{hd.id}", :onclick => 'removeHeadlinerDailyquestion( $(this)); return false'
+%br
+%br
+%hr
 = link_to "+ Pridej temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false'
 #related_themes
 %br
@@ -50,7 +63,7 @@
 - @object.headliner_themes.each do |ts|
   %div
     = ts.theme.name
-    = link_to "X", '#', :id => "headlinerarticles_#{@object.id}_#{ts.id}", :onclick => 'removeTagSelection( $(this)); return false'
+    = link_to "X", '#', :id => "headlinertheme_#{@object.id}_#{ts.id}", :onclick => 'removeHeadlinerTheme( $(this)); return false'
 #flashImageHidden
 #flashImageLink
 %hr

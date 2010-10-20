@@ -4,12 +4,21 @@
 			<li><%= link_to article_name(article), detail_article_path(pretty_id(article)) %></li>
 		<% end -%>
 </ul>
-<% else %>
 <% end %>
+
+<% if !@dailyquestions.blank? %>
+<ul class="list item">
+  <% @dailyquestions.each do |q| %>
+    <li><%= link_to q.headline, question_vote_path(:question_id=>"#{q.id}-#{q.headline.parameterize}")%></li>
+	<% end %>
+</ul>
+<% end %>
+
 <% if !@themes.blank? %>
 	<strong>Témata:</strong>
 	<% @themes.each do |theme| %>
-		<%= link_to theme.name, topic_path(pretty_name(theme)) %>,
+  <%= link_to theme.name, topic_path(pretty_name(theme)) %> <% unless theme == @themes.last %>,<% end %>
 	<% end %>
 	<br /><br />
 <% end %>
+

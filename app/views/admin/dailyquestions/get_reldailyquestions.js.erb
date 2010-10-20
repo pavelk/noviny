@@ -1,0 +1,1 @@
+$("div[id^='related_"+ thickbox_id  +"']").append("<%= escape_javascript(render(:partial => 'get_reldailyquestions', :object => @dailyquestions)).gsub(/\\n/, '') %>");
