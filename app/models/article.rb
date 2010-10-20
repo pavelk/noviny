@@ -14,10 +14,13 @@ class Article < ActiveRecord::Base
   
   has_many :article_themes
   has_many :themes, :through => :article_themes
-  
+ 
+  has_many :article_dailyquestions
+  has_many :dailyquestions, :through => :article_dailyquestions
+ 
   belongs_to :picture
   # 
-      
+
   belongs_to :user
   belongs_to :author
   belongs_to :author_sec, :class_name => "Author", :foreign_key => 'author_sec_id'

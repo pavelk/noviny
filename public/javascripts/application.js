@@ -580,6 +580,21 @@ function getRelationquestionship(tb_id)
   });
   return false;
 }
+
+function removeRelationquestionship( obj )
+{
+  $.ajax({
+    type: 'POST',
+    dataType: 'script',
+    url: '/admin/relationquestionships/remove_rel/' + $(obj).attr("id").split("_")[1] + '/' + $(obj).attr("id").split("_")[2],
+    error: function(msg) { alert("Chyba v přenosu dat."); },
+    success: function(data, status) {
+      removeElement($(obj).parent());
+    }
+  });
+  return false;
+}
+
 function removeTagSelection( obj )
 {
   $.ajax({

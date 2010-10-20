@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101020084750) do
+ActiveRecord::Schema.define(:version => 20101020141830) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -76,6 +76,14 @@ ActiveRecord::Schema.define(:version => 20101020084750) do
   add_index "article_comments", ["article_id"], :name => "index_article_comments_on_article_id"
   add_index "article_comments", ["created_at"], :name => "index_article_comments_on_created_at"
   add_index "article_comments", ["web_user_id"], :name => "index_article_comments_on_web_user_id"
+
+  create_table "article_dailyquestions", :force => true do |t|
+    t.integer "article_id"
+    t.integer "dailyquestion_id"
+  end
+
+  add_index "article_dailyquestions", ["article_id"], :name => "article_dailyquestions_article_id_index"
+  add_index "article_dailyquestions", ["dailyquestion_id"], :name => "article_dailyquestions_dailyquestion_id_index"
 
   create_table "article_insets", :force => true do |t|
     t.integer "inset_id"

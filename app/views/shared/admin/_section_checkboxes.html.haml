@@ -1,11 +1,11 @@
-- Section.roots.each do |section|
+- Section.roots.reverse_each do |section|
   - next if section.name == "Fórum" or section.name == "Váš Hlas"
   %div{ :id => "checkbox-#{return_id(section_checkboxes)}-#{section.id}-#{section_checkboxes.class}" }
     = check_box_tag :section_ids, section.id, @object.sections.include?(section), :name => "#{return_classname(section_checkboxes)}[section_ids][]"
     = label_tag :section_ids, section.name
 %br
 %p{ :id => 'appendSubsection'}
-- Section.roots.each do |subsection|
+- Section.roots.reverse_each do |subsection|
   - if section_checkboxes.sections.include?(subsection) && !subsection.leaf?
     %div{ :id => "subsection-#{subsection.id}" }
       - subsection.children.each do |c|

@@ -1,9 +1,12 @@
 class Admin::RelationquestionshipsController < Admin::AdminController
   
   def delete
-    quest = Dailyquestion.find(params[:id])
-    @relationquestionship = quest.relationquestionships.find(params[:rel])
-    @relationquestionship.destroy
+    #quest = Dailyquestion.find(params[:id])
+    #@relationquestionship = quest.relationquestionships.find(params[:rel])
+    #@relationquestionship.destroy
+    #
+    article_dailyquestion = ArticleDailyquestion.find(params[:rel])
+    article_dailyquestion.destroy
     render :nothing => true
   end
   

@@ -3,6 +3,9 @@ class Dailyquestion < ActiveRecord::Base
   has_many :headliner_dailyquestions
   has_many :headliner_boxes, :through => :headliner_dailyquestions
  
+  has_many :article_dailyquestions
+  has_many :articles, :through => :article_dailyquestions
+
   has_many :question_votes, :foreign_key=>"question_id"
   
   has_many :dailyquestion_pictures

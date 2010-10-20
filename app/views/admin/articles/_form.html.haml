@@ -101,5 +101,20 @@
 %br
 %hr
 %br
+= link_to "+ Pridej souvisejici otázky", "#?width=700&height=500", :class => 'thickbox_question', :onclick => 'getRelationquestionship(\'question\'); return false'
+#related_question
+- if (@object.article_dailyquestions.size > 0)
+  %br
+  %br
+  %strong Souvisejici otázky
+  %br
+  %br
+  - @object.article_dailyquestions.each do |ad|
+    %div
+      = ad.dailyquestion.headline
+      = link_to "X", '#', :id => "relationquestionship_#{@object.id}_#{ad.id}", :onclick => 'removeRelationquestionship( $(this)); return false'
+  %br
+%hr
+%br
 %input{ :type => 'hidden', :id => 'linkedImages', :value => '' }
 #flashImageHidden

@@ -221,6 +221,7 @@ protected
     @related = @article.relarticles + @article.inverse_relarticles
     @author = @article.author
     @top_themes = @article.themes
+    @dailyquestions = @article.dailyquestions
     @info_box = @article.info_boxes.first
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     

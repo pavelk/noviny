@@ -259,6 +259,13 @@ private
         @article.themes << art
       end
     end  
+    if(params[:related_question])
+      params[:related_question].each_value do |r|
+        art = Dailyquestion.find(r)
+        @article.dailyquestions << art
+      end
+    end  
+
   end
     
   def multi_tag    

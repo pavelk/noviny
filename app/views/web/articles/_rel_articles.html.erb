@@ -1,14 +1,31 @@
-<% unless @related.blank? %>
+<% unless @related.blank? and @dailyquestions.blank? %>
+
 <h3 class="h line">Související</h3>
 <div class="in">
-<% @related.each do |rel| %>
-	<% next unless rel -%>
+  
+<% unless @related.blank? %>
+  <% @related.each do |rel| %>
+  	<% next unless rel -%>
+  	 <div class="item itemSmall noImg">
+  		<div class="self">
+  		  <p class="info"><%= rel.head %></p>
+  		  <h3 class="head"><%= link_to(article_name(rel),detail_article_path(pretty_id(rel)))%></h3>
+  		</div> <!-- /.self -->
+  	 </div> <!-- /.item -->
+  <% end %>
+<% end %>
+
+<% if !@dailyquestions.blank? %>
+  <% @dailyquestions.each do |q| %>
+	  <% next unless q -%>
 	 <div class="item itemSmall noImg">
 		<div class="self">
-		  <p class="info"><%= rel.head %></p>
-		  <h3 class="head"><%= link_to(article_name(rel),detail_article_path(pretty_id(rel)))%></h3>
+		  <p class="info">Otázka</p>
+      <h3 class="head"><%= link_to q.headline, question_vote_path(:question_id=>"#{q.id}-#{q.headline.parameterize}")%></h3>
 		</div> <!-- /.self -->
 	 </div> <!-- /.item -->
-<% end %>     
+	<% end %>
+<% end %>
+
 </div> <!-- /.in -->
 <% end %>   
