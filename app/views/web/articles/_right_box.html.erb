@@ -1,3 +1,4 @@
+<% unless right_box.article_id.blank? %>
 <div class="bImg">
 	<% if (fb = FlashphotoBanner.find(:all,:conditions=>{:article_banner_id=>right_box.id},:order=>"updated_at DESC").first) %>	
 		<%= link_to(image_tag(fb.photo.url), detail_article_path(pretty_id(right_box.article))) %>
@@ -8,3 +9,17 @@
 		  <span><%=link_to th(right_box.headline), detail_article_path(pretty_id(right_box.article)) %></span>
 	</div> <!-- /.caption -->
 </div> <!-- /.bImg -->
+<% end %>
+
+<% unless right_box.dailyquestion_id.blank? %>
+<div class="bImg">
+	<% if (fb = FlashphotoBanner.find(:all,:conditions=>{:article_banner_id=>right_box.id},:order=>"updated_at DESC").first) %>	
+		<%= link_to(image_tag(fb.photo.url), question_vote_path(:question_id=>"#{right_box.dailyquestion_id}-#{right_box.dailyquestion.headline.parameterize}")) %>
+	<% else %>	
+		<%= link_to(main_image_tag(right_box.picture.data.url(:hp_sidebar)), question_vote_path(:question_id=>"#{right_box.dailyquestion_id}-#{right_box.dailyquestion.headline.parameterize}")) if right_box.picture %>
+	<% end %>
+	<div class="caption">
+		  <span><%=link_to th(right_box.headline), question_vote_path(:question_id=>"#{right_box.dailyquestion_id}-#{right_box.dailyquestion.headline.parameterize}") %></span>
+	</div> <!-- /.caption -->
+</div> <!-- /.bImg -->
+<% end %>

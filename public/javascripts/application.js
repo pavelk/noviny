@@ -472,7 +472,6 @@ function getRelatedAfterSave(){
   {
   switch(thickbox_id){
       case 'sidebar':
-      //case 'main':
       	$.ajax({
           type: 'POST',
           dataType: 'script',
@@ -485,13 +484,15 @@ function getRelatedAfterSave(){
             	thickbox_id = "";
           }
         });
-
+        break;
+      case 'main':
+        $("#question_or_article").html("<input type='hidden' id='question_or_article' name='question_or_article' value='0'>");
         break;
       case 'question':
       	$.ajax({
           type: 'POST',
           dataType: 'script',
-          url: '/admin/dailyquestions/get_reldailyquestions', 
+          url: '/admin/dailyquestions/get_reldailyquestions',
           data: $("input[id^='related_"+ thickbox_id +"']").serialize(),
           error: function(msg) { alert("Chyba v přenosu dat."); },
           success: function(data, status) {
@@ -500,6 +501,7 @@ function getRelatedAfterSave(){
             	thickbox_id = "";
           }
         });
+        $("#question_or_article").html("<input type='hidden' id='question_or_article' name='question_or_article' value='1'>");
         break;
       case 'themes':
         //alert('todo fill related themes');

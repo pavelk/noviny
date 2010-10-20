@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101020141830) do
+ActiveRecord::Schema.define(:version => 20101020203025) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20101020141830) do
     t.datetime "updated_at"
     t.integer  "priority_home",    :default => 1, :null => false
     t.integer  "priority_section", :default => 1, :null => false
+    t.integer  "dailyquestion_id"
   end
 
   add_index "article_banners", ["article_id"], :name => "article_banners_article_id_index"

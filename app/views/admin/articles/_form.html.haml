@@ -57,9 +57,10 @@
 %br
 %strong Vybrana temata
 - @object.article_themes.each do |ts|
-  %div
-    = ts.theme.name
-    = link_to "X", '#', :id => "relationthemeship_#{@object.id}_#{ts.id}", :onclick => 'removeRelationthemeship( $(this)); return false'
+  - unless ts.theme.nil?
+    %div
+      = ts.theme.name
+      = link_to "X", '#', :id => "relationthemeship_#{@object.id}_#{ts.id}", :onclick => 'removeRelationthemeship( $(this)); return false'
 %br
 %br
 

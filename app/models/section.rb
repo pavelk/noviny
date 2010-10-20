@@ -23,6 +23,8 @@ class Section < ActiveRecord::Base
     VYTVARNE_UMENI = 8
     DIVADLO = 9
     LITERATURA = 10
+    VAS_HLAS = 10000
+    FORUM = 10001
   ###############
   
   acts_as_nested_set

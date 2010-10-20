@@ -13,7 +13,9 @@ class Dailyquestion < ActiveRecord::Base
   
   belongs_to :author_yes, :class_name => "Author", :foreign_key => 'author_yes_id'
   belongs_to :author_no, :class_name => "Author", :foreign_key => 'author_no_id'
-  
+ 
+  has_many :article_banners
+
   #has_many :dailyquestion_authors
   #has_many :authors, :through => :dailyquestion_authors
   

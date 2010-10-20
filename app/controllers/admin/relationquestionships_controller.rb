@@ -9,7 +9,7 @@ class Admin::RelationquestionshipsController < Admin::AdminController
     article_dailyquestion.destroy
     render :nothing => true
   end
-  
+
   def index
     if(params[:search_relationquestionships])
       @relationquestionships = Dailyquestion.search params[:search_relationquestionships], :page => params[:page], :per_page => 20, :order => 'updated_at DESC'

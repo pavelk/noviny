@@ -95,10 +95,16 @@ class Admin::ArticleBannersController < Admin::AdminController
     end
     
     def process_related
-      if(params[:related_main])
+      if(params[:related_main] and params[:question_or_article] == "0" )
         article_id = params[:related_main].shift[1]
         @article_banner.update_attributes( :article_id => article_id )
+        @article_banner.update_attributes( :dailyquestion_id => nil )
       end
-    end  
+      if(params[:related_question] and params[:question_or_article] == "1" )
+        question_id = params[:related_question].shift[1]
+        @article_banner.update_attributes( :dailyquestion_id => question_id )
+        @article_banner.update_attributes( :article_id => nil )
+      end
+    end
   
 end

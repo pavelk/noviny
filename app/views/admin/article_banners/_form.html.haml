@@ -6,16 +6,31 @@
 %input{ :id => "article_banner_publish_date", :name => "article_banner[publish_date]", :size => "30", :type => "text", :value => www_date(@article_banner.publish_date)}
 %br
 %br
-%strong Odkazujici clanek
+%hr
+%br
+%strong Vyberte odkazujici clanek
 %br
 = link_to "+ Vyber clanek", "#?width=700&height=500", :class => 'thickbox_main', :onclick => 'getRelationship(\'main\'); return false'
+%br
+%strong nebo odkazujici otazku
+%br
+= link_to "+ Vyber otazku", "#?width=700&height=500", :class => 'thickbox_question', :onclick => 'getRelationquestionship(\'question\'); return false'
 #related_main
+#related_question
+#question_or_article
 %br
 - if(!@object.new_record?)
-  %strong Prilozeny clanek:
-  %br
-  = @object.article.name rescue nil
+  - if (!@object.article_id.blank?)
+    %strong Prilozeny clanek:
+    %br
+    = @object.article.name rescue nil
+  - if (!@object.dailyquestion_id.blank?)
+    %strong Prilozena otazka dne:
+    %br
+    = @object.dailyquestion.headline rescue nil
 %br
+%br
+%hr
 %br
 %p Zaradte upoutavku do rubrik:
 = render(:partial => "shared/admin/section_top_checkboxes", :object => @object)

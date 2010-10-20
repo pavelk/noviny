@@ -10,7 +10,7 @@ class Theme < Tag
   has_many :themeselection_themes
   #
   
-  has_many :article_themes
+  has_many :article_themes, :dependent => :destroy
   has_many :articles, :through => :article_themes
   
   #souvisejici temata

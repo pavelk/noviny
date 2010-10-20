@@ -67,11 +67,13 @@
 	          </ul>
 		  <% end %>
 		  <%if !@top_themes.blank? %>
-	          <span>Témata:</span>
+          <span>Témata:</span>
 			  <ul>
-			  <% @top_themes.each do |tag| -%>
-			  	<li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, topic_path(pretty_name(tag))) -%></li>
-			  <% end %>
+          <% @top_themes.each do |tag| -%>
+            <% unless tag.nil? %>
+              <li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, topic_path(pretty_name(tag))) -%></li>
+            <% end %>
+		  	  <% end %>
 			  <li><%= link_to "všechna témata", topics_path %></li>
 	          </ul>
 		  <% end %>	  

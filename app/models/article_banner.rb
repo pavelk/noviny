@@ -2,7 +2,8 @@ class ArticleBanner < ActiveRecord::Base
   
   belongs_to :article
   belongs_to :picture
-  
+  belongs_to :dailyquestion
+
   has_many :articlebanner_sections
   has_many :sections, :through => :articlebanner_sections
   

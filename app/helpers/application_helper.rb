@@ -55,7 +55,7 @@ module ApplicationHelper
   end
   
   def will_paginate(arr,options = {})
-    super(arr,options.merge(:prev_label=>"Předchozí",:next_label=>"Další"))
+    super(arr,options.merge(:previous_label=>"Předchozí",:next_label=>"Další"))
   end
   
   def main_image_tag(path,options={})

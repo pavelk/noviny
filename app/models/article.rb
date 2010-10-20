@@ -457,10 +457,10 @@ class Article < ActiveRecord::Base
     ArticleBanner.find(:all,
                        :conditions=>[op,section_id,beg_date, Time.now.to_date],
                        :joins=>[:articlebanner_sections],
-                       :include=>[:article,:picture],
+                       :include=>[:article,:picture,:dailyquestion],
                        :limit=>limit_count,
                        :order=>"#{order},publish_date DESC,updated_at DESC",
-                       :select=>"article_banners.id, article_banners.headline, article_banners.article_id, article_banners.picture_id")
+                       :select=>"article_banners.id, article_banners.headline, article_banners.article_id, article_banners.picture_id,article_banners.dailyquestion_id")
   end
   
   def self.right_boxes(section_id = Section::HOME_SECTION_ID, beg_date = Time.now.to_date, limit_count = 8)
