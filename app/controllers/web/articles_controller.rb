@@ -78,8 +78,8 @@ class Web::ArticlesController < Web::WebController
     end
     
     @comments = @article.article_comments
-     
-    ArticleView.create(:article_id=>@article.id,:shown_date=>Time.now)
+
+    ArticleView.count(@article.id)
     render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end
   

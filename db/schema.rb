@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101020203025) do
+ActiveRecord::Schema.define(:version => 20101101223509) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20101020203025) do
   create_table "article_views", :force => true do |t|
     t.integer  "article_id"
     t.datetime "shown_date"
+    t.integer  "count"
   end
 
   add_index "article_views", ["article_id"], :name => "article_views_article_id_index"

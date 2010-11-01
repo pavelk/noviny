@@ -260,9 +260,9 @@ class Article < ActiveRecord::Base
         op = ""
         op += " AND article_sections.section_id = '#{section_id.to_i}'" if section_id
         articles = Article.find(:all,
-                                   :conditions=>["article_views.shown_date >= ? AND article_views.shown_date <= ?#{op} AND articles.approved = ? AND articles.visibility = ?",begin_date,Time.now,true,false],
-                                   :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, COUNT(article_views.article_id) as c",
-                                   :group=>"articles.id",
+                                   :conditions=>["article_views.shown_date >= ? #{op} AND articles.approved = ? AND articles.visibility = ?",begin_date,true,false],
+                                   :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, SUM(article_views.count) as c",
+                                   :group=>"article_views.article_id",
                                    :order=>"c DESC",
                                    :joins=>[:article_views,:sections],
                                    :include=>[:author,:content_type],
