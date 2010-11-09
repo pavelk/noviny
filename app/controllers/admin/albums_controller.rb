@@ -16,7 +16,7 @@ class Admin::AlbumsController < Admin::AdminController
   
   def get_level
     case params[:id]
-      when 'null': @albums = Album.all(:conditions => "parent_id is NULL AND album_type='#{params[:type]}'", :order => 'name ASC')
+      when 'null': @albums = Album.all(:conditions => "parent_id is NULL AND album_type='#{params[:type]}'", :order => 'created_at ASC')
           #when 'null': @albums = Album.roots
       else
         @albums = Album.find(params[:id]).children

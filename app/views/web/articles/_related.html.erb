@@ -1,18 +1,15 @@
-<% if !@rel_articles.blank? %>
 <ul class="list item">
+  <% if !@rel_articles.blank? %>
 		<% @rel_articles.each do |article| -%>
 			<li><%= link_to article_name(article), detail_article_path(pretty_id(article)) %></li>
-		<% end -%>
+    <% end -%>
+  <% end %>
+  <% if !@dailyquestions.blank? %>
+    <% @dailyquestions.each do |q| %>
+      <li><%= link_to "Otázka dne: #{q.headline}", question_vote_path(:question_id=>"#{q.id}-#{q.headline.parameterize}")%></li>
+	  <% end %>
+  <% end %>
 </ul>
-<% end %>
-
-<% if !@dailyquestions.blank? %>
-<ul class="list item">
-  <% @dailyquestions.each do |q| %>
-    <li><%= link_to q.headline, question_vote_path(:question_id=>"#{q.id}-#{q.headline.parameterize}")%></li>
-	<% end %>
-</ul>
-<% end %>
 
 <% if !@themes.blank? %>
 	<strong>Témata:</strong>

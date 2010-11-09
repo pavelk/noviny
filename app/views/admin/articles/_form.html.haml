@@ -1,16 +1,18 @@
 -#- if(@object.nil?)
   -#- @object = Article.new
+
 %div{ :id => "nadpis-visible" }
   = f.label :name, 'Nadpis:'
   = f.text_field :name, :class => "inp countable count-#{@content_type[0].to_s.split('/')[0]}-#{@content_type[0].to_s.split('/')[1]}"
   %br
   %br
 = f.label :author_id, 'Vyberte autora clanku:'
-= f.select(:author_id, Author.all(:order => 'surname ASC').collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] })
+- first = Author.find([41,232])
+= f.select(:author_id, ( first + Author.all(:order => 'surname ASC') ).collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] })
 %br
 %br
 = f.label :author_sec_id, 'Vyberte druheho autora clanku:'
-= f.select(:author_sec_id, Author.all(:order => 'surname ASC').collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] }, :include_blank => true )
+= f.select(:author_sec_id, ( first + Author.all(:order => 'surname ASC') ).collect {|a| [ "#{a.full_name} (#{a.nickname})", a.id ] }, :include_blank => true )
 %br
 %br
 %label{ :for => "publish_date" } Datum publikace:

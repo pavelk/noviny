@@ -8,7 +8,7 @@
 %br
 %br
 = f.label :parent_id, 'Zařaďte adresář do struktury:'
-= f.select(:parent_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'"), @album) {|i| "#{'-' * i.level} #{i.name}" }, { :prompt => "------------" } )
+= f.select(:parent_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at ASC"), @album) {|i| "#{'-' * i.level} #{i.name}" }, { :prompt => "------------" } )
 %br
 %hr
 %br

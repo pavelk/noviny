@@ -3,31 +3,39 @@
 <% yes_results = @question.yes_title_results %>
 <% no_results = @question.no_title_results %>
 <div class="answer">
-    <div class="label">Ano</div>    
+    <% if voted or !@question.can_vote? %>
+      <div class="label">Ano</div>    
+    <% end %>
     <div class="bar">
       <span class="in" style="width: <%= show_results ? @y_votes : 0 -%>%;" title="<%= show_results ? yes_results : ''%>">
       	<span class="value">
       		<% if voted %>
 			<% elsif @question.can_vote? %>
-      			<%= link_to_remote("ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) %>
+      			<%= link_to_remote("Ano", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>1}) %>
 			<% end %>
-		</span>
-	  </span>
+		    </span>
+	    </span>
     </div> <!-- /.bar -->
 </div> <!-- /.answer -->
+
 <div class="answer">
-    <div class="label">Ne</div>    
+    <% if voted or !@question.can_vote? %>
+      <div class="label">Ne</div>    
+    <% end %>
     <div class="bar even">
       <span class="in" style="width: <%= show_results ? @n_votes : 0-%>%;" title="<%= show_results ? no_results : ''%>">
       	<span class="value">
-	      	<% if voted %>
+      	<% if voted %>
 			<% elsif @question.can_vote? %>
-	      		<%= link_to_remote("ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) %>
+	      		<%= link_to_remote("Ne", :url=>{:controller=>"web/articles/vote", :question_id=>@question.id, :vote_value=>0}) %>
 			<% end %>
 	  	</span>
 	  </span>
 	</div> <!-- /.bar -->
 </div> <!-- /.answer -->
 <p id="message-<%=@question.id-%>">
-	<%= @message %>
+  <%= @message %>
+  <% if voted and !@message or !@question.can_vote?%>
+    <%= @message_all %>
+  <% end %>
 </p>

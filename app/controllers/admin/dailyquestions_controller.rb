@@ -101,7 +101,7 @@ class Admin::DailyquestionsController < Admin::AdminController
     def set_values
       #@dailyquestion.update_attributes( :publish_date => params[:dailyquestion][:publish_date].split('/').reverse.join('-'))
       if(params[:publish_time].size == 0)
-        p_time = ' 04:00:00'
+        p_time =  ' ' + DateTime.now.strftime("%H:%M:%S")
       else
         p_time = ' ' + params[:publish_time] + ':00'
       end    

@@ -96,7 +96,7 @@
 				
 				<div class="box line">
                   <h3 class="h">
-                  	<strong>Uzavřená referenda</strong>
+                  	<strong>Archiv výsledků</strong>
 				  </h3>
 				  <% for op_q in @closed_questions %>
 	                 <div class="item">
@@ -107,8 +107,12 @@
 						  </span>
 						</div> <!-- /.self -->
 					</div> <!-- /.item -->
-				  <% end %>
-                </div> <!-- /.box -->
+        <% end %>
+          <div class="paging">
+           <p class="count">Zobrazeno <%= @closed_questions.length %> / <%= @closed_questions.total_entries %></p>
+           <ul class="pages"> <%= will_paginate @closed_questions %> </ul>
+         </div> <!-- /.paging -->
+       </div> <!-- /.box -->
        </div> <!-- /.col2 -->
    </div> <!-- /.cols -->
  </div> <!-- /.box -->

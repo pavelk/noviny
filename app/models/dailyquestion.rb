@@ -43,13 +43,15 @@ class Dailyquestion < ActiveRecord::Base
          :order=>"publish_date DESC")
   end
   
-  def self.closed(not_id = nil)
+  def self.closed(not_id = nil, page = 1)
     str = ""
     str += " AND id != #{not_id}" if not_id
-    find(:all,
+    paginate(:all,
          :conditions=>["publish_date <= ? AND approved = ?#{str}" ,Time.now-7.days,true],
          :order=>"publish_date DESC",
-         :limit=>10)
+         #:limit=>10,
+         :page => page,
+         :per_page => 10 )
   end
     
   def yes_votes_in_perc

@@ -209,9 +209,14 @@ protected
     @author_no = @question.author_no
     @y_votes = @question.yes_votes_in_perc
     @n_votes = @question.no_votes_in_perc
-    
+    @whole_votes = @question.whole_votes
+    @y_title = @question.yes_title_results
+    @n_title = @question.no_title_results
+
     @opened_questions = Dailyquestion.opened(@question.id)
-    @closed_questions = Dailyquestion.closed(@question.id)
+    @closed_questions = Dailyquestion.closed(@question.id, params[:page])
+    
+    @message_all = "Celkem #{@whole_votes} hlasů. Ano: #{@y_title}, Ne: #{@n_title}."
   end
   
   def set_forum_variables

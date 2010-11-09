@@ -4,7 +4,7 @@
 -#= params[:type]
 %br
 = f.label :parent_id, 'Zařaďte obrázky do struktury:'
-= f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'")) {|i| "#{'-' * i.level} #{i.name}" } )
+= f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at ASC" )) {|i| "#{'-' * i.level} #{i.name}" } )
 %br
 %br
 %br

@@ -325,7 +325,7 @@ private
   def set_values
     #debugger
     if(params[:publish_time].size == 0)
-      p_time = ' 04:00:00'
+      p_time = ' ' + DateTime.now.strftime("%H:%M:%S")
     else
       p_time = ' ' + params[:publish_time] + ':00'
     end    

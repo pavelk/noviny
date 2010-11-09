@@ -572,7 +572,7 @@ a.overlaid,
 
   #content .boxQuiz .answer .label      { width: 50px; float: left; font-weight: bold; }
 
-  #content .boxQuiz .answer .bar        { width: 340px; padding-right: 50px; float: right; height: 19px; }
+  #content .boxQuiz .answer .bar        { width: 340px; padding-right: 50px; float: left; height: 19px; }
 
   #content .boxQuiz .answer .bar .in    { position: relative; display: block; height: 19px; background-color: #000; }
 

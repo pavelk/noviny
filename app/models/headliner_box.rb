@@ -30,7 +30,7 @@ class HeadlinerBox < ActiveRecord::Base
     end
     if picture
       inf += " #{picture.type_image.capitalize}" unless picture.type_image.blank?
-      inf += ": #{picture.author}" unless picture.author.blank?
+      inf += " #{picture.author}" unless picture.author.blank?
     end
     return inf
   end
