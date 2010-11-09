@@ -79,7 +79,9 @@ class Web::ArticlesController < Web::WebController
     
     @comments = @article.article_comments
 
-    ArticleView.count(@article.id)
+    ArticleView.count_article(@article.id)
+    @article.update_attribute(:total_count,@article.total_count + 1 )
+
     render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end
   

@@ -3,7 +3,7 @@ class ArticleView < ActiveRecord::Base
   belongs_to :article
 
 
-  def self.count(article_id, shown_date = Time.now)
+  def self.count_article(article_id, shown_date = Time.now)
     view = ArticleView.find(:first, :conditions => [ "article_id = ? and shown_date >= ?", article_id, shown_date - 24.hours ] )
     if view
       view.update_attributes(:count => ( view.count + 1 ))

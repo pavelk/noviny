@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101101223509) do
+ActiveRecord::Schema.define(:version => 20101109182445) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20101101223509) do
     t.datetime "first_approved_date"
     t.datetime "major_modified_date"
     t.time     "order_time"
+    t.integer  "total_count",         :default => 0
   end
 
   add_index "articles", ["approved"], :name => "index_articles_on_approved"

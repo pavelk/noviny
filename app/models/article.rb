@@ -518,7 +518,7 @@ class Article < ActiveRecord::Base
     return down_boxes, down_arr
   end
   ########################## end added by Jan Uhlar
-  
+
 protected
   def set_order_date
     if (self.ignore_set_order_date.to_i != 1)

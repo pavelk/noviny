@@ -2,7 +2,7 @@
   -#%td{ :class => 'listItem l1'}= link_to article.name, '#', :title => article.name, :class => 'file', :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td{ :class => 'listItem l1'}
     .cropLine= link_to article.name, preview_article_path(article), :title => article.name, :class => 'file', :target => '_blank'
-  -#%td= article.article_views.size  
+  %td= article.total_count
   %td= article.content_type.name
   %td= version(article)
   %td= admin_date(article.publish_date)
