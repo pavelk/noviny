@@ -73,8 +73,8 @@ class Admin::DailyquestionsController < Admin::AdminController
   
   def get_reldailyquestions
     #debugger
-    @dailyquestions = Dailyquestion.all(:conditions => "id in (#{params[:related_question].values.join(',')})") 
-    
+    @dailyquestions = Dailyquestion.all(:conditions => "id in (#{params[:related_question].values.join(',')})")
+
     respond_to do |format|  
       format.js
     end
@@ -109,7 +109,6 @@ class Admin::DailyquestionsController < Admin::AdminController
     end
   
     def process_related
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!"
       if(params[:related_question])
         params[:related_question].each_value do |r|
           relationquestionship = @dailyquestion.relationquestionships.build(:relquestion_id => r)

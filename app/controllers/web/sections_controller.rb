@@ -37,7 +37,7 @@ class Web::SectionsController < Web::WebController
     add_breadcrumb @section.name, section_path(pretty_name(@section))
     render :action=>"holidays" and return if Web::Calendar.holidays?
     if @section.name == "Váš Hlas"
-      set_question_variables
+      redirect_to home_path and return unless set_question_variables
       render :action=>"vas-hlas", :layout=>"web/gallery" and return
     elsif @section.name == "Fórum"
       set_forum_variables
@@ -204,6 +204,7 @@ protected
   
   def set_question_variables
     @question = params[:question_id] ? Dailyquestion.find_by_id_and_approved(params[:question_id],true) : Dailyquestion.last_active
+    return false unless @question
     @question_image = @question.pictures.first
     @author_yes = @question.author_yes
     @author_no = @question.author_no

@@ -12,9 +12,9 @@ class Admin::RelationquestionshipsController < Admin::AdminController
 
   def index
     if(params[:search_relationquestionships])
-      @relationquestionships = Dailyquestion.search params[:search_relationquestionships], :page => params[:page], :per_page => 20, :order => 'updated_at DESC'
+      @relationquestionships = Dailyquestion.search params[:search_relationquestionships], :conditions => "approved = true",  :page => params[:page], :per_page => 20, :order => 'updated_at DESC'
     else  
-      @relationquestionships = Dailyquestion.all( :order => 'updated_at DESC' ).paginate( :per_page => 20, :page => params[:page] )
+      @relationquestionships = Dailyquestion.all( :order => 'updated_at DESC', :conditions => "approved = true" ).paginate( :per_page => 20, :page => params[:page] )
     end
     if(params[:id])
       @relationquestionship = Dailyquestion.find(params[:id])

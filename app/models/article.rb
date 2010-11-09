@@ -519,6 +519,11 @@ class Article < ActiveRecord::Base
   end
   ########################## end added by Jan Uhlar
 
+  def self.count_total_article(article_id)
+    article = Article.find(article_id)
+    article.update_attribute(:total_count,article.total_count + 1)
+  end
+
 protected
   def set_order_date
     if (self.ignore_set_order_date.to_i != 1)
