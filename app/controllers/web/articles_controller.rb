@@ -173,7 +173,7 @@ class Web::ArticlesController < Web::WebController
       @section = Section.find(Section::HOME_SECTION_ID)
     end
     @top_themes = @section.top_themes
-    @tag = Theme.find(:first,:conditions=>["name LIKE ?", unpretty_name(params[:name]).gsub(" ","%")])
+    @tag = Theme.find(:first,:conditions=>["name LIKE ?", "%#{unpretty_name(params[:name]).gsub(" ","%")}%"])
     unless @tag
       @tag = Theme.find(:first,:conditions=>["name REGEXP ?", unpretty_name(params[:name]).gsub(" ",".*")])
     end
