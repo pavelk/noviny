@@ -1,6 +1,13 @@
+<% author = Author.find_by_web_user_id(@info_user.id) %>
+
 <div class="box cols boxAuthor">
+
   <div class="col1">
-    <%= main_image_tag(@info_user.photo.url(:thumb)) if @info_user.photo %>
+    <% if author.blank? or author.pictures.blank? %>
+      <%= main_image_tag(@info_user.photo.url(:thumb)) if @info_user.photo %>
+    <% else %>
+      <%= main_image_tag(author.pictures.first.data.url(:author_image)) if author.pictures %>
+    <% end %>
   </div> <!-- /.col1 -->
 
   <div class="col2">
@@ -9,7 +16,7 @@
       <% if @info_user.show_mail? %>
       <tr>
         <th>Email:</th>
-        <td><%= @info_user.email %></td>
+        <td><%= mail_to @info_user.email, @info_user.email %></td>
       </tr>
       <% end %>
       <% if @info_user.show_phone? %>
@@ -59,7 +66,6 @@
         <th colspan="2"><%= "Autor si nepřál zveřejnit žádné kontakty." %></th>
       </tr>
       <% end %>
-      <% author = Author.find_by_web_user_id(@info_user.id) %>
       <% unless author.blank? %>
         <tr>
           <th colspan="2"><%= @info_user.full_name %> je autorem článků, které naleznete <%= link_to "zde", author_info_path(pretty_name(author))%>.</th>

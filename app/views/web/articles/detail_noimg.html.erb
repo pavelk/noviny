@@ -1,11 +1,11 @@
 <div class="box boxDetail">
 	<h2 class="head"><%= @article.name %></h2>
 	<p class="perex"><%=th @article.perex %></p>
-	
-	<div class="cols detailContent line">
+
+  <% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
+	<div class="cols detailImage line">
 	  <div class="col1">
-	  	<% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
-	    <div class="box item itemSmallImage itemSmall<%= ' noImg' unless @author_image && cond -%>">
+	  	<div class="box item itemSmallImage itemSmall<%= ' noImg' unless @author_image && cond && !@printable -%>">
 	       <%= render :partial=>"web/articles/author_box" %>
 	    </div> <!-- /.box -->
 	    
@@ -30,7 +30,7 @@
 	   <div class="box">
 		<%= render :partial=>"web/articles/insets" %>
        </div> <!-- /.box -->
-	    <div class="box boxComments">
+	    <div class="box boxComments noprint">
 	      <%= render :partial=>"web/articles/discuss" %>
 	    </div> <!-- /.box -->
 	    

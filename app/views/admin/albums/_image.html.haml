@@ -12,10 +12,10 @@
           %br
           .cropLine
             = picture.name
-          = number_to_human_size(picture.data_file_size)
-          ,
-          = picture.data_content_type
-          %br
+          -#= number_to_human_size(picture.data_file_size)
+          -#,
+          -#= picture.data_content_type
+          -#%br
           -#= link_to 'editovat', '#', {:id => 'editPict', :class => "#{picture.id}"}
           = link_to 'editovat', '#', :id => "edit-pictures-#{picture.id}-#{params[:type]}", :onclick => 'editAttachment( $(this)); return false'
           |

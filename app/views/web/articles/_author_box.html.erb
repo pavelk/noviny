@@ -1,5 +1,5 @@
 	<% if (!@author_image.blank? && !ContentType.author_nick_types.include?(@article.content_type_id)) %>
-		<div class="img">
+		<div class="img noprint">
 				<%= link_to(main_image_tag(@author_image), author_info_path(pretty_name(@author))) %>
 		</div> <!-- /.img -->
 	<% end %>
