@@ -226,11 +226,13 @@ protected
     @subsection_id = params[:subsection_id].to_i
     @tag_id = params[:tag_id].to_i
     @author_id = params[:author_id].to_i
+    @web_user_id = params[:web_user_id].to_i
     joins = {:article=>[]}
     conds = []
     conds << "article_sections.section_id = #{@section_id}" if @section_id > 0
     conds = ["article_sections.section_id = #{@subsection_id}"] if @subsection_id > 0
     conds << "articles.author_id = #{@author_id}" if @author_id > 0
+    conds << "article_comments.web_user_id = #{@web_user_id}" if @web_user_id > 0
     conds << "article_themes.theme_id = #{@tag_id}" if @tag_id > 0
     conds = conds.join(" AND ")
     joins[:article] << [:article_themes] if @tag_id > 0

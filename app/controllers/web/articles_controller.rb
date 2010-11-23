@@ -184,9 +184,9 @@ class Web::ArticlesController < Web::WebController
   end
   
   def author_info
-    name = params[:name]
-    first,last = name.split("-",2)
-    @author = Author.find(:first,:conditions=>["firstname LIKE ? AND surname LIKE ?","#{first}%","#{last}%"])
+    name = params[:name].gsub("-","%")
+    @author = Author.find(:first,:having=>["full_name LIKE ?","%#{name}%"], :group => :id,
+                          :select => "*,CONCAT_WS(' ',firstname,surname) as full_name" )
     @articles = Article.paginate_from_author(@author.id,params[:page])
     @author_image = @author.pictures.first
     add_breadcrumb "Autor", ""

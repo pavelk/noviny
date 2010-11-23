@@ -9,21 +9,27 @@
 	
 	<div class="self">
 	  <h4>
-	  	 <% if web_us %>
-	  	<%= link_to web_us.full_name, user_info_path("#{web_us.id}-#{web_us.full_name.parameterize}") %>
-		<%= web_us.comment_info %>
-		<%= "- Autor" if web_us.author == art.author %>
+	  <% if web_us %>
+      <%= link_to web_us.full_name, user_info_path("#{web_us.id}-#{web_us.full_name.parameterize}") %>
+      <%= web_us.comment_info %>
 		<% end %>
-	  </h4>
-	  <p><b><%= comment.name %></b> <%= comment.comment_date %></p>
+  </h4>
+    <% if @article %>
+      <p><b><%= comment.name %></b> <%= comment.comment_date %></p>
+    <% elsif !comment.name.blank? %>
+      <p><b><%= link_to comment.name, detail_article_path(pretty_id(art)) + "#comment_#{comment.id}"%></b> <%= comment.comment_date %></p>
+    <% else %>
+      <p><b><%= link_to "Bez názvu", detail_article_path(pretty_id(art)) + "#comment_#{comment.id}"%></b> <%= comment.comment_date %></p>
+    <% end %>
 	  <p>
 	  	<!--<a href="">TODO Zavadny link</a>-->
 		<%= link_to "Smazat", delete_comment_path(:id=>comment.id), :confirm=>"Opravdu?" if (@web_user && @web_user.can_modify?(comment)) %>
 	  </p>
 	  <% if @article %>
 	  <p class="comment"><%=th h(comment.text) %></p>
-	  <% else %>
-	  	<%= link_to art.name, detail_article_path(pretty_id(art)) + "#comment_#{comment.id}"%>
+    <% else %>
+      V diskusi k článku:<br />
+      <%= art.name %>
 	  <% end %>
 	
 

@@ -1,34 +1,96 @@
-<h1><%= @info_user.full_name %></h1>
-<hr/>
-<h2>Kontakty</h2>
-<% if @info_user.show_mail? %>
-Email: <%= @info_user.email %><br/>
-<% end %>
-<% if @info_user.show_phone? %>
-Telefon: <%= @info_user.phone %><br/>
-<% end %>
-<% if @info_user.show_address?  %>
-Adresa: <%= @info_user.address %><br/>
-<% end %>
-<% if @info_user.show_web? %>
-Web: <%= @info_user.web %><br/>
-<% end %>
-<% if @info_user.show_skype? %>
-Skype: <%= @info_user.skype %><br/>
-<% end %>
-<% if @info_user.show_twitter? %>
-Twitter: <%= @info_user.twitter %><br/>
-<% end %>
-<% if @info_user.show_berth? %>
-Povolání: <%= @info_user.profession %><br/>
-<% end %>
-<% if @info_user.show_city? %>
-Obec: <%= @info_user.city %><br/>
-<% end %>
-<%= "Autor si nepřál zveřejnit žádné kontakty."  if @info_user.no_info? %>
-<hr/>
-<h3><%= comments_info(@comments.total_entries) %></h3>
-<table border="1">
-<%= render :partial=>"web/web_users/comment", :collection=>@comments %>
-</table>
-<%= will_paginate @comments %>
+<div class="box cols boxAuthor">
+  <div class="col1">
+    <%= main_image_tag(@info_user.photo.url(:thumb)) if @info_user.photo %>
+  </div> <!-- /.col1 -->
+
+  <div class="col2">
+    <h2 class="head"><%= @info_user.full_name %></h2>
+    <table>
+      <% if @info_user.show_mail? %>
+      <tr>
+        <th>Email:</th>
+        <td><%= @info_user.email %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_phone? %>
+      <tr>
+        <th>Telefon:</th>
+        <td><%= @info_user.phone %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_address?  %>
+        <tr>
+          <th>Adresa:</th>
+          <td><%= @info_user.address %></td>
+        </tr>
+      <% end %>
+      <% if @info_user.show_web? %>
+      <tr>
+        <th>Web:</th>
+        <td><%= @info_user.web %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_skype? %>
+      <tr>
+        <th>Skype:</th>
+        <td><%= @info_user.skype %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_twitter? %>
+      <tr>
+        <th>Twitter:</th>
+        <td><%= @info_user.twitter %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_berth? %>
+      <tr>
+        <th>Povolání:</th>
+        <td><%= @info_user.profession %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.show_city? %>
+      <tr>
+        <th>Obec:</th>
+        <td><%= @info_user.city %></td>
+      </tr>
+      <% end %>
+      <% if @info_user.no_info? %>
+      </tr>
+        <th colspan="2"><%= "Autor si nepřál zveřejnit žádné kontakty." %></th>
+      </tr>
+      <% end %>
+      <% author = Author.find_by_web_user_id(@info_user.id) %>
+      <% unless author.blank? %>
+        <tr>
+          <th colspan="2"><%= @info_user.full_name %> je autorem článků, které naleznete <%= link_to "zde", author_info_path(pretty_name(author))%>.</th>
+      </tr>
+      <% end %>
+    </table>
+  </div> <!-- /.col2 -->
+</div> <!-- /.cols -->
+
+<div class="col1 line">
+  <div class="in">
+    <div class="item">
+      <span class="title1">
+        <p class="info">Název příspěvku</p>
+      </span>
+      <span class="title2">
+        <p class="info">V diskusi k článku</p>
+      </span>
+    </div> <!-- /.item -->
+
+    <%= render :partial=>"web/web_users/comment", :collection=>@comments %>
+  </div> <!-- /.in -->
+
+  <div class="paging">
+    <p class="count">Zobrazeno <%= @comments.length %> / <%= @comments.total_entries %></p>
+    <ul class="pages">
+      <%= will_paginate @comments %>
+    </ul>
+
+  </div> <!-- /.paging -->
+</div> <!-- /.col1 -->
+
+
+

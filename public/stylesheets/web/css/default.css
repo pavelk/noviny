@@ -287,7 +287,7 @@ a.overlaid,
   .item .img .caption span      { display: block; padding: 7px 10px; height: 30px; }
 
   .item .img .caption a         { display: block; width: 100%; padding: 7px 0; height: 30px; color: #fff; background-color: #000; }
-  
+
   .item .img .caption span a    { margin-top: -7px; }
 
   .item .img .caption a:hover   { text-decoration: none !important; }
@@ -302,6 +302,8 @@ a.overlaid,
 
   .item .info span              { font-weight: normal; }
 
+  .item .title1                 { float: left; margin: 5px 0 0 0; width: 150px;}
+  .item .title2                 { float: left; margin: 5px 0 0 0; }
 
 
   /* Standart item with smaller image */

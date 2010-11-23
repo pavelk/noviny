@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101109182445) do
+ActiveRecord::Schema.define(:version => 20101123144954) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(:version => 20101109182445) do
 
   create_table "authors", :force => true do |t|
     t.integer  "user_id"
-    t.string   "firstname",  :default => "", :null => false
-    t.string   "surname",    :default => "", :null => false
+    t.string   "firstname",   :default => "", :null => false
+    t.string   "surname",     :default => "", :null => false
     t.string   "email"
     t.string   "nickname"
     t.text     "cv"
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20101109182445) do
     t.string   "twitter"
     t.string   "facebook"
     t.string   "phone"
+    t.integer  "web_user_id"
   end
 
   add_index "authors", ["firstname"], :name => "index_authors_on_firstname"

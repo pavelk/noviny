@@ -10,7 +10,7 @@
 			  <% (1..5).map do |s| %>
 			  	<% sections << Section.find(s) %>
 			  <% end %>
-			   <p class="info">Sekce</p>
+			   <p class="info">Rubriky</p>
 			  	<div>
 			  		<%= select_tag "section_id", options_for_select(sections.map{|se| [se.name,se.id]}.insert(0, '-- Vše --'), :selected => @section_id) %>
 					<%= spinner_tag('select') %>
@@ -24,10 +24,13 @@
 				<div id="subsections">
 					<%= render :partial=>"web/sections/select" %>
 				</div> 
-				<p class="info">Tema</p>
+				<p class="info">Tématu</p>
 				<%= select_tag "tag_id", options_for_select(Tag.all(:order=>"name").map{|t| [t.name,t.id]}.insert(0, '-- Vše --'), :selected => @tag_id),  {:style=>'width: 150px;'} %>
-				<p class="info">Autor</p>
-				<%= select_tag "author_id", options_for_select(Author.all(:order=>"surname").map{|t| [t.full_name,t.id]}.insert(0, '-- Vše --'), :selected => @author_id),  {:style=>'width: 150px;'} %>
+				<p class="info">Autora článku</p>
+        <%= select_tag "author_id", options_for_select(Author.all(:order=>"surname").map{|t| [t.full_name,t.id]}.insert(0, '-- Vše --'), :selected => @author_id),  {:style=>'width: 150px;'} %>
+        <p class="info">Autora diskusního příspěvku</p>
+				<%= select_tag "web_user_id", options_for_select(WebUser.all(:order=>"lastname").map{|t| [t.full_name,t.id]}.insert(0, '-- Vše --'), :selected => @web_user_id),  {:style=>'width: 150px;'} %>
+
 				<br /><br />
 				<%= submit_tag "Hledej" %>
 		  <% end %>

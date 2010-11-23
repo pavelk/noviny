@@ -1,10 +1,13 @@
-<tr>
-	<td><%=th h(comment.text.slice(0..55)) %></td>
-	<td>
-		<%= link_to comment.article.author.full_name, author_info_path(pretty_name(comment.article.author)) %>
-		<br/>
-		<%= link_to comment.article.name, detail_article_path(pretty_id(comment.article)) %>
-		<br/>
-		<%=th comment.article.perex %>
-	</td>
-</tr>
+<div class="item">
+  <div class="img">
+    <% if comment.name.blank? %>
+      <h3 class="head"><%= link_to "Bez názvu", detail_article_path(pretty_id(comment.article)) + "#comment_#{comment.id}"%></h3>
+    <% else %>
+      <h3 class="head"><%= link_to comment.name, detail_article_path(pretty_id(comment.article)) + "#comment_#{comment.id}"%></h3>
+    <% end %>
+  </div>
+  <div class="self">
+      <h3 class="head"><%= link_to "#{comment.article.author.full_name}: #{comment.article.name}", detail_article_path(pretty_id(comment.article)) %></h3>
+      <p class="perex"><%=th comment.article.perex %></p>
+  </div>
+</div>

@@ -2,8 +2,11 @@ require 'digest/sha1'
  
 # this model expects a certain database layout and its based on the name/login pattern.
 class WebUser < ActiveRecord::Base
+  unloadable
+
   belongs_to :author
   belongs_to :country
+  belongs_to :author
   has_many :article_comments
   has_many :payments
   before_save :set_login

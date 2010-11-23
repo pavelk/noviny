@@ -36,13 +36,13 @@
 		<td><%= @author.phone %></td>
        </tr>
 	   <% end %>
-	    <% if @author.web_user %>
-       <tr>
-		<th>Diskuze</th>
-		<td><%= link_to "Diskuze", :controller=>"web/web_users",:action=>"info",:id=>@author.web_user.id %></td>
+	    <% if @author.web_user_id %>
+        <tr>
+          <% web_user = WebUser.find_by_id(@author.web_user_id) %>
+         <th colspan="2"><%= @author.full_name %> je autorem diskusních příspěvků, které nalaznete <%= link_to "zde", user_info_path("#{@author.web_user_id}-#{web_user.full_name.parameterize}") %>.</th>
        </tr>
 	   <% end %>
-     </table>       
+     </table>
    </div> <!-- /.col2 -->
  </div> <!-- /.cols -->
  

@@ -7,6 +7,7 @@ class Author < ActiveRecord::Base
   has_many :dailyquestions
   
   belongs_to :user
+  belongs_to :web_user
   has_many :articles
   has_many :sections
   
