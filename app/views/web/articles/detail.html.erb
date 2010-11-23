@@ -4,7 +4,7 @@
    
    <% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
    <div class="cols detailImage line">
-     <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless (@author_image && cond) -%>">
+     <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless (@author_image && cond && !@printable) -%>">
        <%= render :partial=>"web/articles/author_box" %>
      </div> <!-- /.col1 -->
      
