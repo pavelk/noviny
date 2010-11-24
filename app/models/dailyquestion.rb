@@ -6,6 +6,7 @@ class Dailyquestion < ActiveRecord::Base
     indexes perex
     indexes text_yes
     indexes text_no
+    indexes approved
   end
 
   has_many :headliner_dailyquestions
