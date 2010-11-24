@@ -230,10 +230,14 @@ protected
     @info_box = @article.info_boxes.first
     @author_image = @author.pictures.first.data.url(:author_little) if @author && @author.pictures.first
     
+    if @article.content_type_id == ContentType::YOUTUBEDNES
+      @older_videos = Article.all(:conditions=>["content_type_id = ? AND order_date >= ? AND order_date <= ?",ContentType::YOUTUBEDNES,@article.order_date - 14.days,@article.order_date - 1.days],:order=>"order_date DESC")
+    end
+    
     if @article.content_type_id == ContentType::VIDEO
       @older_videos = Article.all(:conditions=>["content_type_id = ? AND order_date >= ? AND order_date <= ?",ContentType::VIDEO,@article.order_date - 14.days,@article.order_date - 1.days],:order=>"order_date DESC")
     end
-    
+
     if @section
        add_breadcrumb @section.name, section_path(pretty_name(@section))
      else

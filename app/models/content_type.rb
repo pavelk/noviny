@@ -18,18 +18,19 @@ class ContentType < ActiveRecord::Base
   VZPOMINKA = 15
   VYPRAVENI = 16
   POLEMIKA = 17
-  VIDEO = 19
+  YOUTUBEDNES = 19
   STESTI = 21
   PORTRET = 22
   POVIDKA = 24
   POEZIE = 28
   DOPISY = 29
+  VIDEO = 30
   ############
   
   has_many :articles
   
   def video?
-    return self.id == VIDEO || self.id == POEZIE
+    return self.id == YOUTUBEDNES || self.id == POEZIE || self.id == VIDEO
   end
   
   def self.author_image_types
@@ -45,7 +46,7 @@ class ContentType < ActiveRecord::Base
   end
   
   def self.author_nick_types
-    [ZPRAVA,GLOSA,VIDEO,TIP]
+    [ZPRAVA,GLOSA,YOUTUBEDNES,TIP,VIDEO]
   end
   
   def self.article_full_name

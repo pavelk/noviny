@@ -127,7 +127,7 @@ Fotogalerie:
 YouTubeDnes:
     nadpis: 0/80
     perex: 80/480
-    text: 0
+    text: 0/6500
     poznamka: 0
     video: 1
 
@@ -200,3 +200,19 @@ Dopis ze Slovenska:
     text: 3500/6500
     poznamka: 0/480
     video: 0          
+
+Video:
+    nadpis: 0/80
+    perex: 80/480
+    text: 0/6500
+    poznamka: 0
+    video: 1
+
+Anketa:
+    nadpis: 0/80
+    perex: 80/480
+    text: 100/0
+    poznamka: 0/480
+    video: 0
+    
+

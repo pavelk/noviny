@@ -1,5 +1,13 @@
 class Dailyquestion < ActiveRecord::Base
- 
+
+  define_index do
+    indexes headline, :sortable => true
+    indexes question_text
+    indexes perex
+    indexes text_yes
+    indexes text_no
+  end
+
   has_many :headliner_dailyquestions
   has_many :headliner_boxes, :through => :headliner_dailyquestions
  
