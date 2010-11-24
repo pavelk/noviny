@@ -10,5 +10,5 @@
       %hr
   %tr
     %td{ :colspan => '4' }
-      Stranka 1
+      = @relationships.current_page.to_s + ". strana" if @relationships.total_entries > 0
       = will_paginate @relationships, :previous_label => 'Předchozí', :next_label => 'Další'

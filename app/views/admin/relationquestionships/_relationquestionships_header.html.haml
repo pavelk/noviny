@@ -5,5 +5,10 @@
     %th{ :width => '20%'     }= link_to 'datum', '#'
     -#%th{ :width => '20%'    }= link_to 'autor', '#'
     = render(:partial => 'relationquestionship', :collection => @relationquestionships)
-    %th{ :colspan => '4' }
+  %tr
+    %td{ :colspan => '4' }
+      %hr
+  %tr
+    %td{ :colspan => '4' }
+      = @relationquestionships.current_page.to_s + ". strana" if @relationquestionships.total_entries > 0
       = will_paginate @relationquestionships, :previous_label => 'Předchozí', :next_label => 'Další'
