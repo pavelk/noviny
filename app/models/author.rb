@@ -16,7 +16,10 @@ class Author < ActiveRecord::Base
   
   has_many :author_insets
   has_many :insets, :through => :author_insets
-  
+
+
+before_save :update_web_user_id
+
   def web_user
     return WebUser.find(:first,:conditions=>{:author_id=>self.id})
   end
@@ -52,4 +55,11 @@ class Author < ActiveRecord::Base
     end     
   end
   
+
+private
+
+  def update_web_user_id
+    self.web_user_id = nil if self.web_user_id == 0
+  end
+
 end

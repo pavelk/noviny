@@ -37,5 +37,5 @@
 %br
 %br
 = f.label :web_user_id, "Čtenář:"
-= f.select :web_user_id, WebUser.all(:order=>"lastname").map{|t| ["#{t.full_name} (#{t.login})",t.id]}.insert(0, '-- Vše --')
+= f.select :web_user_id, WebUser.all(:order=>"lastname").map{|t| ["#{t.full_name} (#{t.login})",t.id]}.insert(0, 'Vyberte čtenáře')
 %hr
