@@ -36,13 +36,13 @@ $("#article_content_type_id").change(function()
  
   });
 
-$("#article_content_type_id").load(function() 
+$("form").ready(function() 
 { 
 
   $.ajax({
     type: 'GET',
     dataType: 'script',
-    url: '/admin/articles/get_content_type/' + $("#article_content_type_id :selected").text() + '/'+ $(this).val() + '/'+ <%= @article.id %>,
+    url: '/admin/articles/get_content_type/' + $("#article_content_type_id :selected").text() + '/' + $("#article_content_type_id :selected").val()+ '/'+ <%= @article.id %>,
     error: function(msg) { alert("Chyba v přenosu dat."); },
     success: function(data, status) {          
     }
