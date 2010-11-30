@@ -304,7 +304,9 @@ class WebUser < ActiveRecord::Base
   def after_find
     #require 'base64'
     #self.domains = Marshal.load(Base64.decode64(self.domains))
-    self.domains = WebUser.str2domain(self.domains) if self.domains.is_a?(String)
+    unless self.attributes["domains"].nil?
+      self.domains = WebUser.str2domain(self.domains) if self.domains.is_a?(String)
+    end
     #self.domains = WebUser.domain2str(self.domains) if self.domains.is_a?(Hash)
   end
  
