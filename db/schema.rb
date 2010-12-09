@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101123144954) do
+ActiveRecord::Schema.define(:version => 20101208202234) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -351,6 +351,27 @@ ActiveRecord::Schema.define(:version => 20101123144954) do
 
   add_index "flashphoto_headliners", ["headliner_box_id"], :name => "flashphoto_headliners_headliner_box_id_index"
 
+  create_table "fonds", :force => true do |t|
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "street"
+    t.string   "city"
+    t.string   "number"
+    t.string   "psc"
+    t.string   "email"
+    t.string   "profession"
+    t.string   "phone"
+    t.string   "title"
+    t.boolean  "publish_name"
+    t.boolean  "setup_access"
+    t.boolean  "email_news"
+    t.boolean  "address_news"
+    t.integer  "amount"
+    t.integer  "variable_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "headliner_articles", :force => true do |t|
     t.integer "headliner_box_id"
     t.integer "article_id"
@@ -528,6 +549,14 @@ ActiveRecord::Schema.define(:version => 20101123144954) do
   add_index "question_votes", ["question_id"], :name => "question_votes_question_id_index"
   add_index "question_votes", ["vote_value"], :name => "question_votes_vote_value_index"
   add_index "question_votes", ["web_user_id"], :name => "question_votes_user_id_index"
+
+  create_table "really_fonds", :force => true do |t|
+    t.integer  "fond_id"
+    t.datetime "date"
+    t.string   "account_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "relationships", :force => true do |t|
     t.integer  "article_id"

@@ -1,0 +1,271 @@
+<script type="text/javascript">
+    function unhide(divID) {
+      var item = document.getElementById(divID);
+        if (item) {
+          item.className=(item.className=='hidden')?'unhidden':'hidden';
+    }
+  }
+</script>
+
+<div class="box boxDetail">
+   <h2 class="head">Nadační fond Deníku Referendum</h2>
+   <p class="perex">Perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex</p>
+
+   <div class="cols detailImage line">
+     <div class="col2 mainImage">
+       <%= image_tag "fond.jpg" %>
+     </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box boxLine">
+          <%= render :partial=>"web/articles/left_box" %>
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+
+     <div class="col2">
+       <div class="text">
+        <p>
+        <span style="font-weight:bold;">K čemu slouží?</span><br />
+          <%= link_to "K uchování a rozvoji Deníku Referendum.", "javascript:unhide('otazka1');" %>
+          <div id="otazka1" class="hidden">Nadační fond Nezávislosti Deníku Referendum si klade za cíl umožnit těmto českým novinám dobrat se nezávislosti na ekonomických i politických vlivech. NF NDR má zaručit pokračování Deníku Referendum ve stávajícím rozsahu i jeho případný další rozvoj.<br /><br />
+          </div>
+        </p>
+
+        <p>
+        <span style="font-weight:bold;">Co je cílem?</span><br />
+          <%= link_to "Cílem 1. etapy je dospět k částce 300.000 Kč měsíčně.", "javascript:unhide('otazka2'); "%>
+          <div id="otazka2" class="hidden">
+            Vydávání Deníku Referendum v první roce jeho existence stálo zhruba 300.000 korun měsíčně. Cílem první etapy NF NDR je dopracovat se každý měsíc právě k této částce. Ačkoli DR má i jiné příjmy bez podpory nadačního fondu by nebyl schopen udržet stávající formát ani ho případně dále rozvíjet.<br /><br />
+          </div>
+        </p>
+
+        <p>
+        <span style="font-weight:bold;">Jak cíle dosáhnout?</span><br />
+          <%= link_to "Měsíčně poukazované trvalé příkazy příznivců.", "javascript:unhide('otazka3');" %>
+          <div id="otazka3" class="hidden">
+            NF NDR stojí na mottu: Když se každý s něčím přidá, tak se dílo podaří. Ačkoli vděčně akceptuje i jednorázové dary, 300.000 Kč měsíčně chce NF NDR shromáždit z trvalých měsíčních příkazů svých příznivců. Částku 300.000 si lze představit, jako by<br /><br />
+            <ul>
+              <li>3000 lidí posílalo každý měsíc 100 Kč nebo</li>
+              <li>1000 lidí posílalo každý měsíc 300 Kč nebo</li>
+              <li>300 lidí posílalo každý měsíc 1000 Kč nebo</li>
+              <li>100 lidí posílalo každý měsíc 3000 Kč nebo</li>
+              <li>30 lidí posílalo každý měsíc 10.000 Kč nebo</li>
+              <li>10 lidí posílalo každý měsíc 30.000 Kč.</li>
+            </ul>
+            <br />
+            To je také šest základních možných příspěvků, které fond nabízí.<br /><br />
+          </div>
+        </p>
+        
+        <p>
+        <span style="font-weight:bold;">Kdo ho spravuje?</span><br />
+          <%= link_to "Šestičlenná správní rada a revizor.", "javascript:unhide('otazka4');" %>
+          <div id="otazka4" class="hidden">
+            Ve správní radě nyní působí:<br />
+            <br />
+            Jan Černý<br />
+            Táňa Fischerová<br />
+            Jiří Pehe<br />
+            Anna Šabatová<br />
+            Vladimír Špidla<br />
+            Ivan Štampach<br />
+            <br />
+            Revizorem fondu je Tomáš Tožička.<br /><br />
+          </div>
+        </p>
+        
+        <p>
+          <span style="font-weight:bold;">Kdo ho podporuje?</span><br />
+          <%= link_to "Mimo jiné:", "javascript:unhide('otazka5');" %>
+          <div id="otazka5" class="hidden">
+            Zde budou jména a u každého se objeví bublina s jeho citátem, proč podporuje.<br /><br />
+          </div>
+        </p>
+
+        <p>
+        <span style="font-weight:bold;">Co nabízí?</span><br />
+          <%= link_to "Smysl fondu", "javascript:unhide('otazka6');" %>
+          <div id="otazka6" class="hidden">
+            Smyslem fondu je uchování a rozvoj existence Deníku Referendum a to je základní protislužbou za každý příspěvek. Samozřejmostí jsou ale rovněž možnosti dostat:<br /><br />
+            <ul>
+              <li>každý měsíc zprávu o stavu příjmů a jejich využití</li>
+              <li>každoročně výroční zprávu, případně další propagační materiály</li>
+              <li>potvrzení o daru pro daňové přiznání</li>
+              <li>přístup do diskusí v Deníku Referendum</li>
+              <li>samozřejmostí je možnost nezveřejňovat jméno přispěvatele, pokud si to nepřeje</li>
+            </ul>
+          </div>
+          </p>
+          
+          <p>
+            <span style="font-weight:bold;">Kolik shromáždil?</span><br />
+            <%= link_to "V minulém měsíci, a celkem.", "javascript:unhide('otazka7');" %>
+            <div id="otazka7" class="hidden">
+              Zde bude odkaz na poslední měsíční zprávu NF NDR.<br /><br />
+            </div>
+          </p>
+
+          <p>
+          <h2>Jak přispět?</h2>
+          <br />
+          <% form_for :fond, :url => { :action => :show }, :class => "formBox" do |f| %>
+
+          <span style="font-weight:bold;">Krok 1: Vyberte částku</span><br /><br />
+
+          <table>
+            <tr>
+              <th>100 Kč</th><th>300 Kč</th><th>1000 Kč</th><th>3000 Kč</th><th>10000 Kč</th><th>30000 Kč</th>
+            </tr>
+            <tr>
+              <td><%= f.radio_button :amount, "100", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_100').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") }%></td>
+              <td><%= f.radio_button :amount, "300", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_300').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "1000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_1000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "3000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_3000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "10000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_10000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "30000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_30000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+            </tr>
+          </table>
+          
+          <%= spinner_tag "amount" %>
+          Chci přispět k nezávislosti Deníku Referendum<br /><br />
+
+          <div id="amount_table">
+            <%= render :partial => "amount_table", :locals => { :f => f } %>
+          </div>
+          <span style="font-weight:bold;">Krok 2: Identifikační údaje</span><br /><br />
+
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :firstname, "Jméno" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :firstname %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :lastname, "Příjmení" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :lastname %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :email, "Email" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :email %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :street, "Ulice" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :street %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :number, "Číslo p." %>
+            </div>
+            <div class="con">
+              <%= f.text_field :number %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :city, "Obec" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :city %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :psc, "Směrovací číslo" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :psc %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <div>* Poštovní adresa je nutná k zaslání výroční zprávy, potvrzení pro daňové přiznání.</div>
+              <div>** Na email Vám příjde variabilní symbol a jednou za měsíc zpráva o stavu nadačního fondu.</div>
+            </div>
+          </div>
+
+
+          <br /> <span style="font-weight:bold;">Nepovinné údaje</span><br /><br />
+
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :profession, "Povolání" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :profession %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :phone, "Telefon" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :phone %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :title, "Titul" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :title %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :publish_name, "Pokud souhlasíte s tím, abychom zveřejnili Vaše jméno mezi přispěvateli fondu na jeho webových stránkách, zaškrtněte prosím tento čtvereček:" %>
+            </div>
+            <div class="con">
+              <%= f.check_box :publish_name %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :setup_access, "Pokud si přejete zřídit přístup do diskusí v Deníku Referendum, zaškrtněte prosím tento čtvereček, obratem se na Vás obrátí redakce:" %>
+            </div>
+            <div class="con">
+              <%= f.check_box :setup_access %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :email_news, "Pokud si přejete dostávat každý měsíc zprávu o množství vybraných prostředků a k čemu byly využity, zaškrtněte prosím tento čtvereček:" %>
+            </div>
+            <div class="con">
+              <%= f.check_box :email_news %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :address_news, "Pokud si přejete, abychom vám přibližně dvakrát až třikrát do roka zaslali na Vaši poštovní adresu propagační materiály a výroční zprávu, zaškrtněte prosíme tento čtvereček:" %>
+            </div>
+            <div class="con">
+              <%= f.check_box :address_news %>
+            </div>
+          </div>
+
+
+          <br />
+          <%= f.submit "Potvrdit" %>
+          <% end %>
+       </div> <!-- /.text -->
+     </div> <!-- /.col2 -->
+
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+

@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  fond_id: 1
+  date: 2010-12-08 21:22:34
+  account_number: MyString
+
+two:
+  fond_id: 1
+  date: 2010-12-08 21:22:34
+  account_number: MyString
