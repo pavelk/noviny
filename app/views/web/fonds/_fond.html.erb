@@ -1,0 +1,18 @@
+
+<tr>
+  <td><%= fond.id %></td>
+  <td><%= link_to fond.email, fond_detail_url(fond.id) %></td>
+  <td><%= fond.firstname %></td>
+  <td><%= fond.lastname %></td>
+  <td><%= "#{fond.street} #{fond.number}, #{fond.psc} #{fond.city}"  %></td>
+  <td><%= fond.profession %></td>
+  <td><%= fond.phone %></td>
+  <td><%= fond.title %></td>
+  <td><%= fond.amount %></td>
+  <td><%= fond.variable_number %></td>
+  <td><%= fond.publish_name ? "ano" : "ne" %></td>
+  <td><%= fond.setup_access ? "ano" : "ne" %></td>
+  <td><%= fond.email_news ? "ano" : "ne" %></td>
+  <td><%= fond.address_news ? "ano" : "ne" %></td>
+  <td><%= l(fond.created_at,:format => :medium) %></td>
+</tr>

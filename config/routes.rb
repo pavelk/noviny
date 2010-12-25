@@ -24,6 +24,9 @@ ActionController::Routing::Routes.draw do |map|
             
   map.authors_info "/autori", :controller => 'web/articles',:action=>"authors"
   map.fond_show "/nadacni-fond", :controller => "web/fonds", :action => "show"
+  map.fond_list "/nadacni-fond/list", :controller => "web/fonds", :action => "list"
+  map.fond_detail "/nadacni-fond/detail/:id", :controller => "web/fonds", :action => "detail"
+
   map.detail_article "/clanek/:id",:controller => 'web/articles',:action=>"detail"
   map.gallery_article "/clanek-galerie/:id",:controller => 'web/articles',:action=>"detail_gallery"
   map.delete_comment "/clanek/smazat_komentar/:id",:controller => 'web/articles',:action=>"delete_comment"

@@ -47,6 +47,7 @@
       :formats => {
         :default => "%a %d. %B %Y %H:%M %z",
         :short   => "%d. %m. %H:%M",
+        :medium  => "%d. %m. %Y",
         :long    => "%A %d. %B %Y %H:%M",
         :events_index => "%A, %B %d, %Y",
       },

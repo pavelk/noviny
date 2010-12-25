@@ -1,5 +1,10 @@
 <%= link_to 'Nový uživatel', authadmin_url(:action=>"newuser") %> |
-<%= link_to 'Hromadné emaily', mailings_path %>
+<%= link_to 'Hromadné emaily', mailings_path %> |
+<%= link_to 'Nadační fond', fond_list_path %>
+
+<br />
+<br />
+
 <% if params[:id] %>
 <p>
 &gt; Prohlížíte uživatele patřící do skupiny <%= params[:id] %>.<br />
@@ -8,7 +13,7 @@
 <% end %>
 
 <p style="text-align: center;">
-<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:prev_label   => '&laquo; ' +  'Předchozí',
+<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:previous_label   => '&laquo; ' +  'Předchozí',
  	          :next_label   => 'Další' +  ' &raquo;'%>
 </p>
 
@@ -28,6 +33,6 @@
 </table>
 
 <p style="text-align: center;">
-<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:prev_label   => '&laquo; ' +  'Předchozí',
+<%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:previous_label   => '&laquo; ' +  'Předchozí',
  	          :next_label   => 'Další' +  ' &raquo;'%>
 </p>

@@ -1,0 +1,162 @@
+<%= link_to 'Všichni uživatelé', authadmin_path %> |
+<%= link_to 'Hromadné emaily', mailings_path %> |
+<%= link_to 'Nadační fond', fond_list_path %> 
+
+<br />
+<br />
+
+<h2>Detaily přispěvatele</h2>
+
+<div class="boxRegistration formBox">
+  <br />
+  <div class="clearfix">
+    <% unless @user.title.blank? %>
+      <div class="lab"><label>Titul:</label></div>
+      <div class="con"><%= @user.title %></div>
+    <% end %>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Jméno:</label></div>
+    <div class="con"><%= @user.firstname %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Příjmení: </label></div>
+    <div class="con"><%= @user.lastname %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label> Email: </label></div>
+    <div class="con"><label> <%= @user.email %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Ulice: </label></div>
+    <div class="con"><%= @user.street %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label> Číslo p.: </label></div>
+    <div class="con"> <%= @user.number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Obec: </label></div>
+    <div class="con"><%= @user.city%></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>PSC: </label></div>
+    <div class="con"> <%= @user.psc %></div>
+  </div>
+  <% unless @user.profession.blank? %>
+  <div class="clearfix">
+    <div class="lab"><label>Povolání: </label></div>
+    <div class="con"><%= @user.profession %></div>
+  </div>
+  <% end %>
+  <% unless @user.phone.blank? %>
+  <div class="clearfix">
+    <div class="lab"><label> Tel.: </label></div>
+    <div class="con"><%= @user.phone %></div>
+  </div>
+  <% end %>
+  <div class="clearfix">
+    <div class="lab"><label>Variabilní symbol: </label></div>
+    <div class="con"> <%= @user.variable_number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Uvedená částka ve formuláři: </label></div>
+    <div class="con"> <%= @user.amount %>Kč</div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Zveřejnit jméno přispěvatele: </label></div>
+    <div class="con"> <%= @user.publish_name ? "Ano" : "Ne" %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Zřídit přístup do diskusí: </label></div>
+    <div class="con"> <%= @user.setup_access ? "Ano" : "Ne" %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Souhlas se zasíláním emailů měsíčně: </label></div>
+    <div class="con"> <%= @user.email_news ? "Ano" : "Ne" %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Souhlas se zasíláním materiálů na poštovní adresu 3x do roka: </label></div>
+    <div class="con"> <%= @user.address_news ? "Ano" : "Ne" %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Vytvořeno: </label></div>
+    <div class="con"> <%= l(@user.created_at,:format => :long) %></div>
+  </div>
+
+  <br />
+</div>
+
+<h2>Zadat novou platbu</h2>
+
+<br />
+<%= error_messages_for2 "really_fonds" %>
+<% form_for :really_fonds, @really_fonds, :url => fond_detail_path(@user.id), :html => { :class => "boxRegistration formBox" } do |f| %>
+  <div class="clearfix">
+    <div class="lab"><label>Číslo účtu: </label></div>
+    <div class="con"> <%= f.text_field :account_number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Variabilní symbol: </label></div>
+    <div class="con"> <%= f.text_field :variable_number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Částka: </label></div>
+    <div class="con"> <%= f.text_field :amount %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Trvalým příkazem: </label></div>
+    <div class="con"> <%= f.check_box :standing_order %></div>
+  </div>
+	<div class="clearfix">
+	    <div class="lab">
+	      <label for="newuser_twitter">Datum platby:</label>
+	    </div> <!-- /.lab -->
+	    <div class="con">
+				<%= calendar({:text_field => "date",
+				              :value => @date,
+				              :update_div => nil,
+				              :class_name => "cal"}) -%>
+	    </div> <!-- /.con -->
+	</div> <!-- /.clearfix -->
+
+  <%= f.hidden_field :fond_id, :value => @user.id %>
+  <div class="clearfix">
+    <div class="lab"><label>&nbsp;</label></div>
+    <div class="con"> <%= f.submit "Odeslat" %></div>
+  </div>
+
+<% end %>
+
+<br />
+
+<h2>Provedené platby uživatelem</h2>
+
+<br />
+
+<% total = 0 %>
+<table border="1">
+	<tr>
+		<td>id</td>
+    <td>Číslo účtu</td>
+    <td>Variabilní symbol</td>
+    <td>Částka</td>
+    <td>Trvalým příkazem</td>
+    <td>Datum platby</td>
+  </tr>
+  <% @my_really_fonds.each do |rf| %>
+  <% total += rf.amount.to_i %>
+  <tr>
+    <td><%= rf.id %></td>
+    <td><%= rf.account_number %></td>
+    <td><%= rf.variable_number %></td>
+    <td><%= rf.amount %></td>
+    <td><%= rf.standing_order ? "ano" : "ne" %></td>
+    <td><%= l(rf.date,:format => :medium) unless rf.date.blank? %></td>
+  </tr>
+  <% end %>
+
+</table>
+
+<br />
+<%= "Uživatel zaslal celkem #{total.to_s}Kč." %>

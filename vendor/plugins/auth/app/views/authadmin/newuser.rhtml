@@ -1,3 +1,8 @@
+<%= link_to 'Všichni uživatelé', authadmin_path %> |
+<%= link_to 'Hromadné emaily', mailings_path %>
+<br />
+<br />
+
 <div class="Message"><%= error_messages_for 'newuser' %></div>
  <% form_for(:newuser,@newuser,:url=>{:action => 'createuser'}, :html=>{:class=>"boxRegistration formBox",:multipart => true, :onSubmit => "Toggle.display('edituser_spinner')"}) do |f| %>
 

@@ -554,6 +554,9 @@ ActiveRecord::Schema.define(:version => 20101208202234) do
     t.integer  "fond_id"
     t.datetime "date"
     t.string   "account_number"
+    t.integer  "variable_number"
+    t.integer  "amount"
+    t.boolean  "standing_order"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
