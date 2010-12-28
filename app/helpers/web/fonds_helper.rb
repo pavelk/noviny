@@ -1,6 +1,6 @@
 module Web::FondsHelper
 
-  def error_messages_for(object_name, options = {})
+  def error_messages_for1(object_name, options = {})
     options = options.symbolize_keys
     object = instance_variable_get("@#{object_name}")
     if object && !object.errors.empty?
