@@ -25,8 +25,10 @@ class Web::FondsController < Web::WebController
 
 # ............................................................................ #
 
+  # Pocet provedenych plateb tento mesic
+
   def amounts_saved(amount)
-    return ReallyFond.count(:conditions => [ "MONTH(date) = ? AND really_fonds.amount = ?", Date.today.month, amount ] )
+    return ReallyFond.count(:conditions => [ "MONTH(date) = ? AND amount = ?", Date.today.month, amount ] )
   end
 
 # ............................................................................ #
@@ -34,6 +36,7 @@ class Web::FondsController < Web::WebController
   def amount_table
     @amount = Hash.new
 
+    # Celkem nasporeno tento mesic
     @amount[:total] = ReallyFond.sum(:amount, :conditions => [ "MONTH(date) = ?", Date.today.month ] )
     @amount[:total] += params[:amount].to_i if params[:amount]
 
@@ -52,6 +55,8 @@ class Web::FondsController < Web::WebController
 
 # ............................................................................ #
 
+  # Uzivatele, kteri pouze vyplnili formular
+
   def list
 
     unless params[:search_fonds].nil?
@@ -69,7 +74,7 @@ class Web::FondsController < Web::WebController
       conds = conds.join(" AND ")
 
       @fonds = Fond.paginate(:all, :order => "created_at desc", :page => params[:page],
-                            :conditions => [conds] )
+                            :conditions => [conds], :per_page => 1000 )
     else
       @fonds = Fond.paginate(:all, :order => "created_at desc", :page => params[:page] )
     end
@@ -78,25 +83,90 @@ class Web::FondsController < Web::WebController
 
 # ............................................................................ #
 
+  # Skutecne provedene platby
+
+  def really_list
+
+    joins = "INNER JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
+    select = "really_fonds.*, fonds.email"
+
+    unless params[:search_fonds].nil?
+      fonds = params[:search_fonds]
+      @year = fonds[:year]
+      @month = fonds[:month]
+      @variable_number = fonds[:variable_number]
+      @email = fonds[:email]
+
+      conds = []
+      conds << "fonds.email = '#{fonds[:email]}'" unless fonds[:email].blank?
+      conds << "really_fonds.variable_number = '#{fonds[:variable_number]}'" unless fonds[:variable_number].blank?
+      conds << "YEAR(date) = #{fonds[:year]}" unless fonds[:year].blank?
+      conds << "MONTH(date) = #{fonds[:month]}" unless fonds[:month].blank?
+      conds = conds.join(" AND ")
+
+      @fonds = ReallyFond.paginate(:all, :order => "really_fonds.created_at desc", :page => params[:page],
+        :conditions => [conds], :joins => joins, :select => select, :order => "date desc", :per_page => 1000 )
+    else
+      @fonds = ReallyFond.paginate(:all, :order => "really_fonds.created_at desc",
+        :page => params[:page], :joins => joins, :select => select, :order => "date desc" )
+    end
+
+  end
+
+# ............................................................................ #
+
   def detail
     @user = Fond.find_by_id(params[:id])
-    @my_really_fonds = ReallyFond.find_all_by_fond_id(params[:id])
+    @my_really_fonds = ReallyFond.find_all_by_fond_id(params[:id], :order => "date DESC")
 
     if request.post?
       @really_fonds = ReallyFond.new(params[:really_fonds])
       @date = params[:date]
       @really_fonds[:date] = DateTime.strptime("#{params[:date]}","%d.%m.%Y") unless params[:date].blank?
       if @really_fonds.save
-        flash.now[:notice] = "Nová platba úspěšně uložena"
+        flash[:notice] = "Nová platba úspěšně uložena."
         @date = ""
         @really_fonds = ReallyFond.new
-        redirect_to :action => :detail
+        redirect_to fond_detail_path(@user.id)
       else
         flash.now[:error] = "Během ukládání nové platby se vyskytla chyba."
       end
     else
       @really_fonds = ReallyFond.new
     end
+  end
+
+# ............................................................................ #
+
+  def delete_really_fond
+
+    fond = ReallyFond.find(params[:id])
+    detail_id = fond.fond_id
+    fond.destroy
+    flash[:notice] = "Platba úspěšně smazána."
+    redirect_to fond_detail_path(detail_id)
+
+  end
+
+# ............................................................................ #
+
+  def edit_really_fond
+
+    @really_fonds = ReallyFond.find(params[:id])
+    @date = @really_fonds.date.to_s(:cz_date)
+    @user = Fond.find_by_id(@really_fonds.fond_id)
+
+    if request.post?
+      @date = params[:date]
+      params[:really_fonds][:date] = DateTime.strptime("#{params[:date]}","%d.%m.%Y") unless params[:date].blank?
+      if @really_fonds.update_attributes(params[:really_fonds])
+        flash[:notice] = "Platba úspěšně editovaná."
+        redirect_to fond_detail_path(@user.id)
+      else
+        flash.now[:error] = "Během ukládání platby se vyskytla chyba."
+      end
+    end
+
   end
 
 # ............................................................................ #
@@ -108,10 +178,10 @@ class Web::FondsController < Web::WebController
   end
 
   def set_layout
-    if params[:action] == "list" or params[:action] == "detail"
-      "web/admin"
-    else
+    if params[:action] ==  "show"
       "web/gallery"
+    else
+      "web/admin"
     end
   end
 end

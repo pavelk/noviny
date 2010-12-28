@@ -17,30 +17,6 @@
   <div class="in itemList">
 	<%= render :partial=>"web/articles/left_article", :collection=>@today_opinions,:locals=>{:with_date=>true,:small_class=>true} %>
 	<%= render :partial=>"web/articles/left_article", :collection=>@older_opinions,:locals=>{:with_date=>true,:small_class=>true} if @older_opinions %>   
-<!-- 
-    <div class="cols cols3 next">
-      <div class="col1">
-        <h4 class="h">Další komentáře</h4>
-        <ul>
-          <li><a href="">TODO</a></li>
-        </ul>
-      </div>
-      
-      <div class="col2">
-        <h4 class="h">Další sloupky</h4>
-        <ul>
-          <li><a href="">TODO</a></li>
-        </ul>
-      </div>
-      
-      <div class="col3">
-        <h4 class="h">Další glosy</h4>
-        <ul>
-          <li><a href="">TODO</a></li>
-        </ul>
-      </div> 
-    </div>          
--->  
   </div> <!-- /.in -->
 </div> <!-- /.box -->
 <%= render :partial=>"web/articles/referendum" %>

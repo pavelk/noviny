@@ -1,0 +1,39 @@
+<br />
+  <div class="clearfix">
+    <div class="lab"><label>id platby: </label></div>
+    <div class="con"> <%= f.text_field :id, :disabled => :true %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Číslo účtu: </label></div>
+    <div class="con"> <%= f.text_field :account_number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Variabilní symbol: </label></div>
+    <div class="con"> <%= f.text_field :variable_number %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Částka: </label></div>
+    <div class="con"> <%= f.text_field :amount %></div>
+  </div>
+  <div class="clearfix">
+    <div class="lab"><label>Trvalým příkazem: </label></div>
+    <div class="con"> <%= f.check_box :standing_order %></div>
+  </div>
+	<div class="clearfix">
+	    <div class="lab">
+	      <label for="newuser_twitter">Datum platby:</label>
+	    </div> <!-- /.lab -->
+	    <div class="con">
+				<%= calendar({:text_field => "date",
+				              :value => @date,
+				              :update_div => nil,
+				              :class_name => "cal"}) -%>
+	    </div> <!-- /.con -->
+	</div> <!-- /.clearfix -->
+
+  <%= f.hidden_field :fond_id, :value => @user.id %>
+  <div class="clearfix">
+    <div class="lab"><label>&nbsp;</label></div>
+    <div class="con"> <%= f.submit "Odeslat" %></div>
+  </div>
+

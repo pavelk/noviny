@@ -173,7 +173,7 @@ class Web::ArticlesController < Web::WebController
       @section = Section.find(Section::HOME_SECTION_ID)
     end
     @top_themes = @section.top_themes
-    @tag = Theme.find(:first,:conditions=>["name LIKE ?", "%#{unpretty_name(params[:name]).gsub(" ","%")}%"])
+    @tag = Theme.find(:first,:conditions=>["name LIKE ?", "#{unpretty_name(params[:name]).gsub(" ","%")}%"])
     unless @tag
       @tag = Theme.find(:first,:conditions=>["name REGEXP ?", unpretty_name(params[:name]).gsub(" ",".*")])
     end
@@ -185,8 +185,7 @@ class Web::ArticlesController < Web::WebController
   
   def author_info
     name = params[:name].gsub("-","%")
-    @author = Author.find(:first,:having=>["full_name LIKE ?","%#{name}%"], :group => :id,
-                          :select => "*,CONCAT_WS(' ',firstname,surname) as full_name" )
+    @author = Author.find(:first,:conditions=> "CONCAT_WS(' ',firstname,surname) LIKE '%#{name}%'" )
     @articles = Article.paginate_from_author(@author.id,params[:page])
     @author_image = @author.pictures.first
     add_breadcrumb "Autor", ""

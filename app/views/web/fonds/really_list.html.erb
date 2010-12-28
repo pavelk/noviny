@@ -1,9 +1,11 @@
 <%= link_to 'Všichni uživatelé', authadmin_path %> |
-<%= link_to 'Hromadné emaily', mailings_path %> 
+<%= link_to 'Hromadné emaily', mailings_path %> |
+<%= link_to 'Nadační fond', fond_list_path %>
+
 <br />
 <br />
 
-<% form_for :search_fonds, @search_fonds, :url => fond_list_url do |f| %>
+<% form_for :search_fonds, @search_fonds, :url => fond_really_list_url do |f| %>
   <h2>Filtr</h2><br />
 
 Email:<br />
@@ -12,11 +14,11 @@ Email:<br />
 Variabilní symbol:<br />
 <%= f.text_field :variable_number, :value => @variable_number %><br />
 
-Vyberte rok:<br />
+Vyberte rok platby:<br />
 
 <%= select_year @year.to_i, { :start_year => 2010, :end_year => 2014, :prefix => :search_fonds, :prompt => "Vyberte rok" } %><br />
 
-Vybertě měsíc:<br />
+Vybertě měsíc platby:<br />
 
 <%= select_month @month.to_i, { :use_month_numbers => :true, :prefix => :search_fonds, :prompt => "Vyberte měsíc" } %><br />
 
@@ -38,11 +40,11 @@ Vybertě měsíc:<br />
 
 <br />
 
-
-<h2>Zde jsou zobrazeni uživatelé, kteří pouze vyplnili formulář nadačního fondu</h2>
+<h2>Zde jsou zobrazeny všechny uskutečněné platby</h2>
 
 <br /><br />
-Pro zobrazení skutečných plateb vyberte nějakého uživatele nebo pro zobrazení všech plateb klikněte <%= link_to "zde", fond_really_list_path %>.
+
+Pro zobrazení vyplněných formulářů klikněte <%= link_to "zde", fond_list_path %>.
 <br /><br />
 
 <p style="text-align: center;">
@@ -56,19 +58,16 @@ Pro zobrazení skutečných plateb vyberte nějakého uživatele nebo pro zobraz
 		<td>Email</td>
 		<td>Jméno</td>
 		<td>Příjmení</td>
-		<td>Adresa</td>
-		<td>Profese</td>
-		<td>Tel.</td>
-    <td>Titul</td>
+    <td>Číslo účtu</td>
+		<td>Variabilní symbol</td>
     <td>Částka</td>
-    <td>Variabilní symbol</td>
-    <td>Zveřejnit jméno</td>
-    <td>Zřídit přístup</td>
-    <td>Email news</td>
-    <td>Address news</td>
-    <td>Vytvořeno</td>
+    <td>Trvalým příkazem</td>
+    <td>Datum platby</td>
+    <td>Smazat</td>
+    <td>Editovat</td>
+    <td>Poslední aktualizace</td>
 	</tr>
-<%= render :partial => "fond", :collection => @fonds %>
+  <%= render :partial => "really_fond_list", :collection => @fonds, :as => :fond %>
 </table>
 
 <p style="text-align: center;">

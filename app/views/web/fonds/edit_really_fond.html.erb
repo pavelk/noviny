@@ -1,0 +1,20 @@
+<%= link_to 'Všichni uživatelé', authadmin_path %> |
+<%= link_to 'Hromadné emaily', mailings_path %> |
+<%= link_to 'Nadační fond', fond_list_path %> 
+
+<br />
+<br />
+
+<h2>Editace platby uživatele <%= @user.firstname + " " + @user.lastname %></h2>
+
+<%= error_messages_for2 "really_fonds" %>
+<% form_for :really_fonds, @really_fonds,:url => edit_really_fond_path(params[:id]), :html => { :class => "boxRegistration formBox" } do |f| %>
+
+  <%= render :partial => "really_fond", :locals => { :f => f } %>
+
+<% end %>
+
+
+Pro návrat na detail uživatele klikněte zde <%= link_to @user.email, fond_detail_path(@user.id) %>.<br />
+Pro návrat a zobrazení všech plateb klikněte <%= link_to "zde", fond_really_list_path %>.
+

@@ -8,11 +8,11 @@
   <td><%= fond.profession %></td>
   <td><%= fond.phone %></td>
   <td><%= fond.title %></td>
-  <td><%= fond.amount %></td>
+  <td><%= fond.amount %>Kč</td>
   <td><%= fond.variable_number %></td>
   <td><%= fond.publish_name ? "ano" : "ne" %></td>
   <td><%= fond.setup_access ? "ano" : "ne" %></td>
   <td><%= fond.email_news ? "ano" : "ne" %></td>
   <td><%= fond.address_news ? "ano" : "ne" %></td>
-  <td><%= l(fond.created_at,:format => :medium) %></td>
+  <td><%= fond.created_at.strftime("%d.%m.%Y %H:%M:%S") %></td>
 </tr>
