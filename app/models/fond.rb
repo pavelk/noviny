@@ -29,13 +29,20 @@ class Fond < ActiveRecord::Base
 
   validates_format_of :email,    :with => VALID_EMAIL,:message=>"Email má nesprávný formát", :if=>:email?
 
-  after_create :set_variable_number
+  after_create :set_variable_number, :send_email
 
   protected
 
   def set_variable_number
     self.variable_number = DateTime.now.strftime("%Y%m%d" + self.id.to_s)
     self.save
+  end
+
+  def send_email
+    begin
+      Notification.deliver_fond_registration(self)
+    rescue
+    end
   end
 
 end

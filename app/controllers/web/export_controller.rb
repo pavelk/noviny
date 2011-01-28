@@ -29,8 +29,8 @@ class Web::ExportController < ApplicationController
 
       @articles = Article.find(:all,
        :conditions => "'#{date} 00:00:00' <= publish_date AND '#{date} 23:59:59' >= publish_date",
-       :select => "articles.text, articles.publish_date, articles.name, articles.section_id, articles.id",
-       :include => [{ :article_sections => :section }])
+       :select => "articles.text, articles.publish_date, articles.name, articles.section_id, articles.id, articles.author_id",
+       :include => [:author, { :article_sections => :section }])
       render :action => "anopress.xml.builder"
     end
   end

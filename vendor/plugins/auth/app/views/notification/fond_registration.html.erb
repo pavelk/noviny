@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="cs" />
+    <title>Deník Referendum</title>
+  </head>
+<body>
+	<table width="680" cellspacing="0">
+		<tr>
+			<td valign="top" style="border-top: 5px solid #000;">
+				<font face="Arial" size="5"><b>Registrace uživatele</b><br>
+				<%= Time.now.to_s(:cz_date) %></font>
+			</td>
+			<td width="90"  style="border-top: 5px solid #000;">
+				<a href="http://www.denikreferendum.cz"><img src="http://www.denikreferendum.cz/images/logo-newsletter.gif" width="90" height="114" alt="Deník Referendum"></a>
+			</td>
+		</tr>
+	</table>
+<table width="680" cellspacing="0">
+		<tr>
+			<td valign="top" style="border-top: 1px solid #000; padding: 5px 0 2em 0;">
+				<font face="Arial" size="3">
+          Vážený příteli Deniku Referendum/ Vážená přítelkyně Deníku Referendum<br /><br /><br />
+
+          Děkujeme Vám za Vaši laskavou ochotu podporovat vydávání Deníku Referendum.<br /><br />
+
+          Zvolili jste si přispívat měsíčně částkou <%= @fond.amount %> Kč. Do trvalého příkazu prosím vyplňte naše číslo účtu:  XXX a variabilní symbol: <%= @fond.variable_number %>.<br /><br />
+
+
+          Informace o využití Vaší podpory budete dostávat v souladu s preferencemi, které jste uvedli ve formuláři na našem webu. Jakoukoli opravu svých údajů či preferencí můžete kdykoli ohlásit na adresu nfndr@denikreferendum.cz
+          <br /><br />
+
+
+          <b>Výpis Vašich údajů a preferencí:</b>
+          <br /><br />
+
+          Jméno: <%= @fond.firstname %><br />
+          Příjmení: <%= @fond.lastname %><br />
+          Email: <%= @fond.email %><br />
+          Ulice: <%= @fond.street %><br />
+          Číslo p.: <%= @fond.number %><br />
+          Obec: <%= @fond.city %><br />
+          PSC: <%= @fond.psc %><br />
+          Variabilní symbol: <%= @fond.variable_number %><br />
+          Uvedená částka ve formuláři: <%= @fond.amount %> Kč<br /><br />
+          
+          <b>Nepovinné údaje:</b>
+          <br /><br />
+
+          Povolání: <%= @fond.profession.blank? ? "" : @fond.profession %><br />
+          Telefon: <%= @fond.phone.blank? ? "" : @fond.phone %><br />
+          Titul: <%= @fond.title.blank? ? "" : @fond.title %><br /><br />
+
+          Zveřejnit jméno mezi přispěvateli na webu: <%= @fond.publish_name ? "Ano" : "Ne" %><br />
+          Přístup do diskusí v DR: <%= @fond.setup_access ? "Ano" : "Ne" %><br />
+          Každý měsíc dostávat zprávu o využití prostředků: <%= @fond.email_news ? "Ano" : "Ne" %><br />
+          Propagační materiály a informace: <%= @fond.address_news ? "Ano" : "Ne" %><br />
+          <br />
+
+          Děkujeme Vám za Vaši podporu a zdravíme Vás v dokonalé úctě<br /><br />
+
+
+          Lucie Flochová<br />
+          tajemnice NF NDR<br />
+
+				</font>
+			</td>
+		</tr>
+		<tr>
+			<td width="90"  style="border-top: 1px solid #000; padding-top: 5px;">
+				<font face="Arial" size="3">(c) Vydavatelství Referendum s.r.o. 2009</font>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

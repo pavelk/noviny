@@ -23,6 +23,11 @@
           </table>
 
           Cílová částka:  300.000&nbsp;Kč<br />
-          Schází: <%= (300000 - @amount[:total].to_i >= 1000 ) ? (300000 - @amount[:total].to_i).to_s.insert(-4,".") : (300000 - @amount[:total].to_i).to_i %>&nbsp;Kč<br />
-          Zatím shromážděno: <%= @amount[:total].to_i >= 1000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>&nbsp;Kč<br /><br />
+          <% need_amount = 300000 - @amount[:total].to_i %>
+          <% if need_amount > 0 %>
+            Schází: <%= (need_amount >= 3000 ) ? need_amount.to_s.insert(-4,".") : need_amount.to_i %>&nbsp;Kč<br />
+          <% else %>
+            Schází: 0&nbsp;Kč<br />
+          <% end %>
+          Zatím tento měsíc shromážděno: <%= @amount[:total].to_i >= 3000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>&nbsp;Kč<br /><br />
 

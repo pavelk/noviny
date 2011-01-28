@@ -13,7 +13,7 @@
   </div>
   <div class="clearfix">
     <div class="lab"><label>Částka: </label></div>
-    <div class="con"> <%= f.text_field :amount %></div>
+    <div class="con"> <%= f.select :amount, {"100 Kč" => 100, "300 Kč" => 300, "1000 Kč" => 1000, "3000 Kč" => 3000, "10 000 Kč" => 10000, "30 000 Kč" => 30000}, :prompt => "Vyberte částku" %></div>
   </div>
   <div class="clearfix">
     <div class="lab"><label>Trvalým příkazem: </label></div>

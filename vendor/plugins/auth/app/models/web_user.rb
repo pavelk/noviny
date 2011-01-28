@@ -385,6 +385,7 @@ class WebUser < ActiveRecord::Base
   VALID_DOMAIN = /^\w+$/i unless defined? VALID_DOMAIN
   # Regex to validate a level
   VALID_LEVEL  = /^\d+$/ unless defined? VALID_LEVEL
+  VALID_NUMBER  = /^[\d\/-]+$/ unless defined? VALID_NUMBER
   VALID_PHONE = /^\+\d{2,3}\d{8,10}$|^\d{8,10}$/
  
   #validates_presence_of :login,:message=>"Login nemůže být prázdný"
@@ -428,7 +429,7 @@ class WebUser < ActiveRecord::Base
   validates_format_of :lastname,  :with => VALID_NAME,:message=>"Příjmení má nesprávný formát",:if=>:lastname
   validates_format_of :street,  :with => VALID_NAME,:message=>"Ulice má nesprávný formát",:if=>:street
   validates_format_of :city,  :with => VALID_NAME,:message=>"Obec má nesprávný formát",:if=>:city
-  validates_format_of :number,  :with => VALID_NAME,:message=>"Číslo p. má nesprávný formát",:if=>:number
+  validates_format_of :number,  :with => VALID_NUMBER,:message=>"Číslo p. má nesprávný formát",:if=>:number
   validates_format_of :psc,  :with => VALID_NAME, :allow_blank => true,:message=>"PSČ má nesprávný formát",:if=>:psc
   validates_format_of :profession,  :with => VALID_NAME,:message=>"Povolání má nesprávný formát",:if=>:profession
   validates_format_of :phone,  :with => VALID_PHONE, :allow_blank => true,:message=>"Telefon má nesprávný formát",:if=>:phone

@@ -2,7 +2,7 @@ class Web::FondsController < Web::WebController
 
   layout :set_layout
 
-  before_filter :authorize_admins_only, :only => [ :list ]
+  before_filter :authorize_admins_only, :only => [ :list, :really_list, :detail, :edit_really_fond, :delete_really_fond ]
 
 # ............................................................................ #
 
@@ -43,6 +43,7 @@ class Web::FondsController < Web::WebController
     [100,300,1000,3000,10000,30000].each do |t|
       @amount["saved_#{t}".intern] = amounts_saved(t)
       @amount["need_#{t}".intern] = ( 300000 - @amount[:total].to_i ) / t
+      @amount["need_#{t}".intern] < 0 ? @amount["need_#{t}".intern] = 0 : nil
     end
 
     if request.xhr?
@@ -133,6 +134,7 @@ class Web::FondsController < Web::WebController
       end
     else
       @really_fonds = ReallyFond.new
+      @really_fonds.standing_order = true
     end
   end
 

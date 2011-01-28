@@ -10,6 +10,7 @@ xml.instruct!
           xml.LNKW detail_article_url(pretty_id(article))
           xml.LANG "cz"
           xml.CLMN article.section.name unless article.section.nil?
+          xml.CREA article.author.full_name unless article.author.nil?
         end
         xml.TXTA do
           xml.cdata! article.text
