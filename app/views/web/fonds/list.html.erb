@@ -12,11 +12,11 @@ Email:<br />
 Variabilní symbol:<br />
 <%= f.text_field :variable_number, :value => @variable_number %><br />
 
-Vyberte rok:<br />
+Vyberte rok registrace uživatele:<br />
 
 <%= select_year @year.to_i, { :start_year => 2010, :end_year => 2014, :prefix => :search_fonds, :prompt => "Vyberte rok" } %><br />
 
-Vybertě měsíc:<br />
+Vybertě měsíc registrace uživatele:<br />
 
 <%= select_month @month.to_i, { :use_month_numbers => :true, :prefix => :search_fonds, :prompt => "Vyberte měsíc" } %><br />
 
