@@ -28,6 +28,10 @@ background-color:#ffddd1;
 border: solid red 1px;
 }
 
+div.fieldWithErrors select {  
+background-color:#ffddd1;
+border: solid red 1px;
+}
 #content div.flash_error h1 { 
 color:#571802;
 }

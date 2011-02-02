@@ -4,15 +4,17 @@
   <td><%= link_to fond.email, fond_detail_url(fond.id) %></td>
   <td><%= fond.firstname %></td>
   <td><%= fond.lastname %></td>
-  <td><%= "#{fond.street} #{fond.number}, #{fond.psc} #{fond.city}"  %></td>
-  <td><%= fond.profession %></td>
-  <td><%= fond.phone %></td>
-  <td><%= fond.title %></td>
+  <!-- <td><%= "#{fond.street} #{fond.number}, #{fond.psc} #{fond.city}"  %></td> -->
   <td><%= fond.amount %>Kč</td>
   <td><%= fond.variable_number %></td>
   <td><%= fond.publish_name ? "ano" : "ne" %></td>
   <td><%= fond.setup_access ? "ano" : "ne" %></td>
   <td><%= fond.email_news ? "ano" : "ne" %></td>
   <td><%= fond.address_news ? "ano" : "ne" %></td>
+  <td><%= fond.tax_return ? "ano" : "ne" %></td>
   <td><%= fond.created_at.strftime("%d.%m.%Y %H:%M:%S") %></td>
+  <% really_fond = ReallyFond.find(:first, :conditions => { :fond_id => fond.id }, :order => 'date desc' ) %>
+  <td><%= really_fond ? really_fond.date.strftime("%d.%m.%Y") : "ŽÁDNÁ PLATBA" %></td>
+  <td><span id='<%= "moral_#{fond.id}" %>'><%= render :partial => 'morals', :locals => { :fond => fond } %></span></td>
+  <td><%= check_box_tag "update_fond_morals[]", true, fond.disable, {:onchange =>remote_function(:update => "moral_#{fond.id}", :url => {:action => 'update_fond_morals', :controller => 'web/fonds', :id => fond.id}, :with => "'disable=' + this.value")} %></td>
 </tr>

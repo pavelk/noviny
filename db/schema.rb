@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(:version => 20101208202234) do
     t.integer  "web_user_id"
   end
 
+  add_index "authors", ["firstname", "surname"], :name => "firstname_surname_index"
   add_index "authors", ["firstname"], :name => "index_authors_on_firstname"
   add_index "authors", ["surname"], :name => "index_authors_on_surname"
   add_index "authors", ["user_id"], :name => "authors_user_id_index"
@@ -366,8 +367,11 @@ ActiveRecord::Schema.define(:version => 20101208202234) do
     t.boolean  "setup_access"
     t.boolean  "email_news"
     t.boolean  "address_news"
+    t.boolean  "tax_return"
     t.integer  "amount"
     t.integer  "variable_number"
+    t.boolean  "sex"
+    t.boolean  "disable",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -553,10 +557,7 @@ ActiveRecord::Schema.define(:version => 20101208202234) do
   create_table "really_fonds", :force => true do |t|
     t.integer  "fond_id"
     t.datetime "date"
-    t.string   "account_number"
-    t.integer  "variable_number"
     t.integer  "amount"
-    t.boolean  "standing_order"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

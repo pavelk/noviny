@@ -1,6 +1,6 @@
           <table>
             <tr>
-              <th></th><th>Původní potřebný počet dárců</th><th>Nynější potřebný počet dárců</th><th>Počet dárců tento měsíc</th>
+              <th></th><th>Původní potřebný počet dárců</th><th>Nynější potřebný počet dárců</th><th>Počet dárců k dnešnímu dni</th>
             </tr>
             <tr>
               <td>100&nbsp;Kč</td><td>3000</td><td><%= @amount[:need_100]%></td><td><%= @amount[:saved_100] %></td>
@@ -29,5 +29,5 @@
           <% else %>
             Schází: 0&nbsp;Kč<br />
           <% end %>
-          Zatím tento měsíc shromážděno: <%= @amount[:total].to_i >= 3000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>&nbsp;Kč<br /><br />
+          Zatím shromážděno: <%= @amount[:total].to_i >= 3000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>&nbsp;Kč<br /><br />
 

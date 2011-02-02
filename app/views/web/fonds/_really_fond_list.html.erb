@@ -4,10 +4,8 @@
   <td><%= link_to fond.email, fond_detail_url(fond.fond.id) %></td>
   <td><%= fond.fond.firstname %></td>
   <td><%= fond.fond.lastname %></td>
-  <td><%= fond.account_number %></td>
-  <td><%= fond.variable_number %></td>
+  <td><%= fond.fond.variable_number %></td>
   <td><%= fond.amount %>Kč</td>
-  <td><%= fond.standing_order ? "Ano" : "Ne" %></td>
   <td><%= l(fond.date,:format => :medium) %>
   <td><%= link_to "Smazat", delete_really_fond_path(fond.id), :confirm => "Opravdu smazat platbu s id#{fond.id}?" %>
   <td><%= link_to "Editovat", edit_really_fond_path(fond.id) %></td>

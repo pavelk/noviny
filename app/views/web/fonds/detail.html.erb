@@ -78,6 +78,10 @@
   <div class="clearfix">
     <div class="lab"><label>Souhlas se zasíláním materiálů na poštovní adresu 3x do roka: </label></div>
     <div class="con"> <%= @user.address_news ? "Ano" : "Ne" %></div>
+    </div>
+  <div class="clearfix">
+    <div class="lab"><label>Potvrzení pro daňové přiznání: </label></div>
+    <div class="con"> <%= @user.tax_return ? "Ano" : "Ne" %></div>
   </div>
   <div class="clearfix">
     <div class="lab"><label>Vytvořeno: </label></div>
@@ -105,13 +109,10 @@ Pro zobrazení všech plateb všech uživatelů klikněte <%= link_to "zde", fon
 <br /><br />
 
 <% total = 0 %>
-<table border="1" style="width:960px;">
+<table border="1" style="width:460px;">
 	<tr>
 		<td>id</td>
-    <td>Číslo účtu</td>
-    <td>Variabilní symbol</td>
     <td>Částka</td>
-    <td>Trvalým příkazem</td>
     <td>Datum platby</td>
     <td>Smazat</td>
     <td>Editovat</td>
@@ -121,10 +122,7 @@ Pro zobrazení všech plateb všech uživatelů klikněte <%= link_to "zde", fon
   <% total += rf.amount.to_i %>
   <tr>
     <td><%= rf.id %></td>
-    <td><%= rf.account_number %></td>
-    <td><%= rf.variable_number %></td>
-    <td><%= rf.amount %></td>
-    <td><%= rf.standing_order ? "ano" : "ne" %></td>
+    <td><%= rf.amount %>Kč</td>
     <td><%= l(rf.date,:format => :medium) unless rf.date.blank? %></td>
     <td><%= link_to "Smazat", delete_really_fond_path(rf.id), :confirm => "Opravdu smazat platbu s id #{rf.id}?" %></td>
     <td><%= link_to "Editovat", edit_really_fond_path(rf.id) %></td>

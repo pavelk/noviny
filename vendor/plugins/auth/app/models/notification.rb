@@ -131,7 +131,7 @@ class Notification < ActionMailer::Base
    def fond_registration(fond, sent_on = Time.now)
      @recipients = "#{fond.email}"
      @from       = "nfndr@denikreferendum.cz"
-     @subject    = "Nadační fond Deníku Referendum"
+     @subject    = "Registrace do Nadačního fondu Deníku Referendum"
      @body       = {'fond' => fond}
      @sent_on    = sent_on
      content_type "text/html"

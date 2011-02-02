@@ -56,22 +56,44 @@ Pro zobrazení skutečných plateb vyberte nějakého uživatele nebo pro zobraz
 		<td>Email</td>
 		<td>Jméno</td>
 		<td>Příjmení</td>
-		<td>Adresa</td>
-		<td>Profese</td>
-		<td>Tel.</td>
-    <td>Titul</td>
+    <!--		<td>Adresa</td> -->
     <td>Částka</td>
     <td>Variabilní symbol</td>
     <td>Zveřejnit jméno</td>
     <td>Zřídit přístup</td>
     <td>Email news</td>
     <td>Address news</td>
+    <td>Daňové přiznání</td>
     <td>Vytvořeno</td>
+    <td>Poslední platba</td>
+    <td>Morálka</td>
+    <td>Neaktivní</td>
 	</tr>
 <%= render :partial => "fond", :collection => @fonds %>
 </table>
 
 <p style="text-align: center;">
 <%= will_paginate @fonds, :inner_window=> 3, :outer_window=> 1,:previous_label   => '&laquo; ' +  'Předchozí',
- 	          :next_label   => 'Další' +  ' &raquo;'%>
+  :next_label   => 'Další' +  ' &raquo;'%>
+</p>
+
+<p>
+<br />
+<b>Morálka (legenda):</b>
+<br /><br />
+Ti, kteří ještě neprovedli ani jednu platbu:<br />
+(počítá se od datumu registrace)<br /><br />
+- <font color='green'><b>méně jak měsíc - OK</b></font><br />
+- <font color='blue'><b>Více jak měsíc bez odezvy</b></font><br />
+- <font color='red'><b>Více jak dva měsíce bez odezvy</b></font><br />
+- <b>"Nenastartovaný"</b><br />
+
+<br /><br />
+Ti, kteří provedli alespoň jednu platbu:<br />
+(počítá se od datumu poslední platby)<br /><br />
+- <font color='green'><b>méně jak dva měsíce - OK</b></font><br />
+- <font color='orange'><b>Více jak dva měsíce bez platby</b></font><br />
+- <font color='orange'><b>Více jak tři měsíce bez platby</b></font><br />
+- <font color='red'><b>Více jak čtyři měsíce bez platby</b></font><br />
+- <b>Bývalý přispěvatel</b>
 </p>

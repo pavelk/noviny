@@ -15,8 +15,11 @@ class CreateFonds < ActiveRecord::Migration
       t.boolean :setup_access
       t.boolean :email_news
       t.boolean :address_news
+      t.boolean :tax_return
       t.integer :amount
       t.integer :variable_number
+      t.boolean :sex
+      t.boolean :disable, :default => false
 
       t.timestamps
     end

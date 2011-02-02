@@ -32,12 +32,26 @@
 	        </div> <!-- /.col2 -->
 	        
 	        <div class="col3">
+	          <div class="boxAdvert">
+	            <div class="in">
+	              <%= link_to image_tag("web/banner-dr-new.gif"), "/stranka/diskuse" %>
+              </div> <!-- /.in -->
+	          </div> <!-- /.box -->
 	          <div class="box boxAdvert">
 	            <div class="in">
-	              <%= link_to image_tag("web/banner-dr.gif"), "/stranka/diskuse" %>
-	            </div> <!-- /.in -->
+	              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="290" height="124">
+                  <param name="movie" value="flash/dr_nf_flash.swf" />
+                  <!--[if !IE]>-->
+                    <object type="application/x-shockwave-flash" data="flash/dr_nf_flash.swf" width="290" height="124">
+                  <!--<![endif]-->
+                    <p><%= link_to "Nadační fond", :controller => :fond, :action => :show %></p>
+                  <!--[if !IE]>-->
+                    </object>
+                  <!--<![endif]-->
+                </object>
+              </div> <!-- /.in -->
 	          </div> <!-- /.box -->
-	        
+       
 	          <div class="box">
 	            <div class="bSelf">
 	              <%= render :partial=>"layouts/web/part/authors_box" %>

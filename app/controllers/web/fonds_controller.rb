@@ -2,7 +2,7 @@ class Web::FondsController < Web::WebController
 
   layout :set_layout
 
-  before_filter :authorize_admins_only, :only => [ :list, :really_list, :detail, :edit_really_fond, :delete_really_fond ]
+  before_filter :authorize_admins_only, :except => [ :show, :amount_table ]
 
 # ............................................................................ #
 
@@ -25,11 +25,31 @@ class Web::FondsController < Web::WebController
 
 # ............................................................................ #
 
-  # Pocet provedenych plateb tento mesic
+  # Pocet aktivních trvalých příkazů
 
-  def amounts_saved(amount)
-    return ReallyFond.count(:conditions => [ "MONTH(date) = ? AND amount = ?", Date.today.month, amount ] )
+  def count_active_tax_returns(amount)
+    joins = "LEFT JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
+    fond = ReallyFond.find(:all, :joins => joins, :group => :fond_id,
+      :conditions => [ "fonds.disable = false AND fonds.amount = ?", amount ] )
+    return fond.count
   end
+
+# ............................................................................ #
+
+  # Celková suma všech aktivních trvalých příkazů
+
+  def sum_active_tax_returns
+    joins = "LEFT JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
+    fond = ReallyFond.find(:all, :joins => joins, :group => :fond_id,
+      :conditions => [ "fonds.disable = false" ] )
+    fond_sum = 0
+    fond.each do |f|
+      fond_sum += f.fond.amount
+    end
+
+    return fond_sum
+  end
+
 
 # ............................................................................ #
 
@@ -37,11 +57,11 @@ class Web::FondsController < Web::WebController
     @amount = Hash.new
 
     # Celkem nasporeno tento mesic
-    @amount[:total] = ReallyFond.sum(:amount, :conditions => [ "MONTH(date) = ?", Date.today.month ] )
+    @amount[:total] = sum_active_tax_returns
     @amount[:total] += params[:amount].to_i if params[:amount]
 
     [100,300,1000,3000,10000,30000].each do |t|
-      @amount["saved_#{t}".intern] = amounts_saved(t)
+      @amount["saved_#{t}".intern] = count_active_tax_returns(t)
       @amount["need_#{t}".intern] = ( 300000 - @amount[:total].to_i ) / t
       @amount["need_#{t}".intern] < 0 ? @amount["need_#{t}".intern] = 0 : nil
     end
@@ -54,6 +74,14 @@ class Web::FondsController < Web::WebController
     end
   end
 
+# ............................................................................ #
+
+  def update_fond_morals
+    fond = Fond.find_by_id(params[:id])
+    fond.disable = !fond.disable
+    fond.save
+    render :partial => 'morals', :locals => { :fond => fond }
+  end
 # ............................................................................ #
 
   # Uzivatele, kteri pouze vyplnili formular
@@ -134,7 +162,6 @@ class Web::FondsController < Web::WebController
       end
     else
       @really_fonds = ReallyFond.new
-      @really_fonds.standing_order = true
     end
   end
 
