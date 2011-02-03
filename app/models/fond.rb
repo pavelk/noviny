@@ -25,6 +25,7 @@ class Fond < ActiveRecord::Base
   validates_presence_of :email,:message=>"Email nemůže být prázdný"
   validates_presence_of :amount,:message=>"Vyberte částku"
   validates_inclusion_of :sex,:in => [true,false], :message=>"Vyberte pohlaví"
+  validates_uniqueness_of :email, :message => "Uvedený email je již registrován"
 
   # Regex to validate an email
   VALID_EMAIL = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/ unless defined? VALID_EMAIL

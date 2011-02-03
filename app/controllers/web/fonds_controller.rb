@@ -63,6 +63,7 @@ class Web::FondsController < Web::WebController
     [100,300,1000,3000,10000,30000].each do |t|
       @amount["saved_#{t}".intern] = count_active_tax_returns(t)
       @amount["need_#{t}".intern] = ( 300000 - @amount[:total].to_i ) / t
+      (( 300000 - @amount[:total].to_i ) % t ) == 0 ? nil : @amount["need_#{t}".intern] += 1
       @amount["need_#{t}".intern] < 0 ? @amount["need_#{t}".intern] = 0 : nil
     end
 
@@ -163,6 +164,22 @@ class Web::FondsController < Web::WebController
     else
       @really_fonds = ReallyFond.new
     end
+  end
+
+# ............................................................................ #
+
+  def edit_detail
+    @fond = Fond.find_by_id(params[:id])
+
+    if request.post?
+      if @fond.update_attributes(params[:fond])
+        flash.now[:notice] = "Úspěšně uloženo."
+        redirect_to :action => :detail, :id => @fond.id
+      else
+        flash.now[:error] = "Při ukládání formuláře se objevila chyba."
+      end
+    end
+
   end
 
 # ............................................................................ #

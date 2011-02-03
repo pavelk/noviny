@@ -1,0 +1,179 @@
+<%= link_to 'Všichni uživatelé', authadmin_path %> |
+<%= link_to 'Hromadné emaily', mailings_path %> |
+<%= link_to 'Nadační fond', fond_list_path %> 
+
+<br />
+<br />
+
+<h2>Editace přispěvatele</h2>
+
+<br />
+
+<%= error_messages_for1 "fond" %>
+<% form_for :fond, @fond, :url => fond_edit_detail_path(@fond.id), :html => { :class => "formBox boxRegistration" } do |f| %>
+  <fieldset>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :firstname, "Jméno:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :firstname %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :lastname, "Příjmení:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :lastname %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :lastname, "Pohlaví:" %>
+            </div>
+            <div class="con">
+              <%= f.select :sex, {"Muž" => false, "Žena" => true }, :include_blank => true, :selected => @fond.sex %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :email, "* Email:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :email %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :street, "** Poštovní adresa:" %>
+            </div>
+            <div class="con">
+            </div>
+          </div>
+
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :street, "Ulice:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :street %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :number, "Číslo p.:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :number %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :city, "Obec:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :city %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :psc, "Směrovací číslo:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :psc %>
+            </div>
+          </div>
+          <br /> <span style="font-weight:bold;">Platby</span><br /><br />
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :variable_number, "Variabilní symbol:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :variable_number, :disabled => true %>
+            </div>
+          </div>
+          <div class="clearfix">
+            <div class="lab">
+              <%= f.label :amount, "Částka:" %>
+            </div>
+            <div class="con">
+              <%= f.select :amount, {"100 Kč" => 100, "300 Kč" => 300, "1000 Kč" => 1000, "3000 Kč" => 3000, "10 000 Kč" => 10000, "30 000 Kč" => 30000}, :include_blank => true, :selected => @fond.amount %>
+            </div>
+          </div>
+
+
+          <br /> <span style="font-weight:bold;">Nepovinné údaje</span><br /><br />
+
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :profession, "Povolání:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :profession %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :phone, "Telefon:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :phone %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div class="lab">
+              <%= f.label :title, "Titul:" %>
+            </div>
+            <div class="con">
+              <%= f.text_field :title %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div>
+              <%= f.label :publish_name, "Pokud souhlasíte s tím, abychom zveřejnili Vaše jméno mezi přispěvateli fondu na jeho webových stránkách, zaškrtněte prosím tento čtvereček:" %>
+            </div>
+            <div>
+              <%= f.check_box :publish_name %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div>
+              <%= f.label :setup_access, "Pokud si přejete zřídit přístup do diskusí v Deníku Referendum, zaškrtněte prosím tento čtvereček, obratem se na Vás obrátí redakce:" %>
+            </div>
+            <div>
+              <%= f.check_box :setup_access %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div>
+              <%= f.label :email_news, "Pokud si přejete dostávat každý měsíc zprávu o množství vybraných prostředků a k čemu byly využity, zaškrtněte prosím tento čtvereček:" %>
+            </div>
+            <div>
+              <%= f.check_box :email_news %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div>
+              <%= f.label :address_news, "Pokud si přejete, abychom vám přibližně dvakrát až třikrát do roka zaslali na Vaši poštovní adresu propagační materiály a výroční zprávu, zaškrtněte prosíme tento čtvereček:" %>
+            </div>
+            <div>
+              <%= f.check_box :address_news %>
+            </div>
+          </div>
+           <div class="clearfix">
+            <div>
+              <%= f.label :tax_return, "Pokud si přejete dostat jednou ročně potvrzení pro daňové přiznání, zaškrtněte prosíme tento čtvereček:" %>
+            </div>
+            <div>
+              <%= f.check_box :tax_return %>
+            </div>
+          </div>
+
+
+          <br />
+          <%= f.submit "Uložit" %>
+        </fieldset>
+    <% end %>
+
+

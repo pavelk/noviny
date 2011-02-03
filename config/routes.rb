@@ -27,6 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   map.fond_list "/nadacni-fond/list", :controller => "web/fonds", :action => "list"
   map.fond_really_list "/nadacni-fond/really_list", :controller => "web/fonds", :action => "really_list"
   map.fond_detail "/nadacni-fond/detail/:id", :controller => "web/fonds", :action => "detail"
+  map.fond_edit_detail "/nadacni-fond/edit_detail/:id", :controller => "web/fonds", :action => "edit_detail"
   map.delete_really_fond "/nadacni-fond/delete_really_fond/:id", :controller => "web/fonds", :action => "delete_really_fond"
   map.edit_really_fond "/nadacni-fond/edit_really_fond/:id", :controller => "web/fonds", :action => "edit_really_fond"
 
