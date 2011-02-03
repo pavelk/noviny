@@ -14,7 +14,7 @@
    <div class="cols detailImage line">
      <div class="col2 mainImage">
        <%= image_tag "fond.jpg" %>
-       <p class="info">Co by za to člověk dal, kdyby tu byly noviny, které by se daly číst.</p>
+       <p class="info">Co by za to člověk dal, kdyby tu byly jedny noviny, které by byla radost číst?</p>
      </div> <!-- /.col2 -->
    </div> <!-- /.cols -->
 
@@ -31,7 +31,7 @@
           Nadační fond Nezávislosti Deníku Referendum jsme ustavili s cílem shromažďovat pravidelné měsíční příspěvky od přátel Deníku Referendum. Jedná se o cosi jako dobrovolné měsíční předplatné.
          </p>
          <p>
-          Základní myšlenka je taková, že pokud by tisíc lidí posílalo tři sta korun měsíčně, noviny by bez ohledu na další příjmy byly zachovány ve své dnešní podobě. Cokoli navíc by umožnilo další rozvoj.
+          Základní myšlenka je taková, že pokud by tisíc lidí posílalo tři sta korun měsíčně, noviny by bez ohledu na další příjmy byly zachovány ve své dnešní podobě. Cokoli navíc by umožnilo jejich další rozvoj.
          </p>
          <p>
           V mnoha západních zemích je zajišťování provozu médií veřejné služby touto cestou běžné. Záleží-li Vám na naší existenci a na naší kvalitě a můžete-li si to dovolit, prosím zřiďte svůj trvalý příkaz.
@@ -135,50 +135,68 @@
           <span id="link_otazka5" style="font-weight:bold;">Kdo ho podporuje?</span><br />
           <%= link_to "Mimo jiné:", "javascript:unhide('otazka5');" %>
           <div id="otazka5" class="hidden">
-            <%= link_to "Patrik Eichler, historik a novinář", "javascript:unhide('podpora1');" %><br />
+            <%= link_to "Václav Bělohradský, filosof", "javascript:unhide('podpora0');" %><br />
+            <div id="podpora0" class="hidden">
+              <br />
+              <p><i>&bdquo;Globalizace přinesla postdemokracii, v níž svobodný démos, který se formuje v nezávislém veřejném prostoru, je nahrazen sítí skupin,  lobujících za zájmy těch, kdo si je zaplatí. Deník Referendum je  ostrov odporu vůči tomuto vývoji. Podporuji Nadační fond Nezávislosti DR, protože věřím, že je to cesta jak nezávislý veřejný prostor obnovit. Nová forma paralelní polis.&rdquo;</i>
+              </p>
+            </div>
+            <%= link_to "Jan Beránek, ekolog a politik", "javascript:unhide('podpora1');" %><br />
             <div id="podpora1" class="hidden">
+              <br />
+              <p><i>&bdquo;Deník Referendum je v českém jazyce unikátní médium. Jaká je to úleva a vzpruha, číst dobře informované zprávy zasazené do souvislostí, jež ostatním našim novinářům buď unikají, nebo jim editoři nedají prostor. Ještě lepší jsou komentáře, v nichž často nacházím inspiraci k přemýšlení a podněty k pohledu na věci z nových perspektiv. Je to oáza ve vyprahlé pustině schémat a šablon českého mediálního provozu. Proto chci přispět k tomu, aby se mohla i nadále svěže zelenat.&rdquo;</i>
+              </p>
+            </div>
+            <%= link_to "Patrik Eichler, historik a novinář", "javascript:unhide('podpora2');" %><br />
+            <div id="podpora2" class="hidden">
               <br />
               <p><i>&bdquo;Deník Referendum slouží jako médium: Je prostorem pro debatu uvnitř demokratické levice. Umožňuje zpřesňovat teze, se kterými pracují lidé v celém prostředí. Jako takový je jedním z
                 mála médií u nás.&rdquo;</i>
               </p>
             </div>
-            <%= link_to "Vít Janeček, filmový dokumentarista", "javascript:unhide('podpora2');" %><br />
-            <div id="podpora2" class="hidden">
+            <%= link_to "Vít Janeček, filmový dokumentarista", "javascript:unhide('podpora3');" %><br />
+            <div id="podpora3" class="hidden">
               <br />
               <p><i>&bdquo;Čtu Deník Referendum téměř pravidelně - považuji jej za jednu z možností, jak by mohl vypadat mainstreamový tisk ve společnosti,  která má kontakt sama se sebou a tedy s realitou. Proto jej rád 
                 podpořím, věřím, že k podobnému rozhodnutí dospějí i mnozí  další.&rdquo;</i>
               </p>
             </div>
-            <%= link_to "Jan Keller, sociolog", "javascript:unhide('podpora3');" %><br />
-            <div id="podpora3" class="hidden">
+            <%= link_to "Přemysl Janýr, novinář", "javascript:unhide('podpora4');" %><br />
+            <div id="podpora4" class="hidden">
+              <br />
+              <p><i>&bdquo;Podporuji Nadační fond Nezávislosti DR, protože se někde potřebujeme dohodnout co dál.&rdquo;</i>
+              </p>
+            </div>
+            <%= link_to "Jan Keller, sociolog", "javascript:unhide('podpora5');" %><br />
+            <div id="podpora5" class="hidden">
               <br />
               <p><i>&bdquo;Žijeme v zemi, kde většina médií soukromých i veřejnoprávních nekriticky podporuje asociální politiku vedenou v zájmu úzké majetkové elity. Proto je důležité podpořit vše, co ruší monopol české pomocné elity na šíření informací.&rdquo;</i>
               </p>
             </div>
-            <%= link_to "Erazim Kohák, filosof", "javascript:unhide('podpora4');" %><br />
-            <div id="podpora4" class="hidden">
+            <%= link_to "Erazim Kohák, filosof", "javascript:unhide('podpora6');" %><br />
+            <div id="podpora6" class="hidden">
               <br />
               <p><i>&bdquo;Nejsem čtenář elektroniky, přesto fond Nezávislosti deníku Referendum nadšeně vítám a chci se na něm podílet pravidelnými příspěvky. Vím, že demokracie vyžaduje názorovou pluralitu a že
                 společnost o deseti milionech čtenářů nepředstavuje dostatečnou základnu pro komerční zajištění takové plurality. Ve vyspělých menších společnostech – třeba na Islandu s necelým čtvrt milionem
                 mluvčích islandštiny – vláda podporuje nezávislý tisk z veřejných zdrojů. Naše vlády se nás už delší dobu snaží nasměrovat do třetího světa. Podporu nezávislých periodik zrušily. Pokud nám na demokracii v naší zemi záleží, potřebujeme zajistit alespoň nízkonákladový elektronický „tisk“ občanskou svépomocí. U Madridu se už nebojuje, ale platí, „Kdo brání nezávislý tisk, brání Prahu!“ Chci se na tom podílet.&rdquo;</i>
               </p>
             </div>
-            <%= link_to "Tereza Stöckelová, socioložka", "javascript:unhide('podpora5');" %><br />
-            <div id="podpora5" class="hidden">
+            <%= link_to "Tereza Stöckelová, socioložka", "javascript:unhide('podpora7');" %><br />
+            <div id="podpora7" class="hidden">
               <br />
               <p><i>&bdquo;Nezávislost médií je v současnosti jednou z nejvzácnějších hodnot. Nevzniká jen z individuálního odhodlání novinářek a novinářů, ale především je výsledkem finančních a institucionálních podmínek, ve kterých se noviny každodenně utvářejí. Vzniká z týmové různosti a mnohačetného propojení se společností. Tuhle hodnotu má smysl podpořit. Přála bych Deníku Referendum (a české společnosti), aby se stal majákem originálního zpravodajství a vytříbené kritické analýzy, jakým je v anglofonním prostředí komunitní médium Democracy now!&rdquo;</i>
               </p>
             </div>
-            <%= link_to "Martin Škabraha, filosof", "javascript:unhide('podpora6');" %><br />
-            <div id="podpora6" class="hidden">
-              <br />
-              <p><i>&bdquo;Podporuju Nadační fond DR, aby Saša Uhlová nemusela dělat švadlenu. Podporuji Nadační fond Deníku Referendum také proto, že boj za občanská práva, který je třeba v této zemi vést, se neobejde bez objektivních informací a kritických myšlenek. Mainstreamová média jsou ve svém ideologickém profilu významně ovlivněna politickými a ekonomickými zájmy establishmentu, na němž existenčně závisí. Podmínkou občanské nezávislosti je proto nutně i nezávislost finanční.&rdquo;</i>
-              </p>
-            </div>
-            <%= link_to "Jaroslav Šabata, politolog", "javascript:unhide('podpora7');" %><br />
-            <div id="podpora7" class="hidden">
+            <%= link_to "Jaroslav Šabata, politolog", "javascript:unhide('podpora8');" %><br />
+            <div id="podpora8" class="hidden">
               <br />
               <p><i>&bdquo;Jan Patočka je autorem slova o solidaritě otřesených. Jakub Patočka ji tímto projektem uskutečňuje.&rdquo;</i>
+              </p>
+            </div>
+            <%= link_to "Martin Škabraha, filosof", "javascript:unhide('podpora9');" %><br />
+            <div id="podpora9" class="hidden">
+              <br />
+              <p><i>&bdquo;Podporuju Nadační fond DR, aby Saša Uhlová nemusela dělat švadlenu. Podporuji Nadační fond Deníku Referendum také proto, že boj za občanská práva, který je třeba v této zemi vést, se neobejde bez objektivních informací a kritických myšlenek. Mainstreamová média jsou ve svém ideologickém profilu významně ovlivněna politickými a ekonomickými zájmy establishmentu, na němž existenčně závisí. Podmínkou občanské nezávislosti je proto nutně i nezávislost finanční.&rdquo;</i>
               </p>
             </div>
             <br />
