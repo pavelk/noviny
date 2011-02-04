@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
              :version => '~> 2.0.9' 
   config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
 
-  config.active_record.default_timezone = :utc
+  config.active_record.default_timezone = 'Prague'
   
   config.i18n.load_path = Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
   config.i18n.default_locale = :cz

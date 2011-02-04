@@ -28,7 +28,7 @@ Vybertě měsíc registrace uživatele:<br />
 
 <br />
 
-<% form_for :search_fonds, @search_fonds, :url => fond_really_list_url do |f| %>
+<% form_for :search_fonds, @search_fonds, :url => fond_list_url do |f| %>
   <%= f.hidden_field :email, :value => "" %>
   <%= f.hidden_field :variable_number, :value => "" %>
   <%= hidden_field_tag :year, :value => "" %>
