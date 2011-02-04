@@ -26,6 +26,7 @@ class Fond < ActiveRecord::Base
   validates_presence_of :amount,:message=>"Vyberte částku"
   validates_inclusion_of :sex,:in => [true,false], :message=>"Vyberte pohlaví"
   validates_uniqueness_of :email, :message => "Uvedený email je již registrován"
+  validates_uniqueness_of :variable_number, :message => "Tento variabilní symbol již existuje"
 
   # Regex to validate an email
   VALID_EMAIL = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/ unless defined? VALID_EMAIL
@@ -37,8 +38,10 @@ class Fond < ActiveRecord::Base
   protected
 
   def set_variable_number
-    today_users = Fond.count(:conditions => [ "DAY(created_at) = ? ", Date.today.day ] )
-    self.variable_number = DateTime.now.strftime("%y%m%d" + sprintf("%04d", today_users) )
+    var1 = DateTime.now.strftime("%y%m%d")
+    last_user = Fond.first(:conditions => [ "variable_number like ? ", "#{var1}%" ], :order => 'created_at desc' )
+    last_user ? var2 = last_user.variable_number.to_s.sub(/^\d{6}/,"").to_i + 1 : var2 = 1
+    self.variable_number =  var1 + sprintf("%04d", var2)
     self.save
   end
 
