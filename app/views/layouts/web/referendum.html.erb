@@ -35,9 +35,9 @@
 	          <div class="boxAdvert">
 	            <div class="in">
 	              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="290" height="124">
-                  <param name="movie" value="<%= url_for '/flash/dr_nf_flash.swf' %>"/>
+                  <param name="movie" value="<%= url_for '/flash/dr_nf_flash.swf?mytext=245.000Kč' %>"/>
                   <!--[if !IE]>-->
-                  <object type="application/x-shockwave-flash" data="<%= url_for '/flash/dr_nf_flash.swf' %>" width="290" height="124">
+                  <object type="application/x-shockwave-flash" data="<%= url_for '/flash/dr_nf_flash.swf?mytext=245.000Kč' %>" width="290" height="124">
                   <!--<![endif]-->
                     <p><%= link_to "Nadační fond", :controller => :fond, :action => :show %></p>
                   <!--[if !IE]>-->
