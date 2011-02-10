@@ -3,31 +3,31 @@
               <th></th><th>Původní potřebný počet dárců</th><th>Nynější potřebný počet dárců</th><th>Počet dárců k dnešnímu dni</th>
             </tr>
             <tr>
-              <td>100&nbsp;Kč</td><td>3000</td><td><%= @amount[:need_100]%></td><td><%= @amount[:saved_100] %></td>
+              <td>100,-&nbsp;Kč</td><td>3000</td><td><%= @amount[:need_100]%></td><td><%= @amount[:saved_100] %></td>
             </tr>
              <tr>
-               <td>300&nbsp;Kč</td><td>1000</td><td><%= @amount[:need_300]%></td><td><%= @amount[:saved_300] %></td>
+               <td>300,-&nbsp;Kč</td><td>1000</td><td><%= @amount[:need_300]%></td><td><%= @amount[:saved_300] %></td>
              </tr>
              <tr>
-              <td>1000&nbsp;Kč</td><td>300</td><td><%= @amount[:need_1000]%></td><td><%= @amount[:saved_1000] %></td>
+              <td>1000,-&nbsp;Kč</td><td>300</td><td><%= @amount[:need_1000]%></td><td><%= @amount[:saved_1000] %></td>
             </tr>
             <tr>
-              <td>3000&nbsp;Kč</td><td>100</td><td><%= @amount[:need_3000]%></td><td><%= @amount[:saved_3000] %></td>
+              <td>3000,-&nbsp;Kč</td><td>100</td><td><%= @amount[:need_3000]%></td><td><%= @amount[:saved_3000] %></td>
             </tr>
             <tr>
-              <td>10000&nbsp;Kč</td><td>30</td><td><%= @amount[:need_10000]%></td><td><%= @amount[:saved_10000] %></td>
+              <td>10.000,-&nbsp;Kč</td><td>30</td><td><%= @amount[:need_10000]%></td><td><%= @amount[:saved_10000] %></td>
             </tr>
              <tr>
-              <td>30000&nbsp;Kč</td><td>10</td><td><%= @amount[:need_30000]%></td><td><%= @amount[:saved_30000] %></td>
+              <td>30.000,-&nbsp;Kč</td><td>10</td><td><%= @amount[:need_30000]%></td><td><%= @amount[:saved_30000] %></td>
             </tr>
           </table>
 
-          Cílová částka:  300.000&nbsp;Kč<br />
+          Cílová částka:  300.000,-&nbsp;Kč<br />
           <% need_amount = 300000 - @amount[:total].to_i %>
           <% if need_amount > 0 %>
-            Schází: <%= (need_amount >= 3000 ) ? need_amount.to_s.insert(-4,".") : need_amount.to_i %>&nbsp;Kč<br />
+            Schází: <%= (need_amount > 3000 ) ? need_amount.to_s.insert(-4,".") : need_amount.to_i %>,-&nbsp;Kč<br />
           <% else %>
-            Schází: 0&nbsp;Kč<br />
+            Schází: 0,-&nbsp;Kč<br />
           <% end %>
-          Zatím shromážděno: <%= @amount[:total].to_i >= 3000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>&nbsp;Kč<br /><br />
+          Zatím shromážděno: <%= @amount[:total].to_i > 3000 ? @amount[:total].to_i.to_s.insert(-4,".") : @amount[:total].to_i %>,-&nbsp;Kč<br /><br />
 
