@@ -30,14 +30,11 @@ class Admin::PicturesController < Admin::AdminController
       set_user
       if @picture.save
         flash[:notice] = "Successfully created upload."
-        respond_to do |format|
-          format.html {redirect_to @picture}
-          format.json {render :json => { :result => 'success' } }
-        end
+        render :json => { 'status' => 'success' }
       else
-        render :action => 'new'
+        render :json => { 'status' => 'error' }
       end
-    end
+  end
 
   
   def add_image

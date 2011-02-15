@@ -7,7 +7,7 @@ $("#viewRecord").show();
 $("form[id^='new_picture']").ajaxForm(
 {
     dataType: 'script',
-    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript");},
+    beforeSend: function(xhr) {xhr.setRequestHeader("Accept", "text/javascript, text/html, application/xml, text/xml, */* ");},
     complete: function(XMLHttpRequest, textStatus) {
        $(".recordHeader a").click();
     }

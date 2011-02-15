@@ -14,9 +14,6 @@ $(document).ready(function() {
 		multi : true,
 		auto : true,
   	script : '/admin/pictures',
-		onComplete : function(event, queueID, fileObj, response, data) { 
-			var dat = eval('(' + response + ')');
-      $.getScript(dat.upload);},
     onSelectOnce : function(event,data) {
       $('#picture_data').uploadifySettings('scriptData', {
 	        '_http_accept': 'application/javascript',
