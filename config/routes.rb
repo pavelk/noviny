@@ -114,6 +114,7 @@ ActionController::Routing::Routes.draw do |map|
   ###
   #realtime assets to articles
   map.add_image 'admin/pictures/add_image/:object/:id/:class', :controller => 'admin/pictures', :action => 'add_image'
+
   map.remove_image 'admin/pictures/remove_image/:object/:id/:class', :controller => 'admin/pictures', :action => 'remove_image'
   
   map.add_file 'admin/insets/add_file/:object/:id/:class', :controller => 'admin/insets', :action => 'add_file'

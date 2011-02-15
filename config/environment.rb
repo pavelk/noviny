@@ -11,12 +11,17 @@ Rails::Initializer.run do |config|
   config.gem 'haml',
              :version => '~> 2.0.9' 
   config.gem "mislav-will_paginate", :lib => "will_paginate", :source => "http://gems.github.com"
+  config.gem 'mime-types', :lib => 'mime/types'
 
   config.active_record.default_timezone = 'Prague'
   
   config.i18n.load_path = Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
   config.i18n.default_locale = :cz
-  
+ 
+  %w(middleware).each do |dir|
+    config.load_paths << "#{Rails.root.to_s}/app/#{dir}"
+  end
+
   config.action_controller.session_store = :active_record_store
 end
 ActionMailer::Base.delivery_method = :smtp

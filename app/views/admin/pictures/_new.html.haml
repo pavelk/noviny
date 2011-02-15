@@ -2,9 +2,10 @@
   %h2= link_to 'Nový záznam', '#'
 .recordPath
 .recordEdit
-  - form_for @picture, :url => collection_url, :html => { :multipart => true } do |f|
+  = render :partial => "show"
+  #uploads
+  - form_for Picture.new, :url => collection_url, :html => { :multipart => true } do |f|
     = f.error_messages
     %fieldset
       = hidden_field_tag :type, 'image'
-      = render :partial => "form", :locals => { :f => f }
-      %p= submit_tag "Uložit"
+      = render :partial => "form_new", :locals => { :f => f }

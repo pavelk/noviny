@@ -20,9 +20,25 @@ class Admin::PicturesController < Admin::AdminController
     wants.js
   end
   
-  create.response do |wants|
-    wants.js { render :layout => false }
-  end
+#  create.response do |wants|
+#    wants.js { render :layout => false }
+#  end
+
+  def create
+      newparams = coerce(params)
+      @picture = Picture.new(newparams[:picture])
+      set_user
+      if @picture.save
+        flash[:notice] = "Successfully created upload."
+        respond_to do |format|
+          format.html {redirect_to @picture}
+          format.json {render :json => { :result => 'success' } }
+        end
+      else
+        render :action => 'new'
+      end
+    end
+
   
   def add_image
     @object = params[:class].constantize.find(params[:object])
@@ -54,6 +70,23 @@ class Admin::PicturesController < Admin::AdminController
   end
    
   private
+
+  def coerce(params)
+    if params[:picture].nil? 
+      h = Hash.new 
+      h[:picture] = Hash.new 
+      h[:picture][:album_id] = params[:album_id] 
+      h[:picture][:name] = params[:name] 
+      h[:picture][:author] = params[:author] 
+      h[:picture][:type_image] = params[:type_image] 
+      h[:picture][:data] = params[:Filedata] 
+      h[:picture][:data].content_type = MIME::Types.type_for(h[:picture][:data].original_filename).to_s
+      h
+    else 
+      params
+    end 
+  end
+  
 
     def set_user
       @picture.user_id = current_user.id
