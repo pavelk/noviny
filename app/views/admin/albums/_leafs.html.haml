@@ -32,6 +32,5 @@
       .cropLine= album.description
     %td.center
       = link_to image_tag('item-edit.gif', :size => "12x11", :alt => "Editovat"), '#', :title => 'Editovat', :class => "editLeaf-#{params[:type]}", :id => "editLeaf-#{album.id}", :onclick => 'editLeaf( $(this).attr("id").split("-")[1], $(this).attr("class").split("-")[1]  ); return false'
-      = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"),  object_url(album), :title => 'Smazat', :confirm => 'Jste si jistí?', :method => :delete
-      
+      = link_to image_tag('delete-bin.gif', :size => "12x14", :alt => "Smazat"), '#', :title => 'Smazat', :onclick => "deleteAlbum($(this), 'albums', 'Album', #{album.id} ); return false"
       

@@ -249,6 +249,23 @@ function deleteRecord(obj, controller, model)
 	return false;	
 }
 
+//delete albums
+function deleteAlbum(obj, controller, model, id)
+{
+	if(confirm('Opravdu smazat?'))
+	{
+		$.ajax({
+	        url: '/admin/'+ controller +'/' + id + '/?class=' + model,
+	        type: 'post',
+	        dataType: 'script',
+	        data: { '_method': 'delete' },
+	        success: function() {
+				$(obj).parent().parent().remove();
+	        }
+	    });
+	}
+	return false;	
+}
 function verify_form()
 {
 	return confirm('submitnout?');
