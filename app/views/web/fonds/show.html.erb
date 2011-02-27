@@ -12,6 +12,14 @@
    <p class="perex">Deník Referendum je v složité hospodářské situaci a nemůže uchovat svou současnou podobu bez podpory svých čtenářů. Na jejím rozsahu závisí, jak bude Deník Referendum vypadat. Proto vznikl Nadační fond Nezávislosti Deníku Referendum.</p>
 
    <div class="cols detailImage line">
+     <div class="col1">
+       <h3 style="font-size: 1.2em;"><%= link_to "Jména přispěvatelů", "#" %></h3>
+       <h3 style="font-size: 1.2em;"><%= link_to "Často kladené otázky", "#" %></h3>
+       <h3 style="font-size: 1.2em;"><%= link_to "Články o NF NDR", "#" %></h3>
+       <h3 style="font-size: 1.2em;"><%= link_to "Měsíční zprávy", "#" %></h3>
+       <h3 style="font-size: 1.2em;"><%= link_to "Výroční zprávy", "#" %></h3>
+       <h3 style="font-size: 1.2em;"><%= link_to "Videa", "#" %></h3>
+      </div>
      <div class="col2 mainImage">
        <%= image_tag "fond.jpg" %>
        <p class="info">Co by za to člověk dal, kdyby tu byly jedny noviny, které by byla radost číst?</p>
@@ -65,15 +73,18 @@
             
             <br /><br />
             <ul>
+              <li>5000 lidí posílalo každý měsíc 60Kč nebo</li>
               <li>3000 lidí posílalo každý měsíc 100 Kč nebo</li>
               <li>1000 lidí posílalo každý měsíc 300 Kč nebo</li>
+              <li>500 lidí posílalo každý měsíc 600Kč nebo</li>
               <li>300 lidí posílalo každý měsíc 1000 Kč nebo</li>
               <li>100 lidí posílalo každý měsíc 3000 Kč nebo</li>
+              <li>50 lidí posílalo každý měsíc 6000Kč nebo</li>
               <li>30 lidí posílalo každý měsíc 10.000 Kč nebo</li>
               <li>10 lidí posílalo každý měsíc 30.000 Kč.</li>
             </ul>
             <br />
-            To je také šest základních možných příspěvků, které fond nabízí.<br /><br />
+            To je také devět základních možných příspěvků, které fond nabízí.<br /><br />
           </div>
         </p>
         
@@ -237,15 +248,18 @@
             
           <span style="font-weight:bold;">Krok 1: Vyberte částku</span><br /><br />
 
-          <table>
+          <table style="font-size: 0.7em;">
             <tr>
-              <th>100 Kč</th><th>300 Kč</th><th>1000 Kč</th><th>3000 Kč</th><th>10000 Kč</th><th>30000 Kč</th>
+              <th>60 Kč</th><th>100 Kč</th><th>300 Kč</th><th>600 Kč</th><th>1000 Kč</th><th>3000 Kč</th><th>6000 Kč</th><th>10000 Kč</th><th>30000 Kč</th>
             </tr>
             <tr>
+              <td><%= f.radio_button :amount, "60", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_60').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") }%></td>
               <td><%= f.radio_button :amount, "100", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_100').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") }%></td>
               <td><%= f.radio_button :amount, "300", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_300').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "600", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_600').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") }%></td>
               <td><%= f.radio_button :amount, "1000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_1000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
               <td><%= f.radio_button :amount, "3000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_3000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
+              <td><%= f.radio_button :amount, "6000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_6000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") }%></td>
               <td><%= f.radio_button :amount, "10000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_10000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
               <td><%= f.radio_button :amount, "30000", { :onchange => remote_function(:update => 'amount_table', :url => { :action => :amount_table }, :with =>"'amount=' + $('fond_amount_30000').value", :loading=>"Element.show('amount_spinner')", :complete=>"Element.hide('amount_spinner')") } %></td>
             </tr>

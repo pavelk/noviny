@@ -60,7 +60,7 @@ class Web::FondsController < Web::WebController
     @amount[:total] = sum_active_tax_returns
     @amount[:total] += params[:amount].to_i if params[:amount]
 
-    [100,300,1000,3000,10000,30000].each do |t|
+    [60,100,300,600,1000,3000,6000,10000,30000].each do |t|
       @amount["saved_#{t}".intern] = count_active_tax_returns(t)
       @amount["need_#{t}".intern] = ( 300000 - @amount[:total].to_i ) / t
       (( 300000 - @amount[:total].to_i ) % t ) == 0 ? nil : @amount["need_#{t}".intern] += 1
