@@ -24,7 +24,7 @@
   %b Nejprve vyplňte požadované údaje!
 %br
 .image-uploader
-  = f.file_field :data, :class => 'inp'
+  = f.file_field :data, :class => 'inp', :multiple => 'multiple'
 %br
 %br
   = f.submit "Uložit"

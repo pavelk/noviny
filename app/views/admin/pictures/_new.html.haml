@@ -2,8 +2,6 @@
   %h2= link_to 'Nový záznam', '#'
 .recordPath
 .recordEdit
-  = render :partial => "show"
-  #uploads
   - form_for Picture.new, :url => collection_url, :html => { :multipart => true } do |f|
     = f.error_messages
     %fieldset

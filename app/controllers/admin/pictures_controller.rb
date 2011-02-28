@@ -25,18 +25,21 @@ class Admin::PicturesController < Admin::AdminController
 #  end
 
   def create
-      newparams = coerce(params)
-      @picture = Picture.new(newparams[:picture])
-      set_user
-      if @picture.save
-        flash[:notice] = "Successfully created upload."
-        render :json => { 'status' => 'success' }
-      else
-        render :json => { 'status' => 'error' }
-      end
+    newparams = params[:picture]
+    new_image = Hash.new
+    new_image['album_id'] = newparams[:album_id]
+    new_image['user_id'] = current_user.id
+    new_image['name'] = newparams[:name]
+    new_image['author'] = newparams[:author]
+    new_image['type_image'] = newparams[:type_image]
+
+    newparams[:data].each do |image|
+      new_image['data'] = image
+      Picture.create(new_image)
+    end
+    redirect_to :action => :new
   end
 
-  
   def add_image
     @object = params[:class].constantize.find(params[:object])
     @picture = Picture.find(params[:id])
@@ -67,23 +70,6 @@ class Admin::PicturesController < Admin::AdminController
   end
    
   private
-
-  def coerce(params)
-    if params[:picture].nil? 
-      h = Hash.new 
-      h[:picture] = Hash.new 
-      h[:picture][:album_id] = params[:album_id] 
-      h[:picture][:name] = params[:name] 
-      h[:picture][:author] = params[:author] 
-      h[:picture][:type_image] = params[:type_image] 
-      h[:picture][:data] = params[:Filedata] 
-      h[:picture][:data].content_type = MIME::Types.type_for(h[:picture][:data].original_filename).to_s
-      h
-    else 
-      params
-    end 
-  end
-  
 
     def set_user
       @picture.user_id = current_user.id
