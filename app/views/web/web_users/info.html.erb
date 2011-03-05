@@ -68,7 +68,7 @@
       <% end %>
       <% unless author.blank? %>
         <tr>
-          <th colspan="2"><%= @info_user.full_name %> je autorem článků, které naleznete <%= link_to "zde", author_info_path(pretty_name(author))%>.</th>
+          <th colspan="2"><%= @info_user.full_name %> je autorem článků, které naleznete <%= link_to "zde", author_info_path("#{author.id}-#{author.full_name.parameterize}" )%>.</th>
       </tr>
       <% end %>
     </table>

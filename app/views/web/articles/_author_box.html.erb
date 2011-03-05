@@ -1,15 +1,15 @@
 	<% if (!@author_image.blank? && !ContentType.author_nick_types.include?(@article.content_type_id)) %>
 		<div class="img noprint">
-				<%= link_to(main_image_tag(@author_image), author_info_path(pretty_name(@author))) %>
+      <%= link_to(main_image_tag(@author_image), author_info_path("#{@author.id}-#{@author.full_name.parameterize}" )) %>
 		</div> <!-- /.img -->
 	<% end %>
 
 	<div class="self">
 	 <h3 class="head alt">
 	 	<% if ContentType.author_nick_types.include?(@article.content_type_id) && !@author.nickname.blank? %>
-			<%= link_to "(#{@author.nickname})", author_info_path(pretty_name(@author)) %>
+			<%= link_to "(#{@author.nickname})", author_info_path("#{@author.id}-#{@author.full_name.parameterize}" ) %>
 		<% else %>
-	 		<%= link_to @author.full_name, author_info_path(pretty_name(@author)) %>
+	 		<%= link_to @author.full_name, author_info_path("#{@author.id}-#{@author.full_name.parameterize}" ) %>
 		<% end %>
 	 </h3> 
 	 <p>
@@ -35,6 +35,6 @@
 	 </ul>
 	 <% if @article.author_sec %>
 	 	<br>
-	 	<h3 class="head">Spoluautor: <%= link_to @article.author_sec.full_name, author_info_path(pretty_name(@article.author_sec)) %></h3>
+	 	<h3 class="head">Spoluautor: <%= link_to @article.author_sec.full_name, author_info_path("#{@article.author_sec.id}-#{@article.author_sec.full_name.parameterize}" ) %></h3>
 	 <% end %> 
 	</div> <!-- /.self -->

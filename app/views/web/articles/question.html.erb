@@ -53,11 +53,11 @@
 
                     <div class="item itemSmallImage itemQuiz">
                       <div class="img">
-                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)),author_info_path(pretty_name(@author_yes))) if @author_yes.pictures.first %>
+                        <%= link_to(main_image_tag(@author_yes.pictures.first.data.url(:author_little)), author_info_path("#{@author_yes.id}-#{@author_yes.full_name.parameterize}" )) if @author_yes.pictures.first %>
                       </div> <!-- /.img -->
                       
                       <div class="self">
-                        <h4 class="head alt"><%= link_to(@author_yes.full_name,author_info_path(pretty_name(@author_yes))) %></h4>
+                        <h4 class="head alt"><%= link_to(@author_yes.full_name, author_info_path("#{@author_yes.id}-#{@author_yes.full_name.parameterize}" )) %></h4>
                         <p class="text alt">Ano</p>
                       </div> <!-- /.self -->
                     </div> <!-- /.item -->
@@ -68,11 +68,11 @@
                   <div class="col2">
                     <div class="item itemSmallImage itemQuiz">
                       <div class="img">
-                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)),author_info_path(pretty_name(@author_no))) if @author_no.pictures.first %>
+                        <%= link_to(main_image_tag(@author_no.pictures.first.data.url(:author_little)), author_info_path("#{@author_no.id}-#{@author_no.full_name.parameterize}" )) if @author_no.pictures.first %>
                       </div> <!-- /.img -->
                       
                       <div class="self">
-                        <h4 class="head alt"><%= link_to(@author_no.full_name,author_info_path(pretty_name(@author_no))) %></h4>
+                        <h4 class="head alt"><%= link_to(@author_no.full_name,author_info_path("#{@author_yes.id}-#{@author_yes.full_name.parameterize}" )) %></h4>
                         <p class="text alt">Ne</p>
                       </div> <!-- /.self -->
                     </div> <!-- /.item -->

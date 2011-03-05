@@ -180,15 +180,19 @@ class Web::ArticlesController < Web::WebController
     @html_title = @tag.name
     @articles = Article.paginate_from_tag(@tag.id,params[:page])
     @next_topics = @tag.relthemes + @tag.inverse_relthemes
-    add_breadcrumb "Témata", ""                                 
+    add_breadcrumb "Témata", ""
   end
   
   def author_info
-    name = params[:name].gsub("-","%")
-    @author = Author.find(:first,:conditions=> "CONCAT_WS(' ',firstname,surname) LIKE '%#{name}%'" )
-    @articles = Article.paginate_from_author(@author.id,params[:page])
-    @author_image = @author.pictures.first
-    add_breadcrumb "Autor", ""
+    name_id = params[:name].gsub(/-.*$/,"")
+    @author = Author.find_by_id(name_id)
+    if @author
+      @articles = Article.paginate_from_author(@author.id,params[:page])
+      @author_image = @author.pictures.first
+      add_breadcrumb "Autor", ""
+    else
+      redirect_to :controller => 'web/text_pages', :action => 'error'
+    end
   end
   
   def update_thumb
