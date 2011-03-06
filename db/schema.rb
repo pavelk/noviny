@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110305170835) do
+ActiveRecord::Schema.define(:version => 20110306012830) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -562,6 +562,8 @@ ActiveRecord::Schema.define(:version => 20110305170835) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "really_fonds", ["fond_id"], :name => "index_really_fonds_on_fond_id"
 
   create_table "relationships", :force => true do |t|
     t.integer  "article_id"
