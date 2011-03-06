@@ -7,7 +7,7 @@ class Web::WebUsersController < Web::WebController
     if @info_user
       @comments = @info_user.article_comments.paginate(:page=>params[:page],:per_page=>5, :order => "created_at DESC")
     else
-      redirect_to :controller => 'web/text_pages', :action => 'error'
+      render :template => 'web/text_pages/error', :layout => 'web/part/text_page'
     end
     add_breadcrumb "Čtenář", ""
   end

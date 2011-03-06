@@ -177,10 +177,14 @@ class Web::ArticlesController < Web::WebController
     unless @tag
       @tag = Theme.find(:first,:conditions=>["name REGEXP ?", unpretty_name(params[:name]).gsub(" ",".*")])
     end
-    @html_title = @tag.name
-    @articles = Article.paginate_from_tag(@tag.id,params[:page])
-    @next_topics = @tag.relthemes + @tag.inverse_relthemes
-    add_breadcrumb "Témata", ""
+    if @tag
+      @html_title = @tag.name
+      @articles = Article.paginate_from_tag(@tag.id,params[:page])
+      @next_topics = @tag.relthemes + @tag.inverse_relthemes
+      add_breadcrumb "Témata", ""
+    else
+      render :template => 'web/text_pages/error', :layout => 'web/part/text_page'
+    end
   end
   
   def author_info
@@ -191,7 +195,7 @@ class Web::ArticlesController < Web::WebController
       @author_image = @author.pictures.first
       add_breadcrumb "Autor", ""
     else
-      redirect_to :controller => 'web/text_pages', :action => 'error'
+      render :template => 'web/text_pages/error', :layout => 'web/part/text_page'
     end
   end
   
