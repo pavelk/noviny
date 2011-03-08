@@ -70,10 +70,9 @@ module Web::FondsHelper
   # Celková suma všech aktivních trvalých příkazů
 
   def sum_active_tax_returns
-    joins = "LEFT JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
-    fond = ReallyFond.find(:first, :joins => joins, :group => :fond_id,
-      :conditions => [ "fonds.disable = false" ], :select => "sum(fonds.amount) as sum_am" )
-    return fond.sum_am
+    r_fonds = ReallyFond.find(:all, :group => :fond_id, :select => "fond_id" )
+    return Fond.sum(:amount, :conditions => [
+      "disable = false and id in (?)", r_fonds.map { |f| f.fond_id } ])
   end
 
 end
