@@ -73,7 +73,7 @@ module Web::FondsHelper
     r_fonds = ReallyFond.find(:all, :group => :fond_id, :select => "fond_id" )
     sum = Fond.sum(:amount, :conditions => [
       "disable = false and id in (?)", r_fonds.map { |f| f.fond_id } ])
-    return "#{sum},- Kč"
+    return "#{sum > 3000 ? sum.to_i.to_s.insert(-4,".") : sum},-&nbsp;Kč"
   end
 
 end

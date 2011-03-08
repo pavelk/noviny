@@ -187,8 +187,8 @@ protected
     arr += @opinions if @opinions
     arr += @right_boxes if @right_boxes
     @ign_arr = arr.map{|a| a.id}.uniq
-    @down_boxes, down_arr = Article.down_boxes(section_id,@ign_arr)
-    @ign_arr += down_arr.map{|a| a.id}
+    #@down_boxes, down_arr = Article.down_boxes(section_id,@ign_arr)
+    #@ign_arr += down_arr.map{|a| a.id}
   end
   
   def set_question_variables

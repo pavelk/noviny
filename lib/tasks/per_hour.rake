@@ -1,3 +1,4 @@
+require 'fileutils'
 namespace :per_hour do  
   task :clear_cache => :environment do
     cache = ActiveSupport::Cache.lookup_store(:file_store, "/tmp/cache")
@@ -10,7 +11,7 @@ namespace :per_hour do
     [1,2,3].each do |typ|
        puts cache.delete("Article.discussed.#{typ}")
     end
-    ApplicationController.new.expire_fragment(/web/)
+    FileUtils.rm_rf '/tmp/cache/views'
     puts 'cache cleared'
   end 
 end
