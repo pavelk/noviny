@@ -10,7 +10,11 @@ module ApplicationHelper
   
   def foot_rss(rss)
     @show_rss = true
-    content_for(:rss) { link_to "RSS","feed://#{home_url.sub('http://','').gsub('/','')}#{rss}"}
+    if params[:action] == "index"
+      content_for(:rss) { link_to "RSS","http://feeds.feedburner.com/DenikReferendum"}
+    else
+      content_for(:rss) { link_to "RSS","feed://#{home_url.sub('http://','').gsub('/','')}#{rss}"}
+    end
   end
   
   def comments_info(number)

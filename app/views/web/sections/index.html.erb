@@ -1,4 +1,4 @@
-<%= auto_discovery_link_tag(:rss, :controller=>"web/rss",:action => 'index') %>
+<%= auto_discovery_link_tag(:rss, "http://feeds.feedburner.com/DenikReferendum") %>
 <% foot_rss(rss_path(:action=>"index")) %>
 
 <p class="publication"><strong><%= Web::Calendar.current_day %></strong> <%= link_to "přehled vydání", archiv_path %></p>
