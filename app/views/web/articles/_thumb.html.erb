@@ -1,3 +1,3 @@
 <li>
-<%= link_to(main_image_tag(thumb.data.url(:author_little)),thumb.data.url(:gallery_big),:title=>thumb.info) %>
-</li>		
+<%= link_to(main_image_tag(thumb.data.url(:author_little)), ( thumb.data.exists?(:gallery_very_big) ? thumb.data.url(:gallery_very_big) : thumb.data.url(:gallery_big) ) ,:title=>thumb.info, :rel => "lightbox[roadtrip]") %>
+</li>

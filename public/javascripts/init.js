@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
 		cycle: false,
 		navCounter: '.pages .actual'
 	});
-	
+/*	
 	// show big image from thumb
 	jQuery(".gallery .thumbs a").click(function() {
 	  jQuery(this).parents(".thumbs").find("li span").remove();
@@ -33,7 +33,8 @@ jQuery(document).ready(function() {
     jQuery(this).find("img").after("<span></span>");
     return false;
   });
-  
+*/
+
   /*
   // share box
   jQuery(".share").click(function() {

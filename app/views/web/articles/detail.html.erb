@@ -1,41 +1,58 @@
 <div class="box boxDetail">
    <h2 class="head"><%= @article.name %></h2>
    <p class="perex"><%=th @article.perex %></p>
-   
-   <% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
    <div class="cols detailImage line">
+     <% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
      <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless (@author_image && cond && !@printable) -%>">
        <%= render :partial=>"web/articles/author_box" %>
      </div> <!-- /.col1 -->
-     
-     <div class="col2 mainImage">
-     	<% if @article.content_type.video? %>
-			<%= @article.new_videodata %>
-		<% else %>
-			<% im = main_image_tag(@article_image.data.url(:hp_main)) %>
-       <%= (@article.pictures.count > 1) ? link_to(im, gallery_article_path(pretty_id(@article))) : im %>
-        <p class="info">
-       <%= link_to("Galerie", gallery_article_path(pretty_id(@article))) if @article.pictures.count > 1 %>
-			<%= @article_image.info(@article.first_image_title) %>
-			</p>
-		<% end %>
+
+     <% if @article.pictures.count > 1 %>
+      <div class="col2 gallery">
+      <% if @pictures.length > 6 %>
+       <div class="paging">
+        <ul class="pages">
+          <li class="nav prev"><a href="">predchozi</a></li>
+          <li><span class="actual">1</span> / <%= (@pictures.length / 6) + 1 %></li>
+          <li class="nav next"><a href="">nasledujici</a></li>
+        </ul>
+       </div> <!-- /.paging -->
+     <% end %>
+       <div class="thumbs">
+        <ul>
+          <%= render :partial=>"web/articles/thumb", :collection=>@pictures %>
+        </ul>
+      </div> <!-- /.thumbs -->
+       <div class="main">
+        <%= render :partial=>"web/articles/main_image" %>
+       </div> <!-- /.main -->
      </div> <!-- /.col2 -->
-	 
+    <% else %>
+      <div class="col2 mainImage">
+      <% if @article.content_type.video? %>
+        <%= @article.new_videodata %>
+      <% else %>
+        <%= main_image_tag(@article_image.data.url(:hp_main)) %>
+        <p class="info"><%= @article_image.info(@article.first_image_title) %></p>
+      <% end %>
+    </div> <!-- /.col2 -->
+   <% end %>
+
    </div> <!-- /.cols -->
-   
+
    <div class="cols detailContent">
      <div class="col1">
        <div class="box boxLine">
 		<%= render :partial=>"web/articles/left_box" %>
        </div> <!-- /.box -->
-       
+
 		<%= render :partial=>"web/articles/profil" %>
-       
+
        <div class="box">
 		<%= render :partial=>"web/articles/rel_articles" %>
        </div> <!-- /.box -->
      </div> <!-- /.col1 -->
-     
+
      <div class="col2">
        <div class="text">
 		<p><%=th @article.text %></p>

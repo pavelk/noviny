@@ -23,20 +23,26 @@ class Web::SectionsController < Web::WebController
   
   def detail
     @section = Section.find(:first,:conditions=>["name LIKE ?",unpretty_name(params[:name])],:select=>"id,name")
-    cookies[:section_id] = @section.id
-    @html_title = @section.name
-    set_default_variables
-    add_breadcrumb @section.name, section_path(pretty_name(@section))
-    render :action=>"holidays" and return if Web::Calendar.holidays?
-    if @section.name == "Váš Hlas"
-      redirect_to home_path and return unless set_question_variables
-      render :action=>"vas-hlas", :layout=>"web/gallery" and return
-    elsif @section.name == "Fórum"
-      set_forum_variables
-      render :action=>"forum", :layout=>"web/gallery" and return
+    if params[:name] =~ /^homepage$/
+      redirect_to home_url
+    elsif @section
+      cookies[:section_id] = @section.id
+      @html_title = @section.name
+      set_default_variables
+      add_breadcrumb @section.name, section_path(pretty_name(@section))
+      render :action=>"holidays" and return if Web::Calendar.holidays?
+      if @section.name == "Váš Hlas"
+        redirect_to home_path and return unless set_question_variables
+        render :action=>"vas-hlas", :layout=>"web/gallery" and return
+      elsif @section.name == "Fórum"
+        set_forum_variables
+        render :action=>"forum", :layout=>"web/gallery" and return
+      else
+        render :action=>"#{@section.id}" and return
+        render :action=>"detail" and return
+      end
     else
-      render :action=>"#{@section.id}" and return
-      render :action=>"detail" and return
+      render :template => 'web/text_pages/error', :layout => 'web/part/text_page'
     end
   end
   

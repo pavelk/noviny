@@ -68,7 +68,11 @@ class Web::ArticlesController < Web::WebController
     @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
     redirect_to home_path and return unless @article
     cookies[:last_article_id] = @article.id
-    
+
+    # gallery
+    @pictures = Picture.paginate_from_article(@article.id,params[:page])
+    @article_image = @pictures.first
+
     set_detail_variables
     @article_image = @article.pictures.first
 
@@ -84,7 +88,16 @@ class Web::ArticlesController < Web::WebController
 
     render :action=>"detail_noimg" if (!@article_image && !@article.content_type.video?)
   end
-  
+
+  def detail_gallery
+    @page = 1
+    @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
+    set_detail_variables
+    @pictures = Picture.paginate_from_article(@article.id,params[:page])
+    @article_image = @pictures.first
+    redirect_to :action=>"detail",:id=>params[:id] and return if @pictures.blank?
+  end
+
   def vote
     if request.xhr?
       remote_ip = request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
@@ -216,14 +229,6 @@ class Web::ArticlesController < Web::WebController
     end
   end
   
-  def detail_gallery
-    @page = 1
-    @article = Article.find_by_id(params[:id],:include=>[:sections,:themes,:relarticles,:inverse_relarticles, :author, :pictures, :article_comments, :info_boxes])
-    set_detail_variables
-    @pictures = Picture.paginate_from_article(@article.id,params[:page])
-    @article_image = @pictures.first
-    redirect_to :action=>"detail",:id=>params[:id] and return if @pictures.blank?
-  end
   
 protected
   def set_detail_variables

@@ -2,7 +2,7 @@
    <h2 class="head"><%= @article.name %></h2>
    <p class="perex"><%=th @article.perex %></p>
    <div class="cols detailImage line">
-   	<% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
+     <% cond = !ContentType.author_nick_types.include?(@article.content_type_id)%>
      <div class="col1 item itemSmallImage itemSmall<%= ' noImg' unless (@author_image && cond) -%>">
        <%= render :partial=>"web/articles/author_box" %>
      </div> <!-- /.col1 -->

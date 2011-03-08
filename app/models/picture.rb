@@ -40,9 +40,11 @@ class Picture < ActiveRecord::Base
                                         :articles_preview => "140x",
                                         :article_profile => "178x",
                                         :gallery_big => "440x440",
+                                        :gallery_very_big => "800x",
                                         :author_image => "178x178#"
                                          },
-                    :convert_options => { :hp_main_crop => " -gravity Center -extent 440x270",
+                    :convert_options => { :all => '-quality 80',
+                                          :hp_main_crop => " -gravity Center -extent 440x270",
                                           :hp_sidebar => " -gravity Center -extent 140x130",
                                           :author_little => ' -gravity Center -extent 65x60',
                                           :preview_bottom => ' -gravity Center -extent 140x90',
