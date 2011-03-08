@@ -68,6 +68,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :info_boxes
 
+  # delete cache
+  map.admin_delete_cache 'admin/albums/delete_cache', :controller => 'admin/albums', :action => 'delete_cache'
+
   map.root :controller => 'admin/albums', :action => 'index'
   
   map.namespace :admin do |admin|
@@ -102,6 +105,7 @@ ActionController::Routing::Routes.draw do |map|
   map.preview_banner 'preview/banner/:id', :controller => 'article_banners', :action => 'detail'
   #konec navrhu
   
+
   map.remove_relationship 'admin/relationships/remove_rel/:id/:rel', :controller => 'admin/relationships', :action => 'delete', :method => 'post'
   map.remove_relationthemeship 'admin/relationthemeships/remove_rel/:id/:rel', :controller => 'admin/relationthemeships', :action => 'delete', :method => 'post'
   map.remove_relationquestionship 'admin/relationquestionships/remove_rel/:id/:rel', :controller => 'admin/relationquestionships', :action => 'delete', :method => 'post'

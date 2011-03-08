@@ -3,8 +3,9 @@
 -#= render :partial => 'photo', :locals => { :f => f }
 -#= params[:type]
 %br
-= f.label :parent_id, 'Zařaďte obrázky do struktury:'
-= f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at DESC" )) {|i| "#{'-' * i.level} #{i.name}" } )
+  - cache(:action => params[:action], :action_suffix => "admin_pictures_tree") do
+    = f.label :parent_id, 'Zařaďte obrázky do struktury:'
+    = f.select(:album_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at DESC" )) {|i| "#{'-' * i.level} #{i.name}" } )
 %br
 %br
 %br

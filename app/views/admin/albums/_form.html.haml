@@ -7,8 +7,9 @@
 = f.text_area :description, :class => 'smallText'
 %br
 %br
-= f.label :parent_id, 'Zařaďte adresář do struktury:'
-= f.select(:parent_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at DESC"), @album) {|i| "#{'-' * i.level} #{i.name}" }, { :prompt => "------------" } )
+  - cache(:action => params[:action], :action_suffix => "admin_album_tree") do
+    = f.label :parent_id, 'Zařaďte adresář do struktury:'
+    = f.select(:parent_id, nested_set_options(Album.all(:conditions => "album_type='#{params[:type]}'", :order => "created_at DESC"), @album) {|i| "#{'-' * i.level} #{i.name}" }, { :prompt => "------------" } )
 %br
 %hr
 %br

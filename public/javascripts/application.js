@@ -263,6 +263,10 @@ function deleteAlbum(obj, controller, model, id)
 				$(obj).parent().parent().remove();
 	        }
 	    });
+    $.ajax({
+          url: '/admin/albums/delete_cache',
+          type: 'post',
+    });
 	}
 	return false;	
 }

@@ -11,7 +11,7 @@ namespace :per_hour do
     [1,2,3].each do |typ|
        puts cache.delete("Article.discussed.#{typ}")
     end
-    FileUtils.rm_rf '/tmp/cache/views'
+    FileUtils.rm_rf Dir.glob("/tmp/cache/views/*/web/")
     puts 'cache cleared'
   end 
 end

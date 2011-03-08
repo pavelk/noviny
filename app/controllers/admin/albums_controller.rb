@@ -1,8 +1,8 @@
 class Admin::AlbumsController < Admin::AdminController
   
   create.before :set_user
-  create.after  :set_parent
-  update.after  :set_parent
+  create.after  :set_parent, :delete_cache2
+  update.after  :set_parent, :delete_cache2
   
   #before_filter :check_class
   
@@ -92,8 +92,17 @@ class Admin::AlbumsController < Admin::AdminController
   end
 =end  
      
+  def delete_cache
+    expire_fragment(/admin/)
+    render :nothing => true
+  end
+
   private
   
+  def delete_cache2
+    expire_fragment(/admin/)
+  end
+
     def check_class
       params[:type] = 'album' if params[:type].blank?
       @album = params[:type].camelize.constantize
@@ -110,5 +119,5 @@ class Admin::AlbumsController < Admin::AdminController
         @album.move_to_child_of Album.find(params[:album][:parent_id])
       end  
     end  
-  
+ 
 end
