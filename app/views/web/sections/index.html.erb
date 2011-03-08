@@ -14,10 +14,21 @@
 
 <div class="box">
   <h2 class="h <%= @headliner_box ? 'line' : '' -%>"><% if !week? %>Názory<% end %></h2>
+    <% cache(:action => params[:action], :action_suffix => "opinions_on_home_page") do %>
   <div class="in itemList">
+    <%
+    length_limit = 5
+    ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
+    ign_arr += @rel_articles.map{|a| a.id}.uniq
+    @today_opinions = Article.home_opinions(Time.now,Time.now,{:limit=>1,:ignore_arr=>ign_arr,:length_limit=>nil})
+    if @today_opinions.length < length_limit
+      @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>length_limit-@today_opinions.length})
+    end
+    %>
 	<%= render :partial=>"web/articles/left_article", :collection=>@today_opinions,:locals=>{:with_date=>true,:small_class=>true} %>
 	<%= render :partial=>"web/articles/left_article", :collection=>@older_opinions,:locals=>{:with_date=>true,:small_class=>true} if @older_opinions %>   
   </div> <!-- /.in -->
+  <% end %>
 </div> <!-- /.box -->
 <%= render :partial=>"web/articles/referendum" %>
 

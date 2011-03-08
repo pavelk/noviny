@@ -21,7 +21,8 @@ Rails::Initializer.run do |config|
   %w(middleware).each do |dir|
     config.load_paths << "#{Rails.root.to_s}/app/#{dir}"
   end
-
+  
+  config.action_controller.cache_store = :file_store, "/tmp/cache"
   config.action_controller.session_store = :active_record_store
 end
 ActionMailer::Base.delivery_method = :smtp
@@ -33,4 +34,4 @@ ActionMailer::Base.smtp_settings = {
  :domain => "localhost"
 }
 
-ActiveRecord::Base.logger.level = 1 # 0=debug, 1=info
+ActiveRecord::Base.logger.level = 0 # 0=debug, 1=info

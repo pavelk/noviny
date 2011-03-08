@@ -42,38 +42,45 @@
 			</fieldset>
 		<% end %>
 		
-        <div id="mainMenu">
+      <div id="mainMenu">
+        <% cache(:action => params[:action], :action_suffix => "main_menu_#{params[:name]}") do %>
           <ul>
           	<% Section.all_root.each do |root| %>
               <% next if root.id == 9999 %>
-				<% if (@section && @section.id == root.id) %>
+				      <% if (@section && @section.id == root.id) %>
 	            	<li><%= link_to(root.name, section_path(pretty_name(root)),:style=>"color:black;") %></li>
-				<% else %>
-					<li><%= link_to(root.name, section_path(pretty_name(root))) %></li>
-				<% end %>
-			<% end %>
-	      </ul>
-        </div> <!-- /#mainMenu -->
+				      <% else %>
+					      <li><%= link_to(root.name, section_path(pretty_name(root))) %></li>
+				      <% end %>
+			        <% end %>
+          </ul>
+        <% end %>
+      </div> <!-- /#mainMenu -->
         
         <div id="subMenu">
           <% if @section && !@section.children.blank? %>
+            <% cache(:action => params[:action], :action_suffix => "sub_menu_#{params[:name]}") do %>
 	          <span>Podrubriky:</span>
 	          <ul>
 	            <% @section.children.each do |sub| %>
-					<li><%= (@subsection && @subsection.id == sub.id) ? sub.name : link_to(sub.name, subsection_path(pretty_name(sub))) -%></li>
-				<% end %>
-	          </ul>
-		  <% end %>
-		  <%if !@top_themes.blank? %>
+					      <li><%= (@subsection && @subsection.id == sub.id) ? sub.name : link_to(sub.name, subsection_path(pretty_name(sub))) -%></li>
+				      <% end %>
+            </ul>
+          <% end %>
+        <% end %>
+      <% cache(:action => params[:action], :action_suffix => "top_themes_#{params[:name]}") do %>
+        <% @top_themes = @section.top_themes if @section %>
+        <%if !@top_themes.blank? %>
           <span>Témata:</span>
-			  <ul>
+			    <ul>
           <% @top_themes.each do |tag| -%>
             <% unless tag.nil? %>
               <li><%= (@tag && @tag.id == tag.id) ? tag.name : link_to(tag.name, topic_path(pretty_name(tag))) -%></li>
             <% end %>
 		  	  <% end %>
-			  <li><%= link_to "všechna témata", topics_path %></li>
-	          </ul>
+			      <li><%= link_to "všechna témata", topics_path %></li>
+          </ul>
+        <% end %>
 		  <% end %>	  
         </div> <!-- /#subMenu -->
 

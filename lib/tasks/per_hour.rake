@@ -10,6 +10,7 @@ namespace :per_hour do
     [1,2,3].each do |typ|
        puts cache.delete("Article.discussed.#{typ}")
     end
+    ApplicationController.new.expire_fragment(/web/)
     puts 'cache cleared'
   end 
 end

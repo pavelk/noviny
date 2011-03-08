@@ -1,4 +1,7 @@
 <h2 class="h">Zprávy</h2>
+<% cache(:action => params[:action], :action_suffix => "news_section#{@section.id}") do %>
 <div class="in">
+  <% @news = Article.middle_news(@section.id,12,@ign_arr) %>
   <%= render :partial=>"web/articles/middle_article", :collection=>@news %>
 </div> <!-- /.in -->
+<% end %>

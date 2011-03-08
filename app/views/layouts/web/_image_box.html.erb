@@ -1,4 +1,7 @@
-<% if @right_boxes %>
-	<%= render :partial=>"web/articles/right_box", :collection=>@right_boxes %>
-<% else %>
+<% cache(:action => params[:action], :action_suffix => "right_boxes_#{params[:name]}") do %>
+  <% @right_boxes = Article.right_boxes(@section.id) %>
+  <% if @right_boxes %>
+    <%= render :partial=>"web/articles/right_box", :collection=>@right_boxes %>
+  <% else %>
+  <% end %>
 <% end %>

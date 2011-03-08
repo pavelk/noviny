@@ -1,4 +1,6 @@
+<% cache(:action => params[:action], :action_suffix => "all_topics") do %>
 <% ("A".."Z").each do |letter| %>
+  <% @section = Section.find(params[:id]) if params[:id] %>
 	<% if @section %>
 		<% all_topics = Theme.find(:all,:conditions=>["themeselection_sections.section_id = #{@section.id} AND name LIKE ?","#{letter}%"],:joins=>"LEFT JOIN themeselection_themes ON theme_id = tags.id LEFT JOIN tag_selections ON themeselection_themes.tag_selection_id = tag_selections.id LEFT JOIN themeselection_sections ON themeselection_sections.tag_selection_id = tag_selections.id",:group=>"tags.id") %>
 	<% else %>
@@ -9,4 +11,5 @@
 	<% all_topics.each do |tag| %>
 		<%= link_to tag, topic_path(pretty_name(tag)) %><br>
 	<% end %>
+<% end %>
 <% end %>

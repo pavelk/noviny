@@ -9,22 +9,14 @@ class Web::SectionsController < Web::WebController
   end
   
   def topics
-    @section = Section.find(params[:id]) if params[:id]
     add_breadcrumb "Témata", topics_path
     render :layout=>"web/gallery"
   end
   
   def index
-    length_limit = 5
     redirect_to section_path(:name=>"vikend") and return if Web::Calendar.week?
     @section = Section.find(Section::HOME_SECTION_ID)
     set_common_variables(Section::HOME_SECTION_ID)
-    ign_arr = [@headliner_box ? @headliner_box.article_id : 0]
-    ign_arr += @rel_articles.map{|a| a.id}.uniq
-      @today_opinions = Article.home_opinions(Time.now,Time.now,{:limit=>1,:ignore_arr=>ign_arr,:length_limit=>nil})
-      if @today_opinions.length < length_limit
-        @older_opinions = Article.home_opinions(Time.now.yesterday,Time.now.yesterday,{:limit=>20,:ignore_arr=>ign_arr,:length_limit=>length_limit-@today_opinions.length})
-      end
     @question = Dailyquestion.first_by_date
     @article_photo_show = true
   end
@@ -179,12 +171,14 @@ protected
   end
   
   def set_common_variables(section_id)
-    @top_themes = @section.top_themes
+    # caching in view
+    #@top_themes = @section.top_themes
+    #@right_boxes = Article.right_boxes(section_id)
+
     @headliner_box = Article.headliner_box(section_id)
     @rel_articles = @headliner_box ? @headliner_box.articles : []
     @themes = @headliner_box ? @headliner_box.themes : []
     @dailyquestions = @headliner_box ? @headliner_box.dailyquestions : []
-    @right_boxes = Article.right_boxes(section_id)
     arr = @rel_articles
     arr += [@headliner_box.article] if @headliner_box
     arr += @articles if @articles
@@ -192,14 +186,9 @@ protected
     arr += @yesterday_articles if @yesterday_articles
     arr += @opinions if @opinions
     arr += @right_boxes if @right_boxes
-    ign_arr = arr.map{|a| a.id}.uniq
-    @down_boxes, down_arr = Article.down_boxes(section_id,ign_arr)
-    ign_arr += down_arr.map{|a| a.id}
-    if (section_id == Section::HOME_SECTION_ID || section_id == Section::NAZORY || section_id == Section::VIKEND)
-      @news = Article.middle_news(section_id,12,ign_arr)
-    else
-      @opinions = Article.middle_opinions(section_id,12,ign_arr)           
-    end
+    @ign_arr = arr.map{|a| a.id}.uniq
+    @down_boxes, down_arr = Article.down_boxes(section_id,@ign_arr)
+    @ign_arr += down_arr.map{|a| a.id}
   end
   
   def set_question_variables
