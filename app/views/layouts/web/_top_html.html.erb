@@ -68,9 +68,10 @@
             </ul>
           <% end %>
         <% end %>
-      <% cache(:action => params[:action], :action_suffix => "top_themes_#{params[:name]}") do %>
-        <% @top_themes = @section.top_themes if @section %>
-        <%if !@top_themes.blank? %>
+        <% cache(:action => params[:action], :action_suffix => "top_themes_#{params[:id]}_#{params[:name]}") do %>
+        <% @top_themes = @article.themes if @article %>
+        <% @top_themes = @section.top_themes if @section and @top_themes.blank?%>
+                <%if !@top_themes.blank? %>
           <span>Témata:</span>
 			    <ul>
           <% @top_themes.each do |tag| -%>
