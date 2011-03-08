@@ -71,15 +71,9 @@ module Web::FondsHelper
 
   def sum_active_tax_returns
     joins = "LEFT JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
-    fond = ReallyFond.find(:all, :joins => joins, :group => :fond_id,
-      :conditions => [ "fonds.disable = false" ] )
-    fond_sum = 0
-    fond.each do |f|
-      fond_sum += f.fond.amount
-    end
-    f = ""
-    fond_sum >= 3000 ? f = fond_sum.to_s.insert(-4,".") : f = fond_sum
-    return "#{f},- Kč"
+    fond = ReallyFond.find(:first, :joins => joins, :group => :fond_id,
+      :conditions => [ "fonds.disable = false" ], :select => "sum(fonds.amount) as sum_am" )
+    return fond.sum_am
   end
 
 end

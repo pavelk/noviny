@@ -35,7 +35,8 @@
 	        
 	        <div class="col3">
 	          <div class="boxAdvert">
-	            <div class="in">
+              <div class="in">
+                <% cache(:action => params[:action], :action_suffix => "fond_banner_home") do %>
 	              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="290" height="124">
                   <param name="movie" value="<%= url_for "/flash/dr_nf_flash.swf?mytext=#{sum_active_tax_returns}" %>"/>
                   <!--[if !IE]>-->
@@ -46,6 +47,7 @@
                     </object>
                   <!--<![endif]-->
                 </object>
+              <% end %>
               </div> <!-- /.in -->
 	          </div> <!-- /.box -->
            <div class="box boxAdvert">

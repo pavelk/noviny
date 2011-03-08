@@ -276,7 +276,9 @@
           Chci přispět k nezávislosti Deníku Referendum<br /><br />
 
           <div id="amount_table">
-            <%= render :partial => "amount_table", :locals => { :f => f } %>
+            <% cache(:action => params[:action], :action_suffix => "fond_amount_table") do %>
+              <%= render :partial => "amount_table", :locals => { :f => f } %>
+            <% end %>
           </div>
           <span style="font-weight:bold;">Krok 2: Identifikační údaje</span><br /><br />
 
