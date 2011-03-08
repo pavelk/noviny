@@ -71,8 +71,9 @@ module Web::FondsHelper
 
   def sum_active_tax_returns
     r_fonds = ReallyFond.find(:all, :group => :fond_id, :select => "fond_id" )
-    return Fond.sum(:amount, :conditions => [
+    sum = Fond.sum(:amount, :conditions => [
       "disable = false and id in (?)", r_fonds.map { |f| f.fond_id } ])
+    return "#{sum},- Kč"
   end
 
 end
