@@ -67,8 +67,8 @@ class AuthadminController < Web::WebController
       conds << "web_users.lastname = '#{search[:lastname]}'" unless search[:lastname].blank?
       conds << "payments.variable_symbol = '#{search[:variable_number]}'" unless search[:variable_number].blank?
       conds = conds.join(" AND ")
-
-      @web_users = WebUser.paginate :all,:select=>"web_users.id,login,email,firstname,lastname,web_users.updated_at,domains", :per_page => 1000,:page =>params[:page], :order =>'id desc', :conditions => [conds], :joins => [:payments]
+      joins = "LEFT JOIN `payments` ON payments.web_user_id = web_users.id"
+      @web_users = WebUser.paginate :all,:select=>"web_users.id,login,email,firstname,lastname,web_users.updated_at,domains", :per_page => 1000,:page =>params[:page], :order =>'id desc', :conditions => [conds], :joins => joins
     else
       @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc'
     end
