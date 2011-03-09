@@ -4,10 +4,10 @@ class Admin::ArticlesController < Admin::AdminController
   layout "detail", :only => [:detail]
   
   create.before :set_user
-  create.after :process_adding_pictures, :process_adding_files, 
+  create.after :process_adding_pictures, :process_adding_files, :delete_cache,
                :process_adding_audios, :process_adding_boxes, 
                :process_sections, :multi_tag_create, :process_related, :set_values, :approve_check, :add_flash_photo 
-  update.after :approve_check, :process_sections, :process_related, :set_values, :add_flash_photo
+  update.after :approve_check, :process_sections, :process_related, :set_values, :add_flash_photo, :delete_cache
   update.before :multi_tag 
   
   def index
@@ -246,6 +246,10 @@ class Admin::ArticlesController < Admin::AdminController
 
 private
   
+  def delete_cache
+    expire_fragment(/web/)
+  end
+
   def process_related
     if(params[:related_sidebar])
       params[:related_sidebar].each_value do |r|
