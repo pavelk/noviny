@@ -54,17 +54,21 @@ class AuthadminController < Web::WebController
   end
  
   def list
- 
-    if params[:post] and params[:post][:s]
-      @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc',
-      :conditions => ['login like ? or email like ? or firstname like ? or lastname like ?',
-        '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
-        '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
-        '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%',
-        '%' + params[:post][:s].gsub(/[']/) { '\\'+$& } + '%']
-    elsif params[:id]
-      @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc',
-      :conditions => ['domains like ?', '%' + params[:id].gsub(/[']/) { '\\'+$& } + ',%']
+    unless params[:search].nil?
+      search = params[:search]
+      @variable_number = search[:variable_number]
+      @email = search[:email]
+      @firstname = search[:firstname]
+      @lastname = search[:lastname]
+
+      conds = []
+      conds << "web_users.email = '#{search[:email]}'" unless search[:email].blank?
+      conds << "web_users.firstname = '#{search[:firstname]}'" unless search[:firstname].blank?
+      conds << "web_users.lastname = '#{search[:lastname]}'" unless search[:lastname].blank?
+      conds << "payments.variable_symbol = '#{search[:variable_number]}'" unless search[:variable_number].blank?
+      conds = conds.join(" AND ")
+
+      @web_users = WebUser.paginate :all,:select=>"web_users.id,login,email,firstname,lastname,web_users.updated_at,domains", :per_page => 1000,:page =>params[:page], :order =>'id desc', :conditions => [conds], :joins => [:payments]
     else
       @web_users = WebUser.paginate :all,:include=>[:payments],:select=>"id,login,email,firstname,lastname,updated_at,domains", :per_page => 20,:page =>params[:page], :order =>'id desc'
     end

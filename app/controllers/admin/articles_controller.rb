@@ -247,7 +247,8 @@ class Admin::ArticlesController < Admin::AdminController
 private
   
   def delete_cache
-    expire_fragment(/web/)
+    expire_fragment(/web\/articles/)
+    expire_fragment(/right_boxes|down_boxes|opinions|news/)
   end
 
   def process_related

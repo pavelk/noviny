@@ -112,7 +112,7 @@ class Web::FondsController < Web::WebController
   def really_list
 
     joins = "INNER JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
-    select = "really_fonds.*, fonds.email"
+    select = "really_fonds.*, fonds.email, fonds.variable_number"
 
     unless params[:search_fonds].nil?
       fonds = params[:search_fonds]
@@ -123,7 +123,7 @@ class Web::FondsController < Web::WebController
 
       conds = []
       conds << "fonds.email = '#{fonds[:email]}'" unless fonds[:email].blank?
-      conds << "really_fonds.variable_number = '#{fonds[:variable_number]}'" unless fonds[:variable_number].blank?
+      conds << "fonds.variable_number = '#{fonds[:variable_number]}'" unless fonds[:variable_number].blank?
       conds << "YEAR(date) = #{fonds[:year]}" unless fonds[:year].blank?
       conds << "MONTH(date) = #{fonds[:month]}" unless fonds[:month].blank?
       conds = conds.join(" AND ")

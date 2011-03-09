@@ -28,15 +28,10 @@ Vybertě měsíc registrace uživatele:<br />
 
 <br />
 
-<% form_for :search_fonds, @search_fonds, :url => fond_list_url do |f| %>
-  <%= f.hidden_field :email, :value => "" %>
-  <%= f.hidden_field :variable_number, :value => "" %>
-  <%= hidden_field_tag :year, :value => "" %>
-  <%= hidden_field_tag :month, :value => "" %>
-  <%= f.submit "Vynulovat filtr" %>
-<% end %>
+<%= link_to "Vynulovat filtr", fond_list_url %>
 
-<br />
+<br /><br />
+
 
 
 <h2>Zde jsou zobrazeni uživatelé, kteří pouze vyplnili formulář nadačního fondu</h2>

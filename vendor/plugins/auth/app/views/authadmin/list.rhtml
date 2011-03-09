@@ -5,12 +5,32 @@
 <br />
 <br />
 
-<% if params[:id] %>
-<p>
-&gt; Prohlížíte uživatele patřící do skupiny <%= params[:id] %>.<br />
-&gt; <%= link_to 'Všichni uživatelé', authadmin_url %>.
-</p>
+<% form_for :search, @search, :url => { :controller => :authadmin, :action => :index} do |f| %>
+  <h2>Filtr</h2><br />
+
+Email:<br />
+<%= f.text_field :email, :value => @email %><br />
+
+Jméno:<br />
+<%= f.text_field :firstname, :value => @firstname %><br />
+
+Příjmení:<br />
+<%= f.text_field :lastname, :value => @lastname %><br />
+
+Variabilní symbol:<br />
+<%= f.text_field :variable_number, :value => @variable_number %><br />
+
+<br />
+
+<%= f.submit "Vyhledat" %>
+
 <% end %>
+
+<br />
+
+<%= link_to "Vynulovat filtr", :controller => :authadmin, :action => :index %>
+
+<br /><br />
 
 <p style="text-align: center;">
 <%= will_paginate @web_users, :inner_window=> 3, :outer_window=> 1,:previous_label   => '&laquo; ' +  'Předchozí',
