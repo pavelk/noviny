@@ -8,7 +8,7 @@ class Admin::AuthorsController < Admin::AdminController
     if(params[:search_authors])
       @authors = Author.search params[:search_authors], :page => params[:page], :per_page => 15, :order => 'surname ASC'
     else
-      @authors = Author.all(:order => 'surname ASC').paginate( :per_page => 15, :page => params[:page] )
+      @authors = Author.paginate( :per_page => 15, :page => params[:page], :order => 'surname ASC')
     end 
     render 'shared/admin/index.js.erb'
   end

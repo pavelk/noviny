@@ -15,7 +15,7 @@ class Admin::ArticlesController < Admin::AdminController
     if(params[:search_articles])
       @collection = Article.search params[:search_articles], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
-      @collection = Article.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
+      @collection = Article.paginate( :per_page => 10, :page => params[:page], :order => 'publish_date DESC' )
     end
     render 'shared/admin/index.js.erb'
   end

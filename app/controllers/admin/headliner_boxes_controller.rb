@@ -9,7 +9,7 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
     if(params[:search_headliner_boxes])
       @headliner_boxes = HeadlinerBox.search params[:search_headliner_boxes], :page => params[:page], :per_page => 10, :order => 'publish_date DESC'
     else
-      @headliner_boxes = HeadlinerBox.all( :order => 'publish_date DESC' ).paginate( :per_page => 10, :page => params[:page] )
+      @headliner_boxes = HeadlinerBox.paginate( :per_page => 10, :page => params[:page], :order => 'publish_date DESC' )
     end
     render 'shared/admin/index.js.erb'
   end

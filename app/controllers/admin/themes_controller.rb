@@ -8,7 +8,7 @@ class Admin::ThemesController < Admin::AdminController
     if(params[:search_themes])
       @themes = Theme.search params[:search_themes], :page => params[:page], :per_page => 15, :order => 'name ASC'
     else
-      @themes = Theme.all( :order => 'name ASC' ).paginate( :per_page => 15, :page => params[:page] )
+      @themes = Theme.paginate( :per_page => 15, :page => params[:page], :order => 'name ASC' )
     end 
     render 'shared/admin/index.js.erb'
   end

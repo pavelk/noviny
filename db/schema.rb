@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110306012830) do
+ActiveRecord::Schema.define(:version => 20110309121648) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20110306012830) do
     t.integer  "audios_count",   :default => 0
   end
 
+  add_index "albums", ["created_at"], :name => "index_albums_on_created_at"
   add_index "albums", ["lft", "rgt"], :name => "albums_lft_rgt_index"
   add_index "albums", ["parent_id"], :name => "albums_parent_id_index"
   add_index "albums", ["user_id"], :name => "albums_user_id_index"
@@ -539,6 +540,7 @@ ActiveRecord::Schema.define(:version => 20110306012830) do
   end
 
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
+  add_index "pictures", ["updated_at"], :name => "index_pictures_on_updated_at"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
 
   create_table "question_votes", :force => true do |t|

@@ -7,27 +7,13 @@
       = render :partial => "form", :locals => { :f => f }
       %br
       %br
-      = link_to "Pridat souvisejici temata", "#?width=700&height=500", :class => 'thickbox_themes', :onclick => 'getRelationthemeship(\'themes\'); return false', :id => "relart_#{@theme.id}"
-      #related_themes
-      - if(@theme.relationthemeships.size > 0)  
-        %br
-        %br
-        %strong Souvisejici temata
-        %br
-        %br
-        - @theme.relationthemeships.each do |relationthemeship|
-          %div
-            = relationthemeship.reltheme.name
-            = link_to "X", '#', :id => "relationthemeship_#{@theme.id}_#{relationthemeship.id}", :onclick => 'removeRelationthemeship( $(this)); return false'
-        %br
         %hr
-      -#%p
-        -#= Article.find_tagged_with(@theme.name).map(&:name).join(", ")
       %br
       %br  
-      %h3 Clanky s tematem:
-      - Article.find_tagged_with(@theme.name).each do |a|
-        %p= link_to a.name, "#", :onclick => "editArticle( '#{a.id}' ); return false"
+      %h3 Články s tématem:
+      - at = ArticleTheme.find(:all, :conditions => {:theme_id => @theme.id})
+      - Article.find(:all, :select => :name, :conditions => [ "id in (?)", at.map{ |t| t.article_id} ] ).each  do |a|
+        %p= a.name
       %br
       %br  
       %p= submit_tag "Upravit"

@@ -1,6 +1,7 @@
 %tr{ :id => "theme_#{theme.id}" }
   %td{ :class => 'listItem l1'}
-    .cropLine= link_to "#{theme.name} (#{Article.find_tagged_with(theme.name).size})", '#', :id => "edititem1_#{theme.id}", :title => theme.name, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
+    - count_theme = ArticleTheme.count(:conditions => {:theme_id => theme.id})
+    .cropLine= link_to "#{theme.name} (#{count_theme})", '#', :id => "edititem1_#{theme.id}", :title => theme.name, :onclick => "editRecord($(this), '#{@c_name}' ); return false"
   %td= admin_date(theme.updated_at)
   %td= theme.user.user_name
   %td
