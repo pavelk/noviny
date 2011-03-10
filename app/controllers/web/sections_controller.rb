@@ -228,6 +228,7 @@ protected
     conds << "articles.author_id = #{@author_id}" if @author_id > 0
     conds << "article_comments.web_user_id = #{@web_user_id}" if @web_user_id > 0
     conds << "article_themes.theme_id = #{@tag_id}" if @tag_id > 0
+    group = "article_comments.id" if conds.length > 0
     joins = {:article=>[]} if conds.length > 0
     conds = conds.join(" AND ")
     joins[:article] << [:article_themes] if @tag_id > 0
@@ -237,7 +238,7 @@ protected
                 :conditions=>[conds],
                 :joins=>joins,
                 :order=>"article_comments.created_at DESC",
-                :group=>"article_comments.id",
+                :group=>group,
                 :per_page=>30,
                 :page=>params[:page])
   end
