@@ -31,7 +31,7 @@ class Web::ArticlesController < Web::WebController
   end
   
   def authors
-    @authors = Author.all(:order=>"surname",:select=>"authors.id,authors.surname,authors.firstname", :joins=>[:articles], :group=>"authors.id")
+    @authors = Author.find(:all,:select=>"authors.id,authors.surname,authors.firstname", :joins=>[:articles], :group=>"authors.surname,authors.id", :conditions => ["visibility = false AND approved = true"])
   end
   
   def add_comment

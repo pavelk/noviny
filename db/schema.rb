@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110309121648) do
+ActiveRecord::Schema.define(:version => 20110309232244) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -27,8 +27,9 @@ ActiveRecord::Schema.define(:version => 20110309121648) do
     t.integer  "audios_count",   :default => 0
   end
 
+  add_index "albums", ["album_type", "created_at"], :name => "index_albums_on_album_type_and_created_at"
   add_index "albums", ["created_at"], :name => "index_albums_on_created_at"
-  add_index "albums", ["lft", "rgt"], :name => "albums_lft_rgt_index"
+  add_index "albums", ["lft", "rgt"], :name => "index_albums_on_lft_and_rgt"
   add_index "albums", ["parent_id"], :name => "albums_parent_id_index"
   add_index "albums", ["user_id"], :name => "albums_user_id_index"
 
@@ -378,6 +379,11 @@ ActiveRecord::Schema.define(:version => 20110309121648) do
     t.datetime "updated_at"
   end
 
+  add_index "fonds", ["amount"], :name => "index_fonds_on_amount"
+  add_index "fonds", ["disable"], :name => "index_fonds_on_disable"
+  add_index "fonds", ["email"], :name => "index_fonds_on_email"
+  add_index "fonds", ["variable_number"], :name => "index_fonds_on_variable_number"
+
   create_table "headliner_articles", :force => true do |t|
     t.integer "headliner_box_id"
     t.integer "article_id"
@@ -519,6 +525,7 @@ ActiveRecord::Schema.define(:version => 20110309121648) do
     t.decimal  "gift",                          :precision => 10, :scale => 2
   end
 
+  add_index "payments", ["created_at"], :name => "index_payments_on_created_at"
   add_index "payments", ["payed_at"], :name => "index_payments_on_payed_at"
   add_index "payments", ["status"], :name => "index_payments_on_status"
   add_index "payments", ["variable_symbol"], :name => "index_payments_on_variable_symbol"
@@ -777,7 +784,10 @@ ActiveRecord::Schema.define(:version => 20110309121648) do
   add_index "web_users", ["author_id"], :name => "index_web_users_on_author_id"
   add_index "web_users", ["confirmed"], :name => "index_web_users_on_confirmed"
   add_index "web_users", ["country_id"], :name => "index_web_users_on_country_id"
+  add_index "web_users", ["email"], :name => "index_web_users_on_email"
   add_index "web_users", ["expire_date"], :name => "index_web_users_on_expire_date"
+  add_index "web_users", ["firstname"], :name => "index_web_users_on_firstname"
+  add_index "web_users", ["lastname"], :name => "index_web_users_on_lastname"
   add_index "web_users", ["login"], :name => "index_web_users_on_login"
   add_index "web_users", ["send_discuss_notification"], :name => "index_web_users_on_send_discuss_notification"
   add_index "web_users", ["send_my_discuss_notification"], :name => "index_web_users_on_send_my_discuss_notification"

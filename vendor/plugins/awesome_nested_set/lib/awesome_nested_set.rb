@@ -15,23 +15,10 @@ module CollectiveIdea #:nodoc:
       #
       # == API
       #
-      # Methods names are aligned with acts_as_tree as much as possible, to make replacment from one
-      # by another easier, except for the creation:
+      # Methods names are aligned with acts_as_tree as much as possible to make replacment from one
+      # by another easier.
       #
-      # in acts_as_tree:
       #   item.children.create(:name => "child1")
-      #
-      # in acts_as_nested_set:
-      #   # adds a new item at the "end" of the tree, i.e. with child.left = max(tree.right)+1
-      #   child = MyClass.new(:name => "child1")
-      #   child.save
-      #   # now move the item to its right place
-      #   child.move_to_child_of my_item
-      #
-      # You can pass an id or an object to:
-      # * <tt>#move_to_child_of</tt>
-      # * <tt>#move_to_right_of</tt>
-      # * <tt>#move_to_left_of</tt>
       #
       module SingletonMethods
         # Configuration options are:
@@ -72,19 +59,26 @@ module CollectiveIdea #:nodoc:
             include InstanceMethods
             extend Columns
             extend ClassMethods
+            
+            belongs_to :parent, :class_name => self.base_class.to_s,
+              :foreign_key => parent_column_name
+            has_many :children, :class_name => self.base_class.to_s,
+              :foreign_key => parent_column_name, :order => quoted_left_column_name
 
             attr_accessor :skip_before_destroy
           
             # no bulk assignment
-            attr_protected  left_column_name.intern,
-                            right_column_name.intern,
-                            parent_column_name.intern
+            if accessible_attributes.blank?
+              attr_protected  left_column_name.intern, right_column_name.intern 
+            end
                           
-            before_create :set_default_left_and_right
+            before_create  :set_default_left_and_right
+            before_save    :store_new_parent
+            after_save     :move_to_new_parent
             before_destroy :destroy_descendants
                           
             # no assignment to structure fields
-            [left_column_name, right_column_name, parent_column_name].each do |column|
+            [left_column_name, right_column_name].each do |column|
               module_eval <<-"end_eval", __FILE__, __LINE__
                 def #{column}=(x)
                   raise ActiveRecord::ActiveRecordError, "Unauthorized assignment to #{column}: it's an internal field handled by acts_as_nested_set code, use move_to_* methods instead."
@@ -95,7 +89,7 @@ module CollectiveIdea #:nodoc:
             named_scope :roots, :conditions => {parent_column_name => nil}, :order => quoted_left_column_name
             named_scope :leaves, :conditions => "#{quoted_right_column_name} - #{quoted_left_column_name} = 1", :order => quoted_left_column_name
 
-            define_callbacks("before_move", "after_move") if self.respond_to?(:define_callbacks)
+            define_callbacks("before_move", "after_move")
           end
           
         end
@@ -167,7 +161,7 @@ module CollectiveIdea #:nodoc:
           # Don't rebuild a valid tree.
           return true if valid?
           
-          scope = lambda{}
+          scope = lambda{|node|}
           if acts_as_nested_set_options[:scope]
             scope = lambda{|node| 
               scope_column_names.inject(""){|str, column_name|
@@ -192,6 +186,30 @@ module CollectiveIdea #:nodoc:
             # setup index for this scope
             indices[scope.call(root_node)] ||= 0
             set_left_and_rights.call(root_node)
+          end
+        end
+
+        # Iterates over tree elements and determines the current level in the tree.
+        # Only accepts default ordering, odering by an other column than lft
+        # does not work. This method is much more efficent than calling level
+        # because it doesn't require any additional database queries.
+        #
+        # Example:
+        #    Category.each_with_level(Category.root.self_and_descendants) do |o, level|
+        #
+        def each_with_level(objects)
+          path = [nil]
+          objects.each do |o|
+            if o.parent_id != path.last
+              # we are on a new level, did we decent or ascent?
+              if path.include?(o.parent_id)
+                # remove wrong wrong tailing paths elements
+                path.pop while path.last != o.parent_id
+              else
+                path << o.parent_id
+              end
+            end
+            yield(o, path.length - 1)
           end
         end
       end
@@ -257,7 +275,7 @@ module CollectiveIdea #:nodoc:
         end
         
         def leaf?
-          right - left == 1
+          !new_record? && right - left == 1
         end
 
         # Returns true is this is a child node
@@ -281,11 +299,6 @@ module CollectiveIdea #:nodoc:
         # Returns root
         def root
           self_and_ancestors.find(:first)
-        end
-
-        # Returns the immediate parent
-        def parent
-          nested_set_scope.find_by_id(parent_id) if parent_id
         end
 
         # Returns the array of all parents and self
@@ -331,11 +344,6 @@ module CollectiveIdea #:nodoc:
         # Returns a set of all of its children and nested children
         def descendants
           without_self self_and_descendants
-        end
-
-        # Returns a set of only this entry's immediate children
-        def children
-          nested_set_scope.scoped :conditions => {parent_column_name => self}
         end
 
         def is_descendant_of?(other)
@@ -434,6 +442,19 @@ module CollectiveIdea #:nodoc:
           self.class.base_class.scoped options
         end
         
+        def store_new_parent
+          @move_to_new_parent_id = send("#{parent_column_name}_changed?") ? parent_id : false
+          true # force callback to return true
+        end
+        
+        def move_to_new_parent
+          if @move_to_new_parent_id.nil?
+            move_to_root
+          elsif @move_to_new_parent_id
+            move_to_child_of(@move_to_new_parent_id)
+          end
+        end
+        
         # on creation, set automatically lft and rgt to the end of the tree
         def set_default_left_and_right
           maxright = nested_set_scope.maximum(right_column_name) || 0
@@ -484,7 +505,7 @@ module CollectiveIdea #:nodoc:
         
         def move_to(target, position)
           raise ActiveRecord::ActiveRecordError, "You cannot move a new node" if self.new_record?
-          return if callback(:before_move) == false
+          return if run_callbacks(:before_move) == false
           transaction do
             if target.is_a? self.class.base_class
               target.reload_nested_set
@@ -547,7 +568,7 @@ module CollectiveIdea #:nodoc:
           end
           target.reload_nested_set if target
           self.reload_nested_set
-          callback(:after_move)
+          run_callbacks(:after_move)
         end
 
       end
