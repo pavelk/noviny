@@ -1,7 +1,7 @@
 class Admin::HeadlinerBoxesController < Admin::AdminController
   
-  create.after :process_related, :set_values, :process_sections, :add_flash_photo
-  update.after :process_related, :set_values, :process_sections, :add_flash_photo
+  create.after :process_related, :set_values, :process_sections, :add_flash_photo, :delete_cache
+  update.after :process_related, :set_values, :process_sections, :add_flash_photo, :delete_cache
   #create.after :set_values, :process_sections
   #update.after :set_values, :process_sections
   
@@ -71,6 +71,11 @@ class Admin::HeadlinerBoxesController < Admin::AdminController
 
   private
     
+  def delete_cache
+    expire_fragment(/web\/articles/)
+    expire_fragment(/right_boxes|down_boxes|opinions|news/)
+  end
+
     def add_flash_photo
       if(params[:flashimage_id])
         @fi = FlashphotoHeadliner.find(params[:flashimage_id])

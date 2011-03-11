@@ -2,8 +2,8 @@ class Admin::ArticleBannersController < Admin::AdminController
   
   #create.before :set_values
   #update.before :set_values
-  create.after :process_related, :set_values, :process_sections, :add_flash_photo
-  update.after :process_related, :set_values, :process_sections, :add_flash_photo
+  create.after :process_related, :set_values, :process_sections, :add_flash_photo, :delete_cache
+  update.after :process_related, :set_values, :process_sections, :add_flash_photo, :delete_cache
   
   #index.response do |wants|
   #  wants.js
@@ -53,6 +53,11 @@ class Admin::ArticleBannersController < Admin::AdminController
   
   private 
   
+  def delete_cache
+    expire_fragment(/web\/articles/)
+    expire_fragment(/right_boxes|down_boxes|opinions|news/)
+  end
+
     def add_flash_photo
     #debugger
       if(params[:flashimage_id])

@@ -40,7 +40,7 @@ class Picture < ActiveRecord::Base
                                         :articles_preview => "140x",
                                         :article_profile => "178x",
                                         :gallery_big => "440x440",
-                                        :gallery_very_big => "800x",
+                                        :gallery_very_big => "800x600>",
                                         :author_image => "178x178#"
                                          },
                     :convert_options => { :all => '-quality 80',
