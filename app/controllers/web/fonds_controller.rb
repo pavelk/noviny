@@ -3,7 +3,7 @@ class Web::FondsController < Web::WebController
   layout :set_layout
 
   before_filter :authorize_admins_only, :except => [ :show, :amount_table,
-    :popup, :contribution_names ]
+    :popup, :contribution_names, :faq ]
 
 # ............................................................................ #
 
