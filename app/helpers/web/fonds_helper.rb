@@ -76,4 +76,38 @@ module Web::FondsHelper
     return "#{sum > 3000 ? sum.to_i.to_s.insert(-4,".") : sum},-&nbsp;Kč"
   end
 
+  # - kontrola jestli uzivatel s danou IP jiz je registrovan
+  # - pokud neni, kontrola jestli uz uzivatel byl na strankach
+  # - pokud okno vyskocilo pred vice jak 7 dny, tak vyskoci znovu
+  # - jinak nic
+  # - return true, kdyz ma vyskocit
+  # - return false, kdyz nema vyskocit
+
+  def check_popup
+    ip = request.remote_ip
+    if ip
+      # je uzivatel jiz registrovan? pokud ano, vrat false = nezobraz popup
+      if Fond.find_by_ip_address(ip)
+        return false
+      # navstivil uzivatel web s tuto IP adresou?
+      elsif user = PopupFond.find_by_ip_address(ip)
+        # pokud ano, bylo to vice nez pred sedmi dny?
+        if ( user.last_view_popup + 7.days ) > DateTime.now
+          return false
+        # pokud to bylo vice nez pred sedmi dny, zobraz popup
+        else
+          user.last_view_popup = DateTime.now
+          user.save
+          return true
+        end
+      # jedna se o noveho navstevnika
+      else
+        PopupFond.create(:last_view_popup => DateTime.now, :ip_address => ip)
+        return true
+      end
+    else
+      return false
+    end
+  end
+
 end

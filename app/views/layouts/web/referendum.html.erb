@@ -10,11 +10,36 @@
     <title><%= "#{@html_title} - " if @html_title -%>Deník Referendum</title>
 
 	<%#= javascript_include_tag :defaults %>
-	<%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", "jquery-1.3.2.min", "jquery.scrollTo-1.4.0-min", "jquery.serialScroll-1.2.1-min", "web/cufon-yui", "web/cufon-arial", "web/fontCharger", "init", "calendar","jqModal", :cache => 'js_files'   %>
-	<%= stylesheet_link_tag 'web/css/default',"calendar", "jqModal", :cache => 'css_files' %>
+	<%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", "jquery-1.3.2.min", "jquery.scrollTo-1.4.0-min", "jquery.serialScroll-1.2.1-min", "web/cufon-yui", "web/cufon-arial", "web/fontCharger", "init", "calendar","tinybox", :cache => 'js_files'   %>
+	<%= stylesheet_link_tag 'web/css/default',"calendar", "tinybox", :cache => 'css_files' %>
 	<!--[if IE]><link rel="stylesheet" type="text/css" href="/stylesheets/web/css/msie.css" media="screen" /><![endif]-->
     <link rel="icon" href="/images/web/favicon-dr.ico" type="image/x-icon" /> 
-	  <link rel="shortcut icon" href="/images/web/favicon-dr.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/images/web/favicon-dr.ico" type="image/x-icon" />
+
+<% if check_popup %>
+<script type="text/javascript">
+
+  $(document).ready(
+      function() {
+      TINY.box.show({url:'/popup-fond',boxid:'frameless',width:800,fixed:false,maskid:'bluemask',maskopacity:40,closejs:function(){unhide_fb('fond-banner')},openjs:function(){hide_fb('fond-banner')}})
+  });
+  function unhide_fb(divID) {
+    var item = document.getElementById(divID);
+    if (item) {
+    item.className='in unhidden';
+    }
+
+  }
+  function hide_fb(divID) {
+    var item = document.getElementById(divID);
+    if (item) {
+    item.className='in hidden';
+    }
+  }
+
+</script>
+<% end %>
+
 	<script>
 		jQuery.noConflict();
 	</script>
@@ -22,7 +47,6 @@
   <meta name="google-site-verification" content="X48IqI7HuEbC8w2jPI674TGKbCiXGHblSK8BPsJ0aNM" />
 </head>
 <%= render :partial=>"layouts/web/top_html" %>
-
 	      <hr class="hidden" />
 	      <div id="content" class="cols hpCols">
 	        <div class="col1">
@@ -35,10 +59,11 @@
 	        
 	        <div class="col3">
 	          <div class="boxAdvert">
-              <div class="in">
+              <div class="in" id="fond-banner">
                 <% cache(:action => params[:action], :action_suffix => "fond_banner_home") do %>
-	              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="290" height="124">
+	              <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="290" height="124" wmode="transparent">
                   <param name="movie" value="<%= url_for "/flash/dr_nf_flash.swf?mytext=#{sum_active_tax_returns}" %>"/>
+                  <param name="wmode" value="transparent" />
                   <!--[if !IE]>-->
                   <object type="application/x-shockwave-flash" data="<%= url_for "/flash/dr_nf_flash.swf?mytext=#{sum_active_tax_returns}" %>" width="290" height="124">
                   <!--<![endif]-->
@@ -71,7 +96,9 @@
 	          </div> <!-- /.box -->
 			  
 	          <%= render :partial=>"layouts/web/part/newest_box" %>
-	          <%= render :partial=>"layouts/web/part/readest_box" %>
+            <%= render :partial=>"layouts/web/part/readest_box" %>
+            <%= render :partial=>"layouts/web/part/recommendations_box" %>
+
 	        </div> <!-- /.col3 -->
 			<div class="rightAdvert">
 	          <%= render :partial=>"layouts/web/adverts/right_advert" %>

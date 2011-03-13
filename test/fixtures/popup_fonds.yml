@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  last_view_popup: 2011-03-12 22:09:16
+  ip_address: MyString
+
+two:
+  last_view_popup: 2011-03-12 22:09:16
+  ip_address: MyString

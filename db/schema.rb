@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110309232244) do
+ActiveRecord::Schema.define(:version => 20110312232500) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id"
@@ -377,11 +377,14 @@ ActiveRecord::Schema.define(:version => 20110309232244) do
     t.boolean  "disable",         :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ip_address"
   end
 
   add_index "fonds", ["amount"], :name => "index_fonds_on_amount"
   add_index "fonds", ["disable"], :name => "index_fonds_on_disable"
   add_index "fonds", ["email"], :name => "index_fonds_on_email"
+  add_index "fonds", ["ip_address"], :name => "index_fonds_on_ip_address"
+  add_index "fonds", ["publish_name"], :name => "index_fonds_on_publish_name"
   add_index "fonds", ["variable_number"], :name => "index_fonds_on_variable_number"
 
   create_table "headliner_articles", :force => true do |t|
@@ -549,6 +552,15 @@ ActiveRecord::Schema.define(:version => 20110309232244) do
   add_index "pictures", ["album_id"], :name => "pictures_album_id_index"
   add_index "pictures", ["updated_at"], :name => "index_pictures_on_updated_at"
   add_index "pictures", ["user_id"], :name => "pictures_user_id_index"
+
+  create_table "popup_fonds", :force => true do |t|
+    t.datetime "last_view_popup"
+    t.string   "ip_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "popup_fonds", ["ip_address"], :name => "index_popup_fonds_on_ip_address"
 
   create_table "question_votes", :force => true do |t|
     t.integer  "question_id"

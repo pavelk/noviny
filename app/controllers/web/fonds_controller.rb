@@ -2,13 +2,16 @@ class Web::FondsController < Web::WebController
 
   layout :set_layout
 
-  before_filter :authorize_admins_only, :except => [ :show, :amount_table ]
+  before_filter :authorize_admins_only, :except => [ :show, :amount_table,
+    :popup, :contribution_names ]
 
 # ............................................................................ #
 
   def show
     amount_table
+    @html_title = "Nadační fond Nezávislosti Deníku Referendum"
     if request.post?
+      params[:fond][:ip_address] = request.remote_ip
       @fond = Fond.new(params[:fond])
       if @fond.save
         flash.now[:notice] = "Děkujeme, na Vaši mailovou adresu právě " \
@@ -22,6 +25,32 @@ class Web::FondsController < Web::WebController
     end
   end
 
+# ............................................................................ #
+
+  def popup
+    @my_rand = rand(8)
+  end
+
+# ............................................................................ #
+
+  # jmena prispevatelu
+
+  def contribution_names
+    joins = "LEFT JOIN `fonds` ON `fonds`.id = `really_fonds`.fond_id"
+    @fond_publish = ReallyFond.find(:all, :joins => joins, :group => :fond_id,
+      :conditions => [ "fonds.disable = false AND fonds.publish_name = true" ],
+      :select => "fonds.firstname, fonds.lastname, fonds.profession, fonds.city",
+      :order => "fonds.lastname")
+    @fond_publish_no = ReallyFond.find(:all, :joins => joins, :group => :fond_id,
+      :conditions => [ "fonds.disable = false AND fonds.publish_name = false" ])
+  end
+
+# ............................................................................ #
+
+  # casto kladene otazky
+
+  def faq
+  end
 
 # ............................................................................ #
 
@@ -218,8 +247,11 @@ class Web::FondsController < Web::WebController
   end
 
   def set_layout
-    if params[:action] ==  "show"
+    if params[:action] ==  "show" or params[:action] == "contribution_names" or
+      params[:action] == "faq"
       "web/gallery"
+    elsif params[:action] == "popup"
+      false
     else
       "web/admin"
     end

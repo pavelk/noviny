@@ -24,6 +24,10 @@ ActionController::Routing::Routes.draw do |map|
             
   map.authors_info "/autori", :controller => 'web/articles',:action=>"authors"
   map.fond_show "/nadacni-fond", :controller => "web/fonds", :action => "show"
+  map.fond_contribution_names "/nadacni-fond-jmena-prispevatelu", :controller => "web/fonds", :action => "contribution_names"
+  map.fond_faq "/nadacni-fond-casto-kladene-otazky-faq", :controller => "web/fonds", :action => "faq"
+  map.popup_fond_show "/popup-fond", :controller => "web/fonds", :action => "popup"
+
   map.fond_list "/nadacni-fond/list", :controller => "web/fonds", :action => "list"
   map.fond_really_list "/nadacni-fond/really_list", :controller => "web/fonds", :action => "really_list"
   map.fond_detail "/nadacni-fond/detail/:id", :controller => "web/fonds", :action => "detail"

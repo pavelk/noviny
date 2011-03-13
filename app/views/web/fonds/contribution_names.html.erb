@@ -1,0 +1,37 @@
+<div class="box boxDetail">
+   <h2 class="head">Jména přispěvatelů - Nadační fond</h2>
+   <p class="perex">perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex perex </p>
+
+   <div class="cols detailImage line">
+     <div class="col1">
+       <%= render :partial => "fond_menu" %>
+      </div>
+     <div class="col2 mainImage">
+       <%= image_tag "fond.jpg" %>
+       <p class="info">Co by za to člověk dal, kdyby tu byly jedny noviny, které by byla radost číst?</p>
+     </div> <!-- /.col2 -->
+   </div> <!-- /.cols -->
+
+   <div class="cols detailContent">
+     <div class="col1">
+       <div class="box boxLine">
+          <%= render :partial=>"web/articles/left_box" %>
+       </div> <!-- /.box -->
+     </div> <!-- /.col1 -->
+
+     <div class="col2">
+       <div class="text">
+         <p>
+         <h2>Do nadačního fondu přispívají:</h2>
+         <br />
+         <% @fond_publish.each do |f| %>
+           <%= f.firstname %> <%= f.lastname %><%= ", #{f.profession}" unless f.profession.blank? %><%= ", #{f.city}" unless f.city.blank? %><br />
+         <% end %>
+         a <%= @fond_publish_no.count %> dalších.
+         </p>
+       </div> <!-- /.text -->
+     </div> <!-- /.col2 -->
+
+   </div> <!-- /.cols -->
+ </div> <!-- /.box -->
+
