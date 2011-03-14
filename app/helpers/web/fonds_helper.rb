@@ -84,7 +84,10 @@ module Web::FondsHelper
   # - return false, kdyz nema vyskocit
 
   def check_popup
-    ip = request.remote_ip
+    if ip = request.env['HTTP_X_FORWARDED_FOR']
+    else
+      ip = request.remote_ip
+    end
     if ip
       # je uzivatel jiz registrovan? pokud ano, vrat false = nezobraz popup
       if Fond.find_by_ip_address(ip)
