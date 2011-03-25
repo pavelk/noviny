@@ -258,7 +258,7 @@ class Article < ActiveRecord::Base
       #arr = [Section::NAZORY,Section::DOMOV,Section::SVET,Section::UMENI]
       #arr.each do |a|
         op = ""
-        op += " AND article_sections.section_id = '#{section_id.to_i}'" if section_id
+        op += " AND article_sections.section_id = '#{section_id.to_i}'" if section_id && section_id =! 9999
         articles = Article.find(:all,
                                    :conditions=>["article_views.shown_date >= ? #{op} AND articles.approved = ? AND articles.visibility = ?",begin_date,true,false],
                                    :select=>"articles.id, articles.author_id, articles.name, articles.content_type_id, SUM(article_views.count) as c",
@@ -377,7 +377,7 @@ class Article < ActiveRecord::Base
   end
   
   #Returns paginated articles from author given by 'author_id'
-  def self.paginate_from_author(author_id, page = 1, per_page = 10)
+  def self.paginate_from_author(author_id, page = 1, per_page = 20)
     paginate(:all,
              :conditions=>["author_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",author_id,Time.now,true,false],
              :order=>"order_date DESC, priority_section DESC, order_time DESC",
@@ -389,7 +389,7 @@ class Article < ActiveRecord::Base
   end
   
   #Returns paginated articles from tag given by 'tag_id'
-  def self.paginate_from_tag(tag_id, page = 1, per_page = 10)
+  def self.paginate_from_tag(tag_id, page = 1, per_page = 50)
     paginate(:all,
              :conditions=>["article_themes.theme_id = ? AND publish_date <= ? AND articles.approved = ? AND articles.visibility = ?",tag_id,Time.now,true,false],
              :order=>"publish_date DESC",

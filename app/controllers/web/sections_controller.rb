@@ -239,7 +239,7 @@ protected
                 :joins=>joins,
                 :order=>"article_comments.created_at DESC",
                 :group=>group,
-                :per_page=>30,
+                :per_page=>50,
                 :page=>params[:page])
   end
 end

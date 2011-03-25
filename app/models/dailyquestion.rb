@@ -61,7 +61,7 @@ class Dailyquestion < ActiveRecord::Base
          :order=>"publish_date DESC",
          #:limit=>10,
          :page => page,
-         :per_page => 10 )
+         :per_page => 30 )
   end
     
   def yes_votes_in_perc
